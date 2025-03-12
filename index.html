@@ -5,6 +5,16 @@
     <meta charset="UTF-8">
     <title>Stjärnakademien</title>
     <link rel="stylesheet" href="styles.css">
+    <script>
+        // Dynamically set viewport height to account for navigation bar
+        function setViewportHeight() {
+            let vh = window.innerHeight * 0.01;
+            document.documentElement.style.setProperty('--vh', `${vh}px`);
+        }
+        window.addEventListener('resize', setViewportHeight);
+        window.addEventListener('orientationchange', setViewportHeight);
+        setViewportHeight();
+    </script>
 </head>
 <body>
     <nav class="hamburger-nav">

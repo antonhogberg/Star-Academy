@@ -1,3 +1,7 @@
+:root {
+    --vh: 1vh; /* Fallback for older browsers */
+}
+
 body {
     font-family: Arial, sans-serif;
     padding: 0;
@@ -9,7 +13,7 @@ body {
     background-color: #000000;
     background-image: url('background.jpg');
     background-size: 100% auto;
-    background-repeat: repeat-y; /* Changed to repeat downward */
+    background-repeat: repeat-y;
     background-position: center top;
 }
 
@@ -160,13 +164,13 @@ body {
 .layout-container {
     position: relative;
     width: 100%;
-    min-height: 100vh; /* Ensure at least viewport height */
+    min-height: calc(var(--vh, 1vh) * 100); /* Use dynamic viewport height */
     overflow-y: auto;
     overflow-x: hidden;
-    display: flex; /* Ensure children can be centered */
+    display: flex;
     flex-direction: column;
     align-items: center;
-    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+    -webkit-overflow-scrolling: touch;
 }
 
 .progress-container {
@@ -177,7 +181,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    height: calc(var(--vh, 1vh) * 100);
     overflow-x: hidden;
     overflow-y: hidden;
 }
@@ -201,8 +205,8 @@ body {
     flex-direction: column;
     align-items: center;
     position: relative;
-    min-height: 100vh; /* Full height for centering */
-    justify-content: center; /* Center vertically */
+    min-height: calc(var(--vh, 1vh) * 100);
+    justify-content: center;
 }
 
 .exercises {
@@ -383,11 +387,11 @@ body {
         max-width: 744px;
         min-width: 0;
         margin: 0 auto;
-        justify-content: center; /* Center content */
+        justify-content: center;
         padding-top: 0;
         padding-bottom: 20px;
-        min-height: calc(100vh - 40px); /* Account for title height */
-        height: auto; /* Allow natural height */
+        min-height: calc(var(--vh, 1vh) * 100 - 40px); /* Adjust for title */
+        height: auto;
         box-sizing: border-box;
         display: flex;
         flex-direction: column;
@@ -450,7 +454,7 @@ body {
         display: flex;
         justify-content: center;
         align-items: center;
-        height: 100vh;
+        height: calc(var(--vh, 1vh) * 100);
         overflow-y: hidden;
     }
     .progress-svg {
