@@ -330,12 +330,12 @@ body {
     }
 }
 
-/* Mobile (portrait screens ≤ 744px) */
-@media (max-width: 744px) and (orientation: portrait) {
+/* Mobile (portrait screens) */
+@media (max-width: 932px) and (orientation: portrait) {
     .progress-container {
         width: 100%;
         height: auto;
-        display: block; /* Stack elements */
+        display: block;
         overflow-x: hidden;
         overflow-y: visible;
     }
@@ -348,7 +348,7 @@ body {
         left: 50%;
         transform: translateX(-50%);
         overflow-x: hidden;
-        display: block; /* Ensure block behavior */
+        display: block;
     }
     .rank-badge {
         position: static;
@@ -356,9 +356,9 @@ body {
         width: 17.0625%;
         min-width: 136.5px;
         max-width: 204.75px;
-        margin: 40px auto; /* Center horizontally */
+        margin: 40px auto;
         padding-top: 35px;
-        display: block; /* Stack below SVG */
+        display: block;
     }
     .logo-badge {
         position: static;
@@ -378,10 +378,12 @@ body {
         max-width: 744px;
         min-width: 0;
         margin: 0 auto;
-        justify-content: flex-start; /* Stack from top */
+        justify-content: center; /* Center content */
         padding-top: 0;
         padding-bottom: 20px;
-        min-height: auto; /* No centering needed in mobile */
+        min-height: 100vh; /* Ensure full viewport height */
+        height: auto; /* Allow natural height */
+        box-sizing: border-box;
     }
     .exercises {
         flex-wrap: wrap;
@@ -400,7 +402,7 @@ body {
         width: 80%;
         max-width: 300px;
         margin: 10px auto 20px auto;
-        display: block; /* Stack in mobile */
+        display: block;
     }
     .text-box #rankTitle {
         font-family: Cochin, Georgia, Arial, sans-serif;
