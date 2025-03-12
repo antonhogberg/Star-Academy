@@ -195,13 +195,23 @@
             </div>
             <div id="namePopup" class="popup" style="display: none;">
                 <div class="popup-content">
-                    <h2>Welcome!</h2>
+                    <h2>Welcome to Stjärnakademien!</h2>
                     <p>Please enter your name:</p>
-                    <input type="text" id="nameInput" placeholder="Your name">
-                    <button id="submitNameBtn">Submit</button>
-                    <button id="cancelNameBtn">Cancel</button>
+                    <input type="text" id="nameInput" placeholder="Your Name" onkeypress="if(event.key === 'Enter') saveName()">
+                    <button onclick="saveName()">Submit</button>
                 </div>
             </div>
+            <script>
+                // Function to save name
+                function saveName() {
+                    const name = document.getElementById('nameInput').value;
+                    if (name) {
+                        document.getElementById('userNameDisplay').textContent = name;
+                        document.getElementById('namePopup').style.display = 'none';
+                        // Add any additional save logic here (e.g., localStorage)
+                    }
+                }
+            </script>
             <div class="rank-badge">
                 <img id="rankImage" src="rank-start.png" alt="Rank Badge" style="max-width: 100%; height: auto; display: block; margin: 0 auto;">
                 <div id="rankName">Utforskare/Explorer</div>
