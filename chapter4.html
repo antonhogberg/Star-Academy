@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, orientation=landscape">
+    <meta charset="UTF-8">
+    <title>Chapter 4</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <nav class="hamburger-nav">
+        <div class="hamburger" aria-expanded="false" aria-controls="main-menu">☰</div>
+        <div class="menu" id="main-menu">
+            <span class="close-btn" aria-label="Close menu">✖</span>
+            <a href="index.html" class="menu-link">Front Page</a>
+            <a href="chapter1.html" class="menu-link">Chapter 1</a>
+            <a href="chapter2.html" class="menu-link">Chapter 2</a>
+            <a href="chapter3.html" class="menu-link">Chapter 3</a>
+            <a href="chapter4.html" class="menu-link">Chapter 4</a>
+            <a href="chapter5.html" class="menu-link">Chapter 5</a>
+            <a href="chapter6.html" class="menu-link">Chapter 6</a>
+            <a href="chapter7.html" class="menu-link">Chapter 7</a>
+        </div>
+    </nav>
+    <h1 class="chapter-title">
+        <span class="chapter-number">Chapter 4</span>
+        <span class="chapter-name">Minor Scales</span>
+    </h1>
+    <div class="parts"></div>
+    <script src="chapter.js"></script>
+    <script src="script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const hamburger = document.querySelector('.hamburger');
+            const menu = document.querySelector('.menu');
+            const closeBtn = document.querySelector('.close-btn');
+
+            // Initialize menu off-screen
+            menu.style.left = '-250px';
+
+            hamburger.addEventListener('click', () => {
+                const isExpanded = hamburger.getAttribute('aria-expanded') === 'true';
+                hamburger.setAttribute('aria-expanded', !isExpanded);
+
+                if (!isExpanded) {
+                    // Slide in
+                    menu.classList.add('active');
+                    menu.animate(
+                        [
+                            { left: '-250px' },
+                            { left: '0' }
+                        ],
+                        {
+                            duration: 300,
+                            easing: 'ease-in-out',
+                            fill: 'forwards'
+                        }
+                    );
+                } else {
+                    // Slide out
+                    menu.animate(
+                        [
+                            { left: '0' },
+                            { left: '-250px' }
+                        ],
+                        {
+                            duration: 300,
+                            easing: 'ease-in-out',
+                            fill: 'forwards'
+                        }
+                    ).onfinish = () => {
+                        menu.classList.remove('active');
+                    };
+                }
+            });
+
+            // Close menu when clicking the X
+            closeBtn.addEventListener('click', () => {
+                hamburger.setAttribute('aria-expanded', 'false');
+                menu.animate(
+                    [
+                        { left: '0' },
+                        { left: '-250px' }
+                    ],
+                    {
+                        duration: 300,
+                        easing: 'ease-in-out',
+                        fill: 'forwards'
+                    }
+                ).onfinish = () => {
+                    menu.classList.remove('active');
+                };
+            });
+
+            document.querySelectorAll('.menu-link').forEach(link => {
+                link.addEventListener('click', () => {
+                    hamburger.setAttribute('aria-expanded', 'false');
+                    menu.animate(
+                        [
+                            { left: '0' },
+                            { left: '-250px' }
+                        ],
+                        {
+                            duration: 300,
+                            easing: 'ease-in-out',
+                            fill: 'forwards'
+                        }
+                    ).onfinish = () => {
+                        menu.classList.remove('active');
+                    };
+                });
+            });
+
+            document.addEventListener('click', (e) => {
+                if (!hamburger.contains(e.target) && !menu.contains(e.target)) {
+                    hamburger.setAttribute('aria-expanded', 'false');
+                    menu.animate(
+                        [
+                            { left: '0' },
+                            { left: '-250px' }
+                        ],
+                        {
+                            duration: 300,
+                            easing: 'ease-in-out',
+                            fill: 'forwards'
+                        }
+                    ).onfinish = () => {
+                        menu.classList.remove('active');
+                    };
+                }
+            });
+        });
+    </script>
+</body>
+</html>
