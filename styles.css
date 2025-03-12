@@ -7,7 +7,7 @@ body {
     padding: 0;
     margin: 0;
     overflow-x: hidden;
-    min-height: 100vh;
+    min-height: calc(var(--vh, 1vh) * 100);
     width: 100vw;
     overflow-y: auto;
     background-color: #000000;
@@ -48,7 +48,7 @@ body {
     top: 0;
     left: -250px;
     width: 200px;
-    height: 100vh;
+    height: calc(var(--vh, 1vh) * 100);
     background: rgba(255, 255, 255, 0.9);
     padding: 20px 10px;
     border-radius: 0 5px 5px 0;
@@ -164,7 +164,7 @@ body {
 .layout-container {
     position: relative;
     width: 100%;
-    min-height: calc(var(--vh, 1vh) * 100); /* Use dynamic viewport height */
+    min-height: calc(var(--vh, 1vh) * 100 - 50px); /* Subtract estimated navbar height */
     overflow-y: auto;
     overflow-x: hidden;
     display: flex;
@@ -181,7 +181,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: calc(var(--vh, 1vh) * 100);
+    height: calc(var(--vh, 1vh) * 100 - 50px);
     overflow-x: hidden;
     overflow-y: hidden;
 }
@@ -205,7 +205,7 @@ body {
     flex-direction: column;
     align-items: center;
     position: relative;
-    min-height: calc(var(--vh, 1vh) * 100);
+    min-height: calc(var(--vh, 1vh) * 100 - 50px - 40px); /* Subtract navbar + title height */
     justify-content: center;
 }
 
@@ -271,6 +271,7 @@ body {
 .parts svg {
     display: block;
     margin: 0 auto;
+    max-height: 100%;
     max-width: 100%;
 }
 
@@ -337,16 +338,17 @@ body {
     }
 }
 
-/* Mobile (portrait screens) */
-@media (max-width: 1024px) and (orientation: portrait) {
+/* Mobile (portrait screens, target phones only) */
+@media (max-width: 480px) and (orientation: portrait) {
     .progress-container {
         width: 100%;
         height: auto;
         display: block;
         overflow-x: hidden;
-        overflow-y: visible;
+        overflow-y: auto;
         padding: 0;
         margin: 0;
+        min-height: calc(var(--vh, 1vh) * 100 - 50px);
     }
     .progress-svg {
         width: 200%;
@@ -381,7 +383,7 @@ body {
     }
     .chapter-title {
         display: block;
-        margin: 20px 0 20px 0; /* 20px top and bottom padding */
+        margin: 20px 0 20px 0;
     }
     .parts {
         max-width: 744px;
@@ -390,7 +392,7 @@ body {
         justify-content: center;
         padding-top: 0;
         padding-bottom: 20px;
-        min-height: calc(var(--vh, 1vh) * 100 - 40px); /* Adjust for title */
+        min-height: calc(var(--vh, 1vh) * 100 - 50px - 40px);
         height: auto;
         box-sizing: border-box;
         display: flex;
@@ -438,6 +440,21 @@ body {
         width: 120px;
         min-width: 120px;
         height: auto;
+    }
+    body:after {
+        content: "Please rotate your device to portrait mode for the best experience.";
+        font-family: Cochin, Georgia, Arial, sans-serif;
+        color: #ffffff;
+        display: none;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color: #000000;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        z-index: 1000;
     }
 }
 
@@ -546,6 +563,17 @@ body {
     .star {
         width: clamp(80px, 12vw, 120px);
         height: auto;
+    }
+}
+
+/* Phone landscape discouragement */
+@media (max-width: 480px) and (orientation: landscape) {
+    body {
+        display: none;
+    }
+    body:after {
+        display: flex;
+        content: "Please rotate your device to portrait mode for the best experience.";
     }
 }
 
