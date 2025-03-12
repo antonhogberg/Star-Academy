@@ -205,7 +205,6 @@ body {
     flex-direction: column;
     align-items: center;
     position: relative;
-    min-height: calc(var(--vh, 1vh) * 100 - 50px - 40px); /* Subtract navbar + title height */
     justify-content: center; /* Center vertically */
     flex-grow: 1; /* Ensure even distribution */
 }
@@ -583,6 +582,7 @@ body {
     gap: 7px;
 }
 
+/* Default star size */
 .star {
     cursor: pointer;
     transition: opacity 0.3s ease;
@@ -590,6 +590,31 @@ body {
     margin: 0;
     width: clamp(80px, 12vw, 120px);
     height: auto;
+}
+
+/* iPad Pro 12.9” and larger (star size 20% larger) */
+@media (min-width: 835px) {
+    .parts {
+        max-width: 1024px;
+        min-width: 580px;
+        margin: 0 auto;
+        justify-content: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        flex-grow: 1;
+    }
+    .exercises {
+        gap: 60px;
+        max-width: 580px;
+        justify-content: center;
+        margin: 0 auto;
+    }
+    .star {
+        width: clamp(96px, 12vw, 144px); /* 20% larger: 80 * 1.2 = 96, 120 * 1.2 = 144 */
+        min-width: 96px; /* Ensure minimum */
+        height: auto;
+    }
 }
 
 .star:hover {
