@@ -37,6 +37,12 @@ body {
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     border: 1px solid #ffd700;
     box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    line-height: 1;
 }
 
 .hamburger:hover {
@@ -141,16 +147,15 @@ body {
 }
 
 .chapter-title {
-    display: none; /* Hidden by default (desktop) */
     text-align: center;
-    margin: 0;
-    padding: 0;
-}
-
-.chapter-number, .chapter-name {
-    display: block; /* Stack vertically */
+    margin: 20px 0;
     font-family: Cochin, Georgia, Arial, sans-serif;
     color: #ffffff;
+    display: block; /* Show in both portrait and landscape */
+}
+
+.chapter-title span {
+    display: inline; /* Default inline for portrait */
 }
 
 .chapter-number {
@@ -159,6 +164,16 @@ body {
 
 .chapter-name {
     font-size: 20px; /* Slightly smaller */
+}
+
+/* Landscape title on one line */
+@media (min-width: 745px) and (orientation: landscape) {
+    .chapter-title span {
+        display: inline; /* Keep inline */
+    }
+    .chapter-title span.chapter-number:after {
+        content: " - "; /* Add separator */
+    }
 }
 
 .layout-container {
@@ -205,8 +220,9 @@ body {
     flex-direction: column;
     align-items: center;
     position: relative;
-    justify-content: center; /* Center vertically */
-    flex-grow: 1; /* Ensure even distribution */
+    height: calc(var(--vh, 1vh) * 100 - 100px); /* Adjust for title (50px) and navbar (50px) */
+    justify-content: space-between; /* Center stars between title and bottom */
+    flex-grow: 1;
 }
 
 .exercises {
@@ -218,6 +234,7 @@ body {
     max-width: 550px;
     margin: 0 auto;
     position: relative;
+    align-self: center;
 }
 
 .rank-badge {
@@ -514,6 +531,17 @@ body {
         width: 150px;
         height: auto;
     }
+    .chapter-title {
+        display: block; /* Show in landscape */
+    }
+    .parts {
+        height: calc(var(--vh, 1vh) * 100 - 60px); /* Adjust for navbar */
+        justify-content: space-between; /* Center stars between title and bottom */
+        padding: 20px 0;
+    }
+    .exercises {
+        align-self: center;
+    }
 }
 
 /* iPad-specific scaling (landscape) */
@@ -560,7 +588,8 @@ body {
         max-width: 1024px;
         min-width: 580px;
         margin: 0 auto;
-        justify-content: center;
+        justify-content: space-between; /* Center stars between title and bottom */
+        height: calc(var(--vh, 1vh) * 100 - 100px); /* Adjust for title and navbar */
     }
     .exercises {
         gap: 60px;
@@ -570,6 +599,7 @@ body {
     }
     .star {
         width: clamp(96px, 12vw, 144px); /* 20% larger */
+        min-width: 96px; /* Ensure minimum */
         height: auto;
     }
 }
@@ -590,31 +620,6 @@ body {
     margin: 0;
     width: clamp(80px, 12vw, 120px);
     height: auto;
-}
-
-/* iPad Pro 12.9” and larger (star size 20% larger) */
-@media (min-width: 835px) {
-    .parts {
-        max-width: 1024px;
-        min-width: 580px;
-        margin: 0 auto;
-        justify-content: center;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        flex-grow: 1;
-    }
-    .exercises {
-        gap: 60px;
-        max-width: 580px;
-        justify-content: center;
-        margin: 0 auto;
-    }
-    .star {
-        width: clamp(96px, 12vw, 144px); /* 20% larger: 80 * 1.2 = 96, 120 * 1.2 = 144 */
-        min-width: 96px; /* Ensure minimum */
-        height: auto;
-    }
 }
 
 .star:hover {
@@ -681,11 +686,36 @@ body {
     padding: 20px;
     border-radius: 5px;
     text-align: center;
+    border: 2px solid #ffd700;
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+}
+
+.popup-content h2 {
+    font-family: Cochin, Georgia, Arial, sans-serif;
+    color: #4a4a4a;
+    margin-bottom: 10px;
 }
 
 #nameInput {
     margin: 10px 0;
     padding: 5px;
+    font-family: Cochin, Georgia, Arial, sans-serif;
+}
+
+button {
+    font-family: Cochin, Georgia, Arial, sans-serif;
+    padding: 10px 20px;
+    background: linear-gradient(90deg, #ffd700, #ffaa00);
+    border: 1px solid #ffd700;
+    border-radius: 5px;
+    color: #ffffff;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+button:hover {
+    transform: scale(1.05);
 }
 
 @media (max-width: 744px) and (orientation: portrait) {
