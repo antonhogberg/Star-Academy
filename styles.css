@@ -264,7 +264,7 @@ body {
 @media (min-width: 745px) and (orientation: landscape) {
     .exercises {
         gap: 40px; /* Adjusted gap to fit four stars */
-        max-width: 740px; /* Increased to fit four stars at 168px max */
+        max-width: 760px; /* Increased to fit four stars at 180px max */
         border: 2px solid green; /* Debug: Green border for exercises */
     }
 }
@@ -601,23 +601,23 @@ body {
 }
 
 /* iPad-specific scaling (landscape) */
-@media (min-width: 745px) and (max-width: 820px) { /* iPad Air */
+@media (min-width: 768px) and (max-width: 820px) { /* iPad Mini and Air */
     .parts {
         max-width: 820px;
-        min-width: 570px;
+        min-width: 550px;
         margin: 0 auto;
         justify-content: center;
     }
     .exercises {
         gap: 30px; /* Adjusted gap to fit four stars */
-        max-width: 620px; /* Adjusted to fit four stars at ~148px max */
+        max-width: 620px; /* Adjusted to fit four stars at 140px */
         justify-content: center;
         margin: 0 auto;
     }
     .star {
-        width: clamp(112px, 12vw, 148px); /* Adjusted max for smaller iPads */
-        min-width: 112px;
-        max-width: 148px;
+        width: 140px; /* Fixed size for iPad Mini/Air */
+        min-width: 140px;
+        max-width: 140px;
         height: auto;
         border: 2px solid orange; /* Debug: Orange border for star */
     }
@@ -632,14 +632,14 @@ body {
     }
     .exercises {
         gap: 30px; /* Adjusted gap to fit four stars */
-        max-width: 640px; /* Adjusted to fit four stars at ~150px max */
+        max-width: 670px; /* Adjusted to fit four stars at 160px */
         justify-content: center;
         margin: 0 auto;
     }
     .star {
-        width: clamp(112px, 12vw, 150px); /* Adjusted max for medium iPads */
-        min-width: 112px;
-        max-width: 150px;
+        width: 160px; /* Fixed size for iPad Pro 11” */
+        min-width: 160px;
+        max-width: 160px;
         height: auto;
         border: 2px solid orange; /* Debug: Orange border for star */
     }
@@ -657,14 +657,14 @@ body {
     }
     .exercises {
         gap: 40px; /* Adjusted gap to fit four stars */
-        max-width: 740px; /* Fits four stars at 168px max */
+        max-width: 760px; /* Increased to fit four stars at 180px max */
         justify-content: center;
         margin: 0 auto;
     }
     .star {
-        width: clamp(112px, 12vw, 168px); /* 40% larger: 80 * 1.4 = 112, 120 * 1.4 = 168 */
-        min-width: 112px;
-        max-width: 168px;
+        width: 180px; /* Fixed size for iPad Pro 12.9” */
+        min-width: 180px;
+        max-width: 180px;
         height: auto;
         border: 2px solid orange; /* Debug: Orange border for star */
     }
