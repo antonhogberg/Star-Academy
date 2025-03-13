@@ -32,6 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
             img.src = starImages[level];
             img.alt = `Exercise ${exerciseCode} - ${level === 0 ? 'Outlined Star' : `${level} Golden Stars`}`;
             img.className = 'star';
+            img.style.width = '100%'; // Ensure the image respects the CSS width
             img.dataset.exercise = exerciseKey;
 
             const codeLabel = document.createElement('div');
