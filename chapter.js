@@ -32,8 +32,6 @@ document.addEventListener('DOMContentLoaded', () => {
             img.src = starImages[level];
             img.alt = `Exercise ${exerciseCode} - ${level === 0 ? 'Outlined Star' : `${level} Golden Stars`}`;
             img.className = 'star';
-            // Explicitly set width to match CSS clamp values (will be overridden by media queries)
-            img.style.width = '112px'; // Default size, adjusted by CSS media queries
             img.dataset.exercise = exerciseKey;
 
             const codeLabel = document.createElement('div');
