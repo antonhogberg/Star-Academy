@@ -240,11 +240,19 @@ body {
     justify-content: center;
     width: 100%;
     flex-wrap: wrap; /* Allow wrapping for responsiveness */
-    gap: 50px;
-    max-width: 580px; /* Increased from 550px for better spacing */
+    gap: 10px; /* Reduced gap for mobile to fit two stars */
+    max-width: 300px; /* Mobile max-width */
     margin: 0 auto;
     position: relative;
     align-self: center;
+}
+
+/* Landscape-specific exercises layout */
+@media (min-width: 745px) and (orientation: landscape) {
+    .exercises {
+        gap: 40px; /* Reduced gap to fit four stars per row */
+        max-width: 740px; /* Increased to fit four stars */
+    }
 }
 
 .rank-badge {
@@ -429,7 +437,7 @@ body {
     }
     .exercises {
         flex-wrap: wrap;
-        gap: 20px;
+        gap: 10px; /* Reduced gap to fit two stars per row */
         max-width: 300px;
         justify-content: space-between;
         flex-direction: row;
@@ -462,8 +470,7 @@ body {
     }
     .star-container {
         width: auto; /* Allow stars to take their natural size */
-        min-width: 150px; /* Ensure enough space for larger stars */
-        box-sizing: border-box;
+        box-sizing: border-box; /* Removed min-width to let stars define size */
     }
     .star {
         width: 156px; /* 30% larger than 120px */
@@ -564,8 +571,8 @@ body {
         justify-content: space-between; /* Center stars vertically */
     }
     .exercises {
-        gap: 55px;
-        max-width: 570px;
+        gap: 40px; /* Reduced gap to fit four stars per row */
+        max-width: 740px; /* Increased to fit four stars */
         justify-content: center;
         margin: 0 auto;
     }
@@ -583,8 +590,8 @@ body {
         justify-content: space-between; /* Center stars vertically */
     }
     .exercises {
-        gap: 58px;
-        max-width: 580px;
+        gap: 40px; /* Reduced gap to fit four stars per row */
+        max-width: 740px; /* Increased to fit four stars */
         justify-content: center;
         margin: 0 auto;
     }
@@ -604,8 +611,8 @@ body {
         height: calc(var(--vh, 1vh) * 100 - 100px); /* Adjust for title and navbar */
     }
     .exercises {
-        gap: 60px;
-        max-width: 580px;
+        gap: 40px; /* Reduced gap to fit four stars per row */
+        max-width: 740px; /* Increased to fit four stars */
         justify-content: center;
         margin: 0 auto;
     }
@@ -622,6 +629,7 @@ body {
     flex-direction: column;
     align-items: center;
     gap: 7px; /* Control vertical spacing between stars */
+    box-sizing: border-box; /* Removed min-width to let stars define size */
 }
 
 .star {
@@ -629,7 +637,7 @@ body {
     transition: opacity 0.3s ease;
     padding: 0;
     margin: 0;
-    width: clamp(80px, 12vw, 120px);
+    width: clamp(80px, 12vw, 120px); /* Default size */
     height: auto;
 }
 
