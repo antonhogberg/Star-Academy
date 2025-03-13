@@ -174,6 +174,7 @@ body {
     .chapter-title {
         display: block; /* Show in landscape */
         margin: 10px 0; /* Reduced margin to halve the space */
+        border: 2px solid red; /* Debug: Red border for chapter title */
     }
     .chapter-number, .chapter-name {
         display: block; /* Stack on separate lines, no dash */
@@ -239,6 +240,13 @@ body {
     border: 2px solid blue; /* Debug: Blue border for parts */
 }
 
+/* Landscape-specific parts styling */
+@media (min-width: 745px) and (orientation: landscape) {
+    .parts {
+        border: 2px solid blue; /* Debug: Blue border for parts */
+    }
+}
+
 .exercises {
     display: flex;
     justify-content: center;
@@ -252,11 +260,12 @@ body {
     border: 2px solid green; /* Debug: Green border for exercises */
 }
 
-/* Landscape-specific exercises layout */
+/* Landscape-specific exercises styling */
 @media (min-width: 745px) and (orientation: landscape) {
     .exercises {
-        gap: 40px; /* Reduced gap to fit four stars */
+        gap: 40px; /* Adjusted gap to fit four stars */
         max-width: 740px; /* Increased to fit four stars at 168px max */
+        border: 2px solid green; /* Debug: Green border for exercises */
     }
 }
 
@@ -330,6 +339,13 @@ body {
     margin-bottom: 30px;
     justify-content: center;
     border: 2px solid yellow; /* Debug: Yellow border for part */
+}
+
+/* Landscape-specific part styling */
+@media (min-width: 745px) and (orientation: landscape) {
+    .part {
+        border: 2px solid yellow; /* Debug: Yellow border for part */
+    }
 }
 
 .part:last-child {
@@ -559,15 +575,27 @@ body {
     }
     .chapter-title {
         display: block; /* Show in landscape */
+        border: 2px solid red; /* Debug: Red border for chapter title */
     }
     .parts {
         height: auto; /* Allow natural height */
         min-height: calc(var(--vh, 1vh) * 100 - 60px); /* Ensure minimum height */
         padding: 20px 0; /* Control spacing */
         justify-content: center; /* Center stars vertically */
+        border: 2px solid blue; /* Debug: Blue border for parts */
     }
     .exercises {
         align-self: center;
+        border: 2px solid green; /* Debug: Green border for exercises */
+    }
+    .part {
+        border: 2px solid yellow; /* Debug: Yellow border for part */
+    }
+    .star-container {
+        border: 2px solid purple; /* Debug: Purple border for star-container */
+    }
+    .star {
+        border: 2px solid orange; /* Debug: Orange border for star */
     }
 }
 
