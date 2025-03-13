@@ -168,6 +168,25 @@ body {
     font-size: 20px; /* Slightly smaller */
 }
 
+/* iPad/landscape title on separate lines */
+@media (min-width: 745px) and (orientation: landscape) {
+    .chapter-title {
+        display: block; /* Show in landscape */
+        margin: 10px 0; /* Reduced margin to halve the space */
+    }
+    .chapter-number, .chapter-name {
+        display: block; /* Stack on separate lines, no dash */
+    }
+}
+
+/* Mobile title on separate lines */
+@media (max-width: 768px) and (orientation: portrait) {
+    .chapter-title {
+        display: block;
+        margin: 20px 0 20px 0;
+    }
+}
+
 .layout-container {
     position: relative;
     width: 100%;
@@ -212,8 +231,9 @@ body {
     flex-direction: column;
     align-items: center;
     position: relative;
-    height: calc(var(--vh, 1vh) * 100 - 100px); /* Adjust for title and navbar */
-    justify-content: space-between; /* Center stars between title and bottom */
+    height: auto; /* Allow natural height */
+    min-height: calc(var(--vh, 1vh) * 100 - 100px); /* Ensure minimum height */
+    justify-content: center; /* Center stars vertically */
     flex-grow: 1;
 }
 
@@ -221,12 +241,20 @@ body {
     display: flex;
     justify-content: center;
     width: 100%;
-    flex-wrap: nowrap;
-    gap: 50px;
-    max-width: 550px;
+    flex-wrap: wrap; /* Allow wrapping for mobile */
+    gap: 20px;
+    max-width: 300px; /* Mobile max-width */
     margin: 0 auto;
     position: relative;
     align-self: center;
+}
+
+/* Landscape-specific exercises layout */
+@media (min-width: 745px) and (orientation: landscape) {
+    .exercises {
+        gap: 40px; /* Adjusted gap to fit four stars */
+        max-width: 740px; /* Increased to fit four stars at 168px max */
+    }
 }
 
 .rank-badge {
@@ -411,7 +439,7 @@ body {
     }
     .exercises {
         flex-wrap: wrap;
-        gap: 20px;
+        gap: 10px; /* Reduced gap to fit two stars */
         max-width: 300px;
         justify-content: space-between;
         flex-direction: row;
@@ -443,12 +471,12 @@ body {
         text-align: center;
     }
     .star-container {
-        width: calc(50% - 10px);
+        width: calc(50% - 5px); /* Adjusted to fit two stars with smaller gap */
         box-sizing: border-box;
     }
     .star {
-        width: 120px;
-        min-width: 120px;
+        width: 140px; /* Adjusted to fit two stars per row (140 + 10 + 140 = 290px) */
+        min-width: 140px;
         height: auto;
     }
 }
@@ -527,9 +555,10 @@ body {
         display: block; /* Show in landscape */
     }
     .parts {
-        height: calc(var(--vh, 1vh) * 100 - 60px); /* Adjust for navbar */
-        padding: 20px 0;
-        justify-content: space-between; /* Center stars between title and bottom */
+        height: auto; /* Allow natural height */
+        min-height: calc(var(--vh, 1vh) * 100 - 60px); /* Ensure minimum height */
+        padding: 20px 0; /* Control spacing */
+        justify-content: center; /* Center stars vertically */
     }
     .exercises {
         align-self: center;
@@ -545,13 +574,13 @@ body {
         justify-content: center;
     }
     .exercises {
-        gap: 55px;
-        max-width: 570px;
+        gap: 40px; /* Adjusted gap to fit four stars */
+        max-width: 740px; /* Increased to fit four stars at 168px max */
         justify-content: center;
         margin: 0 auto;
     }
     .star {
-        width: clamp(80px, 12vw, 90px);
+        width: clamp(112px, 12vw, 168px); /* 40% larger than original 80px-120px */
         height: auto;
     }
 }
@@ -564,13 +593,13 @@ body {
         justify-content: center;
     }
     .exercises {
-        gap: 58px;
-        max-width: 580px;
+        gap: 40px; /* Adjusted gap to fit four stars */
+        max-width: 740px; /* Increased to fit four stars */
         justify-content: center;
         margin: 0 auto;
     }
     .star {
-        width: clamp(80px, 12vw, 100px);
+        width: clamp(112px, 12vw, 168px); /* 40% larger */
         height: auto;
     }
 }
@@ -580,18 +609,20 @@ body {
         max-width: 1024px;
         min-width: 580px;
         margin: 0 auto;
-        justify-content: space-between; /* Center stars between title and bottom */
-        height: calc(var(--vh, 1vh) * 100 - 100px); /* Adjust for title and navbar */
+        justify-content: center;
+        height: auto; /* Allow natural height */
+        min-height: calc(var(--vh, 1vh) * 100 - 100px); /* Ensure minimum height */
+        padding: 20px 0; /* Control spacing */
     }
     .exercises {
-        gap: 60px;
-        max-width: 580px;
+        gap: 40px; /* Adjusted gap to fit four stars */
+        max-width: 740px; /* Increased to fit four stars */
         justify-content: center;
         margin: 0 auto;
     }
     .star {
-        width: clamp(96px, 12vw, 144px); /* 20% larger: 80 * 1.2 = 96, 120 * 1.2 = 144 */
-        min-width: 96px; /* Ensure minimum */
+        width: clamp(112px, 12vw, 168px); /* 40% larger: 80 * 1.4 = 112, 120 * 1.4 = 168 */
+        min-width: 112px; /* Ensure minimum */
         height: auto;
     }
 }
