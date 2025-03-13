@@ -15,15 +15,35 @@
         window.addEventListener('orientationchange', setViewportHeight);
         setViewportHeight();
 
-        // Check localStorage for saved name on page load
+        // Handle name and menu functionality
         document.addEventListener('DOMContentLoaded', () => {
             const savedName = localStorage.getItem('userName');
             const userNameDisplay = document.getElementById('userNameDisplay');
+            const namePopup = document.getElementById('namePopup');
+            const nameInput = document.getElementById('nameInput');
+
+            // Set username if saved, otherwise show popup
             if (savedName) {
-                userNameDisplay.textContent = savedName;
+                userNameDisplay.textContent = savedName; // Single update
             } else {
-                document.getElementById('namePopup').style.display = 'flex';
+                namePopup.style.display = 'flex';
             }
+
+            // Save name function
+            function saveName() {
+                const name = nameInput.value.trim();
+                if (name) {
+                    localStorage.setItem('userName', name);
+                    userNameDisplay.textContent = name; // Single update
+                    namePopup.style.display = 'none';
+                }
+            }
+
+            // Attach saveName to button and Enter key
+            document.querySelector('button[onclick="saveName()"]').addEventListener('click', saveName);
+            nameInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') saveName();
+            });
 
             // Menu functionality
             const hamburger = document.querySelector('.hamburger');
@@ -70,16 +90,6 @@
                 }
             });
         });
-
-        // Function to save name
-        function saveName() {
-            const name = document.getElementById('nameInput').value.trim();
-            if (name) {
-                localStorage.setItem('userName', name); // Save to localStorage
-                document.getElementById('userNameDisplay').textContent = name;
-                document.getElementById('namePopup').style.display = 'none';
-            }
-        }
     </script>
 </head>
 <body>

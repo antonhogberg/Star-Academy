@@ -215,13 +215,13 @@ body {
     max-width: 90vw;
     min-width: 550px;
     margin: 0 auto;
-    padding: 0;
+    padding: 20px 0; /* Add padding to control spacing */
     display: flex;
     flex-direction: column;
     align-items: center;
     position: relative;
-    height: calc(var(--vh, 1vh) * 100 - 100px); /* Adjust for title (50px) and navbar (50px) */
-    justify-content: space-between; /* Center stars between title and bottom */
+    height: auto; /* Allow natural height */
+    justify-content: flex-start; /* Align stars from top with padding */
     flex-grow: 1;
 }
 
@@ -536,8 +536,8 @@ body {
     }
     .parts {
         height: calc(var(--vh, 1vh) * 100 - 60px); /* Adjust for navbar */
-        justify-content: space-between; /* Center stars between title and bottom */
-        padding: 20px 0;
+        padding: 20px 0; /* Control spacing */
+        justify-content: flex-start; /* Align from top */
     }
     .exercises {
         align-self: center;
@@ -588,8 +588,9 @@ body {
         max-width: 1024px;
         min-width: 580px;
         margin: 0 auto;
-        justify-content: space-between; /* Center stars between title and bottom */
-        height: calc(var(--vh, 1vh) * 100 - 100px); /* Adjust for title and navbar */
+        padding: 20px 0; /* Control spacing */
+        justify-content: flex-start; /* Align from top */
+        height: auto; /* Allow natural height */
     }
     .exercises {
         gap: 60px;
@@ -609,10 +610,9 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 7px;
+    gap: 7px; /* Control vertical spacing between stars */
 }
 
-/* Default star size */
 .star {
     cursor: pointer;
     transition: opacity 0.3s ease;
