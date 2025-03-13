@@ -129,7 +129,7 @@ body {
     cursor: pointer;
     opacity: 0;
     transition: opacity 0.3s ease-in-out;
-    background: rgba(255, 255, 255, 0.9);
+    background: rgba(255, 255, 215, 0.9);
     padding: 10px;
     border-radius: 5px;
     border: 1px solid #ffd700;
@@ -228,13 +228,13 @@ body {
     max-width: 90vw;
     min-width: 550px;
     margin: 0 auto;
-    padding: 20px 0;
+    padding: 10px 0; /* Reduced padding to fit within viewport */
     display: flex;
     flex-direction: column;
     align-items: center;
     position: relative;
     height: auto; /* Allow natural height */
-    min-height: calc(var(--vh, 1vh) * 100 - 100px); /* Ensure minimum height */
+    min-height: calc(var(--vh, 1vh) * 100 - 120px); /* Adjusted for chapter-title (60px estimated) and navbar (60px) */
     justify-content: center; /* Center stars vertically */
     flex-grow: 1;
     border: 2px solid blue; /* Debug: Blue border for parts */
@@ -336,7 +336,7 @@ body {
     width: 100%;
     padding: 0 30px;
     box-sizing: border-box;
-    margin-bottom: 30px;
+    margin-bottom: 15px; /* Reduced to tighten vertical spacing */
     justify-content: center;
     border: 2px solid yellow; /* Debug: Yellow border for part */
 }
@@ -465,7 +465,7 @@ body {
         flex-direction: row;
     }
     .part {
-        margin-bottom: 60px;
+        margin-bottom: 15px;
         padding: 0 15px;
     }
     .text-box {
@@ -498,8 +498,8 @@ body {
     .star {
         width: 140px;
         min-width: 140px;
+        max-width: 140px;
         height: auto;
-        max-width: 100%; /* Ensure scaling */
         border: 2px solid orange; /* Debug: Orange border for star */
     }
 }
@@ -580,8 +580,8 @@ body {
     }
     .parts {
         height: auto; /* Allow natural height */
-        min-height: calc(var(--vh, 1vh) * 100 - 60px); /* Ensure minimum height */
-        padding: 20px 0; /* Control spacing */
+        min-height: calc(var(--vh, 1vh) * 100 - 120px); /* Adjusted for chapter-title and navbar */
+        padding: 10px 0; /* Reduced padding to fit within viewport */
         justify-content: center; /* Center stars vertically */
         border: 2px solid blue; /* Debug: Blue border for parts */
     }
@@ -597,10 +597,6 @@ body {
     }
     .star {
         border: 2px solid orange; /* Debug: Orange border for star */
-        width: 168px; /* Fixed max width for 40% increase */
-        min-width: 112px; /* Minimum width */
-        max-width: 168px; /* Cap the size */
-        height: auto;
     }
 }
 
@@ -613,15 +609,15 @@ body {
         justify-content: center;
     }
     .exercises {
-        gap: 40px; /* Adjusted gap to fit four stars */
-        max-width: 740px; /* Increased to fit four stars at 168px max */
+        gap: 30px; /* Adjusted gap to fit four stars */
+        max-width: 620px; /* Adjusted to fit four stars at ~148px max */
         justify-content: center;
         margin: 0 auto;
     }
     .star {
-        width: 168px; /* Fixed max width for 40% increase */
-        min-width: 112px; /* Minimum width */
-        max-width: 168px; /* Cap the size */
+        width: clamp(112px, 12vw, 148px); /* Adjusted max for smaller iPads */
+        min-width: 112px;
+        max-width: 148px;
         height: auto;
         border: 2px solid orange; /* Debug: Orange border for star */
     }
@@ -635,15 +631,15 @@ body {
         justify-content: center;
     }
     .exercises {
-        gap: 40px; /* Adjusted gap to fit four stars */
-        max-width: 740px; /* Increased to fit four stars */
+        gap: 30px; /* Adjusted gap to fit four stars */
+        max-width: 640px; /* Adjusted to fit four stars at ~150px max */
         justify-content: center;
         margin: 0 auto;
     }
     .star {
-        width: 168px; /* Fixed max width for 40% increase */
-        min-width: 112px; /* Minimum width */
-        max-width: 168px; /* Cap the size */
+        width: clamp(112px, 12vw, 150px); /* Adjusted max for medium iPads */
+        min-width: 112px;
+        max-width: 150px;
         height: auto;
         border: 2px solid orange; /* Debug: Orange border for star */
     }
@@ -656,19 +652,19 @@ body {
         margin: 0 auto;
         justify-content: center;
         height: auto; /* Allow natural height */
-        min-height: calc(var(--vh, 1vh) * 100 - 100px); /* Ensure minimum height */
-        padding: 20px 0; /* Control spacing */
+        min-height: calc(var(--vh, 1vh) * 100 - 120px); /* Adjusted for chapter-title and navbar */
+        padding: 10px 0; /* Reduced padding to fit within viewport */
     }
     .exercises {
         gap: 40px; /* Adjusted gap to fit four stars */
-        max-width: 740px; /* Increased to fit four stars */
+        max-width: 740px; /* Fits four stars at 168px max */
         justify-content: center;
         margin: 0 auto;
     }
     .star {
-        width: 168px; /* Fixed max width for 40% increase */
-        min-width: 112px; /* Minimum width */
-        max-width: 168px; /* Cap the size */
+        width: clamp(112px, 12vw, 168px); /* 40% larger: 80 * 1.4 = 112, 120 * 1.4 = 168 */
+        min-width: 112px;
+        max-width: 168px;
         height: auto;
         border: 2px solid orange; /* Debug: Orange border for star */
     }
