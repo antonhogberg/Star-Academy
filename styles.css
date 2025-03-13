@@ -499,6 +499,7 @@ body {
         width: 140px;
         min-width: 140px;
         height: auto;
+        max-width: 100%; /* Ensure scaling */
         border: 2px solid orange; /* Debug: Orange border for star */
     }
 }
@@ -596,6 +597,10 @@ body {
     }
     .star {
         border: 2px solid orange; /* Debug: Orange border for star */
+        width: 168px; /* Fixed max width for 40% increase */
+        min-width: 112px; /* Minimum width */
+        max-width: 168px; /* Cap the size */
+        height: auto;
     }
 }
 
@@ -614,7 +619,9 @@ body {
         margin: 0 auto;
     }
     .star {
-        width: clamp(112px, 12vw, 168px); /* 40% larger than original 80px-120px */
+        width: 168px; /* Fixed max width for 40% increase */
+        min-width: 112px; /* Minimum width */
+        max-width: 168px; /* Cap the size */
         height: auto;
         border: 2px solid orange; /* Debug: Orange border for star */
     }
@@ -634,7 +641,9 @@ body {
         margin: 0 auto;
     }
     .star {
-        width: clamp(112px, 12vw, 168px); /* 40% larger */
+        width: 168px; /* Fixed max width for 40% increase */
+        min-width: 112px; /* Minimum width */
+        max-width: 168px; /* Cap the size */
         height: auto;
         border: 2px solid orange; /* Debug: Orange border for star */
     }
@@ -657,8 +666,9 @@ body {
         margin: 0 auto;
     }
     .star {
-        width: clamp(112px, 12vw, 168px); /* 40% larger: 80 * 1.4 = 112, 120 * 1.4 = 168 */
-        min-width: 112px; /* Ensure minimum */
+        width: 168px; /* Fixed max width for 40% increase */
+        min-width: 112px; /* Minimum width */
+        max-width: 168px; /* Cap the size */
         height: auto;
         border: 2px solid orange; /* Debug: Orange border for star */
     }
@@ -681,6 +691,7 @@ body {
     margin: 0;
     width: clamp(80px, 12vw, 120px);
     height: auto;
+    max-width: 100%; /* Ensure scaling */
     border: 2px solid orange; /* Debug: Orange border for star */
 }
 
