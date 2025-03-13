@@ -234,7 +234,6 @@ body {
     flex-grow: 1;
 }
 
-
 .exercises {
     display: flex;
     justify-content: center;
@@ -325,8 +324,6 @@ body {
     margin-bottom: 10px; /* Reduced to tighten vertical spacing */
     justify-content: center;
 }
-
-
 
 .part:last-child {
     margin-bottom: 0;
@@ -562,134 +559,80 @@ body {
         padding: 10px 0; /* Reduced padding to fit within viewport */
         justify-content: center; /* Center stars vertically */
     }
-    .exercises {
-        align-self: center;
-    }
-   
 }
 
 /* iPad-specific scaling (landscape) */
-/* iPad Mini 1st-5th Gen (1024x768 CSS) */
-@media (min-width: 1024px) and (max-width: 1132px) {
+/* iPad Mini and Air */
+@media (min-width: 768px) and (max-width: 820px) {
     .parts {
-        max-width: 1024px;
+        max-width: 820px;
         min-width: 550px;
         margin: 0 auto;
         justify-content: center;
-        min-height: calc(var(--vh, 1vh) * 100 - 140px);
+        min-height: calc(var(--vh, 1vh) * 100 - 140px); /* Adjusted to fit all rows */
         padding-bottom: 30px; /* Adjust for balanced spacing */
     }
     .exercises {
-        gap: 30px;
-        max-width: 820px; /* 80% of 1024px */
+        gap: 30px; /* Adjusted gap to fit four stars */
+        max-width: 610px; /* 80% of 768px */
         justify-content: center;
         margin: 0 auto;
     }
     .star {
-        width: 100px; /* Adjusted size for Mini 1st-5th Gen */
+        width: 100px; /* Reduced size for iPad Mini/Air */
         min-width: 100px;
         max-width: 100px;
         height: auto;
-        object-fit: contain;
+        object-fit: contain; /* Ensure proper scaling */
     }
 }
 
-/* iPad Mini 6th Gen (1133x744 CSS) */
-@media (min-width: 1133px) and (max-width: 1179px) {
+/* iPad Pro 11” */
+@media (min-width: 821px) and (max-width: 834px) {
     .parts {
-        max-width: 1133px;
-        min-width: 550px;
-        margin: 0 auto;
-        justify-content: center;
-        min-height: calc(var(--vh, 1vh) * 100 - 140px);
-        padding-bottom: 30px; /* Adjust for balanced spacing */
-    }
-    .exercises {
-        gap: 30px;
-        max-width: 906px; /* 80% of 1133px */
-        justify-content: center;
-        margin: 0 auto;
-    }
-    .star {
-        width: 110px; /* Adjusted size for Mini 6th Gen */
-        min-width: 110px;
-        max-width: 110px;
-        height: auto;
-        object-fit: contain;
-    }
-}
-
-/* iPad Air 3rd-5th Gen (1180x820 CSS) */
-@media (min-width: 1180px) and (max-width: 1193px) {
-    .parts {
-        max-width: 1180px;
-        min-width: 550px;
-        margin: 0 auto;
-        justify-content: center;
-        min-height: calc(var(--vh, 1vh) * 100 - 140px);
-        padding-bottom: 30px; /* Adjust for balanced spacing */
-    }
-    .exercises {
-        gap: 30px;
-        max-width: 944px; /* 80% of 1180px */
-        justify-content: center;
-        margin: 0 auto;
-    }
-    .star {
-        width: 115px; /* Adjusted size for Air 3rd-5th Gen */
-        min-width: 115px;
-        max-width: 115px;
-        height: auto;
-        object-fit: contain;
-    }
-}
-
-/* iPad Pro 11” (1194x834 CSS) */
-@media (min-width: 1194px) and (max-width: 1365px) {
-    .parts {
-        max-width: 1194px;
+        max-width: 834px;
         min-width: 580px;
         margin: 0 auto;
         justify-content: center;
-        min-height: calc(var(--vh, 1vh) * 100 - 140px);
     }
     .exercises {
-        gap: 30px;
-        max-width: 955px; /* 80% of 1194px */
+        gap: 30px; /* Adjusted gap to fit four stars */
+        max-width: 670px; /* 80% of 834px */
         justify-content: center;
         margin: 0 auto;
     }
     .star {
-        width: 122px; /* Matches your current setting */
+        width: 122px; /* Fixed size for iPad Pro 11” */
         min-width: 122px;
         max-width: 122px;
         height: auto;
-        object-fit: contain;
+        object-fit: contain; /* Ensure proper scaling */
     }
 }
 
-/* iPad Pro 12.9” and larger (1366x1024 CSS) */
-@media (min-width: 1366px) {
+/* iPad Pro 12.9” and larger */
+@media (min-width: 835px) {
     .parts {
-        max-width: 1366px;
+        max-width: 1024px;
         min-width: 580px;
         margin: 0 auto;
         justify-content: center;
-        min-height: calc(var(--vh, 1vh) * 100 - 120px);
-        padding: 10px 0;
+        height: auto; /* Allow natural height */
+        min-height: calc(var(--vh, 1vh) * 100 - 120px); /* Adjusted for chapter-title and navbar */
+        padding: 10px 0; /* Reduced padding to fit within viewport */
     }
     .exercises {
-        gap: 30px;
-        max-width: 1093px; /* 80% of 1366px */
+        gap: 30px; /* Adjusted gap to fit four stars */
+        max-width: 1100px; /* 80% of 1366px */
         justify-content: center;
         margin: 0 auto;
     }
     .star {
-        width: 135px; /* Matches your current setting */
+        width: 135px; /* Fixed size for iPad Pro 12.9” */
         min-width: 135px;
         max-width: 135px;
         height: auto;
-        object-fit: contain;
+        object-fit: contain; /* Ensure proper scaling */
     }
 }
 
