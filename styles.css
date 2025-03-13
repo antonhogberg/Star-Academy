@@ -263,8 +263,8 @@ body {
 /* Landscape-specific exercises styling */
 @media (min-width: 745px) and (orientation: landscape) {
     .exercises {
-        gap: 40px; /* Adjusted gap to fit four stars */
-        max-width: 760px; /* Increased to fit four stars at 173px max */
+        gap: 30px; /* Adjusted gap to fit four stars */
+        max-width: 660px; /* Adjusted to fit four stars at 150px max (150 * 4 + 30 * 3 = 600 + 90 = 690px) */
         border: 2px solid green; /* Debug: Green border for exercises */
     }
 }
@@ -334,7 +334,7 @@ body {
     display: flex;
     align-items: flex-start;
     width: 100%;
-    padding: 0 30px;
+    padding: 0 15px; /* Reduced padding to fit stars */
     box-sizing: border-box;
     margin-bottom: 15px; /* Reduced to tighten vertical spacing */
     justify-content: center;
@@ -500,6 +500,7 @@ body {
         min-width: 140px;
         max-width: 140px;
         height: auto;
+        object-fit: contain; /* Ensure proper scaling */
         border: 2px solid orange; /* Debug: Orange border for star */
     }
 }
@@ -610,15 +611,16 @@ body {
     }
     .exercises {
         gap: 30px; /* Adjusted gap to fit four stars */
-        max-width: 580px; /* Adjusted to fit four stars at 135px */
+        max-width: 530px; /* Adjusted to fit four stars at 120px (120 * 4 + 30 * 3 = 480 + 90 = 570px) */
         justify-content: center;
         margin: 0 auto;
     }
     .star {
-        width: 135px; /* Fixed size for iPad Mini/Air */
-        min-width: 135px;
-        max-width: 135px;
+        width: 120px; /* Fixed size for iPad Mini/Air */
+        min-width: 120px;
+        max-width: 120px;
         height: auto;
+        object-fit: contain; /* Ensure proper scaling */
         border: 2px solid orange; /* Debug: Orange border for star */
     }
 }
@@ -632,15 +634,16 @@ body {
     }
     .exercises {
         gap: 30px; /* Adjusted gap to fit four stars */
-        max-width: 650px; /* Adjusted to fit four stars at 155px */
+        max-width: 590px; /* Adjusted to fit four stars at 135px (135 * 4 + 30 * 3 = 540 + 90 = 630px) */
         justify-content: center;
         margin: 0 auto;
     }
     .star {
-        width: 155px; /* Fixed size for iPad Pro 11” */
-        min-width: 155px;
-        max-width: 155px;
+        width: 135px; /* Fixed size for iPad Pro 11” */
+        min-width: 135px;
+        max-width: 135px;
         height: auto;
+        object-fit: contain; /* Ensure proper scaling */
         border: 2px solid orange; /* Debug: Orange border for star */
     }
 }
@@ -656,16 +659,17 @@ body {
         padding: 10px 0; /* Reduced padding to fit within viewport */
     }
     .exercises {
-        gap: 40px; /* Adjusted gap to fit four stars */
-        max-width: 760px; /* Increased to fit four stars at 173px max */
+        gap: 30px; /* Adjusted gap to fit four stars */
+        max-width: 660px; /* Adjusted to fit four stars at 150px (150 * 4 + 30 * 3 = 600 + 90 = 690px) */
         justify-content: center;
         margin: 0 auto;
     }
     .star {
-        width: 173px; /* Fixed size for iPad Pro 12.9” */
-        min-width: 173px;
-        max-width: 173px;
+        width: 150px; /* Fixed size for iPad Pro 12.9” */
+        min-width: 150px;
+        max-width: 150px;
         height: auto;
+        object-fit: contain; /* Ensure proper scaling */
         border: 2px solid orange; /* Debug: Orange border for star */
     }
 }
@@ -688,6 +692,7 @@ body {
     width: clamp(80px, 12vw, 120px);
     height: auto;
     max-width: 100%; /* Ensure scaling */
+    object-fit: contain; /* Ensure proper scaling */
     border: 2px solid orange; /* Debug: Orange border for star */
 }
 
@@ -760,7 +765,7 @@ body {
 }
 
 .popup-content h2 {
-    font-family: Cochin, Georgia, Arial, sans-serif;
+    font-family: Cochin, Georgia, Arial, sans-serif; /* Match menu font */
     color: #4a4a4a;
     margin-bottom: 10px;
 }
@@ -773,7 +778,7 @@ body {
 
 button {
     font-family: Cochin, Georgia, Arial, sans-serif;
-    padding: 10px 20px;
+    padding: 8px 16px; /* Reduced padding for smaller button */
     background: linear-gradient(90deg, #ffd700, #ffaa00);
     border: 1px solid #ffd700;
     border-radius: 5px;
