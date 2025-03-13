@@ -264,7 +264,7 @@ body {
 @media (min-width: 745px) and (orientation: landscape) {
     .exercises {
         gap: 40px; /* Adjusted gap to fit four stars */
-        max-width: 760px; /* Increased to fit four stars at 180px max */
+        max-width: 760px; /* Increased to fit four stars at 173px max */
         border: 2px solid green; /* Debug: Green border for exercises */
     }
 }
@@ -610,14 +610,14 @@ body {
     }
     .exercises {
         gap: 30px; /* Adjusted gap to fit four stars */
-        max-width: 620px; /* Adjusted to fit four stars at 140px */
+        max-width: 580px; /* Adjusted to fit four stars at 135px */
         justify-content: center;
         margin: 0 auto;
     }
     .star {
-        width: 140px; /* Fixed size for iPad Mini/Air */
-        min-width: 140px;
-        max-width: 140px;
+        width: 135px; /* Fixed size for iPad Mini/Air */
+        min-width: 135px;
+        max-width: 135px;
         height: auto;
         border: 2px solid orange; /* Debug: Orange border for star */
     }
@@ -632,14 +632,14 @@ body {
     }
     .exercises {
         gap: 30px; /* Adjusted gap to fit four stars */
-        max-width: 670px; /* Adjusted to fit four stars at 160px */
+        max-width: 650px; /* Adjusted to fit four stars at 155px */
         justify-content: center;
         margin: 0 auto;
     }
     .star {
-        width: 160px; /* Fixed size for iPad Pro 11” */
-        min-width: 160px;
-        max-width: 160px;
+        width: 155px; /* Fixed size for iPad Pro 11” */
+        min-width: 155px;
+        max-width: 155px;
         height: auto;
         border: 2px solid orange; /* Debug: Orange border for star */
     }
@@ -657,14 +657,14 @@ body {
     }
     .exercises {
         gap: 40px; /* Adjusted gap to fit four stars */
-        max-width: 760px; /* Increased to fit four stars at 180px max */
+        max-width: 760px; /* Increased to fit four stars at 173px max */
         justify-content: center;
         margin: 0 auto;
     }
     .star {
-        width: 180px; /* Fixed size for iPad Pro 12.9” */
-        min-width: 180px;
-        max-width: 180px;
+        width: 173px; /* Fixed size for iPad Pro 12.9” */
+        min-width: 173px;
+        max-width: 173px;
         height: auto;
         border: 2px solid orange; /* Debug: Orange border for star */
     }
