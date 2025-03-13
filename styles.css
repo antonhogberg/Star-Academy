@@ -264,7 +264,7 @@ body {
 @media (min-width: 745px) and (orientation: landscape) {
     .exercises {
         gap: 30px; /* Adjusted gap to fit four stars */
-        max-width: 660px; /* Adjusted to fit four stars at 150px max (150 * 4 + 30 * 3 = 600 + 90 = 690px) */
+        max-width: 80vw; /* Use 80% of viewport width */
         border: 2px solid green; /* Debug: Green border for exercises */
     }
 }
@@ -336,7 +336,7 @@ body {
     width: 100%;
     padding: 0 15px; /* Reduced padding to fit stars */
     box-sizing: border-box;
-    margin-bottom: 15px; /* Reduced to tighten vertical spacing */
+    margin-bottom: 10px; /* Reduced to tighten vertical spacing */
     justify-content: center;
     border: 2px solid yellow; /* Debug: Yellow border for part */
 }
@@ -465,7 +465,7 @@ body {
         flex-direction: row;
     }
     .part {
-        margin-bottom: 15px;
+        margin-bottom: 10px;
         padding: 0 15px;
     }
     .text-box {
@@ -608,17 +608,18 @@ body {
         min-width: 550px;
         margin: 0 auto;
         justify-content: center;
+        min-height: calc(var(--vh, 1vh) * 100 - 140px); /* Adjusted to fit all rows */
     }
     .exercises {
         gap: 30px; /* Adjusted gap to fit four stars */
-        max-width: 530px; /* Adjusted to fit four stars at 120px (120 * 4 + 30 * 3 = 480 + 90 = 570px) */
+        max-width: 610px; /* 80% of 768px */
         justify-content: center;
         margin: 0 auto;
     }
     .star {
-        width: 120px; /* Fixed size for iPad Mini/Air */
-        min-width: 120px;
-        max-width: 120px;
+        width: 110px; /* Fixed size for iPad Mini/Air */
+        min-width: 110px;
+        max-width: 110px;
         height: auto;
         object-fit: contain; /* Ensure proper scaling */
         border: 2px solid orange; /* Debug: Orange border for star */
@@ -634,14 +635,14 @@ body {
     }
     .exercises {
         gap: 30px; /* Adjusted gap to fit four stars */
-        max-width: 590px; /* Adjusted to fit four stars at 135px (135 * 4 + 30 * 3 = 540 + 90 = 630px) */
+        max-width: 670px; /* 80% of 834px */
         justify-content: center;
         margin: 0 auto;
     }
     .star {
-        width: 135px; /* Fixed size for iPad Pro 11” */
-        min-width: 135px;
-        max-width: 135px;
+        width: 122px; /* Fixed size for iPad Pro 11” */
+        min-width: 122px;
+        max-width: 122px;
         height: auto;
         object-fit: contain; /* Ensure proper scaling */
         border: 2px solid orange; /* Debug: Orange border for star */
@@ -660,14 +661,14 @@ body {
     }
     .exercises {
         gap: 30px; /* Adjusted gap to fit four stars */
-        max-width: 660px; /* Adjusted to fit four stars at 150px (150 * 4 + 30 * 3 = 600 + 90 = 690px) */
+        max-width: 1100px; /* 80% of 1366px */
         justify-content: center;
         margin: 0 auto;
     }
     .star {
-        width: 150px; /* Fixed size for iPad Pro 12.9” */
-        min-width: 150px;
-        max-width: 150px;
+        width: 135px; /* Fixed size for iPad Pro 12.9” */
+        min-width: 135px;
+        max-width: 135px;
         height: auto;
         object-fit: contain; /* Ensure proper scaling */
         border: 2px solid orange; /* Debug: Orange border for star */
