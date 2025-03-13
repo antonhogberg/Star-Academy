@@ -247,7 +247,7 @@ body {
         max-width: 80vw; /* Use 80% of viewport width */
     }
     .parts {
-        min-height: calc(var(--vh, 1vh) * 100 - 165px); /* Increased subtracted value from 130px to 165px (added 35px) to further reduce height */
+        min-height: calc(var(--vh, 1vh) * 100 - 190px); /* Increased subtracted value from 165px to 190px (added 25px) to further reduce height */
     }
 }
 
@@ -566,7 +566,7 @@ body {
     }
     .parts {
         height: auto; /* Allow natural height */
-        min-height: calc(var(--vh, 1vh) * 100 - 165px); /* Adjusted for chapter-title and navbar, increased subtracted value to reduce height */
+        min-height: calc(var(--vh, 1vh) * 100 - 190px); /* Adjusted for chapter-title and navbar, increased subtracted value to reduce height */
         padding: 10px 0; /* Reduced padding to fit within viewport */
         justify-content: center; /* Center stars vertically */
     }
@@ -629,7 +629,7 @@ body {
         margin: 0 auto;
         justify-content: center;
         height: auto; /* Allow natural height */
-        min-height: calc(var(--vh, 1vh) * 100 - 165px); /* Adjusted for chapter-title and navbar, increased subtracted value to reduce height */
+        min-height: calc(var(--vh, 1vh) * 100 - 190px); /* Adjusted for chapter-title and navbar, increased subtracted value to reduce height */
         padding: 10px 0; /* Reduced padding to fit within viewport */
     }
     .exercises {
@@ -747,9 +747,17 @@ body {
     font-family: Cochin, Georgia, Arial, sans-serif;
 }
 
+/* iPad-specific scaling for popup */
+@media (min-width: 768px) {
+    .popup-content {
+        transform: scale(1.2); /* Increase size by 20% on iPad */
+        transform-origin: center;
+    }
+}
+
 button {
     font-family: Cochin, Georgia, Arial, sans-serif;
-    padding: 8px 16px; /* Reduced padding for smaller button */
+    padding: 6px 12px; /* Reduced padding for smaller button */
     background: linear-gradient(90deg, #ffd700, #ffaa00);
     border: 1px solid #ffd700;
     border-radius: 5px;
