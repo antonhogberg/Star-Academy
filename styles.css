@@ -321,7 +321,7 @@ body {
     width: 100%;
     padding: 0 15px; /* Reduced padding to fit stars */
     box-sizing: border-box;
-    margin-bottom: 10px; /* Reduced to tighten vertical spacing */
+    margin-bottom: 20px; /* Increased from 10px to add more space between rows */
     justify-content: center;
 }
 
@@ -442,8 +442,10 @@ body {
         flex-direction: row;
     }
     .part {
-        margin-bottom: 10px;
-        padding: 0 15px;
+        margin-bottom: 10px; /* Default margin-bottom for mobile */
+    }
+    .part:nth-child(-n+2) {
+        margin-bottom: 30px; /* Extra space after Part 1 and Part 2 */
     }
     .text-box {
         position: static;
@@ -623,14 +625,14 @@ body {
     }
     .exercises {
         gap: 30px; /* Adjusted gap to fit four stars */
-        max-width: 1100px; /* 80% of 1366px */
+        max-width: 1200px; /* Increased from 1100px to accommodate larger stars */
         justify-content: center;
         margin: 0 auto;
     }
     .star {
-        width: 135px; /* Fixed size for iPad Pro 12.9” */
-        min-width: 135px;
-        max-width: 135px;
+        width: 150px; /* Increased from 135px for iPad Pro 12.9” */
+        min-width: 150px;
+        max-width: 150px;
         height: auto;
         object-fit: contain; /* Ensure proper scaling */
     }
