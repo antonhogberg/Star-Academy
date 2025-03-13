@@ -247,7 +247,7 @@ body {
         max-width: 80vw; /* Use 80% of viewport width */
     }
     .parts {
-        min-height: calc(var(--vh, 1vh) * 100 - 130px); /* Increased subtracted value from 120px to 130px to reduce height */
+        min-height: calc(var(--vh, 1vh) * 100 - 165px); /* Increased subtracted value from 130px to 165px (added 35px) to further reduce height */
     }
 }
 
@@ -566,7 +566,7 @@ body {
     }
     .parts {
         height: auto; /* Allow natural height */
-        min-height: calc(var(--vh, 1vh) * 100 - 130px); /* Adjusted for chapter-title and navbar, increased subtracted value to reduce height */
+        min-height: calc(var(--vh, 1vh) * 100 - 165px); /* Adjusted for chapter-title and navbar, increased subtracted value to reduce height */
         padding: 10px 0; /* Reduced padding to fit within viewport */
         justify-content: center; /* Center stars vertically */
     }
@@ -629,7 +629,7 @@ body {
         margin: 0 auto;
         justify-content: center;
         height: auto; /* Allow natural height */
-        min-height: calc(var(--vh, 1vh) * 100 - 130px); /* Adjusted for chapter-title and navbar, increased subtracted value to reduce height */
+        min-height: calc(var(--vh, 1vh) * 100 - 165px); /* Adjusted for chapter-title and navbar, increased subtracted value to reduce height */
         padding: 10px 0; /* Reduced padding to fit within viewport */
     }
     .exercises {
