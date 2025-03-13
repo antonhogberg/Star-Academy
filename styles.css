@@ -172,7 +172,7 @@ body {
 @media (min-width: 745px) and (orientation: landscape) {
     .chapter-title {
         display: block; /* Show in landscape */
-        margin: 20px 0 10px 0; /* Increased top margin to 20px (double of 10px), reduced bottom to 10px */
+        margin: 20px 0 10px 0; /* Increased top margin to 20px (double of 10px), kept bottom at 10px */
     }
     .chapter-number {
         font-size: 32px; /* Increased from 24px for landscape */
@@ -186,7 +186,7 @@ body {
 @media (max-width: 768px) and (orientation: portrait) {
     .chapter-title {
         display: block;
-        margin: 40px 0 20px 0; /* Increased top margin to 40px (double of 20px), kept bottom at 20px */
+        margin: 20px 0 40px 0; /* Reverted top margin to 20px, increased bottom margin to 40px (double of 20px) */
     }
 }
 
@@ -240,23 +240,14 @@ body {
     flex-grow: 1;
 }
 
-.exercises {
-    display: flex;
-    justify-content: center;
-    width: 100%;
-    flex-wrap: wrap; /* Allow wrapping for mobile */
-    gap: 20px;
-    max-width: 300px; /* Mobile max-width */
-    margin: 0 auto;
-    position: relative;
-    align-self: center;
-}
-
 /* Landscape-specific exercises styling */
 @media (min-width: 745px) and (orientation: landscape) {
     .exercises {
         gap: 30px; /* Adjusted gap to fit four stars */
         max-width: 80vw; /* Use 80% of viewport width */
+    }
+    .parts {
+        min-height: calc(var(--vh, 1vh) * 100 - 130px); /* Increased subtracted value from 120px to 130px to reduce height */
     }
 }
 
@@ -313,6 +304,18 @@ body {
     margin: 0 auto;
     max-height: 100%;
     max-width: 100%;
+}
+
+.exercises {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    flex-wrap: wrap; /* Allow wrapping for mobile */
+    gap: 20px;
+    max-width: 300px; /* Mobile max-width */
+    margin: 0 auto;
+    position: relative;
+    align-self: center;
 }
 
 .exercises svg {
@@ -423,7 +426,7 @@ body {
     }
     .chapter-title {
         display: block;
-        margin: 40px 0 20px 0; /* Increased top margin to 40px (double of 20px), kept bottom at 20px */
+        margin: 20px 0 40px 0; /* Reverted top margin to 20px, increased bottom margin to 40px (double of 20px) */
     }
     .parts {
         max-width: 744px;
@@ -563,7 +566,7 @@ body {
     }
     .parts {
         height: auto; /* Allow natural height */
-        min-height: calc(var(--vh, 1vh) * 100 - 120px); /* Adjusted for chapter-title (60px estimated) and navbar (60px) */
+        min-height: calc(var(--vh, 1vh) * 100 - 130px); /* Adjusted for chapter-title and navbar, increased subtracted value to reduce height */
         padding: 10px 0; /* Reduced padding to fit within viewport */
         justify-content: center; /* Center stars vertically */
     }
@@ -626,7 +629,7 @@ body {
         margin: 0 auto;
         justify-content: center;
         height: auto; /* Allow natural height */
-        min-height: calc(var(--vh, 1vh) * 100 - 120px); /* Adjusted for chapter-title and navbar */
+        min-height: calc(var(--vh, 1vh) * 100 - 130px); /* Adjusted for chapter-title and navbar, increased subtracted value to reduce height */
         padding: 10px 0; /* Reduced padding to fit within viewport */
     }
     .exercises {
