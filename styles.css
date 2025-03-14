@@ -170,7 +170,7 @@ body {
 }
 
 /* iPad/landscape title on separate lines */
-@media (min-width: 768px) and (max-width: 1366px) and (orientation: landscape) {
+@media (min-width: 745px) and (orientation: landscape) {
     .chapter-title {
         display: block; /* Show in landscape */
         margin: 20px 0 10px 0; /* Increased top margin to 20px (double of 10px), kept bottom at 10px */
@@ -182,15 +182,15 @@ body {
         font-size: 28px; /* Increased from 20px for landscape */
     }
     body {
-        overflow-y: hidden; /* Disable scrolling in landscape for iPad */
+        overflow-y: hidden; /* Disable scrolling in landscape for iPad and larger */
     }
     .layout-container {
-        overflow-y: hidden; /* Disable scrolling in landscape for iPad */
+        overflow-y: hidden; /* Disable scrolling in landscape for iPad and larger */
     }
 }
 
 /* Mobile title on separate lines */
-@media (max-width: 767px) and (orientation: portrait) {
+@media (max-width: 768px) and (orientation: portrait) {
     .chapter-title {
         display: block;
         margin: 20px 0 40px 0; /* Reverted top margin to 20px, increased bottom margin to 40px (double of 20px) */
@@ -198,16 +198,16 @@ body {
 }
 
 /* Mobile landscape (allow scrolling) */
-@media (max-width: 767px) and (orientation: landscape) {
+@media (max-width: 768px) and (orientation: landscape) {
     body {
         display: block; /* Allow landscape view */
-        overflow-y: auto !important; /* Force enable scrolling */
+        overflow-y: auto; /* Enable scrolling */
     }
     body:after {
         display: none; /* Remove rotation message */
     }
     .layout-container {
-        overflow-y: auto !important; /* Force enable scrolling */
+        overflow-y: auto; /* Enable scrolling */
     }
 }
 
@@ -262,7 +262,7 @@ body {
 }
 
 /* Landscape-specific exercises styling */
-@media (min-width: 768px) and (max-width: 1366px) and (orientation: landscape) {
+@media (min-width: 745px) and (orientation: landscape) {
     .exercises {
         gap: 30px; /* Adjusted gap to fit four stars */
         max-width: 80vw; /* Use 80% of viewport width */
@@ -408,7 +408,7 @@ body {
 }
 
 /* Mobile (portrait screens, target phones only) */
-@media (max-width: 767px) and (orientation: portrait) {
+@media (max-width: 768px) and (orientation: portrait) {
     .progress-container {
         width: 100%;
         height: auto;
@@ -517,10 +517,24 @@ body {
     }
 }
 
-/* Tablet/Desktop (landscape screens ≥ 768px and ≤ 1366px) */
-@media (min-width: 768px) and (max-width: 1366px) and (orientation: landscape) {
+/* Phone landscape discouragement */
+@media (max-width: 768px) and (orientation: landscape) {
+    body {
+        display: block; /* Allow landscape view */
+        overflow-y: auto; /* Enable scrolling */
+    }
+    body:after {
+        display: none; /* Remove rotation message */
+    }
     .layout-container {
-        overflow-y: hidden; /* Disable scrolling in landscape for iPad */
+        overflow-y: auto; /* Enable scrolling */
+    }
+}
+
+/* Tablet/Desktop (landscape screens ≥ 745px) */
+@media (min-width: 745px) and (orientation: landscape) {
+    .layout-container {
+        overflow-y: hidden; /* Disable scrolling in landscape for iPad and larger */
     }
     .progress-container {
         width: 100%;
@@ -624,7 +638,7 @@ body {
 }
 
 /* iPad Pro 12.9” and larger */
-@media (min-width: 835px) and (max-width: 1366px) {
+@media (min-width: 835px) {
     .parts {
         max-width: 1024px;
         min-width: 580px;
@@ -653,12 +667,6 @@ body {
     flex-direction: column;
     align-items: center;
     gap: 7px;
-    opacity: 1; /* Initial opacity for fade effect */
-    transition: opacity 0.5s ease; /* Smooth transition for fade */
-}
-
-.star-container.fade-out {
-    opacity: 0; /* Fade out state */
 }
 
 /* Default star size */
