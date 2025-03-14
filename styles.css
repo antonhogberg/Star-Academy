@@ -181,6 +181,12 @@ body {
     .chapter-name {
         font-size: 28px; /* Increased from 20px for landscape */
     }
+    body {
+        overflow-y: hidden; /* Disable scrolling in landscape */
+    }
+    .layout-container {
+        overflow-y: hidden; /* Disable scrolling in landscape */
+    }
 }
 
 /* Mobile title on separate lines */
@@ -525,7 +531,7 @@ body {
 /* Tablet/Desktop (landscape screens ≥ 745px) */
 @media (min-width: 745px) and (orientation: landscape) {
     .layout-container {
-        overflow-y: hidden;
+        overflow-y: hidden; /* Disable scrolling in landscape */
     }
     .progress-container {
         width: 100%;
