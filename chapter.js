@@ -35,17 +35,13 @@ document.addEventListener('DOMContentLoaded', () => {
         exercisesDiv.className = 'exercises';
 
         partExercises.forEach(ex => {
-            const starContainer = document.createElement('div');
-            starContainer.className = 'star-container';
-            starContainer.setAttribute('data-star-key', ex.key); // e.g., "exercise1:1:1"
-
             const starImg = document.createElement('img');
             starImg.className = 'star';
 
             // Get the state from localStorage (default to 1 if not set)
             let state = localStorage.getItem(ex.key);
             if (!state) {
-                // For chapter 1, check the old key format (e.g., "exercise1:1:1" -> "exercise1:1:1")
+                // For chapter 1, check the old key format (e.g., "exercise1:1:1" -> "exercise")
                 if (ex.chapter === 1) {
                     const oldKey = ex.key.replace('exercise1:', 'exercise');
                     state = localStorage.getItem(oldKey) || '1';
@@ -61,6 +57,8 @@ document.addEventListener('DOMContentLoaded', () => {
             codeSpan.className = 'exercise-code';
             codeSpan.textContent = `${ex.chapter}:${ex.part}:${ex.exercise}`;
 
+            const starContainer = document.createElement('div');
+            starContainer.className = 'star-container';
             starContainer.appendChild(starImg);
             starContainer.appendChild(codeSpan);
             exercisesDiv.appendChild(starContainer);

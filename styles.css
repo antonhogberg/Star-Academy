@@ -170,7 +170,7 @@ body {
 }
 
 /* iPad/landscape title on separate lines */
-@media (min-width: 745px) and (orientation: landscape) {
+@media (min-width: 768px) and (max-width: 1366px) and (orientation: landscape) {
     .chapter-title {
         display: block; /* Show in landscape */
         margin: 20px 0 10px 0; /* Increased top margin to 20px (double of 10px), kept bottom at 10px */
@@ -181,13 +181,33 @@ body {
     .chapter-name {
         font-size: 28px; /* Increased from 20px for landscape */
     }
+    body {
+        overflow-y: hidden; /* Disable scrolling in landscape for iPad */
+    }
+    .layout-container {
+        overflow-y: hidden; /* Disable scrolling in landscape for iPad */
+    }
 }
 
 /* Mobile title on separate lines */
-@media (max-width: 768px) and (orientation: portrait) {
+@media (max-width: 767px) and (orientation: portrait) {
     .chapter-title {
         display: block;
         margin: 20px 0 40px 0; /* Reverted top margin to 20px, increased bottom margin to 40px (double of 20px) */
+    }
+}
+
+/* Mobile landscape (allow scrolling) */
+@media (max-width: 767px) and (orientation: landscape) {
+    body {
+        display: block; /* Allow landscape view */
+        overflow-y: auto !important; /* Force enable scrolling */
+    }
+    body:after {
+        display: none; /* Remove rotation message */
+    }
+    .layout-container {
+        overflow-y: auto !important; /* Force enable scrolling */
     }
 }
 
@@ -236,19 +256,24 @@ body {
     align-items: center;
     position: relative;
     height: auto; /* Allow natural height */
-    min-height: calc(var(--vh, 1vh) * 100 - 120px); /* Adjusted for chapter-title (60px estimated) and navbar (60px) */
-    justify-content: center; /* Center stars vertically */
+    min-height: calc(var(--vh, 1vh) * 100 - 220px); /* Adjusted for chapter-title (60px estimated), navbar (60px), and buffer to eliminate scroll */
+    justify-content: center; /* Center stars vertically between title and bottom edge */
     flex-grow: 1;
 }
 
 /* Landscape-specific exercises styling */
-@media (min-width: 745px) and (orientation: landscape) {
+@media (min-width: 768px) and (max-width: 1366px) and (orientation: landscape) {
     .exercises {
         gap: 30px; /* Adjusted gap to fit four stars */
         max-width: 80vw; /* Use 80% of viewport width */
+        flex-wrap: wrap; /* Restore four stars per row */
+        justify-content: center; /* Center stars horizontally */
     }
     .parts {
         min-height: calc(var(--vh, 1vh) * 100 - 220px); /* Adjusted for chapter-title and navbar, increased subtracted value to reduce height */
+    }
+    .part {
+        margin-bottom: 20px; /* Increased from 10px to add more space between rows */
     }
 }
 
@@ -311,9 +336,9 @@ body {
     display: flex;
     justify-content: center;
     width: 100%;
-    flex-wrap: wrap; /* Allow wrapping for mobile */
-    gap: 20px;
-    max-width: 300px; /* Mobile max-width */
+    flex-wrap: wrap; /* Restore four stars per row */
+    gap: 30px; /* Adjusted gap to fit four stars */
+    max-width: 1200px; /* Accommodate four 150px stars + gaps */
     margin: 0 auto;
     position: relative;
     align-self: center;
@@ -383,7 +408,7 @@ body {
 }
 
 /* Mobile (portrait screens, target phones only) */
-@media (max-width: 768px) and (orientation: portrait) {
+@media (max-width: 767px) and (orientation: portrait) {
     .progress-container {
         width: 100%;
         height: auto;
@@ -492,26 +517,10 @@ body {
     }
 }
 
-/* Phone landscape discouragement */
-@media (max-width: 768px) and (orientation: landscape) {
-    body {
-        display: block; /* Allow landscape view */
-        overflow-y: auto !important; /* Force enable scrolling */
-        -webkit-overflow-scrolling: touch; /* Improve scrolling on iOS */
-    }
-    body:after {
-        display: none; /* Remove rotation message */
-    }
+/* Tablet/Desktop (landscape screens ≥ 768px and ≤ 1366px) */
+@media (min-width: 768px) and (max-width: 1366px) and (orientation: landscape) {
     .layout-container {
-        overflow-y: auto !important; /* Force enable scrolling */
-        -webkit-overflow-scrolling: touch; /* Improve scrolling on iOS */
-    }
-}
-
-/* Tablet/Desktop (landscape screens ≥ 745px) */
-@media (min-width: 745px) and (orientation: landscape) {
-    .layout-container {
-        overflow-y: hidden; /* Disable scrolling in landscape for iPad and larger */
+        overflow-y: hidden; /* Disable scrolling in landscape for iPad */
     }
     .progress-container {
         width: 100%;
@@ -561,9 +570,9 @@ body {
     }
     .parts {
         height: auto; /* Allow natural height */
-        min-height: calc(var(--vh, 1vh) * 100 - 220px); /* Adjusted for chapter-title and navbar, increased subtracted value to reduce height */
+        min-height: calc(var(--vh, 1vh) * 100 - 220px); /* Adjusted for chapter-title (60px estimated), navbar (60px), and buffer to eliminate scroll */
         padding: 10px 0; /* Reduced padding to fit within viewport */
-        justify-content: center; /* Center stars vertically */
+        justify-content: center; /* Center stars vertically between title and bottom edge */
     }
 }
 
@@ -574,7 +583,6 @@ body {
         max-width: 820px;
         min-width: 550px;
         margin: 0 auto;
-        justify-content: center;
         min-height: calc(var(--vh, 1vh) * 100 - 140px); /* Adjusted to fit all rows */
         padding-bottom: 30px; /* Adjust for balanced spacing */
     }
@@ -599,7 +607,6 @@ body {
         max-width: 834px;
         min-width: 580px;
         margin: 0 auto;
-        justify-content: center;
     }
     .exercises {
         gap: 30px; /* Adjusted gap to fit four stars */
@@ -617,14 +624,12 @@ body {
 }
 
 /* iPad Pro 12.9” and larger */
-@media (min-width: 835px) {
+@media (min-width: 835px) and (max-width: 1366px) {
     .parts {
         max-width: 1024px;
         min-width: 580px;
         margin: 0 auto;
-        justify-content: center;
-        height: auto; /* Allow natural height */
-        min-height: calc(var(--vh, 1vh) * 100 - 220px); /* Adjusted for chapter-title and navbar, increased subtracted value to reduce height */
+        min-height: calc(var(--vh, 1vh) * 100 - 220px); /* Adjusted for chapter-title (60px estimated), navbar (60px), and buffer to eliminate scroll */
         padding: 10px 0; /* Reduced padding to fit within viewport */
     }
     .exercises {
@@ -638,7 +643,7 @@ body {
         min-width: 150px;
         max-width: 150px;
         height: auto;
-        object-fit: contain; /* Ensure proper scaling */
+        object-fit: contain; /* Ensure proper centering */
     }
 }
 
