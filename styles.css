@@ -182,10 +182,10 @@ body {
         font-size: 28px; /* Increased from 20px for landscape */
     }
     body {
-        overflow-y: hidden; /* Disable scrolling in landscape */
+        overflow-y: hidden; /* Disable scrolling in landscape for iPad and larger */
     }
     .layout-container {
-        overflow-y: hidden; /* Disable scrolling in landscape */
+        overflow-y: hidden; /* Disable scrolling in landscape for iPad and larger */
     }
 }
 
@@ -194,6 +194,20 @@ body {
     .chapter-title {
         display: block;
         margin: 20px 0 40px 0; /* Reverted top margin to 20px, increased bottom margin to 40px (double of 20px) */
+    }
+}
+
+/* Mobile landscape (allow scrolling) */
+@media (max-width: 768px) and (orientation: landscape) {
+    body {
+        display: block; /* Allow landscape view */
+        overflow-y: auto; /* Enable scrolling */
+    }
+    body:after {
+        display: none; /* Remove rotation message */
+    }
+    .layout-container {
+        overflow-y: auto; /* Enable scrolling */
     }
 }
 
@@ -245,7 +259,6 @@ body {
     min-height: calc(var(--vh, 1vh) * 100 - 220px); /* Adjusted for chapter-title (60px estimated), navbar (60px), and buffer to eliminate scroll */
     justify-content: center; /* Center stars vertically between title and bottom edge */
     flex-grow: 1;
-    border: 2px solid blue; /* Debug border */
 }
 
 /* Landscape-specific exercises styling */
@@ -255,14 +268,12 @@ body {
         max-width: 80vw; /* Use 80% of viewport width */
         flex-wrap: wrap; /* Restore four stars per row */
         justify-content: center; /* Center stars horizontally */
-        border: 2px solid green; /* Debug border */
     }
     .parts {
         min-height: calc(var(--vh, 1vh) * 100 - 220px); /* Adjusted for chapter-title and navbar, increased subtracted value to reduce height */
-        border: 2px solid blue; /* Debug border */
     }
     .part {
-        border: 2px solid yellow; /* Debug border */
+        margin-bottom: 20px; /* Increased from 10px to add more space between rows */
     }
 }
 
@@ -331,7 +342,6 @@ body {
     margin: 0 auto;
     position: relative;
     align-self: center;
-    border: 2px solid green; /* Debug border */
 }
 
 .exercises svg {
@@ -348,7 +358,6 @@ body {
     box-sizing: border-box;
     margin-bottom: 20px; /* Increased from 10px to add more space between rows */
     justify-content: center;
-    border: 2px solid yellow; /* Debug border */
 }
 
 .part:last-child {
@@ -511,29 +520,21 @@ body {
 /* Phone landscape discouragement */
 @media (max-width: 768px) and (orientation: landscape) {
     body {
-        display: none;
+        display: block; /* Allow landscape view */
+        overflow-y: auto; /* Enable scrolling */
     }
     body:after {
-        display: flex;
-        content: "Please rotate your device to portrait mode for the best experience.";
-        font-family: Cochin, Georgia, Arial, sans-serif;
-        color: #ffffff;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        background-color: #000000;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        z-index: 1000;
+        display: none; /* Remove rotation message */
+    }
+    .layout-container {
+        overflow-y: auto; /* Enable scrolling */
     }
 }
 
 /* Tablet/Desktop (landscape screens ≥ 745px) */
 @media (min-width: 745px) and (orientation: landscape) {
     .layout-container {
-        overflow-y: hidden; /* Disable scrolling in landscape */
+        overflow-y: hidden; /* Disable scrolling in landscape for iPad and larger */
     }
     .progress-container {
         width: 100%;
@@ -583,11 +584,9 @@ body {
     }
     .parts {
         height: auto; /* Allow natural height */
-        min-height: calc(var(--vh, 1vh) * 100 - 120px); /* Adjusted to fit viewport minus chapter-title and navbar */
-        padding: 0; /* Remove padding to ensure proper centering */
-        display: flex;
-        flex-direction: column;
-        justify-content: center; /* Center stars vertically within the available space */
+        min-height: calc(var(--vh, 1vh) * 100 - 220px); /* Adjusted for chapter-title (60px estimated), navbar (60px), and buffer to eliminate scroll */
+        padding: 10px 0; /* Reduced padding to fit within viewport */
+        justify-content: center; /* Center stars vertically between title and bottom edge */
     }
 }
 
@@ -644,8 +643,8 @@ body {
         max-width: 1024px;
         min-width: 580px;
         margin: 0 auto;
-        min-height: calc(var(--vh, 1vh) * 100 - 120px); /* Adjusted to fit viewport minus chapter-title and navbar */
-        padding: 0; /* Remove padding to ensure proper centering */
+        min-height: calc(var(--vh, 1vh) * 100 - 220px); /* Adjusted for chapter-title (60px estimated), navbar (60px), and buffer to eliminate scroll */
+        padding: 10px 0; /* Reduced padding to fit within viewport */
     }
     .exercises {
         gap: 30px; /* Adjusted gap to fit four stars */
