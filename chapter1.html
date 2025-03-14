@@ -14,20 +14,16 @@
         window.addEventListener('orientationchange', setViewportHeight);
         setViewportHeight();
 
-        // Force scrolling enablement on mobile landscape
-        function ensureScrolling() {
-            if (window.innerWidth <= 767 && window.matchMedia('(orientation: landscape)').matches) {
-                document.body.style.overflowY = 'auto';
-                document.querySelector('.layout-container').style.overflowY = 'auto';
-                // Force a reflow to ensure scrolling is applied
-                document.body.style.display = 'none';
-                document.body.offsetHeight; // Trigger reflow
-                document.body.style.display = 'block';
+        // Detect mobile devices and add a class to the body
+        function detectMobile() {
+            const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+            const isMobile = /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(userAgent.toLowerCase());
+            if (isMobile) {
+                document.body.classList.add('is-mobile');
             }
         }
-        window.addEventListener('resize', ensureScrolling);
-        window.addEventListener('orientationchange', ensureScrolling);
-        setTimeout(ensureScrolling, 100); // Initial check after a short delay
+        window.addEventListener('load', detectMobile);
+        detectMobile();
     </script>
 </head>
 <body>
