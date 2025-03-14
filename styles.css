@@ -151,7 +151,14 @@ body {
     margin: 20px 0;
     font-family: Cochin, Georgia, Arial, sans-serif;
     color: #ffffff;
-    display: none; /* Hidden by default (desktop) */
+    display: block; /* Ensure title is visible by default on desktop */
+}
+
+/* Ensure title visibility on desktop in landscape */
+@media (min-width: 1367px) and (orientation: landscape) {
+    .chapter-title {
+        display: block;
+    }
 }
 
 .chapter-number, .chapter-name {
@@ -197,19 +204,20 @@ body {
 }
 
 /* Mobile landscape (allow scrolling) */
-@media (orientation: landscape) {
+@media (orientation: landscape) and (max-width: 767px),
+       (orientation: landscape) and (hover: none) and (pointer: coarse) {
     body.is-mobile,
-    body:not(.is-mobile) and (hover: none) and (pointer: coarse) {
+    body {
         display: block; /* Allow landscape view */
         overflow-y: auto !important; /* Force enable scrolling */
         -webkit-overflow-scrolling: touch; /* Improve scrolling on iOS */
     }
     body.is-mobile:after,
-    body:not(.is-mobile):after and (hover: none) and (pointer: coarse) {
+    body:after {
         display: none; /* Remove rotation message */
     }
     .layout-container.is-mobile,
-    .layout-container:not(.is-mobile) and (hover: none) and (pointer: coarse) {
+    .layout-container {
         overflow-y: auto !important; /* Force enable scrolling */
         -webkit-overflow-scrolling: touch; /* Improve scrolling on iOS */
     }
@@ -570,7 +578,7 @@ body {
         height: auto;
     }
     .chapter-title {
-        display: block; /* Show in landscape */
+        display: block; /* Ensure title is visible on iPad landscape */
     }
     .parts {
         height: auto; /* Allow natural height */
