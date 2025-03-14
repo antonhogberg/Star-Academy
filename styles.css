@@ -180,10 +180,10 @@ body {
     .chapter-name {
         font-size: 28px; /* Increased from 20px for landscape */
     }
-    body {
+    body:not(.is-mobile) {
         overflow-y: hidden; /* Disable scrolling in landscape for iPad */
     }
-    .layout-container {
+    .layout-container:not(.is-mobile) {
         overflow-y: hidden; /* Disable scrolling in landscape for iPad */
     }
 }
@@ -197,16 +197,19 @@ body {
 }
 
 /* Mobile landscape (allow scrolling) */
-@media (max-width: 767px) and (orientation: landscape) {
-    body {
+@media (orientation: landscape) {
+    body.is-mobile,
+    body:not(.is-mobile) and (hover: none) and (pointer: coarse) {
         display: block; /* Allow landscape view */
         overflow-y: auto !important; /* Force enable scrolling */
         -webkit-overflow-scrolling: touch; /* Improve scrolling on iOS */
     }
-    body:after {
+    body.is-mobile:after,
+    body:not(.is-mobile):after and (hover: none) and (pointer: coarse) {
         display: none; /* Remove rotation message */
     }
-    .layout-container {
+    .layout-container.is-mobile,
+    .layout-container:not(.is-mobile) and (hover: none) and (pointer: coarse) {
         overflow-y: auto !important; /* Force enable scrolling */
         -webkit-overflow-scrolling: touch; /* Improve scrolling on iOS */
     }
