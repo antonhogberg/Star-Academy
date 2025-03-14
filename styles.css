@@ -238,6 +238,7 @@ body {
     min-height: calc(var(--vh, 1vh) * 100 - 120px); /* Adjusted for chapter-title (60px estimated) and navbar (60px) */
     justify-content: center; /* Center stars vertically */
     flex-grow: 1;
+    border: 2px solid blue; /* Debug border */
 }
 
 /* Landscape-specific exercises styling */
@@ -245,9 +246,14 @@ body {
     .exercises {
         gap: 30px; /* Adjusted gap to fit four stars */
         max-width: 80vw; /* Use 80% of viewport width */
+        border: 2px solid green; /* Debug border */
     }
     .parts {
-        min-height: calc(var(--vh, 1vh) * 100 - 190px); /* Increased subtracted value from 165px to 190px (added 25px) to further reduce height */
+        min-height: calc(var(--vh, 1vh) * 100 - 190px); /* Adjusted for chapter-title and navbar, increased subtracted value to reduce height */
+        border: 2px solid blue; /* Debug border */
+    }
+    .part {
+        border: 2px solid yellow; /* Debug border */
     }
 }
 
@@ -316,6 +322,7 @@ body {
     margin: 0 auto;
     position: relative;
     align-self: center;
+    border: 2px solid green; /* Debug border */
 }
 
 .exercises svg {
@@ -332,6 +339,7 @@ body {
     box-sizing: border-box;
     margin-bottom: 20px; /* Increased from 10px to add more space between rows */
     justify-content: center;
+    border: 2px solid yellow; /* Debug border */
 }
 
 .part:last-child {
