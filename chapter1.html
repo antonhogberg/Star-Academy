@@ -13,20 +13,22 @@
         window.addEventListener('resize', setViewportHeight);
         window.addEventListener('orientationchange', setViewportHeight);
         setViewportHeight();
-    </script>
-    <script>
-            // Force scrolling enablement on mobile landscape //
-    function ensureScrolling() {
-        if (window.innerWidth <= 767 && window.matchMedia('(orientation: landscape)').matches) {
-            document.body.style.overflowY = 'auto';
-            document.querySelector('.layout-container').style.overflowY = 'auto';
-        }
-    }
-    window.addEventListener('resize', ensureScrolling);
-    window.addEventListener('orientationchange', ensureScrolling);
-    ensureScrolling();
-    </script>
 
+        // Force scrolling enablement on mobile landscape
+        function ensureScrolling() {
+            if (window.innerWidth <= 767 && window.matchMedia('(orientation: landscape)').matches) {
+                document.body.style.overflowY = 'auto';
+                document.querySelector('.layout-container').style.overflowY = 'auto';
+                // Force a reflow to ensure scrolling is applied
+                document.body.style.display = 'none';
+                document.body.offsetHeight; // Trigger reflow
+                document.body.style.display = 'block';
+            }
+        }
+        window.addEventListener('resize', ensureScrolling);
+        window.addEventListener('orientationchange', ensureScrolling);
+        setTimeout(ensureScrolling, 100); // Initial check after a short delay
+    </script>
 </head>
 <body>
     <nav class="hamburger-nav">
