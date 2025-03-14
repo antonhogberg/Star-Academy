@@ -9,6 +9,7 @@ body {
     overflow-x: hidden;
     min-height: calc(var(--vh, 1vh) * 100);
     width: 100vw;
+    max-height: calc(var(--vh, 1vh) * 100); /* Constrain body height to viewport */
     overflow-y: auto;
     background-color: #000000;
     background-image: url('background.jpg');
@@ -235,8 +236,8 @@ body {
     align-items: center;
     position: relative;
     height: auto; /* Allow natural height */
-    min-height: calc(var(--vh, 1vh) * 100 - 120px); /* Adjusted for chapter-title (60px estimated) and navbar (60px) */
-    justify-content: center; /* Center stars vertically */
+    min-height: calc(var(--vh, 1vh) * 100 - 220px); /* Adjusted for chapter-title (60px estimated), navbar (60px), and buffer to eliminate scroll */
+    justify-content: center; /* Center stars vertically between title and bottom edge */
     flex-grow: 1;
     border: 2px solid blue; /* Debug border */
 }
@@ -249,7 +250,7 @@ body {
         border: 2px solid green; /* Debug border */
     }
     .parts {
-        min-height: calc(var(--vh, 1vh) * 100 - 190px); /* Adjusted for chapter-title and navbar, increased subtracted value to reduce height */
+        min-height: calc(var(--vh, 1vh) * 100 - 220px); /* Adjusted for chapter-title and navbar, increased subtracted value to reduce height */
         border: 2px solid blue; /* Debug border */
     }
     .part {
@@ -574,9 +575,9 @@ body {
     }
     .parts {
         height: auto; /* Allow natural height */
-        min-height: calc(var(--vh, 1vh) * 100 - 190px); /* Adjusted for chapter-title and navbar, increased subtracted value to reduce height */
+        min-height: calc(var(--vh, 1vh) * 100 - 220px); /* Adjusted for chapter-title (60px estimated), navbar (60px), and buffer to eliminate scroll */
         padding: 10px 0; /* Reduced padding to fit within viewport */
-        justify-content: center; /* Center stars vertically */
+        justify-content: center; /* Center stars vertically between title and bottom edge */
     }
 }
 
@@ -637,7 +638,7 @@ body {
         margin: 0 auto;
         justify-content: center;
         height: auto; /* Allow natural height */
-        min-height: calc(var(--vh, 1vh) * 100 - 190px); /* Adjusted for chapter-title and navbar, increased subtracted value to reduce height */
+        min-height: calc(var(--vh, 1vh) * 100 - 220px); /* Adjusted for chapter-title (60px estimated), navbar (60px), and buffer to eliminate scroll */
         padding: 10px 0; /* Reduced padding to fit within viewport */
     }
     .exercises {
