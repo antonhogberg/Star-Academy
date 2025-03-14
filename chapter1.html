@@ -14,6 +14,16 @@
         window.addEventListener('orientationchange', setViewportHeight);
         setViewportHeight();
     </script>
+    // Force scrolling enablement on mobile landscape
+    function ensureScrolling() {
+        if (window.innerWidth <= 767 && window.matchMedia('(orientation: landscape)').matches) {
+            document.body.style.overflowY = 'auto';
+            document.querySelector('.layout-container').style.overflowY = 'auto';
+        }
+    }
+    window.addEventListener('resize', ensureScrolling);
+    window.addEventListener('orientationchange', ensureScrolling);
+    ensureScrolling();
 </head>
 <body>
     <nav class="hamburger-nav">
