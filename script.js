@@ -42,24 +42,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         console.log('Six-star count:', sixStarCount);
 
-        // Update chapter stars (if on a chapter page)
-        document.querySelectorAll('.star-container').forEach(container => {
-            const star = container.querySelector('.star');
-            const starKey = container.getAttribute('data-star-key');
-            if (star && starKey) {
-                let state = localStorage.getItem(starKey);
-                if (!state) {
-                    if (starKey.startsWith('exercise1')) {
-                        const oldKey = starKey.replace('exercise1:', 'exercise');
-                        state = localStorage.getItem(oldKey) || '1';
-                    } else {
-                        state = '1';
-                    }
-                }
-                star.src = `images/star${state}.png`;
-            }
-        });
-
         // Update bottom stars (only if elements exist, e.g., on index.html)
         for (let i = 1; i <= 16; i++) {
             const bottomStar = document.getElementById(`bottom_star${i}`);
