@@ -1,4 +1,23 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // Function to fade between star images
+    function fadeStar(container, newSrc) {
+        const star = container.querySelector('.star');
+        if (star && star.src !== newSrc) {
+            // Preload the next image
+            const tempImg = new Image();
+            tempImg.src = newSrc;
+
+            // When the new image loads, fade out the current one and swap
+            tempImg.onload = () => {
+                container.classList.add('fade-out');
+                setTimeout(() => {
+                    star.src = newSrc;
+                    container.classList.remove('fade-out');
+                }, 500); // Match the transition duration (0.5s)
+            };
+        }
+    }
+
     // Add .active-page to the current page's link with improved path matching
     console.log('Running active page detection script');
     const currentPath = window.location.pathname.toLowerCase(); // e.g., "/TEST/chapter1.html" or "/chapter1.html"
@@ -41,6 +60,24 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         console.log('Six-star count:', sixStarCount);
+
+        // Update chapter stars (if on a chapter page)
+        document.querySelectorAll('.star-container').forEach(container => {
+            const starKey = container.getAttribute('data-star-key');
+            if (starKey) {
+                let state = localStorage.getItem(starKey);
+                if (!state) {
+                    if (starKey.startsWith('exercise1')) {
+                        const oldKey = starKey.replace('exercise1:', 'exercise');
+                        state = localStorage.getItem(oldKey) || '1';
+                    } else {
+                        state = '1';
+                    }
+                }
+                const newSrc = `images/star${state}.png`;
+                fadeStar(container, newSrc);
+            }
+        });
 
         // Update bottom stars (only if elements exist, e.g., on index.html)
         for (let i = 1; i <= 16; i++) {
