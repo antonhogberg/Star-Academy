@@ -391,7 +391,7 @@ body {
     align-items: center;
     padding: 10px;
     background: rgba(74, 74, 74, 0.8);
-    border: 1px solid #ffd700;
+    border: 1px solid #ff8c00; /* Changed from #ffd700 to #ff8c00 */
     border-radius: 5px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
