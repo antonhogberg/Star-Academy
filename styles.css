@@ -223,26 +223,6 @@ body {
     }
 }
 
-/* Mobile landscape rank badge sizing */
-@media (orientation: landscape) {
-    body.is-mobile .rank-badge,
-    body[hover="none"][pointer="coarse"] .rank-badge {
-        position: static !important;
-        transform: none !important;
-        width: 17.0625% !important; /* Match mobile portrait */
-        min-width: 136.5px !important; /* Match mobile portrait */
-        max-width: 204.75px !important; /* Match mobile portrait */
-        margin: 40px auto !important;
-        padding-top: 35px !important;
-        display: block !important;
-    }
-    body.is-mobile #rankImage,
-    body[hover="none"][pointer="coarse"] #rankImage {
-        max-width: 100% !important; /* Ensure image scales with container */
-        height: auto !important;
-    }
-}
-
 .layout-container {
     position: relative;
     width: 100%;
@@ -273,7 +253,7 @@ body {
     max-width: 1161.1px;
     height: auto;
     max-height: 100%;
-    margin: 0 auto;
+    margin: 10px auto;
     display: block;
 }
 
@@ -468,7 +448,7 @@ body {
         width: 17.0625%;
         min-width: 136.5px;
         max-width: 204.75px;
-        margin: 40px auto;
+        margin: 30px auto; /* Reduced from 40px to 30px */
         padding-top: 35px;
         display: block;
     }
