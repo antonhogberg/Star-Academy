@@ -751,17 +751,13 @@ body {
     box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
 }
 
-/* iPad-specific scaling for popup */
-@media (min-width: 768px) {
-    .popup-content {
-        transform: scale(1.2); /* Increase size by 20% on iPad */
-        transform-origin: center;
-    }
+.popup-content #nameInput {
+    margin: 20px 0; /* Match top padding (20px) for consistent spacing below input */
 }
 
 button {
     font-family: Cochin, Georgia, Arial, sans-serif;
-    padding: 6px 12px; /* Reduced padding for smaller button */
+    padding: 6px 12px;
     background: linear-gradient(90deg, #ffd700, #ffaa00);
     border: 1px solid #ffd700;
     border-radius: 5px;
@@ -769,6 +765,7 @@ button {
     cursor: pointer;
     transition: transform 0.3s ease;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    margin-top: 20px; /* Match top padding (20px) for consistent spacing below button */
 }
 
 button:hover {
