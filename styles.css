@@ -448,7 +448,7 @@ body {
         width: 17.0625%;
         min-width: 136.5px;
         max-width: 204.75px;
-        margin: 30px auto; /* Reduced from 40px to 30px */
+        margin: 10px auto; /* Reduced from 30px to 10px */
         padding-top: 35px;
         display: block;
     }
@@ -781,3 +781,5 @@ button:hover {
         margin: 10px auto;
     }
 }
+
+/* Note: Removed mobile landscape rank badge sizing and chapter padding (20 rows) per user request to deprioritize mobile landscape. */
