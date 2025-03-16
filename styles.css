@@ -187,7 +187,7 @@ body {
     .chapter-name {
         font-size: 28px; /* Increased from 20px for landscape */
     }
-    body:not(.is-mobile) {
+    body:not(.is-mobile) { /* Fixed syntax: Changed body:not[.is-mobile] to body:not(.is-mobile) */
         overflow-y: hidden; /* Disable scrolling in landscape for iPad */
     }
     .layout-container:not(.is-mobile) {
@@ -749,7 +749,6 @@ body {
     text-align: center;
     border: 2px solid #ffd700;
     box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
-    font-family: Cochin, Georgia, Arial, sans-serif; /* Match all text */
 }
 
 /* iPad-specific scaling for popup */
