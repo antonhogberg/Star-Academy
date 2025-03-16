@@ -45,8 +45,8 @@ document.addEventListener('DOMContentLoaded', () => {
         // Update chapter stars (if on a chapter page)
         document.querySelectorAll('.star-container').forEach(container => {
             const star = container.querySelector('.star');
-            if (star) {
-                const starKey = container.getAttribute('data-star-key');
+            const starKey = container.getAttribute('data-star-key');
+            if (star && starKey) {
                 let state = localStorage.getItem(starKey);
                 if (!state) {
                     if (starKey.startsWith('exercise1')) {
@@ -229,7 +229,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Call showPopup when needed (e.g., on page load or button click)
-    // document.addEventListener('DOMContentLoaded', showPopup); // Uncomment to test
+    // Uncomment to test: document.addEventListener('DOMContentLoaded', showPopup);
 
     // Initial update for star states (only runs if elements exist)
     updateStarStates();
@@ -237,4 +237,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Storage event listeners for HTTP/S and fallback for file://
     window.addEventListener('storage', updateStarStates);
     window.onstorage = updateStarStates; // Fallback for older browsers or file://
+
+    // Note: Scrolling issue on iPad landscape (40px scroll) reintroduced after mobile landscape fix.
+    // To fix in the future: Revisit the media query for iPad landscape to ensure `overflow-y: hidden`
+    // applies only to non-mobile devices, possibly by refining the `is-mobile` logic.
 });
