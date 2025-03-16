@@ -749,11 +749,14 @@ body {
     text-align: center;
     border: 2px solid #ffd700;
     box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
-    margin-bottom: 20px; /* Match top padding for balanced spacing */
+}
+
+.popup-content h1 {
+    font-family: Cochin, Georgia, Arial, sans-serif; /* Apply Cochin only to Welcome text */
 }
 
 .popup-content #nameInput {
-    margin: 10px 0; /* Consistent spacing with top padding */
+    margin: 10px 0; /* Consistent spacing */
 }
 
 /* iPad-specific scaling for popup */
