@@ -753,10 +753,8 @@ body {
 }
 
 .popup-content #nameInput {
-    padding: 6px 12px; /* Match button padding to adjust height */
     font-family: Cochin, Georgia, Arial, sans-serif; /* Match popup font */
     margin: 10px 0; /* Consistent spacing */
-    box-sizing: border-box; /* Ensure padding doesn’t affect width */
 }
 
 /* iPad-specific scaling for popup */
