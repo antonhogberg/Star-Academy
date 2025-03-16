@@ -750,15 +750,6 @@ body {
     border: 2px solid #ffd700;
     box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
     font-family: Cochin, Georgia, Arial, sans-serif; /* Match all text */
-    min-width: 260px; /* Ensure original width with 20px padding on sides */
-}
-
-.popup-content #nameInput {
-    width: 150px; /* Reduced halfway back from 200px to original (~100px) */
-    padding: 8px 12px; /* Maintain padding for usability */
-    font-family: Cochin, Georgia, Arial, sans-serif; /* Match popup font */
-    margin: 10px 0; /* Consistent spacing */
-    box-sizing: border-box; /* Ensure padding doesn’t affect width */
 }
 
 /* iPad-specific scaling for popup */
