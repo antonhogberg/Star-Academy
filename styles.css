@@ -27,15 +27,15 @@ body {
 
 .hamburger {
     font-size: 24px;
-    color: #ffd700; /* Gold font color */
+    color: #ffd700;
     cursor: pointer;
     transition: transform 0.3s ease;
     font-family: Cochin, Georgia, Arial, sans-serif;
-    background: #4a4a4a; /* Dark gray background */
+    background: #4a4a4a;
     padding: 8px 10px 12px 10px; /* Kept to center icon vertically */
     border-radius: 5px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    border: 1px solid #ffd700; /* Gold border */
+    border: 1px solid #ffd700;
     box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
     display: flex;
     align-items: center;
@@ -187,7 +187,7 @@ body {
     .chapter-name {
         font-size: 28px; /* Increased from 20px for landscape */
     }
-    body:not(.is-mobile) { /* Fixed syntax */
+    body:not(.is-mobile) { /* Fixed syntax: Changed body:not[.is-mobile] to body:not(.is-mobile) */
         overflow-y: hidden; /* Disable scrolling in landscape for iPad */
     }
     .layout-container:not(.is-mobile) {
@@ -751,14 +751,6 @@ body {
     box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
 }
 
-.popup-content h1 {
-    font-family: Cochin, Georgia, Arial, sans-serif; /* Apply Cochin only to Welcome text */
-}
-
-.popup-content #nameInput {
-    margin: 10px 0; /* Consistent spacing */
-}
-
 /* iPad-specific scaling for popup */
 @media (min-width: 768px) {
     .popup-content {
@@ -769,11 +761,11 @@ body {
 
 button {
     font-family: Cochin, Georgia, Arial, sans-serif;
-    padding: 6px 12px;
-    background: #4a4a4a; /* Match hamburger background */
-    border: 1px solid #ffd700; /* Match hamburger border */
+    padding: 6px 12px; /* Reduced padding for smaller button */
+    background: linear-gradient(90deg, #ffd700, #ffaa00);
+    border: 1px solid #ffd700;
     border-radius: 5px;
-    color: #ffd700; /* Match hamburger font color */
+    color: #ffffff;
     cursor: pointer;
     transition: transform 0.3s ease;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
