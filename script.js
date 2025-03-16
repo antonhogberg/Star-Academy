@@ -42,6 +42,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
         console.log('Six-star count:', sixStarCount);
 
+        // Update chapter stars (if on a chapter page)
+        document.querySelectorAll('.star-container').forEach(container => {
+            const star = container.querySelector('.star');
+            if (star) {
+                const starKey = container.getAttribute('data-star-key');
+                let state = localStorage.getItem(starKey);
+                if (!state) {
+                    if (starKey.startsWith('exercise1')) {
+                        const oldKey = starKey.replace('exercise1:', 'exercise');
+                        state = localStorage.getItem(oldKey) || '1';
+                    } else {
+                        state = '1';
+                    }
+                }
+                star.src = `images/star${state}.png`;
+            }
+        });
+
         // Update bottom stars (only if elements exist, e.g., on index.html)
         for (let i = 1; i <= 16; i++) {
             const bottomStar = document.getElementById(`bottom_star${i}`);
@@ -193,6 +211,25 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log('rankImage, rankName, rankTitle, or rankDescription not found (expected on chapter pages)');
         }
     }
+
+    // Example popup creation (adjust based on your actual implementation)
+    function showPopup() {
+        const popup = document.createElement('div');
+        popup.className = 'popup';
+        const content = document.createElement('div');
+        content.className = 'popup-content';
+        content.innerHTML = `
+            <h2>Star Academy</h2>
+            <p>Please write your name...</p>
+            <input type="text" id="nameInput">
+            <button onclick="this.parentElement.parentElement.remove()">Submit</button>
+        `;
+        popup.appendChild(content);
+        document.body.appendChild(popup);
+    }
+
+    // Call showPopup when needed (e.g., on page load or button click)
+    // document.addEventListener('DOMContentLoaded', showPopup); // Uncomment to test
 
     // Initial update for star states (only runs if elements exist)
     updateStarStates();

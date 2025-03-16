@@ -223,6 +223,24 @@ body {
     }
 }
 
+/* Mobile landscape rank badge sizing */
+@media (max-width: 767px) and (orientation: landscape) {
+    .rank-badge {
+        position: static;
+        transform: none;
+        width: 17.0625%; /* Match mobile portrait */
+        min-width: 136.5px; /* Match mobile portrait */
+        max-width: 204.75px; /* Match mobile portrait */
+        margin: 40px auto;
+        padding-top: 35px;
+        display: block;
+    }
+    #rankImage {
+        max-width: 100%; /* Ensure image scales with container */
+        height: auto;
+    }
+}
+
 .layout-container {
     position: relative;
     width: 100%;
@@ -749,18 +767,7 @@ body {
     text-align: center;
     border: 2px solid #ffd700;
     box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
-}
-
-.popup-content h2 {
-    font-family: Cochin, Georgia, Arial, sans-serif; /* Match menu font */
-    color: #4a4a4a;
-    margin-bottom: 10px;
-}
-
-#nameInput {
-    margin: 10px 0;
-    padding: 5px;
-    font-family: Cochin, Georgia, Arial, sans-serif;
+    font-family: Cochin, Georgia, Arial, sans-serif; /* Match all text */
 }
 
 /* iPad-specific scaling for popup */
