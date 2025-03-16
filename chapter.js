@@ -14,9 +14,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const exercisesPerPart = 4;
     const parts = 4;
 
-    // Get current language from localStorage (set by script.js)
-    const lang = localStorage.getItem('language') || 'sv';
-
     for (let part = 0; part < parts; part++) {
         const partDiv = document.createElement('div');
         partDiv.className = 'part';
@@ -38,13 +35,9 @@ document.addEventListener('DOMContentLoaded', () => {
             img.className = 'star';
             img.dataset.exercise = exerciseKey;
 
-            // Format the exercise code label based on language
+            // Keep the exercise code as raw numbers in both languages
             const codeLabel = document.createElement('div');
-            if (lang === 'sv') {
-                codeLabel.textContent = `Kapitel ${chapterNum}: Del ${part + 1}: Övning ${i + 1}`;
-            } else {
-                codeLabel.textContent = `Chapter ${chapterNum}: Part ${part + 1}: Exercise ${i + 1}`;
-            }
+            codeLabel.textContent = exerciseCode; // e.g., "1:1:1"
             codeLabel.className = 'exercise-code';
 
             img.addEventListener('click', () => {
