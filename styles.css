@@ -32,7 +32,7 @@ body {
     transition: transform 0.3s ease;
     font-family: Cochin, Georgia, Arial, sans-serif;
     background: #4a4a4a;
-    padding: 8px 10px 12px 10px; /* Adjusted to center icon vertically */
+    padding: 8px 10px 12px 10px; /* Kept to center icon vertically */
     border-radius: 5px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     border: 1px solid #ffd700;
@@ -750,6 +750,7 @@ body {
     border: 2px solid #ffd700;
     box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
     font-family: Cochin, Georgia, Arial, sans-serif; /* Match all text */
+    min-width: 260px; /* Ensure original width with 20px padding on sides */
 }
 
 .popup-content #nameInput {
