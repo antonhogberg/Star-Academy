@@ -27,15 +27,15 @@ body {
 
 .hamburger {
     font-size: 24px;
-    color: #ffd700;
+    color: #ffd700; /* Gold font color */
     cursor: pointer;
     transition: transform 0.3s ease;
     font-family: Cochin, Georgia, Arial, sans-serif;
-    background: #4a4a4a;
+    background: #4a4a4a; /* Dark gray background */
     padding: 8px 10px 12px 10px; /* Kept to center icon vertically */
     border-radius: 5px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    border: 1px solid #ffd700;
+    border: 1px solid #ffd700; /* Gold border */
     box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
     display: flex;
     align-items: center;
@@ -187,7 +187,7 @@ body {
     .chapter-name {
         font-size: 28px; /* Increased from 20px for landscape */
     }
-    body:not(.is-mobile) {
+    body:not(.is-mobile) { /* Fixed syntax */
         overflow-y: hidden; /* Disable scrolling in landscape for iPad */
     }
     .layout-container:not(.is-mobile) {
@@ -744,11 +744,16 @@ body {
 
 .popup-content {
     background: #fff;
-    padding: 20px 40px; /* Increased horizontal padding to 40px to push edges out */
+    padding: 20px;
     border-radius: 5px;
     text-align: center;
     border: 2px solid #ffd700;
     box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+    margin-bottom: 20px; /* Match top padding for balanced spacing */
+}
+
+.popup-content #nameInput {
+    margin: 10px 0; /* Consistent spacing with top padding */
 }
 
 /* iPad-specific scaling for popup */
@@ -761,11 +766,11 @@ body {
 
 button {
     font-family: Cochin, Georgia, Arial, sans-serif;
-    padding: 6px 12px; /* Reduced padding for smaller button */
-    background: linear-gradient(90deg, #ffd700, #ffaa00);
-    border: 1px solid #ffd700;
+    padding: 6px 12px;
+    background: #4a4a4a; /* Match hamburger background */
+    border: 1px solid #ffd700; /* Match hamburger border */
     border-radius: 5px;
-    color: #ffffff;
+    color: #ffd700; /* Match hamburger font color */
     cursor: pointer;
     transition: transform 0.3s ease;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
