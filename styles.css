@@ -744,7 +744,7 @@ body {
 
 .popup-content {
     background: #fff;
-    padding: 20px 40px; /* Increased horizontal padding to 40px to push edges out */
+    padding: 20px 40px; /* 20px top and bottom, 40px left and right */
     border-radius: 5px;
     text-align: center;
     border: 2px solid #ffd700;
@@ -752,7 +752,7 @@ body {
 }
 
 .popup-content #nameInput {
-    margin: 20px 0; /* Match top padding (20px) for consistent spacing below input */
+    margin: 5px 0 20px 0; /* Reduced top margin to 5px, kept bottom margin at 20px to match top padding */
 }
 
 button {
@@ -765,7 +765,7 @@ button {
     cursor: pointer;
     transition: transform 0.3s ease;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    margin-top: 20px; /* Match top padding (20px) for consistent spacing below button */
+    margin-top: 5px; /* 20px margin above the button to match top padding */
 }
 
 button:hover {
