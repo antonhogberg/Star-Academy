@@ -751,11 +751,6 @@ body {
     box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
 }
 
-.popup-content #nameInput {
-    padding: 6px 12px; /* Restored to match submit button height (~28px) */
-    margin: 10px 0; /* Consistent spacing */
-}
-
 /* iPad-specific scaling for popup */
 @media (min-width: 768px) {
     .popup-content {
