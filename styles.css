@@ -32,7 +32,7 @@ body {
     transition: transform 0.3s ease;
     font-family: Cochin, Georgia, Arial, sans-serif;
     background: #4a4a4a;
-    padding: 6px 10px 14px 10px; /* Adjusted to shift icon upward */
+    padding: 8px 10px 12px 10px; /* Adjusted to center icon vertically */
     border-radius: 5px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     border: 1px solid #ffd700;
@@ -753,8 +753,8 @@ body {
 }
 
 .popup-content #nameInput {
-    width: 200px; /* Enlarge the input field */
-    padding: 8px 12px; /* Increase padding for better usability */
+    width: 150px; /* Reduced halfway back from 200px to original (~100px) */
+    padding: 8px 12px; /* Maintain padding for usability */
     font-family: Cochin, Georgia, Arial, sans-serif; /* Match popup font */
     margin: 10px 0; /* Consistent spacing */
     box-sizing: border-box; /* Ensure padding doesn’t affect width */
