@@ -757,15 +757,19 @@ body {
 
 button {
     font-family: Cochin, Georgia, Arial, sans-serif;
-    padding: 6px 12px;
-    background: linear-gradient(90deg, #ffd700, #ffaa00);
-    border: 1px solid #ffd700;
+    padding: 8px 10px 12px 10px; /* Match hamburger padding */
+    background: #4a4a4a; /* Match hamburger background */
+    border: 1px solid #ffd700; /* Match hamburger border */
     border-radius: 5px;
-    color: #ffffff;
+    color: #ffd700; /* Match hamburger font color */
     cursor: pointer;
     transition: transform 0.3s ease;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    margin-top: 5px; /* Adjusted to 5px to fix spacing, matching your change */
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.3); /* Match hamburger outer shadow */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 5px; /* Preserve your spacing fix */
 }
 
 button:hover {
