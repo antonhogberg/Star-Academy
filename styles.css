@@ -779,4 +779,21 @@ button:hover {
     }
 }
 
+.language-switcher {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    padding: 10px;
+    margin-top: 10px;
+}
+
+.flag {
+    cursor: pointer;
+    font-size: 24px;
+    transition: transform 0.3s ease;
+}
+
+.flag:hover {
+    transform: scale(1.2);
+}
 /* Note: Removed mobile landscape rank badge sizing and chapter padding (20 rows) per user request to deprioritize mobile landscape. */

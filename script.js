@@ -1,4 +1,95 @@
+// Language translations
+const translations = {
+    en: {
+        menuFrontPage: "Front Page",
+        menuChapter: "Chapter",
+        popupWelcome: "Welcome to Star Academy!",
+        popupEnterName: "Please enter your name:",
+        rankExplorer: "Explorer",
+        rankStarCadet: "Star Cadet",
+        rankStarOfficer: "Star Officer",
+        rankStarCaptain: "Star Captain",
+        rankStarCommander: "Star Commander",
+        rankStarAdmiral: "Star Admiral",
+        textboxExplorer: "You’re embarking on your piano adventure, learning notes, scales, chords, and arpeggios step by step. Complete 16 exercises to claim the Star Cadet rank!",
+        textboxStarCadet: "You’ve displayed steadfast resolve, securing six stars over 16 exercises in the Star Academy Piano School. Complete Part 1 in all seven chapters to claim Star Officer!",
+        textboxStarOfficer: "With thorough dedication, you’ve learned key names, scales, root chords, and several pieces. Stand proud as a Star Officer of the Star Academy Piano School—conquer Part 2 in every chapter for Star Captain!",
+        textboxStarCaptain: "You’ve taken up sight-reading, play songs with chords, and perform classical works. Stand proud as a Star Captain of the Star Academy Piano School—complete Part 3 in every chapter for Star Commander!",
+        textboxStarCommander: "With skill, you handle chords and arpeggios in all inversions, command scales across the piano, recognize note intervals, and boast a vast repertoire. Stand proud as a Star Commander of the Star Academy Piano School—conquer Part 4 in all chapters for Star Admiral!",
+        textboxStarAdmiral: "Your relentless focus, dedication, and mastery have crowned you a piano virtuoso. Claim your place as Star Admiral of the Star Academy Piano School, master of all chapters!"
+    },
+    sv: {
+        menuFrontPage: "Framsida",
+        menuChapter: "Kapitel",
+        popupWelcome: "Välkommen till Stjärnakademien!",
+        popupEnterName: "Skriv ditt namn här:",
+        rankExplorer: "Upptäckare",
+        rankStarCadet: "Stjärnkadett",
+        rankStarOfficer: "Stjärnofficer",
+        rankStarCaptain: "Stjärnkapten",
+        rankStarCommander: "Stjärnkommendör",
+        rankStarAdmiral: "Stjärnamiral",
+        textboxExplorer: "Du påbörjar ditt pianoäventyr och lär dig noter, skalor, ackord och arpeggion steg för steg. Slutför 16 övningar för att få rangen Stjärnkadett!",
+        textboxStarCadet: "Du har visat stadig beslutsamhet och säkrat sex stjärnor över 16 övningar i Stjärnakademiens pianoskola. Slutför del 1 i alla sju kapitel för att bli Stjärnofficer!",
+        textboxStarOfficer: "Med grundlig hängivenhet har du lärt dig tangentnamn, skalor, grundackord och flera stycken. Stå stolt som en Stjärnofficer vid Stjärnakademiens pianoskola—erövra del 2 i varje kapitel för att bli Stjärnkapten!",
+        textboxStarCaptain: "Du har börjat med sight-reading, spelar låtar med ackord och framför klassiska verk. Stå stolt som en Stjärnkapten vid Stjärnakademiens pianoskola—slutför del 3 i varje kapitel för att bli Stjärnkommendör!",
+        textboxStarCommander: "Med skicklighet hanterar du ackord och arpeggion i alla inversioner, behärskar skalor över hela pianot, känner igen notintervall och har en omfattande repertoar. Stå stolt som en Stjärnkommendör vid Stjärnakademiens pianoskola—erövra del 4 i alla kapitel för att bli Stjärnamiral!",
+        textboxStarAdmiral: "Din obevekliga fokus, hängivenhet och mästerskap har krönt dig till en pianovirtuos. Ta din plats som Stjärnamiral vid Stjärnakademiens pianoskola, mästare över alla kapitel!"
+    }
+};
+
+// Function to switch language
+function switchLanguage(lang) {
+    // Store the selected language in localStorage
+    localStorage.setItem('language', lang);
+
+    // Update menu links
+    document.querySelectorAll('.menu-link').forEach(link => {
+        const href = link.getAttribute('href').toLowerCase();
+        if (href === 'index.html') {
+            link.textContent = translations[lang].menuFrontPage;
+        } else {
+            const chapterNum = href.match(/chapter(\d+)\.html/)?.[1];
+            if (chapterNum) {
+                link.textContent = `${translations[lang].menuChapter} ${chapterNum}`;
+            }
+        }
+    });
+
+    // Update popup text (if present)
+    const popupWelcome = document.querySelector('#namePopup h2');
+    const popupEnterName = document.querySelector('#namePopup p');
+    if (popupWelcome) popupWelcome.textContent = translations[lang].popupWelcome;
+    if (popupEnterName) popupEnterName.textContent = translations[lang].popupEnterName;
+
+    // Update rank badge and textbox (if present)
+    const rankName = document.getElementById('rankName');
+    const rankTitle = document.getElementById('rankTitle');
+    const rankDescription = document.getElementById('rankDescription');
+    if (rankName && rankTitle && rankDescription) {
+        updateStarStates(); // Re-run updateStarStates to apply the new language
+    }
+}
+
+// Function to set initial language on page load
+function setInitialLanguage() {
+    // Check URL fragment for language (e.g., #english or #swedish)
+    const hash = window.location.hash.replace('#', '').toLowerCase();
+    let lang = hash === 'swedish' ? 'sv' : hash === 'english' ? 'en' : null;
+
+    // If no language in URL, check localStorage, default to Swedish for Swedish testers
+    if (!lang) {
+        lang = localStorage.getItem('language') || 'sv'; // Default to Swedish
+    }
+
+    // Apply the language
+    switchLanguage(lang);
+}
+
 document.addEventListener('DOMContentLoaded', () => {
+    // Set initial language
+    setInitialLanguage();
+
     // Add .active-page to the current page's link with improved path matching
     console.log('Running active page detection script');
     const currentPath = window.location.pathname.toLowerCase(); // e.g., "/TEST/chapter1.html" or "/chapter1.html"
@@ -41,24 +132,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         console.log('Six-star count:', sixStarCount);
-
-        // Update chapter stars (if on a chapter page)
-        document.querySelectorAll('.star-container').forEach(container => {
-            const star = container.querySelector('.star');
-            const starKey = container.getAttribute('data-star-key');
-            if (star && starKey) {
-                let state = localStorage.getItem(starKey);
-                if (!state) {
-                    if (starKey.startsWith('exercise1')) {
-                        const oldKey = starKey.replace('exercise1:', 'exercise');
-                        state = localStorage.getItem(oldKey) || '1';
-                    } else {
-                        state = '1';
-                    }
-                }
-                star.src = `images/star${state}.png`;
-            }
-        });
 
         // Update bottom stars (only if elements exist, e.g., on index.html)
         for (let i = 1; i <= 16; i++) {
@@ -144,6 +217,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const rankDescription = document.getElementById('rankDescription');
 
         if (rankImage && rankName && rankTitle && rankDescription) {
+            const lang = localStorage.getItem('language') || 'sv'; // Use current language
+
             const chevron1Complete = [1, 2, 3, 4, 5, 6, 7].every(chapter => 
                 chevronMappings[`chevron1_star${chapter}`].every(exercise => localStorage.getItem(exercise) === "6")
             );
@@ -159,34 +234,34 @@ document.addEventListener('DOMContentLoaded', () => {
             
             if (chevron4Complete) { // All chevron4 stars (chapters 1–7, Part 4) full
                 rankImage.src = 'rank4.png';
-                rankName.textContent = 'Star Admiral';
-                rankTitle.textContent = 'Star Admiral';
-                rankDescription.textContent = 'Your relentless focus, dedication, and mastery have crowned you a piano virtuoso. Claim your place as Star Admiral of the Star Academy Piano School, master of all chapters!';
+                rankName.textContent = translations[lang].rankStarAdmiral;
+                rankTitle.textContent = translations[lang].rankStarAdmiral;
+                rankDescription.textContent = translations[lang].textboxStarAdmiral;
             } else if (chevron3Complete) { // All chevron3 stars (chapters 1–7, Part 3) full
                 rankImage.src = 'rank3.png';
-                rankName.textContent = 'Star Commander';
-                rankTitle.textContent = 'Star Commander';
-                rankDescription.textContent = 'With skill, you handle chords and arpeggios in all inversions, command scales across the piano, recognize note intervals, and boast a vast repertoire. Stand proud as a Star Commander of the Star Academy Piano School—conquer Part 4 in all chapters for Star Admiral!';
+                rankName.textContent = translations[lang].rankStarCommander;
+                rankTitle.textContent = translations[lang].rankStarCommander;
+                rankDescription.textContent = translations[lang].textboxStarCommander;
             } else if (chevron2Complete) { // All chevron2 stars (chapters 1–7, Part 2) full
                 rankImage.src = 'rank2.png';
-                rankName.textContent = 'Star Captain';
-                rankTitle.textContent = 'Star Captain';
-                rankDescription.textContent = 'You’ve taken up sight-reading, play songs with chords, and perform classical works. Stand proud as a Star Captain of the Star Academy Piano School—complete Part 3 in every chapter for Star Commander!';
+                rankName.textContent = translations[lang].rankStarCaptain;
+                rankTitle.textContent = translations[lang].rankStarCaptain;
+                rankDescription.textContent = translations[lang].textboxStarCaptain;
             } else if (chevron1Complete) { // All chevron1 stars (chapters 1–7, Part 1) full
                 rankImage.src = 'rank1.png';
-                rankName.textContent = 'Star Officer';
-                rankTitle.textContent = 'Star Officer';
-                rankDescription.textContent = 'With thorough dedication, you’ve learned key names, scales, root chords, and several pieces. Stand proud as a Star Officer of the Star Academy Piano School—conquer Part 2 in every chapter for Star Captain!';
+                rankName.textContent = translations[lang].rankStarOfficer;
+                rankTitle.textContent = translations[lang].rankStarOfficer;
+                rankDescription.textContent = translations[lang].textboxStarOfficer;
             } else if (sixStarCount >= 16) { // 16 or more stars golden, but chevron1 not complete
                 rankImage.src = 'rank0.png';
-                rankName.textContent = 'Star Cadet';
-                rankTitle.textContent = 'Star Cadet';
-                rankDescription.textContent = 'You’ve displayed steadfast resolve, securing six stars over 16 exercises in the Star Academy Piano School. Complete Part 1 in all seven chapters to claim Star Officer!';
+                rankName.textContent = translations[lang].rankStarCadet;
+                rankTitle.textContent = translations[lang].rankStarCadet;
+                rankDescription.textContent = translations[lang].textboxStarCadet;
             } else {
                 rankImage.src = 'rank-start.png';
-                rankName.textContent = 'Explorer';
-                rankTitle.textContent = 'Explorer';
-                rankDescription.textContent = 'You’re embarking on your piano adventure, learning notes, scales, chords, and arpeggios step by step. Complete 16 exercises to claim the Star Cadet rank!';
+                rankName.textContent = translations[lang].rankExplorer;
+                rankTitle.textContent = translations[lang].rankExplorer;
+                rankDescription.textContent = translations[lang].textboxExplorer;
             }
             
             // Keep the all-chapters logic for top rank
@@ -203,33 +278,14 @@ document.addEventListener('DOMContentLoaded', () => {
             });
             if (allChaptersComplete) {
                 rankImage.src = 'rank4.png';
-                rankName.textContent = 'Star Admiral';
-                rankTitle.textContent = 'Star Admiral';
-                rankDescription.textContent = 'Your relentless focus, dedication, and mastery have crowned you a piano virtuoso. Claim your place as Star Admiral of the Star Academy Piano School, master of all chapters!';
+                rankName.textContent = translations[lang].rankStarAdmiral;
+                rankTitle.textContent = translations[lang].rankStarAdmiral;
+                rankDescription.textContent = translations[lang].textboxStarAdmiral;
             }
         } else {
             console.log('rankImage, rankName, rankTitle, or rankDescription not found (expected on chapter pages)');
         }
     }
-
-    // Example popup creation (adjust based on your actual implementation)
-    function showPopup() {
-        const popup = document.createElement('div');
-        popup.className = 'popup';
-        const content = document.createElement('div');
-        content.className = 'popup-content';
-        content.innerHTML = `
-            <h2>Star Academy</h2>
-            <p>Please write your name...</p>
-            <input type="text" id="nameInput">
-            <button onclick="this.parentElement.parentElement.remove()">Submit</button>
-        `;
-        popup.appendChild(content);
-        document.body.appendChild(popup);
-    }
-
-    // Call showPopup when needed (e.g., on page load or button click)
-    // Uncomment to test: document.addEventListener('DOMContentLoaded', showPopup);
 
     // Initial update for star states (only runs if elements exist)
     updateStarStates();
@@ -237,8 +293,4 @@ document.addEventListener('DOMContentLoaded', () => {
     // Storage event listeners for HTTP/S and fallback for file://
     window.addEventListener('storage', updateStarStates);
     window.onstorage = updateStarStates; // Fallback for older browsers or file://
-
-    // Note: Scrolling issue on iPad landscape (40px scroll) reintroduced after mobile landscape fix.
-    // To fix in the future: Revisit the media query for iPad landscape to ensure `overflow-y: hidden`
-    // applies only to non-mobile devices, possibly by refining the `is-mobile` logic.
 });
