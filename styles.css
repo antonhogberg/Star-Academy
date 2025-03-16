@@ -765,7 +765,7 @@ button {
     cursor: pointer;
     transition: transform 0.3s ease;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    margin-top: 5px; /* 20px margin above the button to match top padding */
+    margin-top: 5px; /* Adjusted to 5px to fix spacing, matching your change */
 }
 
 button:hover {
