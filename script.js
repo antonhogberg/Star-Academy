@@ -16,7 +16,21 @@ const translations = {
         textboxStarOfficer: "With thorough dedication, you’ve learned key names, scales, root chords, and several pieces. Stand proud as a Star Officer of the Star Academy Piano School—conquer Part 2 in every chapter for Star Captain!",
         textboxStarCaptain: "You’ve taken up sight-reading, play songs with chords, and perform classical works. Stand proud as a Star Captain of the Star Academy Piano School—complete Part 3 in every chapter for Star Commander!",
         textboxStarCommander: "With skill, you handle chords and arpeggios in all inversions, command scales across the piano, recognize note intervals, and boast a vast repertoire. Stand proud as a Star Commander of the Star Academy Piano School—conquer Part 4 in all chapters for Star Admiral!",
-        textboxStarAdmiral: "Your relentless focus, dedication, and mastery have crowned you a piano virtuoso. Claim your place as Star Admiral of the Star Academy Piano School, master of all chapters!"
+        textboxStarAdmiral: "Your relentless focus, dedication, and mastery have crowned you a piano virtuoso. Claim your place as Star Admiral of the Star Academy Piano School, master of all chapters!",
+        chapter1: "Chapter 1",
+        chapter2: "Chapter 2",
+        chapter3: "Chapter 3",
+        chapter4: "Chapter 4",
+        chapter5: "Chapter 5",
+        chapter6: "Chapter 6",
+        chapter7: "Chapter 7",
+        chapterName1: "Piano Basics",
+        chapterName2: "Scales and Notes",
+        chapterName3: "Chords Introduction",
+        chapterName4: "Arpeggios and Techniques",
+        chapterName5: "Sight-Reading Basics",
+        chapterName6: "Classical Repertoire",
+        chapterName7: "Mastery and Performance"
     },
     sv: {
         menuFrontPage: "Framsida",
@@ -34,7 +48,21 @@ const translations = {
         textboxStarOfficer: "Med grundlig hängivenhet har du lärt dig tangentnamn, skalor, grundackord och flera stycken. Stå stolt som en Stjärnofficer vid Stjärnakademiens pianoskola—erövra del 2 i varje kapitel för att bli Stjärnkapten!",
         textboxStarCaptain: "Du har börjat med sight-reading, spelar låtar med ackord och framför klassiska verk. Stå stolt som en Stjärnkapten vid Stjärnakademiens pianoskola—slutför del 3 i varje kapitel för att bli Stjärnkommendör!",
         textboxStarCommander: "Med skicklighet hanterar du ackord och arpeggion i alla inversioner, behärskar skalor över hela pianot, känner igen notintervall och har en omfattande repertoar. Stå stolt som en Stjärnkommendör vid Stjärnakademiens pianoskola—erövra del 4 i alla kapitel för att bli Stjärnamiral!",
-        textboxStarAdmiral: "Din obevekliga fokus, hängivenhet och mästerskap har krönt dig till en pianovirtuos. Ta din plats som Stjärnamiral vid Stjärnakademiens pianoskola, mästare över alla kapitel!"
+        textboxStarAdmiral: "Din obevekliga fokus, hängivenhet och mästerskap har krönt dig till en pianovirtuos. Ta din plats som Stjärnamiral vid Stjärnakademiens pianoskola, mästare över alla kapitel!",
+        chapter1: "Kapitel 1",
+        chapter2: "Kapitel 2",
+        chapter3: "Kapitel 3",
+        chapter4: "Kapitel 4",
+        chapter5: "Kapitel 5",
+        chapter6: "Kapitel 6",
+        chapter7: "Kapitel 7",
+        chapterName1: "Pianogrunderna",
+        chapterName2: "Skalor och Noter",
+        chapterName3: "Ackordinlärning",
+        chapterName4: "Arpeggion och Tekniker",
+        chapterName5: "Sight-Reading Grunderna",
+        chapterName6: "Klassisk Repertoar",
+        chapterName7: "Mästerskap och Uppträdande"
     }
 };
 
@@ -42,6 +70,7 @@ const translations = {
 function switchLanguage(lang) {
     // Store the selected language in localStorage
     localStorage.setItem('language', lang);
+    console.log(`Switching language to: ${lang}`);
 
     // Update menu links
     document.querySelectorAll('.menu-link').forEach(link => {
@@ -62,12 +91,30 @@ function switchLanguage(lang) {
     if (popupWelcome) popupWelcome.textContent = translations[lang].popupWelcome;
     if (popupEnterName) popupEnterName.textContent = translations[lang].popupEnterName;
 
+    // Update chapter title (if present)
+    const chapterNumber = document.querySelector('.chapter-number');
+    const chapterName = document.querySelector('.chapter-name');
+    if (chapterNumber && chapterName) {
+        const chapterNum = window.location.pathname.match(/chapter(\d+)\.html/)?.[1];
+        if (chapterNum) {
+            chapterNumber.textContent = translations[lang][`chapter${chapterNum}`];
+            chapterName.textContent = translations[lang][`chapterName${chapterNum}`];
+        }
+    }
+
     // Update rank badge and textbox (if present)
     const rankName = document.getElementById('rankName');
     const rankTitle = document.getElementById('rankTitle');
     const rankDescription = document.getElementById('rankDescription');
     if (rankName && rankTitle && rankDescription) {
+        console.log('Found rank elements, updating with updateStarStates()');
         updateStarStates(); // Re-run updateStarStates to apply the new language
+    } else {
+        console.log('Rank elements not found:', {
+            rankName: !!rankName,
+            rankTitle: !!rankTitle,
+            rankDescription: !!rankDescription
+        });
     }
 }
 
@@ -218,6 +265,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (rankImage && rankName && rankTitle && rankDescription) {
             const lang = localStorage.getItem('language') || 'sv'; // Use current language
+            console.log(`Updating rank elements with language: ${lang}`);
 
             const chevron1Complete = [1, 2, 3, 4, 5, 6, 7].every(chapter => 
                 chevronMappings[`chevron1_star${chapter}`].every(exercise => localStorage.getItem(exercise) === "6")
@@ -237,31 +285,37 @@ document.addEventListener('DOMContentLoaded', () => {
                 rankName.textContent = translations[lang].rankStarAdmiral;
                 rankTitle.textContent = translations[lang].rankStarAdmiral;
                 rankDescription.textContent = translations[lang].textboxStarAdmiral;
+                console.log(`Set rank to Star Admiral (${translations[lang].rankStarAdmiral})`);
             } else if (chevron3Complete) { // All chevron3 stars (chapters 1–7, Part 3) full
                 rankImage.src = 'rank3.png';
                 rankName.textContent = translations[lang].rankStarCommander;
                 rankTitle.textContent = translations[lang].rankStarCommander;
                 rankDescription.textContent = translations[lang].textboxStarCommander;
+                console.log(`Set rank to Star Commander (${translations[lang].rankStarCommander})`);
             } else if (chevron2Complete) { // All chevron2 stars (chapters 1–7, Part 2) full
                 rankImage.src = 'rank2.png';
                 rankName.textContent = translations[lang].rankStarCaptain;
                 rankTitle.textContent = translations[lang].rankStarCaptain;
                 rankDescription.textContent = translations[lang].textboxStarCaptain;
+                console.log(`Set rank to Star Captain (${translations[lang].rankStarCaptain})`);
             } else if (chevron1Complete) { // All chevron1 stars (chapters 1–7, Part 1) full
                 rankImage.src = 'rank1.png';
                 rankName.textContent = translations[lang].rankStarOfficer;
                 rankTitle.textContent = translations[lang].rankStarOfficer;
                 rankDescription.textContent = translations[lang].textboxStarOfficer;
+                console.log(`Set rank to Star Officer (${translations[lang].rankStarOfficer})`);
             } else if (sixStarCount >= 16) { // 16 or more stars golden, but chevron1 not complete
                 rankImage.src = 'rank0.png';
                 rankName.textContent = translations[lang].rankStarCadet;
                 rankTitle.textContent = translations[lang].rankStarCadet;
                 rankDescription.textContent = translations[lang].textboxStarCadet;
+                console.log(`Set rank to Star Cadet (${translations[lang].rankStarCadet})`);
             } else {
                 rankImage.src = 'rank-start.png';
                 rankName.textContent = translations[lang].rankExplorer;
                 rankTitle.textContent = translations[lang].rankExplorer;
                 rankDescription.textContent = translations[lang].textboxExplorer;
+                console.log(`Set rank to Explorer (${translations[lang].rankExplorer})`);
             }
             
             // Keep the all-chapters logic for top rank
@@ -281,9 +335,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 rankName.textContent = translations[lang].rankStarAdmiral;
                 rankTitle.textContent = translations[lang].rankStarAdmiral;
                 rankDescription.textContent = translations[lang].textboxStarAdmiral;
+                console.log(`Set rank to Star Admiral (all chapters complete) (${translations[lang].rankStarAdmiral})`);
             }
         } else {
-            console.log('rankImage, rankName, rankTitle, or rankDescription not found (expected on chapter pages)');
+            console.log('Rank elements not found:', {
+                rankImage: !!rankImage,
+                rankName: !!rankName,
+                rankTitle: !!rankTitle,
+                rankDescription: !!rankDescription
+            });
         }
     }
 
