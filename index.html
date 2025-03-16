@@ -110,6 +110,10 @@
             <a href="chapter5.html" class="menu-link">Chapter 5</a>
             <a href="chapter6.html" class="menu-link">Chapter 6</a>
             <a href="chapter7.html" class="menu-link">Chapter 7</a>
+            <div class="language-switcher">
+                <span class="flag" onclick="switchLanguage('en')">🇬🇧</span>
+                <span class="flag" onclick="switchLanguage('sv')">🇸🇪</span>
+            </div>
         </div>
     </nav>
     <div class="layout-container">
@@ -271,25 +275,26 @@ xmlns:svg="http://www.w3.org/2000/svg"><defs
     d="m 550.6834,262.84356 6.19876,-4.40565 7.91975,5.56609 c 4.35588,3.06138 7.98306,5.50291 8.06043,5.42566 0.0775,-0.0771 -1.20459,-4.1572 -2.84879,-9.06652 l -2.98935,-8.92597 2.61723,-1.91336 c 1.43948,-1.0524 5.00332,-3.6016 7.91957,-5.66493 l 5.30233,-3.75156 -9.91509,-0.13643 -9.91506,-0.13644 -2.95151,-8.78416 c -1.62338,-4.83132 -3.06988,-8.66913 -3.21452,-8.52853 -0.14474,0.14059 -1.53146,4.04147 -3.08186,8.66855 l -2.81897,8.41288 -9.98887,0.25209 -9.98883,0.25208 7.87788,5.54795 c 4.33287,3.05137 7.88076,5.78262 7.88427,6.06947 0.003,0.28685 -1.24351,4.25092 -2.77108,8.80907 -3.26875,9.7536 -3.22665,9.46021 -1.13623,7.92263 0.90266,-0.66396 4.43064,-3.18973 7.83994,-5.61289 z"
     id="chevron4_star1" /></g></svg>
     <div class="text-box">
-        <h2 id="rankTitle">Explorer</h2>
-        <p id="rankDescription">You’re embarking on your piano adventure, learning notes, scales, chords, and arpeggios step by step. Complete 16 exercises to claim the Star Cadet rank!</p>
+        <h2 id="rankTitle"></h2>
+        <p id="rankDescription"></p>
     </div>
     <div id="namePopup" class="popup" style="display: none;">
         <div class="popup-content">
-            <h2>Welcome to Star Academy!</h2>
-            <p>Please enter your name:</p>
+            <h2 id="popupWelcome"></h2>
+            <p id="popupEnterName"></p>
             <input type="text" id="nameInput" placeholder="Your Name" onkeypress="if(event.key === 'Enter') saveName()">
             <button onclick="saveName()">Submit</button>
         </div>
     </div>
     <div class="rank-badge">
         <img id="rankImage" src="rank-start.png" alt="Rank Badge" style="max-width: 100%; height: auto; display: block; margin: 0 auto;">
-        <div id="rankName">Utforskare/Explorer</div>
+        <div id="rankName"></div>
         <div id="userNameDisplay"></div>
     </div>
 </div>
 </div>
 <script src="chapter.js"></script>
 <script src="script.js"></script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9216a5389f55b058',t:'MTc0MjE1MzIyMC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
 </body>
 </html>
