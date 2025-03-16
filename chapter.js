@@ -9,9 +9,13 @@ document.addEventListener('DOMContentLoaded', () => {
         'six-stars.png'   // Level 6: 6 golden stars
     ];
     const partsContainer = document.querySelector('.parts');
-    const chapterNum = parseInt(document.location.pathname.match(/chapter(\d+)/)[1]) || 1; // Default to 1 if not found
+    const chapterNumMatch = document.location.pathname.match(/chapter(\d+)/);
+    const chapterNum = chapterNumMatch ? parseInt(chapterNumMatch[1]) : 1; // Default to 1 if not found
     const exercisesPerPart = 4;
     const parts = 4;
+
+    // Get current language from localStorage (set by script.js)
+    const lang = localStorage.getItem('language') || 'sv';
 
     for (let part = 0; part < parts; part++) {
         const partDiv = document.createElement('div');
@@ -34,8 +38,13 @@ document.addEventListener('DOMContentLoaded', () => {
             img.className = 'star';
             img.dataset.exercise = exerciseKey;
 
+            // Format the exercise code label based on language
             const codeLabel = document.createElement('div');
-            codeLabel.textContent = exerciseCode;
+            if (lang === 'sv') {
+                codeLabel.textContent = `Kapitel ${chapterNum}: Del ${part + 1}: Övning ${i + 1}`;
+            } else {
+                codeLabel.textContent = `Chapter ${chapterNum}: Part ${part + 1}: Exercise ${i + 1}`;
+            }
             codeLabel.className = 'exercise-code';
 
             img.addEventListener('click', () => {
