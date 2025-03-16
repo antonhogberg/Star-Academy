@@ -749,11 +749,10 @@ body {
     text-align: center;
     border: 2px solid #ffd700;
     box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
-    font-family: Cochin, Georgia, Arial, sans-serif; /* Restored font for "Welcome..." and "Please enter your name" */
 }
 
 .popup-content #nameInput {
-    font-family: Cochin, Georgia, Arial, sans-serif; /* Match popup font */
+    padding: 6px 12px; /* Restored to match submit button height (~28px) */
     margin: 10px 0; /* Consistent spacing */
 }
 
