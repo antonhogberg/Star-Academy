@@ -187,7 +187,7 @@ body {
     .chapter-name {
         font-size: 28px; /* Increased from 20px for landscape */
     }
-    body:not(.is-mobile) {
+    body:not(.is-mobile) { /* Fixed syntax */
         overflow-y: hidden; /* Disable scrolling in landscape for iPad */
     }
     .layout-container:not(.is-mobile) {
@@ -744,11 +744,19 @@ body {
 
 .popup-content {
     background: #fff;
-    padding: 20px 40px; /* Increased horizontal padding to 40px to push edges out */
+    padding: 20px;
     border-radius: 5px;
     text-align: center;
     border: 2px solid #ffd700;
     box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+    font-family: Cochin, Georgia, Arial, sans-serif; /* Restored font for "Welcome..." and "Please enter your name" */
+}
+
+.popup-content #nameInput {
+    padding: 6px 12px; /* Match button padding to adjust height */
+    font-family: Cochin, Georgia, Arial, sans-serif; /* Match popup font */
+    margin: 10px 0; /* Consistent spacing */
+    box-sizing: border-box; /* Ensure padding doesn’t affect width */
 }
 
 /* iPad-specific scaling for popup */
