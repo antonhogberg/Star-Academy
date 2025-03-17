@@ -782,9 +782,22 @@ button:hover {
 .language-switcher {
     display: flex;
     justify-content: center;
-    gap: 10px;
+    align-items: center; /* Ensures vertical alignment of flags and separator */
     padding: 10px;
     margin-top: 10px;
+}
+
+.language-switcher .flag {
+    font-size: 32px; /* Doubles the size from a typical 16px default */
+    line-height: 1; /* Keeps the emoji height tight */
+}
+
+.language-switcher .flag:first-child::after {
+    content: "|"; /* Adds the vertical bar */
+    font-size: 36px; /* Slightly taller than the flags (32px) */
+    color: #000; /* Matches typical text color; adjust if needed */
+    margin: 0 10px; /* Spaces it evenly between flags */
+    line-height: 1; /* Keeps it vertically centered */
 }
 
 .flag {
