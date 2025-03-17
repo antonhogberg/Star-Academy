@@ -785,16 +785,12 @@ button:hover {
     padding: 10px 0 10px 40px; /* 40px left padding to match chapter links, 0 right padding */
     margin-top: 10px;
     justify-content: flex-start; /* Aligns to the left */
-    /* Debug border for the container */
-    border: 1px dashed red; /* Temporary debug border */
 }
 
 .language-switcher .flag {
     font-size: 48px; /* Keep the 50% bigger size */
     line-height: 1; /* Keeps emoji height tight */
     margin-right: 15px; /* Space between flags */
-    /* Debug border for each flag */
-    border: 1px dotted blue; /* Temporary debug border */
 }
 
 .flag {
