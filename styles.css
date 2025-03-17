@@ -790,7 +790,7 @@ button:hover {
 .language-switcher .flag {
     font-size: 48px; /* Keep the 50% bigger size */
     line-height: 1; /* Keeps emoji height tight */
-    margin-right: 15px; /* Space between flags */
+    margin-right: 25px; /* Space between flags */
 }
 
 .flag {
