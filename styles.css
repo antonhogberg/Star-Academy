@@ -781,26 +781,16 @@ button:hover {
 
 .language-switcher {
     display: flex;
-    align-items: center; /* Vertically aligns flags and separator */
-    padding: 10px;
+    align-items: center; /* Vertically aligns flags */
+    padding: 10px 10px; /* Matches menu padding (20px left/right total, 10px each side) */
     margin-top: 10px;
-    justify-content: flex-start; /* Aligns content to the left, matching chapter links */
+    justify-content: flex-start; /* Aligns to the left, matching menu-link padding */
 }
 
 .language-switcher .flag {
-    font-size: 32px; /* Doubles the default emoji size */
+    font-size: 48px; /* 50% bigger than 32px, assuming 32px was the previous doubled size */
     line-height: 1; /* Keeps emoji height tight */
-}
-
-.language-switcher .flag:first-child::after {
-    content: "|"; /* The separator */
-    font-size: 32px; /* Fixed size, matches flag height but won’t scale */
-    line-height: 1; /* Keeps it vertically centered */
-    margin: 0 10px; /* Spaces it evenly between flags */
-    color: #000; /* Matches text color; adjust if needed */
-    font-weight: 300; /* Makes the | thinner; adjust as needed */
-    position: relative;
-    top: 2px; /* Slightly taller effect by nudging it up */
+    margin-right: 15px; /* Adds space between flags instead of | */
 }
 
 .flag {
