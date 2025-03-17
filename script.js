@@ -1,7 +1,7 @@
 // Language translations
 const translations = {
     en: {
-        menuFrontPage: "Front Page",
+        menuFrontPage: "Star Overview",
         menuChapter: "Chapter",
         popupWelcome: "Welcome to Star Academy!",
         popupEnterName: "Please enter your name:",
@@ -33,7 +33,7 @@ const translations = {
         chapterName7: "Repertoire"
     },
     sv: {
-        menuFrontPage: "Framsida",
+        menuFrontPage: "Stjärnöversikt",
         menuChapter: "Kapitel",
         popupWelcome: "Välkommen till Stjärnakademien!",
         popupEnterName: "Skriv ditt namn här:",
