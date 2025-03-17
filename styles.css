@@ -782,7 +782,7 @@ button:hover {
 .language-switcher {
     display: flex;
     align-items: center; /* Vertically aligns flags */
-    padding: 10px 0 10px 40px; /* 40px left padding to match chapter links, 0 right padding */
+    padding: 10px 0 10px 37px; /* 40px left padding to match chapter links, 0 right padding */
     margin-top: 10px;
     justify-content: flex-start; /* Aligns to the left */
 }
