@@ -782,15 +782,19 @@ button:hover {
 .language-switcher {
     display: flex;
     align-items: center; /* Vertically aligns flags */
-    padding: 10px 10px; /* Matches menu padding (20px left/right total, 10px each side) */
+    padding: 10px 0 10px 40px; /* 40px left padding to match chapter links, 0 right padding */
     margin-top: 10px;
-    justify-content: flex-start; /* Aligns to the left, matching menu-link padding */
+    justify-content: flex-start; /* Aligns to the left */
+    /* Debug border for the container */
+    border: 1px dashed red; /* Temporary debug border */
 }
 
 .language-switcher .flag {
-    font-size: 48px; /* 50% bigger than 32px, assuming 32px was the previous doubled size */
+    font-size: 48px; /* Keep the 50% bigger size */
     line-height: 1; /* Keeps emoji height tight */
-    margin-right: 15px; /* Adds space between flags instead of | */
+    margin-right: 15px; /* Space between flags */
+    /* Debug border for each flag */
+    border: 1px dotted blue; /* Temporary debug border */
 }
 
 .flag {
