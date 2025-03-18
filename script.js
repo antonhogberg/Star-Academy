@@ -3,7 +3,7 @@ const translations = {
     en: {
         menuFrontPage: "Star Overview",
         menuChapter: "Chapter",
-        menuStudents: "Manage Students", // Added
+        menuStudents: "Manage Students",
         popupWelcome: "Welcome to Star Academy!",
         popupEnterName: "Please enter your name:",
         rankExplorer: "Explorer",
@@ -36,7 +36,7 @@ const translations = {
     sv: {
         menuFrontPage: "Stjärnöversikt",
         menuChapter: "Kapitel",
-        menuStudents: "Hantera Studenter", // Added
+        menuStudents: "Hantera elever",
         popupWelcome: "Välkommen till Stjärnakademien!",
         popupEnterName: "Skriv ditt namn här:",
         rankExplorer: "Utforskare",
@@ -277,15 +277,35 @@ function switchLanguage(lang) {
         const href = link.getAttribute('href').toLowerCase();
         if (href === 'index.html') {
             link.textContent = translations[lang].menuFrontPage;
+            document.title = `Star Academy - ${translations[lang].menuFrontPage}`;
         } else if (href === 'students.html') {
             link.textContent = translations[lang].menuStudents;
+            document.title = `Star Academy - ${translations[lang].menuStudents}`;
         } else {
             const chapterNum = href.match(/chapter(\d+)\.html/)?.[1];
             if (chapterNum) {
                 link.textContent = `${translations[lang].menuChapter} ${chapterNum}`;
+                document.title = `Star Academy - ${translations[lang].menuChapter} ${chapterNum}`;
             }
         }
     });
+
+    // Update alternative title for Swedish
+    if (lang === 'sv') {
+        document.querySelectorAll('.menu-link').forEach(link => {
+            const href = link.getAttribute('href').toLowerCase();
+            if (href === 'index.html') {
+                document.title = `Stjärnakademien - ${translations[lang].menuFrontPage}`;
+            } else if (href === 'students.html') {
+                document.title = `Stjärnakademien - ${translations[lang].menuStudents}`;
+            } else {
+                const chapterNum = href.match(/chapter(\d+)\.html/)?.[1];
+                if (chapterNum) {
+                    document.title = `Stjärnakademien - ${translations[lang].menuChapter} ${chapterNum}`;
+                }
+            }
+        });
+    }
 
     // Update popup text (if present)
     const popupWelcome = document.querySelector('#namePopup h2');
