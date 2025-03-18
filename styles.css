@@ -809,7 +809,7 @@ button:hover {
     text-align: center;
 }
 
-.student-manager h2 {
+.student-manager h1 {
     font-family: Cochin, Georgia, Arial, sans-serif;
     font-size: 24px;
     margin-bottom: 20px;
@@ -817,8 +817,9 @@ button:hover {
 
 .student-manager input {
     padding: 10px;
-    margin-right: 10px;
+    margin: 10px 0;
     font-size: 16px;
+    width: 200px;
 }
 
 .student-manager button {
@@ -828,11 +829,18 @@ button:hover {
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    width: 100px;
+    color: #000;
+    margin: 10px 0;
+}
+
+.student-manager div {
+    margin: 10px 0;
 }
 
 .student-manager select {
     padding: 10px;
     font-size: 16px;
-    margin-top: 20px;
     width: 200px;
+    margin: 10px 0;
 }
