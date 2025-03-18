@@ -52,9 +52,20 @@
             const lang = localStorage.getItem('language') || 'sv';
             const studentTitle = document.getElementById('studentTitle');
             const studentsLabel = document.getElementById('studentsLabel');
+            const newStudentInput = document.getElementById('newStudentName');
+
             if (studentTitle && studentsLabel) {
                 studentTitle.textContent = lang === 'en' ? 'Manage Students' : 'Hantera elever';
                 studentsLabel.textContent = lang === 'en' ? 'Students' : 'Elever';
+            }
+
+            // Add Enter key functionality to trigger Add button
+            if (newStudentInput) {
+                newStudentInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter' && newStudentInput.value.trim()) {
+                        addStudent();
+                    }
+                });
             }
         });
     </script>

@@ -62,13 +62,23 @@ function switchStudent() {
 
 function updateDropdown() {
     const select = document.getElementById('studentSelect');
-    select.innerHTML = '<option value="">Select a student</option>';
-    for (let name in studentsData.students) {
-        const option = document.createElement('option');
-        option.value = name;
-        option.textContent = name;
-        if (name === studentsData.currentStudent) option.selected = true;
-        select.appendChild(option);
+    if (select) {
+        // Clear existing options except the default
+        Array.from(select.options).forEach(option => {
+            if (option.value !== '') select.remove(option);
+        });
+
+        // Get student names and sort alphabetically
+        const studentNames = Object.keys(studentsData.students || {}).sort((a, b) => a.localeCompare(b));
+
+        // Add sorted student options
+        studentNames.forEach(name => {
+            const option = document.createElement('option');
+            option.value = name;
+            option.textContent = name;
+            if (name === studentsData.currentStudent) option.selected = true;
+            select.appendChild(option);
+        });
     }
 }
 
@@ -76,6 +86,8 @@ document.addEventListener('DOMContentLoaded', () => {
     updateDropdown();
     // Update page title based on language
     const lang = localStorage.getItem('language') || 'sv';
-    document.getElementById('manageStudentsTitle').textContent = 
-        lang === 'sv' ? 'Hantera Studenter' : 'Manage Students';
+    const studentTitle = document.getElementById('studentTitle'); // Updated to match HTML
+    if (studentTitle) {
+        studentTitle.textContent = lang === 'en' ? 'Manage Students' : 'Hantera elever';
+    }
 });
