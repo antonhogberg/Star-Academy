@@ -803,3 +803,36 @@ button:hover {
     transform: scale(1.2);
 }
 /* Note: Removed mobile landscape rank badge sizing and chapter padding (20 rows) per user request to deprioritize mobile landscape. */
+
+.student-manager {
+    padding: 20px;
+    text-align: center;
+}
+
+.student-manager h2 {
+    font-family: Cochin, Georgia, Arial, sans-serif;
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.student-manager input {
+    padding: 10px;
+    margin-right: 10px;
+    font-size: 16px;
+}
+
+.student-manager button {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #ffd700;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.student-manager select {
+    padding: 10px;
+    font-size: 16px;
+    margin-top: 20px;
+    width: 200px;
+}

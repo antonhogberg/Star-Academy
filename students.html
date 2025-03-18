@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta charset="UTF-8">
+    <title>Stjärnakademien - Manage Students</title>
+    <link rel="stylesheet" href="styles.css">
+    <script>
+        function setViewportHeight() {
+            let vh = window.innerHeight * 0.01;
+            document.documentElement.style.setProperty('--vh', `${vh}px`);
+        }
+        window.addEventListener('resize', setViewportHeight);
+        window.addEventListener('orientationchange', setViewportHeight);
+        setViewportHeight();
+    </script>
+</head>
+<body>
+    <nav class="hamburger-nav">
+        <div class="hamburger" aria-expanded="false" aria-controls="main-menu">☰</div>
+        <div class="menu" id="main-menu">
+            <span class="close-btn" aria-label="Close menu">✖</span>
+            <a href="index.html" class="menu-link">Star Overview</a>
+            <a href="chapter1.html" class="menu-link">Chapter 1</a>
+            <a href="chapter2.html" class="menu-link">Chapter 2</a>
+            <a href="chapter3.html" class="menu-link">Chapter 3</a>
+            <a href="chapter4.html" class="menu-link">Chapter 4</a>
+            <a href="chapter5.html" class="menu-link">Chapter 5</a>
+            <a href="chapter6.html" class="menu-link">Chapter 6</a>
+            <a href="chapter7.html" class="menu-link">Chapter 7</a>
+            <a href="students.html" class="menu-link">Manage Students</a>
+            <div class="language-switcher">
+                <span class="flag" onclick="switchLanguage('en')">🇬🇧</span>
+                <span class="flag" onclick="switchLanguage('sv')">🇸🇪</span>
+            </div>
+        </div>
+    </nav>
+    <div class="student-manager">
+        <h2 id="manageStudentsTitle">Manage Students</h2>
+        <input type="text" id="newStudentName" placeholder="Enter student name">
+        <button onclick="addStudent()">Add Student</button>
+        <select id="studentSelect" onchange="switchStudent()">
+            <option value="">Select a student</option>
+        </select>
+    </div>
+    <script src="script.js"></script>
+    <script src="students.js"></script>
+</body>
+</html>
