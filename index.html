@@ -17,25 +17,42 @@
 
         // Handle name and menu functionality
         document.addEventListener('DOMContentLoaded', () => {
-            const savedName = localStorage.getItem('userName');
+            let studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || {
+                students: {},
+                currentStudent: localStorage.getItem('userName') || ''
+            };
             const userNameDisplay = document.getElementById('userNameDisplay');
             const namePopup = document.getElementById('namePopup');
             const nameInput = document.getElementById('nameInput');
 
-            // Ensure single userNameDisplay update
-            if (userNameDisplay) {
-                if (savedName) {
-                    userNameDisplay.textContent = savedName;
-                } else if (namePopup) {
-                    namePopup.style.display = 'flex';
-                }
+            // Initialize first student if none exist
+            if (!studentsData.currentStudent) {
+                if (namePopup) namePopup.style.display = 'flex';
+            } else {
+                userNameDisplay.textContent = studentsData.currentStudent;
             }
 
             // Save name function
             function saveName() {
                 const name = nameInput?.value.trim();
                 if (name && userNameDisplay) {
-                    localStorage.setItem('userName', name);
+                    studentsData.students[name] = {
+                        name: name,
+                        progress: {},
+                        rank: "Explorer"
+                    };
+                    for (let chapter = 1; chapter <= 7; chapter++) {
+                        for (let part = 1; part <= 4; part++) {
+                            for (let exercise = 1; exercise <= 4; exercise++) {
+                                const key = `exercise${chapter}:${part}:${exercise}`;
+                                studentsData.students[name].progress[key] = 
+                                    localStorage.getItem(key) || "0";
+                                localStorage.removeItem(key); // Clean up old keys
+                            }
+                        }
+                    }
+                    studentsData.currentStudent = name;
+                    localStorage.setItem('starAcademyStudents', JSON.stringify(studentsData));
                     userNameDisplay.textContent = name;
                     if (namePopup) namePopup.style.display = 'none';
                 } else {
@@ -50,7 +67,7 @@
                 if (e.key === 'Enter') saveName();
             });
 
-            // Menu functionality
+            // Menu functionality (unchanged)
             const hamburger = document.querySelector('.hamburger');
             const menu = document.querySelector('.menu');
             const closeBtn = document.querySelector('.close-btn');
@@ -102,7 +119,7 @@
         <div class="hamburger" aria-expanded="false" aria-controls="main-menu">☰</div>
         <div class="menu" id="main-menu">
             <span class="close-btn" aria-label="Close menu">✖</span>
-            <a href="index.html" class="menu-link">Front Page</a>
+            <a href="index.html" class="menu-link">Star Overview</a>
             <a href="chapter1.html" class="menu-link">Chapter 1</a>
             <a href="chapter2.html" class="menu-link">Chapter 2</a>
             <a href="chapter3.html" class="menu-link">Chapter 3</a>
@@ -110,6 +127,7 @@
             <a href="chapter5.html" class="menu-link">Chapter 5</a>
             <a href="chapter6.html" class="menu-link">Chapter 6</a>
             <a href="chapter7.html" class="menu-link">Chapter 7</a>
+            <a href="students.html" class="menu-link">Manage Students</a>
             <div class="language-switcher">
                 <span class="flag" onclick="switchLanguage('en')">🇬🇧</span>
                 <span class="flag" onclick="switchLanguage('sv')">🇸🇪</span>

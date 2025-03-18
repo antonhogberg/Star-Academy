@@ -1,16 +1,16 @@
 document.addEventListener('DOMContentLoaded', () => {
     const starImages = [
-        'white-star.png', // Level 0: Outlined star
-        'one-star.png',   // Level 1: 1 golden star
-        'two-stars.png',  // Level 2: 2 golden stars
-        'three-stars.png', // Level 3: 3 golden stars
-        'four-stars.png',  // Level 4: 4 golden stars
-        'five-stars.png',  // Level 5: 5 golden stars
-        'six-stars.png'   // Level 6: 6 golden stars
+        'white-star.png',
+        'one-star.png',
+        'two-stars.png',
+        'three-stars.png',
+        'four-stars.png',
+        'five-stars.png',
+        'six-stars.png'
     ];
     const partsContainer = document.querySelector('.parts');
     const chapterNumMatch = document.location.pathname.match(/chapter(\d+)/);
-    const chapterNum = chapterNumMatch ? parseInt(chapterNumMatch[1]) : 1; // Default to 1 if not found
+    const chapterNum = chapterNumMatch ? parseInt(chapterNumMatch[1]) : 1;
     const exercisesPerPart = 4;
     const parts = 4;
 
@@ -23,8 +23,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
         for (let i = 0; i < exercisesPerPart; i++) {
             const exerciseCode = `${chapterNum}:${part + 1}:${i + 1}`;
-            const exerciseKey = `exercise${exerciseCode}`; // Use structured key, e.g., "exercise1:1:1"
-            let level = localStorage.getItem(exerciseKey) ? parseInt(localStorage.getItem(exerciseKey)) : 0;
+            const exerciseKey = `exercise${exerciseCode}`;
+            const studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
+            const progress = studentsData.students[studentsData.currentStudent]?.progress || {};
+            let level = progress[exerciseKey] ? parseInt(progress[exerciseKey]) : 0;
 
             const starContainer = document.createElement('div');
             starContainer.className = 'star-container';
@@ -35,17 +37,21 @@ document.addEventListener('DOMContentLoaded', () => {
             img.className = 'star';
             img.dataset.exercise = exerciseKey;
 
-            // Keep the exercise code as raw numbers in both languages
             const codeLabel = document.createElement('div');
-            codeLabel.textContent = exerciseCode; // e.g., "1:1:1"
+            codeLabel.textContent = exerciseCode;
             codeLabel.className = 'exercise-code';
 
             img.addEventListener('click', () => {
+                const studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
+                const progress = studentsData.students[studentsData.currentStudent]?.progress || {};
+                let level = progress[exerciseKey] ? parseInt(progress[exerciseKey]) : 0;
                 img.style.opacity = '0';
                 setTimeout(() => {
-                    level = (level + 1) % 7; // Cycle through 0–6
+                    level = (level + 1) % 7;
                     img.src = starImages[level];
-                    localStorage.setItem(exerciseKey, level.toString());
+                    progress[exerciseKey] = level.toString();
+                    studentsData.students[studentsData.currentStudent].progress = progress;
+                    localStorage.setItem('starAcademyStudents', JSON.stringify(studentsData));
                     img.style.opacity = '1';
                 }, 300);
             });
