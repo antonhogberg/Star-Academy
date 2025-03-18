@@ -3,6 +3,7 @@ const translations = {
     en: {
         menuFrontPage: "Star Overview",
         menuChapter: "Chapter",
+        menuStudents: "Manage Students", // Added
         popupWelcome: "Welcome to Star Academy!",
         popupEnterName: "Please enter your name:",
         rankExplorer: "Explorer",
@@ -35,6 +36,7 @@ const translations = {
     sv: {
         menuFrontPage: "Stjärnöversikt",
         menuChapter: "Kapitel",
+        menuStudents: "Hantera Studenter", // Added
         popupWelcome: "Välkommen till Stjärnakademien!",
         popupEnterName: "Skriv ditt namn här:",
         rankExplorer: "Utforskare",
@@ -70,7 +72,10 @@ const translations = {
 function updateStarStates() {
     console.log('Storage check initiated, checking localStorage');
     console.log('All localStorage keys:', Object.keys(localStorage));
-    
+
+    const studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
+    const progress = studentsData.students[studentsData.currentStudent]?.progress || {};
+
     const allExercises = [];
     for (let chapter = 1; chapter <= 7; chapter++) {
         for (let part = 1; part <= 4; part++) {
@@ -82,8 +87,7 @@ function updateStarStates() {
 
     let sixStarCount = 0;
     allExercises.forEach(exerciseKey => {
-        const state = localStorage.getItem(exerciseKey) || 
-                    (exerciseKey.startsWith('exercise1') ? localStorage.getItem(exerciseKey.replace('exercise1:', 'exercise')) : null);
+        const state = progress[exerciseKey] || "0";
         console.log(`Checking ${exerciseKey} state:`, state);
         if (state === "6") sixStarCount++;
     });
@@ -146,8 +150,7 @@ function updateStarStates() {
         const star = document.getElementById(chevronStar);
         if (star) {
             const allSix = exercises.every(exercise => {
-                const state = localStorage.getItem(exercise) || 
-                            (exercise.startsWith('exercise1') ? localStorage.getItem(exercise.replace('exercise1:', 'exercise')) : null);
+                const state = progress[exercise] || "0";
                 console.log(`Checking ${exercise} for chevron ${chevronStar}:`, state);
                 return state === "6";
             });
@@ -174,78 +177,85 @@ function updateStarStates() {
     const rankDescription = document.getElementById('rankDescription');
 
     if (rankImage && rankName && rankTitle && rankDescription) {
-        const lang = localStorage.getItem('language') || 'sv'; // Use current language
+        const lang = localStorage.getItem('language') || 'sv';
         console.log(`Updating rank elements with language: ${lang}`);
 
         const chevron1Complete = [1, 2, 3, 4, 5, 6, 7].every(chapter => 
-            chevronMappings[`chevron1_star${chapter}`].every(exercise => localStorage.getItem(exercise) === "6")
+            chevronMappings[`chevron1_star${chapter}`].every(exercise => progress[exercise] === "6")
         );
         const chevron2Complete = [1, 2, 3, 4, 5, 6, 7].every(chapter => 
-            chevronMappings[`chevron2_star${chapter}`].every(exercise => localStorage.getItem(exercise) === "6")
+            chevronMappings[`chevron2_star${chapter}`].every(exercise => progress[exercise] === "6")
         );
         const chevron3Complete = [1, 2, 3, 4, 5, 6, 7].every(chapter => 
-            chevronMappings[`chevron3_star${chapter}`].every(exercise => localStorage.getItem(exercise) === "6")
+            chevronMappings[`chevron3_star${chapter}`].every(exercise => progress[exercise] === "6")
         );
         const chevron4Complete = [1, 2, 3, 4, 5, 6, 7].every(chapter => 
-            chevronMappings[`chevron4_star${chapter}`].every(exercise => localStorage.getItem(exercise) === "6")
+            chevronMappings[`chevron4_star${chapter}`].every(exercise => progress[exercise] === "6")
         );
-        
-        if (chevron4Complete) { // All chevron4 stars (chapters 1–7, Part 4) full
+
+        let newRank;
+        if (chevron4Complete) {
             rankImage.src = 'rank4.png';
-            rankName.textContent = translations[lang].rankStarAdmiral;
-            rankTitle.textContent = translations[lang].rankStarAdmiral;
+            newRank = translations[lang].rankStarAdmiral;
+            rankTitle.textContent = newRank;
             rankDescription.textContent = translations[lang].textboxStarAdmiral;
-            console.log(`Set rank to Star Admiral (${translations[lang].rankStarAdmiral})`);
-        } else if (chevron3Complete) { // All chevron3 stars (chapters 1–7, Part 3) full
+            console.log(`Set rank to Star Admiral (${newRank})`);
+        } else if (chevron3Complete) {
             rankImage.src = 'rank3.png';
-            rankName.textContent = translations[lang].rankStarCommander;
-            rankTitle.textContent = translations[lang].rankStarCommander;
+            newRank = translations[lang].rankStarCommander;
+            rankTitle.textContent = newRank;
             rankDescription.textContent = translations[lang].textboxStarCommander;
-            console.log(`Set rank to Star Commander (${translations[lang].rankStarCommander})`);
-        } else if (chevron2Complete) { // All chevron2 stars (chapters 1–7, Part 2) full
+            console.log(`Set rank to Star Commander (${newRank})`);
+        } else if (chevron2Complete) {
             rankImage.src = 'rank2.png';
-            rankName.textContent = translations[lang].rankStarCaptain;
-            rankTitle.textContent = translations[lang].rankStarCaptain;
+            newRank = translations[lang].rankStarCaptain;
+            rankTitle.textContent = newRank;
             rankDescription.textContent = translations[lang].textboxStarCaptain;
-            console.log(`Set rank to Star Captain (${translations[lang].rankStarCaptain})`);
-        } else if (chevron1Complete) { // All chevron1 stars (chapters 1–7, Part 1) full
+            console.log(`Set rank to Star Captain (${newRank})`);
+        } else if (chevron1Complete) {
             rankImage.src = 'rank1.png';
-            rankName.textContent = translations[lang].rankStarOfficer;
-            rankTitle.textContent = translations[lang].rankStarOfficer;
+            newRank = translations[lang].rankStarOfficer;
+            rankTitle.textContent = newRank;
             rankDescription.textContent = translations[lang].textboxStarOfficer;
-            console.log(`Set rank to Star Officer (${translations[lang].rankStarOfficer})`);
-        } else if (sixStarCount >= 16) { // 16 or more stars golden, but chevron1 not complete
+            console.log(`Set rank to Star Officer (${newRank})`);
+        } else if (sixStarCount >= 16) {
             rankImage.src = 'rank0.png';
-            rankName.textContent = translations[lang].rankStarCadet;
-            rankTitle.textContent = translations[lang].rankStarCadet;
+            newRank = translations[lang].rankStarCadet;
+            rankTitle.textContent = newRank;
             rankDescription.textContent = translations[lang].textboxStarCadet;
-            console.log(`Set rank to Star Cadet (${translations[lang].rankStarCadet})`);
+            console.log(`Set rank to Star Cadet (${newRank})`);
         } else {
             rankImage.src = 'rank-start.png';
-            rankName.textContent = translations[lang].rankExplorer;
-            rankTitle.textContent = translations[lang].rankExplorer;
+            newRank = translations[lang].rankExplorer;
+            rankTitle.textContent = newRank;
             rankDescription.textContent = translations[lang].textboxExplorer;
-            console.log(`Set rank to Explorer (${translations[lang].rankExplorer})`);
+            console.log(`Set rank to Explorer (${newRank})`);
         }
-        
+
+        rankName.textContent = newRank;
+        studentsData.students[studentsData.currentStudent].rank = newRank;
+        localStorage.setItem('starAcademyStudents', JSON.stringify(studentsData));
+
         // Keep the all-chapters logic for top rank
         const allChaptersComplete = [1, 2, 3, 4, 5, 6, 7].every(chapter => {
             const chapterExercises = Array.from({ length: 16 }, (_, i) =>
                 `exercise${chapter}:${Math.ceil((i + 1) / 4)}:${(i % 4) + 1}`
             );
             return chapterExercises.every(exercise => {
-                const state = localStorage.getItem(exercise) || 
-                            (exercise.startsWith('exercise1') ? localStorage.getItem(exercise.replace('exercise1:', 'exercise')) : null);
+                const state = progress[exercise] || "0";
                 console.log(`Checking rank badge ${exercise} state:`, state);
                 return state === "6";
             });
         });
         if (allChaptersComplete) {
             rankImage.src = 'rank4.png';
-            rankName.textContent = translations[lang].rankStarAdmiral;
-            rankTitle.textContent = translations[lang].rankStarAdmiral;
+            newRank = translations[lang].rankStarAdmiral;
+            rankName.textContent = newRank;
+            rankTitle.textContent = newRank;
             rankDescription.textContent = translations[lang].textboxStarAdmiral;
-            console.log(`Set rank to Star Admiral (all chapters complete) (${translations[lang].rankStarAdmiral})`);
+            studentsData.students[studentsData.currentStudent].rank = newRank;
+            localStorage.setItem('starAcademyStudents', JSON.stringify(studentsData));
+            console.log(`Set rank to Star Admiral (all chapters complete) (${newRank})`);
         }
     } else {
         console.log('Rank elements not found:', {
@@ -259,7 +269,6 @@ function updateStarStates() {
 
 // Function to switch language
 function switchLanguage(lang) {
-    // Store the selected language in localStorage
     localStorage.setItem('language', lang);
     console.log(`Switching language to: ${lang}`);
 
@@ -268,6 +277,8 @@ function switchLanguage(lang) {
         const href = link.getAttribute('href').toLowerCase();
         if (href === 'index.html') {
             link.textContent = translations[lang].menuFrontPage;
+        } else if (href === 'students.html') {
+            link.textContent = translations[lang].menuStudents;
         } else {
             const chapterNum = href.match(/chapter(\d+)\.html/)?.[1];
             if (chapterNum) {
@@ -301,7 +312,7 @@ function switchLanguage(lang) {
     const rankDescription = document.getElementById('rankDescription');
     if (rankName && rankTitle && rankDescription) {
         console.log('Found rank elements, updating with updateStarStates()');
-        updateStarStates(); // Re-run updateStarStates to apply the new language
+        updateStarStates();
     } else {
         console.log('Rank elements not found:', {
             rankName: !!rankName,
@@ -313,33 +324,25 @@ function switchLanguage(lang) {
 
 // Function to set initial language on page load
 function setInitialLanguage() {
-    // Check URL fragment for language (e.g., #english or #swedish)
     const hash = window.location.hash.replace('#', '').toLowerCase();
     let lang = hash === 'swedish' ? 'sv' : hash === 'english' ? 'en' : null;
-
-    // If no language in URL, check localStorage, default to Swedish for Swedish testers
     if (!lang) {
-        lang = localStorage.getItem('language') || 'sv'; // Default to Swedish
+        lang = localStorage.getItem('language') || 'sv';
     }
-
-    // Apply the language
     switchLanguage(lang);
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Set initial language and update star states
     setInitialLanguage();
-    updateStarStates(); // Ensure initial rank update
+    updateStarStates();
 
-    // Add .active-page to the current page's link with improved path matching
     console.log('Running active page detection script');
-    const currentPath = window.location.pathname.toLowerCase(); // e.g., "/TEST/chapter1.html" or "/chapter1.html"
+    const currentPath = window.location.pathname.toLowerCase();
     const links = document.querySelectorAll('.menu-link');
     console.log(`Found ${links.length} menu links`);
     links.forEach(link => {
-        const href = link.getAttribute('href')?.toLowerCase(); // e.g., "chapter1.html"
+        const href = link.getAttribute('href')?.toLowerCase();
         if (href) {
-            // Check if the current path ends with the href (handles directories)
             if (currentPath.endsWith(href) || (currentPath === '/' && href === 'index.html')) {
                 link.classList.add('active-page');
                 console.log(`Added .active-page to link: ${href} (matches ${currentPath})`);
