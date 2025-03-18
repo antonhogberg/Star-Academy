@@ -36,7 +36,7 @@ const translations = {
     sv: {
         menuFrontPage: "Stjärnöversikt",
         menuChapter: "Kapitel",
-        menuStudents: "Hantera Studenter", // Added
+        menuStudents: "Hantera elever", // Added
         popupWelcome: "Välkommen till Stjärnakademien!",
         popupEnterName: "Skriv ditt namn här:",
         rankExplorer: "Utforskare",
