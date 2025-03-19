@@ -36,7 +36,6 @@ document.addEventListener('DOMContentLoaded', () => {
             img.alt = `Exercise ${exerciseCode} - ${level === 0 ? 'Outlined Star' : `${level} Golden Stars`}`;
             img.className = 'star';
             img.dataset.exercise = exerciseKey;
-            img.dataset.isAnimating = 'false'; // Track animation state
 
             const codeLabel = document.createElement('div');
             codeLabel.textContent = exerciseCode;
@@ -52,16 +51,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 studentsData.students[studentsData.currentStudent].progress = progress;
                 localStorage.setItem('starAcademyStudents', JSON.stringify(studentsData));
 
-                // Queue the animation
-                if (img.dataset.isAnimating === 'false') {
-                    img.dataset.isAnimating = 'true';
-                    img.style.opacity = '0';
-                    setTimeout(() => {
-                        img.src = starImages[level];
-                        img.style.opacity = '1';
-                        img.dataset.isAnimating = 'false';
-                    }, 300);
-                }
+                // Animate the change (allow overlapping animations)
+                img.style.opacity = '0';
+                setTimeout(() => {
+                    img.src = starImages[level];
+                    img.style.opacity = '1';
+                }, 300);
             });
 
             starContainer.appendChild(img);
