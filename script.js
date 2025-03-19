@@ -227,7 +227,7 @@ function updateStarStates() {
             rankImage.src = 'rank-start.png';
             newRank = translations[lang].rankExplorer;
             rankTitle.textContent = newRank;
-            rankDescription.textContent = translations[lang].textboxStarExplorer;
+            rankDescription.textContent = translations[lang].textboxExplorer;
             console.log(`Set rank to Explorer (${newRank})`);
         }
 
