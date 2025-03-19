@@ -54,10 +54,8 @@
             const studentsLabel = document.getElementById('studentsLabel');
             const newStudentInput = document.getElementById('newStudentName');
 
-            if (studentTitle && studentsLabel) {
-                studentTitle.textContent = lang === 'en' ? 'Manage Students' : 'Hantera elever';
-                studentsLabel.textContent = lang === 'en' ? 'Students' : 'Elever';
-            }
+            // Initial language setup
+            switchLanguage(lang);
 
             // Add Enter key functionality to trigger Add button
             if (newStudentInput) {
@@ -67,10 +65,66 @@
                     }
                 });
             }
-
-            // Ensure initial language is set
-            switchLanguage(lang);
         });
+    </script>
+    <script>
+        // Override switchLanguage to include students.html updates
+        window.switchLanguage = (lang) => {
+            localStorage.setItem('language', lang);
+            console.log(`Switching language to: ${lang}`);
+
+            // Update menu links (existing logic)
+            document.querySelectorAll('.menu-link').forEach(link => {
+                const href = link.getAttribute('href').toLowerCase();
+                if (href === 'index.html') {
+                    link.textContent = translations[lang].menuFrontPage;
+                } else if (href === 'students.html') {
+                    link.textContent = translations[lang].menuStudents;
+                } else {
+                    const chapterNum = href.match(/chapter(\d+)\.html/)?.[1];
+                    if (chapterNum) {
+                        link.textContent = `${translations[lang].menuChapter} ${chapterNum}`;
+                    }
+                }
+            });
+
+            // Update popup text (if present, e.g., on index.html)
+            const popupWelcome = document.querySelector('#namePopup h2');
+            const popupEnterName = document.querySelector('#namePopup p');
+            if (popupWelcome) popupWelcome.textContent = translations[lang].popupWelcome;
+            if (popupEnterName) popupEnterName.textContent = translations[lang].popupEnterName;
+
+            // Update chapter title (if present)
+            const chapterNumber = document.querySelector('.chapter-number');
+            const chapterName = document.querySelector('.chapter-name');
+            if (chapterNumber && chapterName) {
+                const chapterNum = window.location.pathname.match(/chapter(\d+)\.html/)?.[1];
+                if (chapterNum) {
+                    chapterNumber.textContent = translations[lang][`chapter${chapterNum}`];
+                    chapterName.textContent = translations[lang][`chapterName${chapterNum}`];
+                } else {
+                    console.warn('No chapter number found in URL:', window.location.pathname);
+                }
+            }
+
+            // Update rank badge and textbox (if present)
+            const rankName = document.getElementById('rankName');
+            const rankTitle = document.getElementById('rankTitle');
+            const rankDescription = document.getElementById('rankDescription');
+            if (rankName && rankTitle && rankDescription) {
+                console.log('Found rank elements, updating with updateStarStates()');
+                updateStarStates();
+            }
+
+            // Update students.html specific elements
+            const studentTitle = document.getElementById('studentTitle');
+            const studentsLabel = document.getElementById('studentsLabel');
+            if (studentTitle && studentsLabel) {
+                studentTitle.textContent = lang === 'en' ? 'Manage Students' : 'Hantera elever';
+                studentsLabel.textContent = lang === 'en' ? 'Students' : 'Elever';
+                console.log(`Updated students.html title and label to ${lang}`);
+            }
+        };
     </script>
     <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9226e69469696205',t:'MTc0MjMyMzY2OS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
 </body>
