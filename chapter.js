@@ -41,19 +41,50 @@ document.addEventListener('DOMContentLoaded', () => {
             codeLabel.textContent = exerciseCode;
             codeLabel.className = 'exercise-code';
 
+            // Assume img is the star image element, starImages is an array of image URLs, 
+// exerciseKey identifies the exercise, and localStorage holds the student data
             img.addEventListener('click', () => {
-                const studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
-                const progress = studentsData.students[studentsData.currentStudent]?.progress || {};
-                let level = progress[exerciseKey] ? parseInt(progress[exerciseKey]) : 0;
-                img.style.opacity = '0';
-                setTimeout(() => {
-                    level = (level + 1) % 7;
-                    img.src = starImages[level];
-                    progress[exerciseKey] = level.toString();
-                    studentsData.students[studentsData.currentStudent].progress = progress;
-                    localStorage.setItem('starAcademyStudents', JSON.stringify(studentsData));
-                    img.style.opacity = '1';
-                }, 300);
+                // Initialize click queue if not present
+                if (!img.dataset.clickQueue) {
+                    img.dataset.clickQueue = '0';
+                }
+                // Add one more click to the queue
+                img.dataset.clickQueue = parseInt(img.dataset.clickQueue) + 1;
+
+                // Process the queue
+                function processQueue() {
+                    if (img.dataset.clickQueue > 0) {
+                        // Decrease the queue count
+                        img.dataset.clickQueue -= 1;
+
+                        // Load current student data
+                        const studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
+                        const progress = studentsData.students[studentsData.currentStudent]?.progress || {};
+                        let level = progress[exerciseKey] ? parseInt(progress[exerciseKey]) : 0;
+
+                        // Fade out the star
+                        img.style.opacity = '0';
+                        setTimeout(() => {
+                            // Increment the level (loops back to 0 after 6)
+                            level = (level + 1) % 7;
+                            img.src = starImages[level]; // Update the star image
+                            progress[exerciseKey] = level.toString();
+                            studentsData.students[studentsData.currentStudent].progress = progress;
+                            localStorage.setItem('starAcademyStudents', JSON.stringify(studentsData));
+                            
+                            // Fade back in
+                            img.style.opacity = '1';
+
+                            // Process the next click after animation
+                            setTimeout(processQueue, 300);
+                        }, 300); // Animation delay
+                    }
+                }
+
+                // Start processing if this is the first click in the queue
+                if (parseInt(img.dataset.clickQueue) === 1) {
+                    processQueue();
+                }
             });
 
             starContainer.appendChild(img);
