@@ -85,17 +85,14 @@ body {
     transition: left 0.3s ease-in-out, opacity 0.3s ease-in-out;
 }
 
+/* Menu link base style */
 .menu-link {
-    font-family: Cochin, Georgia, Arial, sans-serif;
-    color: #000000;
-    text-decoration: none;
-    padding: 15px 20px;
-    font-size: 18px;
-    box-sizing: border-box;
-    width: calc(100% - 40px);
-    margin: 0 20px;
-    transition: color 0.3s ease;
-    border-bottom: 1px solid #cccccc;
+    display: block; /* Ensure block display for consistent spacing */
+    padding: 10px 15px; /* Adjust padding as needed */
+    color: #000; /* Adjust color as needed */
+    text-decoration: none; /* Remove any default underline */
+    font-family: Cochin, Georgia, Arial, sans-serif; /* Adjust font as needed */
+    font-size: 16px; /* Adjust size as needed */
 }
 
 .menu-link:last-child {
@@ -103,21 +100,19 @@ body {
 }
 
 .menu-link.active-page::after {
-    content: '·';
-    margin-left: 8px;
-    font-size: 26px;
-    line-height: 1;
-}   
+    font-weight: bold; /* Bold text for active page */
+    text-decoration: none; /* Remove dots/underline */
+}
 
 .menu-link:not(.active-page):hover::after {
     content: '·';
     margin-left: 8px;
 }
 
+/* Hover state style */
 .menu-link:hover {
-    color: #333;
-    text-decoration: none;
-    background: transparent;
+    font-weight: bold; /* Bold text on hover */
+    text-decoration: none; /* Remove dots/underline */
 }
 
 .menu .close-btn {
@@ -812,7 +807,7 @@ button:hover {
 .student-manager h1 {
     font-family: Cochin, Georgia, Arial, sans-serif;
     font-size: 24px;
-    margin-bottom: 20px;
+    margin-bottom: 60px;
 }
 
 .student-manager input {
