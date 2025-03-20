@@ -38,7 +38,7 @@
     <div class="student-manager" style="text-align: center; padding: 20px;">
         <h1 id="studentTitle" class="chapter-title">Manage Students / Hantera elever</h1>
         <input type="text" id="newStudentName" placeholder="Enter student name" style="padding: 10px; margin: 10px 0; font-size: 16px; width: 200px;">
-        <button onclick="addStudent()" style="padding: 10px 20px; font-size: 16px; background-color: #ffd700; border: none; border-radius: 5px; cursor: pointer; width: 100px; color: #000; margin: 10px 0;">Add</button>
+        <button id="addStudentButton" onclick="addStudent()" style="padding: 10px 20px; font-size: 16px; background-color: #ffd700; border: none; border-radius: 5px; cursor: pointer; width: 100px; color: #000; margin: 10px 0;">Add</button>
         <div id="studentsLabel" style="margin: 10px 0;">Students / Elever</div>
         <select id="studentSelect" onchange="switchStudent()" style="padding: 10px; font-size: 16px; width: 200px; margin: 10px 0;">
             <option value="">Select a student</option>
@@ -53,6 +53,7 @@
             const studentTitle = document.getElementById('studentTitle');
             const studentsLabel = document.getElementById('studentsLabel');
             const newStudentInput = document.getElementById('newStudentName');
+            const addButton = document.getElementById('addStudentButton');
 
             // Initial language setup
             switchLanguage(lang);
@@ -66,8 +67,7 @@
                 });
             }
         });
-    </script>
-    <script>
+
         // Override switchLanguage to include students.html updates
         window.switchLanguage = (lang) => {
             localStorage.setItem('language', lang);
@@ -119,10 +119,14 @@
             // Update students.html specific elements
             const studentTitle = document.getElementById('studentTitle');
             const studentsLabel = document.getElementById('studentsLabel');
+            const newStudentInput = document.getElementById('newStudentName');
+            const addButton = document.getElementById('addStudentButton');
             if (studentTitle && studentsLabel) {
                 studentTitle.textContent = lang === 'en' ? 'Manage Students' : 'Hantera elever';
-                studentsLabel.textContent = lang === 'en' ? 'Students' : 'Elever';
-                console.log(`Updated students.html title and label to ${lang}`);
+                studentsLabel.textContent = translations[lang].studentsLabel; // Updated to use translations
+                newStudentInput.placeholder = translations[lang].studentNamePlaceholder;
+                addButton.textContent = translations[lang].addButton;
+                console.log(`Updated students.html title, label, placeholder, and button to ${lang}`);
             }
         };
     </script>

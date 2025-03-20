@@ -31,7 +31,10 @@ const translations = {
         chapterName4: "Minor Scales",
         chapterName5: "Chords",
         chapterName6: "Arpeggios",
-        chapterName7: "Repertoire"
+        chapterName7: "Repertoire",
+        addButton: "Submit",
+        studentNamePlaceholder: "Enter student name",
+        studentsLabel: "Students:"
     },
     sv: {
         menuFrontPage: "Stjärnöversikt",
@@ -64,7 +67,10 @@ const translations = {
         chapterName4: "Mollskalor",
         chapterName5: "Ackord",
         chapterName6: "Arpeggion",
-        chapterName7: "Repertoar"
+        chapterName7: "Repertoar",
+        addButton: "Lägg till",
+        studentNamePlaceholder: "Elevens namn",
+        studentsLabel: "Elever:"
     }
 };
 
