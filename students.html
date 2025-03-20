@@ -38,10 +38,10 @@
     <div class="student-manager" style="text-align: center; padding: 20px;">
         <h1 id="studentTitle" class="chapter-title">Manage Students / Hantera elever</h1>
         <input type="text" id="newStudentName" placeholder="Enter student name" style="padding: 10px; margin: 10px 0; font-size: 16px; width: 200px;">
-        <button id="addStudentButton" onclick="addStudent()" style="padding: 10px 20px; font-size: 16px; background-color: #ffd700; border: none; border-radius: 5px; cursor: pointer; width: 100px; color: #000; margin: 10px 0;">Add</button>
-        <div id="studentsLabel" style="margin: 30px 0 0 0; color: antiquewhite;">Students / Elever</div>
+        <button id="addStudentButton" onclick="addStudent()">Add</button>
+        <div id="studentsLabel" style="margin: 10px 0;">Students / Elever</div>
         <select id="studentSelect" onchange="switchStudent()" style="padding: 10px; font-size: 16px; width: 200px; margin: 10px 0;">
-            <option value="">Select a student</option>
+            <option value="" id="defaultOption">Select a student</option>
         </select>
     </div>
     <script src="script.js"></script>
@@ -121,12 +121,14 @@
             const studentsLabel = document.getElementById('studentsLabel');
             const newStudentInput = document.getElementById('newStudentName');
             const addButton = document.getElementById('addStudentButton');
+            const defaultOption = document.getElementById('defaultOption');
             if (studentTitle && studentsLabel) {
                 studentTitle.textContent = lang === 'en' ? 'Manage Students' : 'Hantera elever';
-                studentsLabel.textContent = translations[lang].studentsLabel; // Updated to use translations
+                studentsLabel.textContent = translations[lang].studentsLabel;
                 newStudentInput.placeholder = translations[lang].studentNamePlaceholder;
                 addButton.textContent = translations[lang].addButton;
-                console.log(`Updated students.html title, label, placeholder, and button to ${lang}`);
+                defaultOption.textContent = translations[lang].addAnotherStudent;
+                console.log(`Updated students.html title, label, placeholder, button, and default option to ${lang}`);
             }
         };
     </script>
