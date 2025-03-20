@@ -405,7 +405,7 @@ body {
     color: #ffffff;
     margin: 0;
     text-align: center;
-    padding-bottom: 15px; /* Add padding-bottom to balance spacing */
+    padding-bottom: 5px; /* Add padding-bottom to balance spacing */
 }
 
 /* Larger title on wider screens */
@@ -751,23 +751,34 @@ body {
     margin: 5px 0 20px 0; /* Reduced top margin to 5px, kept bottom margin at 20px to match top padding */
 }
 
-button {
+/* Updated button styles for popup and student manager */
+.popup-content button,
+.student-manager button {
     font-family: Cochin, Georgia, Arial, sans-serif;
-    padding: 6px 12px; /* Revert to original padding */
-    background: #4a4a4a; /* Match hamburger background */
-    border: 1px solid #ffd700; /* Already matching hamburger border */
+    padding: 6px 12px; /* Match popup button */
+    background: #4a4a4a; /* Match popup button background */
+    border: 1px solid #ffd700; /* Match popup button border */
     border-radius: 5px;
-    color: #ffd700; /* Match hamburger font color */
+    color: #ffd700; /* Match popup button text color */
     cursor: pointer;
-    transition: transform 0.3s ease;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Revert to original shadow */
-    margin-top: 5px; /* Preserve your spacing fix */
+    transition: transform 0.3s ease; /* Match popup button transition */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Match popup button shadow */
 }
 
-button:hover {
-    transform: scale(1.05);
+.popup-content button {
+    margin-top: 5px; /* Specific to popup button */
 }
 
+.student-manager button {
+    width: 100px; /* Preserve Add button width */
+    margin: 10px 0; /* Preserve Add button margin */
+    font-size: 16px; /* Preserve Add button font size */
+}
+
+.popup-content button:hover,
+.student-manager button:hover {
+    transform: scale(1.05); /* Match popup button hover effect */
+}
 
 @media (max-width: 744px) and (orientation: portrait) {
     #userNameDisplay {
@@ -798,6 +809,7 @@ button:hover {
 .flag:hover {
     transform: scale(1.2);
 }
+
 /* Note: Removed mobile landscape rank badge sizing and chapter padding (20 rows) per user request to deprioritize mobile landscape. */
 
 .student-manager {
@@ -816,18 +828,6 @@ button:hover {
     margin: 10px 0;
     font-size: 16px;
     width: 200px;
-}
-
-.student-manager button {
-    padding: 10px 20px;
-    font-size: 16px;
-    background-color: #ffd700;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    width: 100px;
-    color: #000;
-    margin: 10px 0;
 }
 
 .student-manager div {
