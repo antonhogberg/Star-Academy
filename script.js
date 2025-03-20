@@ -34,7 +34,8 @@ const translations = {
         chapterName7: "Repertoire",
         addButton: "Submit",
         studentNamePlaceholder: "Enter student name",
-        studentsLabel: "Students:"
+        studentsLabel: "Students:",
+        addAnotherStudent: "Add another student"
     },
     sv: {
         menuFrontPage: "Stjärnöversikt",
@@ -70,7 +71,8 @@ const translations = {
         chapterName7: "Repertoar",
         addButton: "Lägg till",
         studentNamePlaceholder: "Elevens namn",
-        studentsLabel: "Elever:"
+        studentsLabel: "Elever:",
+        addAnotherStudent: "Lägg till elev"
     }
 };
 
