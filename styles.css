@@ -755,14 +755,14 @@ body {
 .popup-content button,
 .student-manager button {
     font-family: Cochin, Georgia, Arial, sans-serif;
-    padding: 6px 12px; /* Match popup button */
-    background: #4a4a4a; /* Match popup button background */
-    border: 1px solid #ffd700; /* Match popup button border */
+    padding: 6px 12px;
+    background: #4a4a4a;
+    border: 1px solid #ffd700;
     border-radius: 5px;
-    color: #ffd700; /* Match popup button text color */
+    color: #ffd700;
     cursor: pointer;
-    transition: transform 0.3s ease; /* Match popup button transition */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Match popup button shadow */
+    transition: transform 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
 .popup-content button {
@@ -770,9 +770,12 @@ body {
 }
 
 .student-manager button {
-    width: 100px; /* Preserve Add button width */
-    margin: 10px 0; /* Preserve Add button margin */
-    font-size: 16px; /* Preserve Add button font size */
+    width: 100px;
+    margin: 10px 0;
+    font-size: 16px;
+    padding-left: 16px; /* Add a few pixels for spacing */
+    line-height: 19.2px; /* Ensure consistent line-height */
+    box-sizing: border-box; /* Ensure padding and border are included in height */
 }
 
 .popup-content button:hover,
@@ -824,14 +827,25 @@ body {
 }
 
 .student-manager input {
-    padding: 10px;
+    padding: 6px 10px; /* Reduce top/bottom padding to match button height */
     margin: 10px 0;
     font-size: 16px;
+    line-height: 19.2px; /* Match button’s line-height */
     width: 200px;
+    border: 1px solid #ccc; /* Add border to match button */
+    border-radius: 5px; /* Match button’s border-radius */
+    box-sizing: border-box; /* Ensure padding and border are included in height */
 }
 
 .student-manager div {
     margin: 10px 0;
+}
+
+.student-manager #studentsLabel {
+    color: #ffffff;
+    font-family: Cochin, Georgia, Arial, sans-serif;
+    padding-top: 30px; /* Increase top padding */
+    padding-bottom: 0; /* No bottom padding */
 }
 
 .student-manager select {
