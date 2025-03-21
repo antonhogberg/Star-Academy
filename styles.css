@@ -968,15 +968,15 @@ body {
     border-radius: 5px;
     background: rgba(74, 74, 74, 0.8);
     margin: 10px auto;
-    width: auto; /* Shrink-wrap to content */
-    max-width: 440px;
+    width: auto;
+    max-width: 840px; /* Increased to accommodate 800px text area + 40px padding */
 }
 
 .notes-button-container textarea {
     width: 100%;
-    max-width: 400px;
+    max-width: 800px; /* Doubled from 400px */
     margin: 0 auto;
-    height: 100px;
+    height: 200px; /* Doubled from 100px */
     padding: 10px;
     font-size: 16px;
     font-family: Cochin, Georgia, Arial, sans-serif;
@@ -987,6 +987,19 @@ body {
     background-color: #fff;
     color: #333;
     box-sizing: border-box;
+}
+
+@media (max-width: 767px) {
+    .notes-button-container {
+        flex-direction: column;
+        align-items: center;
+        gap: 5px;
+        padding: 10px;
+    }
+
+    .notes-button-container textarea {
+        height: 300px; /* Doubled from 150px */
+    }
 }
 
 .notes-button-container button {
