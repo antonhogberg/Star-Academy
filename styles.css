@@ -909,6 +909,7 @@ body {
     align-items: center;
     max-height: calc(100vh - 400px);
     overflow-y: auto;
+    border: 2px solid red; /* Temporary for debugging */
 }
 
 .notes-container textarea {
@@ -970,6 +971,7 @@ body {
     margin: 10px auto;
     width: auto; /* Shrink-wrap to content */
     max-width: 240px; /* Match the width of other boxes (200px content + 20px padding on each side) */
+    border: 2px solid blue; /* Temporary for debugging */
 }
 
 .notes-button-container textarea {
@@ -986,6 +988,7 @@ body {
     overflow-y: auto;
     background-color: #fff;
     color: #333;
+    border: 2px solid green; /* Temporary for debugging */
 }
 
 .notes-button-container button {
