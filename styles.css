@@ -845,6 +845,7 @@ body {
 .student-manager #studentsLabel {
     color: #ffffff;
     font-family: Cochin, Georgia, Arial, sans-serif;
+    font-size: 24px;
     padding-top: 30px; /* Increase top padding */
     padding-bottom: 0; /* No bottom padding */
 }
