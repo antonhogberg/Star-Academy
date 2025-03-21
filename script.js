@@ -70,7 +70,7 @@ const translations = {
         chapterName6: "Arpeggion",
         chapterName7: "Repertoar",
         addButton: "Lägg till",
-        studentNamePlaceholder: "Elevens namn",
+        studentNamePlaceholder: "Skriv elevens namn",
         studentsLabel: "Elever:",
         addAnotherStudent: "Lägg till elev"
     }
