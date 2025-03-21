@@ -879,3 +879,15 @@ body {
     border-color: #ffd700; /* Highlight on focus */
     box-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
 }
+
+.input-button-container {
+    display: flex;
+    align-items: center; /* Center vertically */
+    justify-content: center; /* Center horizontally */
+    gap: 10px; /* Space between input and button */
+    padding: 10px;
+    border: 1px solid #ffd700; /* Gold border to create a box */
+    border-radius: 5px;
+    background: rgba(74, 74, 74, 0.8); /* Match text-box background */
+    margin: 10px 0; /* Preserve spacing */
+}
