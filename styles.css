@@ -881,13 +881,21 @@ body {
 }
 
 .input-button-container {
-    display: flex;
+    display: inline-flex; /* Shrink-wrap to content width */
     align-items: center; /* Center vertically */
     justify-content: center; /* Center horizontally */
     gap: 10px; /* Space between input and button */
-    padding: 10px;
+    padding: 10px; /* Equal padding on all sides */
     border: 1px solid #ffd700; /* Gold border to create a box */
     border-radius: 5px;
     background: rgba(74, 74, 74, 0.8); /* Match text-box background */
-    margin: 10px 0; /* Preserve spacing */
+    margin: 10px auto; /* Center the container horizontally */
+}
+
+@media (max-width: 767px) {
+    .input-button-container {
+        flex-direction: column; /* Stack vertically on mobile */
+        align-items: center; /* Center items */
+        gap: 5px; /* Reduce gap for better spacing */
+    }
 }
