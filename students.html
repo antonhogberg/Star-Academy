@@ -20,15 +20,15 @@
         <div class="hamburger" aria-expanded="false" aria-controls="main-menu">☰</div>
         <div class="menu" id="main-menu">
             <span class="close-btn" aria-label="Close menu">✖</span>
-            <a href="index.html" class="menu-link">Star Overview</a>
-            <a href="chapter1.html" class="menu-link">Chapter 1</a>
-            <a href="chapter2.html" class="menu-link">Chapter 2</a>
-            <a href="chapter3.html" class="menu-link">Chapter 3</a>
-            <a href="chapter4.html" class="menu-link">Chapter 4</a>
-            <a href="chapter5.html" class="menu-link">Chapter 5</a>
-            <a href="chapter6.html" class="menu-link">Chapter 6</a>
-            <a href="chapter7.html" class="menu-link">Chapter 7</a>
-            <a href="students.html" class="menu-link">Manage Students</a>
+            <a href="index.html" class="menu-link"></a>
+            <a href="chapter1.html" class="menu-link"></a>
+            <a href="chapter2.html" class="menu-link"></a>
+            <a href="chapter3.html" class="menu-link"></a>
+            <a href="chapter4.html" class="menu-link"></a>
+            <a href="chapter5.html" class="menu-link"></a>
+            <a href="chapter6.html" class="menu-link"></a>
+            <a href="chapter7.html" class="menu-link"></a>
+            <a href="students.html" class="menu-link"></a>
             <div class="language-switcher">
                 <span class="flag" onclick="switchLanguage('en')">🇬🇧</span>
                 <span class="flag" onclick="switchLanguage('sv')">🇸🇪</span>
@@ -36,20 +36,20 @@
         </div>
     </nav>
     <div class="student-manager" style="text-align: center;">
-        <h1 id="menuStudents">Manage Students / Hantera elever</h1>
-        <div id="addStudentLabel">Add new student / Lägg till ny elev</div>
+        <h1 id="chapterTitle" class="chapter-title"></h1>
+        <div id="addStudentLabel"></div>
         <div class="input-button-container">
-            <input type="text" id="newStudentName" placeholder="Enter student name" style="padding: 10px; margin: 10px 0; font-size: 16px; width: 200px;">
-            <button id="addStudentButton" onclick="addStudent()">Add</button>
+            <input type="text" id="newStudentName" style="padding: 10px; margin: 10px 0; font-size: 16px; width: 200px;">
+            <button id="addStudentButton" onclick="addStudent()"></button>
         </div>
-        <div id="studentsLabel" style="margin: 10px 0;">Students / Elever</div>
+        <div id="studentsLabel" style="margin: 10px 0;"></div>
         <select id="studentSelect" onchange="switchStudent()" style="padding: 10px; font-size: 16px; width: 200px; margin: 10px 0;">
-            <option value="" id="defaultOption">Select a student</option>
+            <option value="" id="defaultOption"></option>
         </select>
         <div class="notes-container">
-            <div id="notesLabel">Notes: / Anteckningar:</div>
-            <textarea id="studentNotes" rows="5" placeholder="Write your notes about planned homework or other things here."></textarea>
-            <button id="saveNotesButton" onclick="saveNotes()">Save</button>
+            <div id="notesLabel"></div>
+            <textarea id="studentNotes" rows="5"></textarea>
+            <button id="saveNotesButton" onclick="saveNotes()"></button>
         </div>
     </div>
     <script src="script.js"></script>
@@ -58,20 +58,12 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const lang = localStorage.getItem('language') || 'sv';
-            const chapterTitle = document.getElementById('chapterTitle');
-            const studentsLabel = document.getElementById('studentsLabel');
-            const newStudentInput = document.getElementById('newStudentName');
-            const addButton = document.getElementById('addStudentButton');
-            const defaultOption = document.getElementById('defaultOption');
-            const addStudentLabel = document.getElementById('addStudentLabel');
-            const notesLabel = document.getElementById('notesLabel');
-            const studentNotes = document.getElementById('studentNotes');
-            const saveNotesButton = document.getElementById('saveNotesButton');
 
-            // Initial language setup
+            // Initial language setup (handled by script.js)
             switchLanguage(lang);
 
             // Add Enter key functionality to trigger Add button
+            const newStudentInput = document.getElementById('newStudentName');
             if (newStudentInput) {
                 newStudentInput.addEventListener('keypress', (e) => {
                     if (e.key === 'Enter' && newStudentInput.value.trim()) {
@@ -83,78 +75,6 @@
             // Load notes for the current student
             loadNotes();
         });
-
-        // Override switchLanguage to include students.html updates
-        window.switchLanguage = (lang) => {
-            localStorage.setItem('language', lang);
-            console.log(`Switching language to: ${lang}`);
-
-            // Update menu links (existing logic)
-            document.querySelectorAll('.menu-link').forEach(link => {
-                const href = link.getAttribute('href').toLowerCase();
-                if (href === 'index.html') {
-                    link.textContent = translations[lang].menuFrontPage;
-                } else if (href === 'students.html') {
-                    link.textContent = translations[lang].menuStudents;
-                } else {
-                    const chapterNum = href.match(/chapter(\d+)\.html/)?.[1];
-                    if (chapterNum) {
-                        link.textContent = `${translations[lang].menuChapter} ${chapterNum}`;
-                    }
-                }
-            });
-
-            // Update popup text (if present, e.g., on index.html)
-            const popupWelcome = document.querySelector('#namePopup h2');
-            const popupEnterName = document.querySelector('#namePopup p');
-            if (popupWelcome) popupWelcome.textContent = translations[lang].popupWelcome;
-            if (popupEnterName) popupEnterName.textContent = translations[lang].popupEnterName;
-
-            // Update chapter title (if present)
-            const chapterNumber = document.querySelector('.chapter-number');
-            const chapterName = document.querySelector('.chapter-name');
-            if (chapterNumber && chapterName) {
-                const chapterNum = window.location.pathname.match(/chapter(\d+)\.html/)?.[1];
-                if (chapterNum) {
-                    chapterNumber.textContent = translations[lang][`chapter${chapterNum}`];
-                    chapterName.textContent = translations[lang][`chapterName${chapterNum}`];
-                } else {
-                    console.warn('No chapter number found in URL:', window.location.pathname);
-                }
-            }
-
-            // Update rank badge and textbox (if present)
-            const rankName = document.getElementById('rankName');
-            const rankTitle = document.getElementById('rankTitle');
-            const rankDescription = document.getElementById('rankDescription');
-            if (rankName && rankTitle && rankDescription) {
-                console.log('Found rank elements, updating with updateStarStates()');
-                updateStarStates();
-            }
-
-            // Update students.html specific elements
-            const chapterTitle = document.getElementById('chapterTitle');
-            const studentsLabel = document.getElementById('studentsLabel');
-            const newStudentInput = document.getElementById('newStudentName');
-            const addButton = document.getElementById('addStudentButton');
-            const defaultOption = document.getElementById('defaultOption');
-            const addStudentLabel = document.getElementById('addStudentLabel');
-            const notesLabel = document.getElementById('notesLabel');
-            const studentNotes = document.getElementById('studentNotes');
-            const saveNotesButton = document.getElementById('saveNotesButton');
-            if (chapterTitle && studentsLabel) {
-                chapterTitle.textContent = translations[lang].menuStudents; // Use menuStudents translation
-                studentsLabel.textContent = translations[lang].studentsLabel;
-                newStudentInput.placeholder = translations[lang].studentNamePlaceholder;
-                addButton.textContent = translations[lang].addButton;
-                defaultOption.textContent = translations[lang].addAnotherStudent;
-                addStudentLabel.textContent = translations[lang].addNewStudent;
-                notesLabel.textContent = translations[lang].notesLabel;
-                studentNotes.placeholder = translations[lang].notesPlaceholder;
-                saveNotesButton.textContent = translations[lang].saveNotesButton;
-                console.log(`Updated students.html title, label, placeholder, button, and default option to ${lang}`);
-            }
-        };
 
         // Function to load notes for the current student
         function loadNotes() {
@@ -188,5 +108,4 @@
     </script>
     <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9226e69469696205',t:'MTc0MjMyMzY2OS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
 </body>
-</html>
 </html>
