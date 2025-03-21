@@ -63,22 +63,29 @@ function switchStudent() {
 function updateDropdown() {
     const select = document.getElementById('studentSelect');
     if (select) {
-        // Clear existing options except the default
-        Array.from(select.options).forEach(option => {
-            if (option.value !== '') select.remove(option);
-        });
+        // Clear all existing options
+        select.innerHTML = '';
 
         // Get student names and sort alphabetically
         const studentNames = Object.keys(studentsData.students || {}).sort((a, b) => a.localeCompare(b));
 
-        // Add sorted student options
+        // Add student options
         studentNames.forEach(name => {
             const option = document.createElement('option');
             option.value = name;
             option.textContent = name;
-            if (name === studentsData.currentStudent) option.selected = true;
             select.appendChild(option);
         });
+
+        // Select the current student, or the first student if none is set
+        if (studentNames.length > 0) {
+            const currentStudent = studentsData.currentStudent && studentNames.includes(studentsData.currentStudent)
+                ? studentsData.currentStudent
+                : studentNames[0];
+            select.value = currentStudent;
+            studentsData.currentStudent = currentStudent;
+            localStorage.setItem('starAcademyStudents', JSON.stringify(studentsData));
+        }
     }
 }
 

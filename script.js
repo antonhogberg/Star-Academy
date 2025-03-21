@@ -286,8 +286,6 @@ function updateStarStates() {
 
 // ... (keep the rest of script.js unchanged, e.g., translations, switchLanguage, setInitialLanguage)
 
-// Function to switch language
-// Function to switch language
 function switchLanguage(lang) {
     localStorage.setItem('language', lang);
     console.log(`Switching language to: ${lang}`);
@@ -340,7 +338,6 @@ function switchLanguage(lang) {
     const studentsLabel = document.getElementById('studentsLabel');
     const newStudentInput = document.getElementById('newStudentName');
     const addButton = document.getElementById('addStudentButton');
-    const defaultOption = document.getElementById('defaultOption');
     const addStudentLabel = document.getElementById('addStudentLabel');
     const notesLabel = document.getElementById('notesLabel');
     const studentNotes = document.getElementById('studentNotes');
@@ -350,12 +347,11 @@ function switchLanguage(lang) {
         studentsLabel.textContent = translations[lang].studentsLabel;
         newStudentInput.placeholder = translations[lang].studentNamePlaceholder;
         addButton.textContent = translations[lang].addButton;
-        defaultOption.textContent = translations[lang].defaultOption;
         addStudentLabel.textContent = translations[lang].addNewStudent;
         notesLabel.textContent = translations[lang].notesLabel;
         studentNotes.placeholder = translations[lang].notesPlaceholder;
         saveNotesButton.textContent = translations[lang].saveNotesButton;
-        console.log(`Updated students.html title, label, placeholder, button, and default option to ${lang}`);
+        console.log(`Updated students.html title, label, placeholder, button to ${lang}`);
     }
 }
 

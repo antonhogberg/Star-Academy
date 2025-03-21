@@ -45,7 +45,7 @@
         <div id="studentsLabel" style="margin: 10px 0;"></div>
         <div class="dropdown-container">
             <select id="studentSelect" onchange="switchStudent()" style="padding: 10px; font-size: 16px; width: 200px; margin: 8px 0 10px 0;">
-                <option value="" id="defaultOption"></option>
+                <!-- Default option removed -->
             </select>
         </div>
         <div class="notes-wrapper">
@@ -84,33 +84,43 @@
 
         // Function to load notes for the current student
         function loadNotes() {
-            const select = document.getElementById('studentSelect');
-            const studentNotes = document.getElementById('studentNotes');
-            const studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
-            const currentStudent = studentsData.currentStudent;
+    const select = document.getElementById('studentSelect');
+    const studentNotes = document.getElementById('studentNotes');
+    let studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
 
-            if (currentStudent && studentsData.students[currentStudent] && studentsData.students[currentStudent].notes) {
-                studentNotes.value = studentsData.students[currentStudent].notes;
-            } else {
-                studentNotes.value = '';
-            }
+    // Populate the dropdown (this will handle clearing and adding options)
+    updateDropdown();
+
+    // Load notes for the current student
+    const currentStudent = studentsData.currentStudent;
+    if (currentStudent && studentsData.students[currentStudent] && studentsData.students[currentStudent].notes) {
+        studentNotes.value = studentsData.students[currentStudent].notes;
+    } else {
+        studentNotes.value = ''; // Let placeholder show
+    }
+}
+
+function switchStudent() {
+    const select = document.getElementById('studentSelect');
+    const studentNotes = document.getElementById('studentNotes');
+    let studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
+
+    const selectedStudent = select.value;
+    if (selectedStudent) {
+        studentsData.currentStudent = selectedStudent;
+        localStorage.setItem('starAcademyStudents', JSON.stringify(studentsData));
+
+        if (studentsData.students[selectedStudent] && studentsData.students[selectedStudent].notes) {
+            studentNotes.value = studentsData.students[selectedStudent].notes;
+        } else {
+            studentNotes.value = ''; // Let placeholder show
         }
-
-        // Function to save notes for the current student
-        function saveNotes() {
-            const select = document.getElementById('studentSelect');
-            const studentNotes = document.getElementById('studentNotes');
-            const studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
-            const currentStudent = studentsData.currentStudent;
-
-            if (currentStudent && studentsData.students[currentStudent]) {
-                studentsData.students[currentStudent].notes = studentNotes.value;
-                localStorage.setItem('starAcademyStudents', JSON.stringify(studentsData));
-                alert('Notes saved successfully!');
-            } else {
-                alert('Please select a student before saving notes.');
-            }
-        }
+    } else {
+        studentsData.currentStudent = '';
+        localStorage.setItem('starAcademyStudents', JSON.stringify(studentsData));
+        studentNotes.value = '';
+    }
+}
     </script>
     <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9226e69469696205',t:'MTc0MjMyMzY2OS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
     <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'923e56ccff59b3d4',t:'MTc0MjU2OTQzOC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
