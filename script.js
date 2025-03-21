@@ -38,7 +38,8 @@ const translations = {
         addAnotherStudent: "Add another student",
         addNewStudent: "Add new student",
         notesLabel: "Notes:",
-        notesPlaceholder: "Add notes about planned homework, progress, or other details here."
+        notesPlaceholder: "Add notes about planned homework, progress, or other details here.",
+        saveNotesButton: "Save notes"
     },
     sv: {
         menuFrontPage: "Stjärnöversikt",
@@ -78,7 +79,8 @@ const translations = {
         addAnotherStudent: "Lägg till elev",
         addNewStudent: "Lägg till ny elev",
         notesLabel: "Anteckningar:",
-        notesPlaceholder: "Skriv dina anteckningar om läxor m.m. här."
+        notesPlaceholder: "Skriv dina anteckningar om läxor m.m. här.",
+        saveNotesButton: "Spara anteckningar"
     }
 };
 
