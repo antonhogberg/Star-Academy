@@ -991,8 +991,9 @@ body {
 }
 
 .notes-button-container button {
-    width: 100px;
-    margin: 10px auto; /* Center the button */
+    width: 150px; /* Increased from 100px to accommodate longer text */
+    margin: 10px auto;
+    white-space: nowrap; /* Prevent text from wrapping */
 }
 
 /* Mobile adjustments */
