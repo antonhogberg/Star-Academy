@@ -839,7 +839,7 @@ body {
 }
 
 .student-manager div {
-    margin: 10px 0;
+    margin: 10px 0 5px 0;
 }
 
 .student-manager #studentsLabel {
@@ -853,7 +853,7 @@ body {
     padding: 10px;
     font-size: 16px;
     width: 200px;
-    margin: 10px 0;
+    margin: 5px 0 10px 0;
     border: 1px solid #ccc; /* Clean border */
     border-radius: 5px; /* Rounded corners */
     background-color: #fff; /* White background */
