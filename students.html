@@ -62,6 +62,33 @@
     <script src="students.js"></script>
     <script src="menu.js"></script>
     <script>
+        function saveNotes() {
+            const select = document.getElementById('studentSelect');
+            const studentNotes = document.getElementById('studentNotes');
+            let studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
+        
+            // Use the dropdown's value as the current student
+            const currentStudent = select.value;
+        
+            if (!currentStudent) {
+                alert('Please select a student before saving notes.');
+                return;
+            }
+        
+            if (!studentsData.students[currentStudent]) {
+                // This should never happen if the dropdown is populated correctly, but adding for safety
+                alert('Selected student not found. Please add the student first.');
+                return;
+            }
+        
+            // Save the notes
+            studentsData.currentStudent = currentStudent;
+            studentsData.students[currentStudent].notes = studentNotes.value;
+            localStorage.setItem('starAcademyStudents', JSON.stringify(studentsData));
+            alert('Notes saved successfully!');
+        }
+        </script>
+    <script>
         document.addEventListener('DOMContentLoaded', () => {
             const lang = localStorage.getItem('language') || 'sv';
 
