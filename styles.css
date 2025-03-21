@@ -1026,3 +1026,10 @@ body {
         height: 150px;
     }
 }
+
+.notes-wrapper {
+    display: block;
+    text-align: center;
+    clear: both;
+    background-color: yellow; /* Temporary to confirm styles are applied */
+}
