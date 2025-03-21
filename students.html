@@ -36,15 +36,21 @@
         </div>
     </nav>
     <div class="student-manager" style="text-align: center;">
-        <h1 id="studentTitle" class="chapter-title">Manage Students / Hantera elever</h1>
+        <h1 id="studentTitle">Manage Students / Hantera elever</h1>
+        <div id="addStudentLabel">Add new student / Lägg till ny elev</div>
         <div class="input-button-container">
             <input type="text" id="newStudentName" placeholder="Enter student name" style="padding: 10px; margin: 10px 0; font-size: 16px; width: 200px;">
             <button id="addStudentButton" onclick="addStudent()">Add</button>
         </div>
         <div id="studentsLabel" style="margin: 10px 0;">Students / Elever</div>
-        <select id="studentSelect" onchange="switchStudent()" style="padding: 10px; font-size: 16px; width: 200px;">
+        <select id="studentSelect" onchange="switchStudent()" style="padding: 10px; font-size: 16px; width: 200px; margin: 10px 0;">
             <option value="" id="defaultOption">Select a student</option>
         </select>
+        <div class="notes-container">
+            <div id="notesLabel">Notes: / Anteckningar:</div>
+            <textarea id="studentNotes" rows="5" placeholder="Write your notes about planned homework or other things here."></textarea>
+            <button id="saveNotesButton" onclick="saveNotes()">Save</button>
+        </div>
     </div>
     <script src="script.js"></script>
     <script src="students.js"></script>
@@ -56,6 +62,10 @@
             const studentsLabel = document.getElementById('studentsLabel');
             const newStudentInput = document.getElementById('newStudentName');
             const addButton = document.getElementById('addStudentButton');
+            const defaultOption = document.getElementById('defaultOption');
+            const addStudentLabel = document.getElementById('addStudentLabel');
+            const notesLabel = document.getElementById('notesLabel');
+            const studentNotes = document.getElementById('studentNotes');
 
             // Initial language setup
             switchLanguage(lang);
@@ -68,6 +78,9 @@
                     }
                 });
             }
+
+            // Load notes for the current student
+            loadNotes();
         });
 
         // Override switchLanguage to include students.html updates
@@ -124,15 +137,51 @@
             const newStudentInput = document.getElementById('newStudentName');
             const addButton = document.getElementById('addStudentButton');
             const defaultOption = document.getElementById('defaultOption');
+            const addStudentLabel = document.getElementById('addStudentLabel');
+            const notesLabel = document.getElementById('notesLabel');
+            const studentNotes = document.getElementById('studentNotes');
             if (studentTitle && studentsLabel) {
                 studentTitle.textContent = lang === 'en' ? 'Manage Students' : 'Hantera elever';
                 studentsLabel.textContent = translations[lang].studentsLabel;
                 newStudentInput.placeholder = translations[lang].studentNamePlaceholder;
                 addButton.textContent = translations[lang].addButton;
                 defaultOption.textContent = translations[lang].addAnotherStudent;
+                addStudentLabel.textContent = translations[lang].addNewStudent;
+                notesLabel.textContent = translations[lang].notesLabel;
+                studentNotes.placeholder = translations[lang].notesPlaceholder;
                 console.log(`Updated students.html title, label, placeholder, button, and default option to ${lang}`);
             }
         };
+
+        // Function to load notes for the current student
+        function loadNotes() {
+            const select = document.getElementById('studentSelect');
+            const studentNotes = document.getElementById('studentNotes');
+            const studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
+            const currentStudent = studentsData.currentStudent;
+
+            if (currentStudent && studentsData.students[currentStudent] && studentsData.students[currentStudent].notes) {
+                studentNotes.value = studentsData.students[currentStudent].notes;
+            } else {
+                studentNotes.value = '';
+            }
+        }
+
+        // Function to save notes for the current student
+        function saveNotes() {
+            const select = document.getElementById('studentSelect');
+            const studentNotes = document.getElementById('studentNotes');
+            const studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
+            const currentStudent = studentsData.currentStudent;
+
+            if (currentStudent && studentsData.students[currentStudent]) {
+                studentsData.students[currentStudent].notes = studentNotes.value;
+                localStorage.setItem('starAcademyStudents', JSON.stringify(studentsData));
+                alert('Notes saved successfully!');
+            } else {
+                alert('Please select a student before saving notes.');
+            }
+        }
     </script>
     <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9226e69469696205',t:'MTc0MjMyMzY2OS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
 </body>
