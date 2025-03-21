@@ -974,9 +974,9 @@ body {
 
 .notes-button-container textarea {
     width: 100%;
-    max-width: 800px; /* Doubled from 400px */
+    max-width: 800px;
     margin: 0 auto;
-    height: 200px; /* Doubled from 100px */
+    height: 200px;
     padding: 10px;
     font-size: 16px;
     font-family: Cochin, Georgia, Arial, sans-serif;
