@@ -832,8 +832,9 @@ body {
 }
 
 .student-manager div {
-    margin: 10px 0 2px 0;
-    font-size: 22px; /* Almost as large as the title (24px) */
+    margin: 10px 0 2px 0; /* Existing margin */
+    font-family: Cochin, Georgia, Arial, sans-serif; /* Add font */
+    color: #ffffff; /* Add white color */
 }
 
 .student-manager #studentsLabel {
