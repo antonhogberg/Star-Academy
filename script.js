@@ -35,7 +35,10 @@ const translations = {
         addButton: "Submit",
         studentNamePlaceholder: "Enter student name",
         studentsLabel: "Students:",
-        addAnotherStudent: "Add another student"
+        addAnotherStudent: "Add another student",
+        addNewStudent: "Add new student",
+        notesLabel: "Notes:",
+        notesPlaceholder: "Add notes about planned homework, progress, or other details here."
     },
     sv: {
         menuFrontPage: "Stjärnöversikt",
@@ -72,7 +75,10 @@ const translations = {
         addButton: "Lägg till",
         studentNamePlaceholder: "Skriv elevens namn",
         studentsLabel: "Elever:",
-        addAnotherStudent: "Lägg till elev"
+        addAnotherStudent: "Lägg till elev",
+        addNewStudent: "Lägg till ny elev",
+        notesLabel: "Anteckningar:",
+        notesPlaceholder: "Skriv dina anteckningar om läxor m.m. här."
     }
 };
 
