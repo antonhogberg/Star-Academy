@@ -909,6 +909,7 @@ body {
     align-items: center;
     max-height: calc(100vh - 400px);
     overflow-y: auto;
+    /* Remove temporary border after debugging */
 }
 
 .notes-container textarea {
@@ -957,7 +958,6 @@ body {
     margin: 10px auto;
 }
 
-/* New styles for notes-button-container */
 .notes-button-container {
     display: flex;
     flex-direction: column;
@@ -969,8 +969,9 @@ body {
     border-radius: 5px;
     background: rgba(74, 74, 74, 0.8);
     margin: 10px auto;
-    width: 100%;
-    max-width: 80vw; /* Match .notes-container */
+    width: auto; /* Changed from 100% to auto to shrink-wrap contents */
+    max-width: 240px; /* Match the width of other boxes (200px content + 20px padding on each side) */
+    /* Remove temporary border after debugging */
 }
 
 /* Ensure textarea and button inside notes-button-container look good */
