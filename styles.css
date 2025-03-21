@@ -91,7 +91,7 @@ body {
     color: #000; /* Adjust color as needed */
     text-decoration: none; /* Remove any default underline */
     font-family: Cochin, Georgia, Arial, sans-serif; /* Adjust font as needed */
-    font-size: 20px; /* Restore original size */
+    font-size: 18px; /* Restore original size */
     border-bottom: 1px solid #ccc; /* Restore separating line */
     width: 80%; /* 80% width for the link and line */
     margin: 0 auto; /* Center the link and line */
@@ -103,18 +103,6 @@ body {
 
 .menu-link.active-page::after {
     font-weight: bold; /* Bold text for active page */
-    text-decoration: none; /* Remove dots/underline */
-}
-
-/* Remove the hover dots rule entirely */
-/* .menu-link:not(.active-page):hover::after {
-    content: '·';
-    margin-left: 8px;
-} */
-
-/* Hover state style */
-.menu-link:hover {
-    font-weight: bold; /* Bold text on hover */
     text-decoration: none; /* Remove dots/underline */
 }
 
