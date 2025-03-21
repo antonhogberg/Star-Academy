@@ -889,6 +889,6 @@ body {
     border: 1px solid #ffd700; /* Gold border to create a box */
     border-radius: 5px;
     background: rgba(74, 74, 74, 0.8); /* Match text-box background */
-    margin: 10px auto; /* Center the container horizontally */
+    margin: 10px 15px; /* Center the container horizontally */
 }
 
