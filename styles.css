@@ -85,21 +85,23 @@ body {
     transition: left 0.3s ease-in-out, opacity 0.3s ease-in-out;
 }
 
-/* Menu link base style */
 .menu-link {
     display: block; /* Ensure block display for consistent spacing */
     padding: 10px 15px; /* Adjust padding as needed */
     color: #000; /* Adjust color as needed */
     text-decoration: none; /* Remove any default underline */
     font-family: Cochin, Georgia, Arial, sans-serif; /* Adjust font as needed */
-    font-size: 16px; /* Adjust size as needed */
+    font-size: 20px; /* Restore original size */
+    border-bottom: 1px solid #ccc; /* Restore separating line */
+    width: 80%; /* 80% width for the link and line */
+    margin: 0 auto; /* Center the link and line */
 }
 
 .menu-link:last-child {
-    border-bottom: none;
+    border-bottom: none; /* Remove line after the last link */
 }
 
-.menu-link.active-page {
+.menu-link.active-page::after {
     font-weight: bold; /* Bold text for active page */
     text-decoration: none; /* Remove dots/underline */
 }
