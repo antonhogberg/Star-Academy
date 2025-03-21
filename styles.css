@@ -840,12 +840,12 @@ body {
 
 .student-manager div {
     margin: 10px 0 2px 0;
+    font-size: 22px; /* Almost as large as the title (24px) */
 }
 
 .student-manager #studentsLabel {
     color: #ffffff;
     font-family: Cochin, Georgia, Arial, sans-serif;
-    font-size: 24px;
     padding-top: 30px; /* Increase top padding */
     padding-bottom: 0; /* No bottom padding */
 }
