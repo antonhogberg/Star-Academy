@@ -901,7 +901,7 @@ body {
 }
 
 .notes-container {
-    width: 100%;
+    width: auto;
     max-width: 80vw;
     margin: 7px auto 20px auto;
     display: flex;
@@ -970,13 +970,13 @@ body {
     background: rgba(74, 74, 74, 0.8);
     margin: 10px auto;
     width: auto; /* Shrink-wrap to content */
-    max-width: 240px; /* Match the width of other boxes (200px content + 20px padding on each side) */
+    max-width: 440px;
     border: 2px solid blue; /* Temporary for debugging */
 }
 
 .notes-button-container textarea {
     width: 100%;
-    max-width: 200px;
+    max-width: 400px;
     margin: 0 auto;
     height: 100px;
     padding: 10px;
@@ -988,6 +988,7 @@ body {
     overflow-y: auto;
     background-color: #fff;
     color: #333;
+    box-sizing: border-box;
     border: 2px solid green; /* Temporary for debugging */
 }
 
