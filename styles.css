@@ -909,6 +909,7 @@ body {
     align-items: center;
     max-height: calc(100vh - 400px);
     overflow-y: auto;
+    background-color: yellow; /* Temporary to confirm styles are applied */
 }
 
 .notes-container textarea {
