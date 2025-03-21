@@ -57,7 +57,13 @@ function switchStudent() {
     const select = document.getElementById('studentSelect');
     studentsData.currentStudent = select.value;
     localStorage.setItem('starAcademyStudents', JSON.stringify(studentsData));
-    window.location.href = 'index.html'; // Redirect to Star Overview to see updated progress
+    
+    // Call loadNotes() without updating the dropdown (already up-to-date)
+    if (typeof loadNotes === 'function') {
+        loadNotes(false);
+    } else {
+        console.error('loadNotes function not found. Ensure it is defined in students.html.');
+    }
 }
 
 function updateDropdown() {
