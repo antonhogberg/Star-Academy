@@ -902,7 +902,7 @@ body {
 
 .notes-container {
     width: auto;
-    max-width: 80vw;
+    max-width: 100vw; /* Increased from 80vw to allow text area to expand */
     margin: 7px auto 20px auto;
     display: inline-flex;
     flex-direction: column;
@@ -995,10 +995,12 @@ body {
         align-items: center;
         gap: 5px;
         padding: 10px;
+        max-width: 90vw; /* Constrain to 90% of viewport width on mobile */
     }
 
     .notes-button-container textarea {
         height: 300px; /* Doubled from 150px */
+        max-width: 90vw; /* Constrain to 90% of viewport width on mobile */
     }
 }
 
