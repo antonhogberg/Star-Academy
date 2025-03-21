@@ -765,12 +765,25 @@ body {
 }
 
 .student-manager button {
-    width: 100px;
-    margin: 10px 0;
+    font-family: Cochin, Georgia, Arial, sans-serif;
+    padding: 6px 12px; /* Consistent padding on all sides */
+    padding-left: 12px; /* Match the right padding (from 6px 12px) */
+    background: #4a4a4a;
+    border: 1px solid #ffd700;
+    border-radius: 5px;
+    color: #ffd700;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    box-sizing: border-box;
     font-size: 16px;
-    padding-left: 16px; /* Add a few pixels for spacing */
-    line-height: 19.2px; /* Ensure consistent line-height */
-    box-sizing: border-box; /* Ensure padding and border are included in height */
+    line-height: 19.2px;
+    width: 100px; /* Default width for "Lägg till" */
+    margin: 10px 0;
+    display: flex; /* Use flexbox for centering */
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    text-align: center; /* Fallback for older browsers */
 }
 
 .popup-content button:hover,
@@ -974,7 +987,7 @@ body {
 }
 
 .notes-button-container textarea {
-    width: 800%;
+    width: 100%;
     max-width: 1680px;
     margin: 0 auto;
     height: 240px;
@@ -1005,10 +1018,15 @@ body {
     }
 }
 
+/* Specific styles for notes-button-container button ("Spara info") */
 .notes-button-container button {
-    width: 150px;
+    width: 150px; /* Keep the wider width */
     margin: 10px auto;
     white-space: nowrap;
+    display: flex; /* Ensure flexbox is applied */
+    justify-content: center;
+    align-items: center;
+    text-align: center;
 }
 
 /* Mobile adjustments */
