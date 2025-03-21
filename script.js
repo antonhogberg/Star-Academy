@@ -3,7 +3,7 @@ const translations = {
     en: {
         menuFrontPage: "Star Overview",
         menuChapter: "Chapter",
-        menuStudents: "Manage Students", // Added
+        menuStudents: "Manage Students",
         popupWelcome: "Welcome to Star Academy!",
         popupEnterName: "Please enter your name:",
         rankExplorer: "Explorer",
@@ -32,19 +32,20 @@ const translations = {
         chapterName5: "Chords",
         chapterName6: "Arpeggios",
         chapterName7: "Repertoire",
-        addButton: "Submit",
+        addButton: "Add", // Changed from "Submit"
         studentNamePlaceholder: "Enter student name",
         studentsLabel: "Students:",
         addAnotherStudent: "Add another student",
         addNewStudent: "Add new student",
         notesLabel: "Notes:",
         notesPlaceholder: "Add notes about planned homework, progress, or other details here.",
-        saveNotesButton: "Save notes"
+        saveNotesButton: "Save notes",
+        defaultOption: "Select a student" // Added
     },
     sv: {
         menuFrontPage: "Stjärnöversikt",
         menuChapter: "Kapitel",
-        menuStudents: "Hantera elever", // Added
+        menuStudents: "Hantera elever",
         popupWelcome: "Välkommen till Stjärnakademien!",
         popupEnterName: "Skriv ditt namn här:",
         rankExplorer: "Utforskare",
@@ -80,7 +81,8 @@ const translations = {
         addNewStudent: "Lägg till ny elev",
         notesLabel: "Anteckningar:",
         notesPlaceholder: "Skriv dina anteckningar om läxor m.m. här.",
-        saveNotesButton: "Spara anteckningar"
+        saveNotesButton: "Spara anteckningar",
+        defaultOption: "Välj en elev" // Added
     }
 };
 
@@ -285,6 +287,7 @@ function updateStarStates() {
 // ... (keep the rest of script.js unchanged, e.g., translations, switchLanguage, setInitialLanguage)
 
 // Function to switch language
+// Function to switch language
 function switchLanguage(lang) {
     localStorage.setItem('language', lang);
     console.log(`Switching language to: ${lang}`);
@@ -330,12 +333,29 @@ function switchLanguage(lang) {
     if (rankName && rankTitle && rankDescription) {
         console.log('Found rank elements, updating with updateStarStates()');
         updateStarStates();
-    } else {
-        console.log('Rank elements not found:', {
-            rankName: !!rankName,
-            rankTitle: !!rankTitle,
-            rankDescription: !!rankDescription
-        });
+    }
+
+    // Update students.html specific elements
+    const chapterTitle = document.getElementById('chapterTitle');
+    const studentsLabel = document.getElementById('studentsLabel');
+    const newStudentInput = document.getElementById('newStudentName');
+    const addButton = document.getElementById('addStudentButton');
+    const defaultOption = document.getElementById('defaultOption');
+    const addStudentLabel = document.getElementById('addStudentLabel');
+    const notesLabel = document.getElementById('notesLabel');
+    const studentNotes = document.getElementById('studentNotes');
+    const saveNotesButton = document.getElementById('saveNotesButton');
+    if (chapterTitle && studentsLabel) {
+        chapterTitle.textContent = translations[lang].menuStudents;
+        studentsLabel.textContent = translations[lang].studentsLabel;
+        newStudentInput.placeholder = translations[lang].studentNamePlaceholder;
+        addButton.textContent = translations[lang].addButton;
+        defaultOption.textContent = translations[lang].defaultOption;
+        addStudentLabel.textContent = translations[lang].addNewStudent;
+        notesLabel.textContent = translations[lang].notesLabel;
+        studentNotes.placeholder = translations[lang].notesPlaceholder;
+        saveNotesButton.textContent = translations[lang].saveNotesButton;
+        console.log(`Updated students.html title, label, placeholder, button, and default option to ${lang}`);
     }
 }
 
