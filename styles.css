@@ -817,7 +817,7 @@ body {
 /* Note: Removed mobile landscape rank badge sizing and chapter padding (20 rows) per user request to deprioritize mobile landscape. */
 
 .student-manager {
-    padding: 20px;
+    padding: 0 20px 20px 20px; /* Remove top padding, keep others */
     text-align: center;
 }
 
