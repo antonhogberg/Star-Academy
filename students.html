@@ -43,13 +43,17 @@
             <button id="addStudentButton" onclick="addStudent()"></button>
         </div>
         <div id="studentsLabel" style="margin: 10px 0;"></div>
-        <select id="studentSelect" onchange="switchStudent()" style="padding: 10px; font-size: 16px; width: 200px; margin: 10px 0;">
-            <option value="" id="defaultOption"></option>
-        </select>
+        <div class="dropdown-container">
+            <select id="studentSelect" onchange="switchStudent()" style="padding: 10px; font-size: 16px; width: 200px; margin: 8px 0 10px 0;">
+                <option value="" id="defaultOption"></option>
+            </select>
+        </div>
         <div class="notes-container">
             <div id="notesLabel"></div>
-            <textarea id="studentNotes" rows="5"></textarea>
-            <button id="saveNotesButton" onclick="saveNotes()"></button>
+            <div class="notes-button-container">
+                <textarea id="studentNotes" rows="5"></textarea>
+                <button id="saveNotesButton" onclick="saveNotes()"></button>
+            </div>
         </div>
     </div>
     <script src="script.js"></script>
@@ -107,5 +111,6 @@
         }
     </script>
     <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9226e69469696205',t:'MTc0MjMyMzY2OS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
+    <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'923e56ccff59b3d4',t:'MTc0MjU2OTQzOC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
 </body>
 </html>
