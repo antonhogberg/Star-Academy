@@ -813,6 +813,7 @@ body {
 .student-manager {
     padding: 0 20px 20px 20px; /* Remove top padding, keep others */
     text-align: center;
+    border: 2px solid yellow; /* Temporary for debugging */
 }
 
 .student-manager h1 {
