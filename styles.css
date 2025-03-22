@@ -425,7 +425,7 @@ body {
     .progress-svg {
         width: 200%;
         max-width: none;
-        height: auto;
+        height: 200%;
         margin: 10px auto;
         position: relative;
         left: 50%;
@@ -520,8 +520,8 @@ body {
     }
 }
 
-/* Tablet/Desktop (landscape screens ≥ 768px and ≤ 1366px) */
-@media (min-width: 768px) and (max-width: 1366px) and (orientation: landscape) {
+/* Tablet/Desktop (landscape screens ≥ 768px and ≤ 1400px) */
+@media (min-width: 768px) and (max-width: 1400px) and (orientation: landscape) {
     body {
         overflow: hidden; /* Disable all scrolling */
         width: 100%;
@@ -604,17 +604,16 @@ body {
         margin: 2px auto; /* Further reduce margin to save space */
     }
     .notes-button-container {
-        padding: 5px; /* 5px on all sides for 5px spacing */
+        padding: 10px; /* 10px on all sides for 10px spacing */
     }
     .input-button-container {
-        padding: 5px; /* 5px on all sides for 5px spacing */
+        padding: 10px; /* 10px on all sides for 10px spacing */
     }
     .dropdown-container {
-        padding: 5px; /* 5px on all sides for 5px spacing */
+        padding: 10px; /* 10px on all sides for 10px spacing */
     }
     #studentNotes {
-        width: 510px; /* 50% larger than 340px */
-        max-width: 100%;
+        width: clamp(341px, 33.33vw, 455px); /* Approximately one-third of the screen width */
         height: 180px; /* Further reduce height to fit in iPad landscape */
         padding: 10px; /* Adjust padding to fit within container */
     }
@@ -947,11 +946,11 @@ body {
     align-items: center; /* Center vertically */
     justify-content: center; /* Center horizontally */
     gap: 10px; /* Space between input and button */
-    padding: 5px; /* 5px on all sides for 5px spacing */
+    padding: 10px; /* 10px on all sides for 10px spacing */
     border: 1px solid #ffd700; /* Gold border to create a box */
     border-radius: 5px;
     background: rgba(74, 74, 74, 0.8); /* Match text-box background */
-    margin: 10px auto; /* Center the container horizontally */
+    margin: 5px auto; /* Reduced vertical margin to minimize extra spacing */
 }
 
 .notes-wrapper {
@@ -976,11 +975,11 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 5px; /* 5px on all sides for 5px spacing */
+    padding: 10px; /* 10px on all sides for 10px spacing */
     border: 1px solid #ffd700;
     border-radius: 5px;
     background: rgba(74, 74, 74, 0.8);
-    margin: 10px auto;
+    margin: 5px auto; /* Reduced vertical margin to minimize extra spacing */
 }
 
 /* Specific styles for notes-button-container button ("Spara info") */
@@ -995,7 +994,6 @@ body {
 
 #studentNotes {
     width: 100%;
-    max-width: 100%;
     height: 240px;
     box-sizing: border-box;
     padding: 10px;
@@ -1024,16 +1022,16 @@ body {
         flex-direction: row; /* Place input and button on the same row */
         align-items: center;
         gap: 10px;
-        padding: 5px; /* 5px on all sides for 5px spacing */
-        margin: 10px auto; /* Match iPad landscape */
+        padding: 10px; /* 10px on all sides for 10px spacing */
+        margin: 5px auto; /* Reduced vertical margin to minimize extra spacing */
     }
 
     .dropdown-container {
         flex-direction: column;
         align-items: center;
         gap: 5px;
-        padding: 5px; /* 5px on all sides for 5px spacing */
-        margin: 10px auto; /* Match iPad landscape */
+        padding: 10px; /* 10px on all sides for 10px spacing */
+        margin: 5px auto; /* Reduced vertical margin to minimize extra spacing */
     }
 
     .notes-container {
@@ -1043,12 +1041,12 @@ body {
     .notes-button-container {
         flex-direction: column;
         align-items: center;
-        padding: 5px; /* 5px on all sides for 5px spacing */
-        margin: 10px auto; /* Match iPad landscape */
+        padding: 10px; /* 10px on all sides for 10px spacing */
+        margin: 5px auto; /* Reduced vertical margin to minimize extra spacing */
     }
 
     #studentNotes {
-        width: calc(100% - 40px); /* Fill screen width with 20px buffer on each side */
+        width: 90%; /* 90% of the screen width */
         height: 360px;
     }
 
@@ -1064,9 +1062,9 @@ body {
     align-items: center;
     justify-content: center;
     gap: 10px;
-    padding: 5px; /* 5px on all sides for 5px spacing */
+    padding: 10px; /* 10px on all sides for 10px spacing */
     border: 1px solid #ffd700;
     border-radius: 5px;
     background: rgba(74, 74, 74, 0.8);
-    margin: 10px auto;
+    margin: 5px auto; /* Reduced vertical margin to minimize extra spacing */
 }
