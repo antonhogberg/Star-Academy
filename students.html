@@ -76,7 +76,6 @@
             }
         
             if (!studentsData.students[currentStudent]) {
-                // This should never happen if the dropdown is populated correctly, but adding for safety
                 alert('Selected student not found. Please add the student first.');
                 return;
             }
@@ -85,16 +84,20 @@
             studentsData.currentStudent = currentStudent;
             studentsData.students[currentStudent].notes = studentNotes.value;
             localStorage.setItem('starAcademyStudents', JSON.stringify(studentsData));
+            // Update the global studentsData in students.js
+            if (typeof window.studentsData !== 'undefined') {
+                window.studentsData = studentsData;
+            }
             alert('Notes saved successfully!');
         }
         </script>
         <script>
-            document.addEventListener('DOMContentLoaded', () => {
-                // Reset viewport scale to 1.0 on page load
-                const metaViewport = document.querySelector('meta[name="viewport"]');
-                metaViewport.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover');
-            });
-            </script>
+                document.addEventListener('DOMContentLoaded', () => {
+                    // Reset viewport scale to 1.0 on page load
+                    const metaViewport = document.querySelector('meta[name="viewport"]');
+                    metaViewport.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover');
+                });
+        </script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const lang = localStorage.getItem('language') || 'sv';
