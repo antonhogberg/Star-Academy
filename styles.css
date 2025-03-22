@@ -604,22 +604,19 @@ body {
         margin: 2px auto; /* Further reduce margin to save space */
     }
     .notes-button-container {
-        width: 400px; /* Restore original width */
-        padding: 10px 30px; /* Adjusted to achieve 30px side spacing */
+        padding: 20px; /* 20px on all sides for 20px spacing */
     }
     .input-button-container {
-        width: 240px; /* 200px content + 40px extra width */
-        padding: 10px 10px; /* Match top/bottom spacing */
+        padding: 20px; /* 20px on all sides for 20px spacing */
     }
     .dropdown-container {
-        width: 240px; /* 200px content + 40px extra width */
-        padding: 10px 10px; /* Match top/bottom spacing */
+        padding: 20px; /* 20px on all sides for 20px spacing */
     }
     #studentNotes {
-        width: 100%;
+        width: 340px; /* Restore original width */
         max-width: 100%;
         height: 180px; /* Further reduce height to fit in iPad landscape */
-        padding-top: 20px; /* Add extra padding-top to match section spacing */
+        padding: 10px; /* Adjust padding to fit within container */
     }
 }
 
@@ -811,7 +808,6 @@ body {
 .student-manager button {
     font-family: Cochin, Georgia, Arial, sans-serif;
     padding: 6px 12px; /* Consistent padding on all sides */
-    padding-left: 12px; /* Match the right padding (from 6px 12px) */
     background: #4a4a4a;
     border: 1px solid #ffd700;
     border-radius: 5px;
@@ -822,8 +818,7 @@ body {
     box-sizing: border-box;
     font-size: 16px;
     line-height: 19.2px;
-    width: 100px; /* Restore original width for "Lägg till" */
-    margin: 10px 0;
+    margin: 0; /* Remove margin to rely on container padding */
     display: flex; /* Use flexbox for centering */
     justify-content: center; /* Center horizontally */
     align-items: center; /* Center vertically */
@@ -882,7 +877,7 @@ body {
 
 .student-manager input {
     padding: 6px 10px; /* Reduce top/bottom padding to match button height */
-    margin: 10px 0;
+    margin: 0; /* Remove margin to rely on container padding */
     font-size: 16px;
     line-height: 19.2px; /* Match button’s line-height */
     width: 200px; /* Restore original width */
@@ -920,7 +915,7 @@ body {
     padding: 10px;
     font-size: 16px;
     width: 200px; /* Restore original width */
-    margin: 8px 0 10px 0; /* Reduced margin-top to 8px to achieve total spacing of 8px (0 + 8), adjusting for visual perception */
+    margin: 0; /* Remove margin to rely on container padding */
     border: 1px solid #ccc;
     border-radius: 5px;
     background-color: #fff;
@@ -948,16 +943,15 @@ body {
 }
 
 .input-button-container {
-    display: inline-flex; /* Shrink-wrap to content width */
+    display: inline-flex; /* Shrink-wrap to content */
     align-items: center; /* Center vertically */
     justify-content: center; /* Center horizontally */
     gap: 10px; /* Space between input and button */
-    padding: 10px 10px; /* Consistent padding */
+    padding: 20px; /* 20px on all sides for 20px spacing */
     border: 1px solid #ffd700; /* Gold border to create a box */
     border-radius: 5px;
     background: rgba(74, 74, 74, 0.8); /* Match text-box background */
     margin: 10px auto; /* Center the container horizontally */
-    width: 240px; /* 200px content + 40px extra width */
 }
 
 .notes-wrapper {
@@ -983,19 +977,16 @@ body {
     align-items: center;
     justify-content: center;
     gap: 10px;
-    padding: 10px 10px; /* Consistent padding */
+    padding: 20px; /* 20px on all sides for 20px spacing */
     border: 1px solid #ffd700;
     border-radius: 5px;
     background: rgba(74, 74, 74, 0.8);
     margin: 10px auto;
-    width: 240px; /* Match other containers in mobile */
-    max-width: 1680px;
 }
 
 /* Specific styles for notes-button-container button ("Spara info") */
 .notes-button-container button {
-    width: 150px; /* Restore original width */
-    margin: 10px auto;
+    margin: 0; /* Remove margin to rely on container padding */
     white-space: nowrap;
     display: flex; /* Ensure flexbox is applied */
     justify-content: center;
@@ -1034,8 +1025,7 @@ body {
         flex-direction: column;
         align-items: center;
         gap: 5px;
-        padding: 10px 10px; /* Already matches top/bottom */
-        width: 240px; /* 200px content + 40px extra width */
+        padding: 20px; /* 20px on all sides for 20px spacing */
         margin: 10px auto; /* Match iPad landscape */
     }
 
@@ -1043,8 +1033,7 @@ body {
         flex-direction: column;
         align-items: center;
         gap: 5px;
-        padding: 10px 10px; /* Already matches top/bottom */
-        width: 240px; /* 200px content + 40px extra width */
+        padding: 20px; /* 20px on all sides for 20px spacing */
         margin: 10px auto; /* Match iPad landscape */
     }
 
@@ -1056,13 +1045,12 @@ body {
         flex-direction: column;
         align-items: center;
         gap: 5px;
-        padding: 10px 10px; /* Already matches top/bottom */
-        width: 240px; /* 200px content + 40px extra width */
+        padding: 20px; /* 20px on all sides for 20px spacing */
         margin: 10px auto; /* Match iPad landscape */
     }
 
     #studentNotes {
-        width: 100%;
+        width: 200px; /* Match input and dropdown width */
         height: 360px;
     }
 
@@ -1074,14 +1062,13 @@ body {
 }
 
 .dropdown-container {
-    display: inline-flex;
+    display: inline-flex; /* Shrink-wrap to content */
     align-items: center;
     justify-content: center;
     gap: 10px;
-    padding: 10px 10px; /* Consistent padding */
+    padding: 20px; /* 20px on all sides for 20px spacing */
     border: 1px solid #ffd700;
     border-radius: 5px;
     background: rgba(74, 74, 74, 0.8);
     margin: 10px auto;
-    width: 240px; /* 200px content + 40px extra width */
 }
