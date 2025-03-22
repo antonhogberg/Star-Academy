@@ -604,18 +604,15 @@ body {
         margin: 2px auto; /* Further reduce margin to save space */
     }
     .notes-button-container {
-        width: 100%;
-        max-width: 340px; /* Adjusted to achieve 30px side spacing */
+        width: 400px; /* Restore original width */
         padding: 10px 30px; /* Adjusted to achieve 30px side spacing */
     }
     .input-button-container {
-        width: 100%;
-        max-width: 1100px; /* Adjusted to achieve 10px side spacing */
+        width: 240px; /* 200px content + 40px extra width */
         padding: 10px 10px; /* Match top/bottom spacing */
     }
     .dropdown-container {
-        width: 100%;
-        max-width: 1100px; /* Adjusted to achieve 10px side spacing */
+        width: 240px; /* 200px content + 40px extra width */
         padding: 10px 10px; /* Match top/bottom spacing */
     }
     #studentNotes {
@@ -825,7 +822,7 @@ body {
     box-sizing: border-box;
     font-size: 16px;
     line-height: 19.2px;
-    width: 100px; /* Default width for "Lägg till" */
+    width: 100px; /* Restore original width for "Lägg till" */
     margin: 10px 0;
     display: flex; /* Use flexbox for centering */
     justify-content: center; /* Center horizontally */
@@ -888,8 +885,7 @@ body {
     margin: 10px 0;
     font-size: 16px;
     line-height: 19.2px; /* Match button’s line-height */
-    width: 100%; /* Fill the container */
-    max-width: 100%; /* Ensure it fits */
+    width: 200px; /* Restore original width */
     border: 1px solid #ccc; /* Add border to match button */
     border-radius: 5px; /* Match button’s border-radius */
     box-sizing: border-box; /* Ensure padding and border are included in height */
@@ -923,8 +919,7 @@ body {
 .student-manager select {
     padding: 10px;
     font-size: 16px;
-    width: 100%; /* Fill the container */
-    max-width: 100%; /* Ensure it fits */
+    width: 200px; /* Restore original width */
     margin: 8px 0 10px 0; /* Reduced margin-top to 8px to achieve total spacing of 8px (0 + 8), adjusting for visual perception */
     border: 1px solid #ccc;
     border-radius: 5px;
@@ -962,6 +957,7 @@ body {
     border-radius: 5px;
     background: rgba(74, 74, 74, 0.8); /* Match text-box background */
     margin: 10px auto; /* Center the container horizontally */
+    width: 240px; /* 200px content + 40px extra width */
 }
 
 .notes-wrapper {
@@ -992,14 +988,13 @@ body {
     border-radius: 5px;
     background: rgba(74, 74, 74, 0.8);
     margin: 10px auto;
-    width: 400px;
+    width: 240px; /* Match other containers in mobile */
     max-width: 1680px;
 }
 
 /* Specific styles for notes-button-container button ("Spara info") */
 .notes-button-container button {
-    width: 100%; /* Fill the container */
-    max-width: 100%; /* Ensure it fits */
+    width: 150px; /* Restore original width */
     margin: 10px auto;
     white-space: nowrap;
     display: flex; /* Ensure flexbox is applied */
@@ -1040,8 +1035,7 @@ body {
         align-items: center;
         gap: 5px;
         padding: 10px 10px; /* Already matches top/bottom */
-        width: 100%;
-        max-width: calc(90vw - 40px); /* Account for .student-manager padding and add buffer */
+        width: 240px; /* 200px content + 40px extra width */
         margin: 10px auto; /* Match iPad landscape */
     }
 
@@ -1050,8 +1044,7 @@ body {
         align-items: center;
         gap: 5px;
         padding: 10px 10px; /* Already matches top/bottom */
-        width: 100%;
-        max-width: calc(90vw - 40px); /* Account for .student-manager padding and add buffer */
+        width: 240px; /* 200px content + 40px extra width */
         margin: 10px auto; /* Match iPad landscape */
     }
 
@@ -1064,8 +1057,7 @@ body {
         align-items: center;
         gap: 5px;
         padding: 10px 10px; /* Already matches top/bottom */
-        width: 100%;
-        max-width: calc(90vw - 40px); /* Account for .student-manager padding and add buffer */
+        width: 240px; /* 200px content + 40px extra width */
         margin: 10px auto; /* Match iPad landscape */
     }
 
@@ -1091,4 +1083,5 @@ body {
     border-radius: 5px;
     background: rgba(74, 74, 74, 0.8);
     margin: 10px auto;
+    width: 240px; /* 200px content + 40px extra width */
 }
