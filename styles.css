@@ -984,7 +984,7 @@ body {
 
 /* Specific styles for notes-button-container button ("Spara info") */
 .notes-button-container button {
-    margin: 0; /* Remove margin to rely on container padding */
+    margin: 10px 0 1px 0; 
     white-space: nowrap;
     display: flex; /* Ensure flexbox is applied */
     justify-content: center;
