@@ -169,7 +169,7 @@ body {
 @media (min-width: 768px) and (max-width: 1366px) and (orientation: landscape) {
     .chapter-title {
         display: block; /* Show in landscape */
-        margin: 10px 0; /* Reduce margin to save space */
+        margin: 5px 0; /* Further reduce margin to save space */
     }
     .chapter-number {
         font-size: 32px; /* Increased from 24px for landscape */
@@ -189,7 +189,7 @@ body {
 @media (max-width: 767px) and (orientation: portrait) {
     .chapter-title {
         display: block;
-        margin: 20px 0 40px 0; /* Reverted top margin to 20px, increased bottom margin to 40px (double of 20px) */
+        margin: 5px 0; /* Match iPad landscape */
     }
 }
 
@@ -455,7 +455,7 @@ body {
     }
     .chapter-title {
         display: block;
-        margin: 20px 0 40px 0; /* Reverted top margin to 20px, increased bottom margin to 40px (double of 20px) */
+        margin: 5px 0; /* Match iPad landscape */
     }
     .parts {
         max-width: 744px;
@@ -526,6 +526,7 @@ body {
         overflow: hidden; /* Disable all scrolling */
         width: 100%;
         height: 100vh; /* Ensure body takes exactly the viewport height */
+        -webkit-overflow-scrolling: touch; /* Disable bounce scrolling on iOS */
     }
 
     .student-manager {
@@ -538,7 +539,7 @@ body {
         display: flex; /* Use flexbox to manage layout */
         flex-direction: column;
         align-items: center;
-        justify-content: center; /* Center content vertically */
+        /* Remove justify-content: center to align content at the top */
     }
 
     .layout-container {
@@ -589,7 +590,7 @@ body {
     }
     .chapter-title {
         display: block; /* Ensure title is visible on iPad landscape */
-        margin: 10px 0; /* Reduce margin to save space */
+        margin: 5px 0; /* Further reduce margin to save space */
     }
     .parts {
         height: auto; /* Allow natural height */
@@ -600,7 +601,7 @@ body {
     .notes-container {
         width: 100%;
         max-width: 100vw;
-        margin: 5px auto; /* Reduce margin to save space */
+        margin: 2px auto; /* Further reduce margin to save space */
     }
     .notes-button-container {
         width: 400px;
@@ -609,7 +610,8 @@ body {
     #studentNotes {
         width: 400px;
         max-width: 100%;
-        height: 200px; /* Reduce height to fit better in iPad landscape */
+        height: 180px; /* Further reduce height to fit in iPad landscape */
+        padding-top: 20px; /* Add extra padding-top to match section spacing */
     }
 }
 
@@ -1012,38 +1014,56 @@ body {
 @media (max-width: 767px) {
     .student-manager {
         overflow-x: hidden; /* Prevent horizontal scrolling */
+        padding: 0 10px 20px 10px; /* Match iPad landscape padding (except bottom) */
+    }
+
+    .chapter-title {
+        margin: 5px 0; /* Match iPad landscape */
     }
 
     .input-button-container {
         flex-direction: column;
         align-items: center;
         gap: 5px;
-        padding: 10px;
+        padding: 10px 20px; /* Match iPad landscape */
         width: 100%;
         max-width: 90vw; /* Ensure it fits within the viewport */
+        margin: 10px auto; /* Match iPad landscape */
     }
 
     .dropdown-container {
         flex-direction: column;
         align-items: center;
         gap: 5px;
-        padding: 10px;
+        padding: 10px 20px; /* Match iPad landscape */
         width: 100%;
         max-width: 90vw; /* Ensure it fits within the viewport */
+        margin: 10px auto; /* Match iPad landscape */
+    }
+
+    .notes-container {
+        margin: 2px auto; /* Match iPad landscape */
     }
 
     .notes-button-container {
         flex-direction: column;
         align-items: center;
         gap: 5px;
-        padding: 10px;
+        padding: 10px 20px; /* Match iPad landscape */
         width: 100%;
         max-width: 90vw; /* Constrain to 90% of viewport width on mobile */
+        margin: 10px auto; /* Match iPad landscape */
     }
 
     #studentNotes {
         width: 100%;
         height: 360px;
+    }
+
+    .student-manager #studentsLabel {
+        padding-top: 10px; /* Reduce to match compact spacing */
+        padding-bottom: 0;
+        margin-bottom: 0px;
     }
 }
 
