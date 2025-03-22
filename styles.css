@@ -605,7 +605,7 @@ body {
     }
     .notes-button-container {
         width: 400px;
-        max-width: 90vw; /* Ensure it fits within the viewport */
+        max-width: calc(90vw - 20px); /* Account for .student-manager padding */
     }
     #studentNotes {
         width: 400px;
@@ -944,7 +944,7 @@ body {
     align-items: center; /* Center vertically */
     justify-content: center; /* Center horizontally */
     gap: 10px; /* Space between input and button */
-    padding: 10px 20px; /* 10px top/bottom, 20px left/right */
+    padding: 10px 10px; /* Reduced horizontal padding to 10px */
     border: 1px solid #ffd700; /* Gold border to create a box */
     border-radius: 5px;
     background: rgba(74, 74, 74, 0.8); /* Match text-box background */
@@ -974,7 +974,7 @@ body {
     align-items: center;
     justify-content: center;
     gap: 10px;
-    padding: 10px 20px;
+    padding: 10px 10px; /* Reduced horizontal padding to 10px */
     border: 1px solid #ffd700;
     border-radius: 5px;
     background: rgba(74, 74, 74, 0.8);
@@ -1025,9 +1025,9 @@ body {
         flex-direction: column;
         align-items: center;
         gap: 5px;
-        padding: 10px 20px; /* Match iPad landscape */
+        padding: 10px 10px; /* Reduced horizontal padding to 10px */
         width: 100%;
-        max-width: 90vw; /* Ensure it fits within the viewport */
+        max-width: calc(90vw - 20px); /* Account for .student-manager padding */
         margin: 10px auto; /* Match iPad landscape */
     }
 
@@ -1035,9 +1035,9 @@ body {
         flex-direction: column;
         align-items: center;
         gap: 5px;
-        padding: 10px 20px; /* Match iPad landscape */
+        padding: 10px 10px; /* Reduced horizontal padding to 10px */
         width: 100%;
-        max-width: 90vw; /* Ensure it fits within the viewport */
+        max-width: calc(90vw - 20px); /* Account for .student-manager padding */
         margin: 10px auto; /* Match iPad landscape */
     }
 
@@ -1049,9 +1049,9 @@ body {
         flex-direction: column;
         align-items: center;
         gap: 5px;
-        padding: 10px 20px; /* Match iPad landscape */
+        padding: 10px 10px; /* Reduced horizontal padding to 10px */
         width: 100%;
-        max-width: 90vw; /* Constrain to 90% of viewport width on mobile */
+        max-width: calc(90vw - 20px); /* Account for .student-manager padding */
         margin: 10px auto; /* Match iPad landscape */
     }
 
@@ -1072,7 +1072,7 @@ body {
     align-items: center;
     justify-content: center;
     gap: 10px;
-    padding: 10px 20px;
+    padding: 10px 10px; /* Reduced horizontal padding to 10px */
     border: 1px solid #ffd700;
     border-radius: 5px;
     background: rgba(74, 74, 74, 0.8);
