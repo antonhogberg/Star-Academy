@@ -871,7 +871,8 @@ body {
 .student-manager h1 {
     font-family: Cochin, Georgia, Arial, sans-serif;
     font-size: 24px;
-    margin-bottom: 60px;
+    margin-bottom: 40px;
+    margin-top: 20px;
 }
 
 .student-manager input {
