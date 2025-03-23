@@ -1032,7 +1032,7 @@ body {
         align-items: center;
         gap: 5px;
         padding: 10px; /* 10px on all sides for 10px spacing */
-        margin: 5px auto; /* Reduced vertical margin to minimize extra spacing */
+        margin: auto; /* Reduced vertical margin to minimize extra spacing */
     }
 
     .notes-container {
