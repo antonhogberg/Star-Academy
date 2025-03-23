@@ -901,10 +901,6 @@ body {
     margin-bottom: 2px; /* Keep as is, looks good */
 }
 
-.student-manager #notesLabel {
-    margin-bottom: 5px; /* Slightly more space */
-}
-
 .student-manager #studentsLabel {
     color: #ffffff;
     font-family: Cochin, Georgia, Arial, sans-serif;
