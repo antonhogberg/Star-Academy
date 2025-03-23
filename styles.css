@@ -605,6 +605,7 @@ body {
     }
     .notes-button-container {
         padding: 10px; /* 10px on all sides for 10px spacing */
+        margin: 5px auto; /* Match top boxes */
     }
     .input-button-container {
         padding: 10px; /* 10px on all sides for 10px spacing */
@@ -971,7 +972,7 @@ body {
 }
 
 .notes-button-container {
-    display: flex;
+    display: inline-flex; /* Change to inline-flex to shrink-wrap content */
     flex-direction: column;
     align-items: center;
     justify-content: center;
@@ -979,8 +980,7 @@ body {
     border: 1px solid #ffd700;
     border-radius: 5px;
     background: rgba(74, 74, 74, 0.8);
-    margin: 5px auto; /* Reduced vertical margin to minimize extra spacing */
-    width: 100%; /* Ensure it takes up the full width of its parent */
+    margin: 5px auto; /* Center with auto margins, matching top boxes */
 }
 
 /* Specific styles for notes-button-container button ("Spara info") */
@@ -1043,12 +1043,11 @@ body {
         flex-direction: column;
         align-items: center;
         padding: 10px; /* 10px on all sides for 10px spacing */
-        margin: 5px auto; /* Reduced vertical margin to minimize extra spacing */
-        width: 100%; /* Ensure it takes up the full width of its parent */
+        margin: 5px auto; /* Match top boxes */
     }
 
     #studentNotes {
-        width: 90%; /* 90% of the screen width */
+        width: 90vw; /* 90% of the viewport width */
         height: 360px;
     }
 
