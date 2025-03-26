@@ -618,6 +618,11 @@ body {
         width: clamp(341px, 33.33vw, 455px); /* Approximately one-third of the screen width */
         height: 180px; /* Further reduce height to fit in iPad landscape */
         padding: 10px; /* Adjust padding to fit within container */
+        border: 1px solid #ff8c00; /* Orange border */
+        border-radius: 5px;
+        background: #4a4a4a; /* Dark grey background */
+        color: #ffffff; /* White text */
+        font-family: Cochin, Georgia, Arial, sans-serif;
     }
 }
 
@@ -1041,9 +1046,8 @@ body {
     align-items: center;
     justify-content: center;
     padding: 10px; /* 10px on all sides for 10px spacing */
-    border: 1px solid #ffd700;
-    border-radius: 5px;
-    background: rgba(74, 74, 74, 0.8);
+    border: none; /* Remove yellow border */
+    background: none; /* Remove grey background */
     margin: 5px auto; /* Center with auto margins, matching top boxes */
 }
 
@@ -1054,12 +1058,12 @@ body {
     padding: 10px;
     font-size: 16px;
     font-family: Cochin, Georgia, Arial, sans-serif;
-    border: 1px solid #ccc;
+    border: 1px solid #ff8c00; /* Orange border */
     border-radius: 5px;
+    background: #4a4a4a; /* Dark grey background */
+    color: #ffffff; /* White text */
     resize: none;
     overflow-y: auto;
-    background-color: #fff;
-    color: #333;
 }
 
 /* Mobile adjustments */
@@ -1079,9 +1083,8 @@ body {
         justify-content: center;
         gap: 10px;
         padding: 10px;
-        border: 1px solid #ffd700;
-        border-radius: 5px;
-        background: rgba(74, 74, 74, 0.8);
+        border: none; /* Remove yellow border */
+        background: none; /* Remove grey background */
         margin: 5px auto;
         position: relative; /* Add position: relative to contain the absolutely positioned button */
     }
@@ -1106,11 +1109,18 @@ body {
         align-items: center;
         padding: 10px; /* 10px on all sides for 10px spacing */
         margin: 5px auto; /* Match top boxes */
+        border: none; /* Remove yellow border */
+        background: none; /* Remove grey background */
     }
 
     #studentNotes {
         width: 90vw; /* 90% of the viewport width */
         height: 360px;
+        border: 1px solid #ff8c00; /* Orange border */
+        border-radius: 5px;
+        background: #4a4a4a; /* Dark grey background */
+        color: #ffffff; /* White text */
+        font-family: Cochin, Georgia, Arial, sans-serif;
     }
 
     .student-manager #studentsLabel {
@@ -1126,8 +1136,7 @@ body {
     justify-content: center;
     gap: 10px;
     padding: 10px; /* 10px on all sides for 10px spacing */
-    border: 1px solid #ffd700;
-    border-radius: 5px;
-    background: rgba(74, 74, 74, 0.8);
+    border: none; /* Remove yellow border */
+    background: none; /* Remove grey background */
     margin: 5px auto; /* Reduced vertical margin to minimize extra spacing */
 }
