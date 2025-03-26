@@ -615,7 +615,7 @@ body {
         padding: 10px; /* 10px on all sides for 10px spacing */
     }
     #studentNotes {
-        width: clamp(341px, 33.33vw, 455px); /* Approximately one-third of the screen width */
+        width: clamp(256px, 26.64vw, 364px); /* 80% of previous clamp(341px, 33.33vw, 455px) */
         height: 180px; /* Further reduce height to fit in iPad landscape */
         padding: 10px; /* Adjust padding to fit within container */
         border: 1px solid #ff8c00; /* Orange border */
@@ -847,7 +847,7 @@ body {
     margin: 0;
     font-size: 16px;
     line-height: 19.2px;
-    width: 200px;
+    width: 320px; /* Set to match text area */
     border: 1px solid #ff8c00; /* Orange border */
     border-radius: 5px;
     box-sizing: border-box;
@@ -924,7 +924,7 @@ body {
     margin: 0; /* Remove margin to rely on container padding */
     font-size: 16px;
     line-height: 19.2px; /* Match button’s line-height */
-    width: 200px; /* Restore original width */
+    width: 320px; /* Set to match text area */
     border: 1px solid #ccc; /* Add border to match button */
     border-radius: 5px; /* Match button’s border-radius */
     box-sizing: border-box; /* Ensure padding and border are included in height */
@@ -954,7 +954,7 @@ body {
 .student-manager select {
     padding: 10px;
     font-size: 16px;
-    width: 200px; /* Restore original width */
+    width: 320px; /* Set to match text area */
     margin: 0; /* Remove margin to rely on container padding */
     border: 1px solid #ccc;
     border-radius: 5px;
@@ -985,7 +985,7 @@ body {
 .student-manager select#studentSelect {
     padding: 10px;
     font-size: 16px;
-    width: 200px;
+    width: 320px; /* Set to match text area */
     margin: 0;
     border: 1px solid #ff8c00; /* Orange border */
     border-radius: 5px;
@@ -1052,7 +1052,7 @@ body {
 }
 
 #studentNotes {
-    width: 400px;
+    width: 320px; /* 80% of previous 400px */
     height: 240px;
     box-sizing: border-box;
     padding: 10px;
@@ -1114,13 +1114,21 @@ body {
     }
 
     #studentNotes {
-        width: 90vw; /* 90% of the viewport width */
+        width: 72vw; /* 80% of previous 90vw */
         height: 360px;
         border: 1px solid #ff8c00; /* Orange border */
         border-radius: 5px;
         background: #4a4a4a; /* Dark grey background */
         color: #ffffff; /* White text */
         font-family: Cochin, Georgia, Arial, sans-serif;
+    }
+
+    .student-manager input#newStudentName {
+        width: 72vw; /* Match text area in mobile */
+    }
+
+    .student-manager select#studentSelect {
+        width: 72vw; /* Match text area in mobile */
     }
 
     .student-manager #studentsLabel {

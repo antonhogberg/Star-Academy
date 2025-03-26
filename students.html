@@ -39,12 +39,12 @@
         <h1 id="chapterTitle" class="chapter-title"></h1>
         <div id="addStudentLabel"></div>
         <div class="input-button-container">
-            <input type="text" id="newStudentName" style="padding: 10px; font-size: 16px; width: 200px;">
+            <input type="text" id="newStudentName" style="padding: 10px; font-size: 16px;">
             <button id="addStudentButton" onclick="addStudent()">+</button>
         </div>
         <div id="studentsLabel" style="margin: 0;"></div>
         <div class="dropdown-container">
-            <select id="studentSelect" onchange="switchStudent()" style="padding: 10px; font-size: 16px; width: 200px;">
+            <select id="studentSelect" onchange="switchStudent()" style="padding: 10px; font-size: 16px;">
                 <!-- Default option removed -->
             </select>
         </div>
@@ -53,7 +53,6 @@
                 <div id="notesLabel"></div>
                 <div class="notes-button-container">
                     <textarea id="studentNotes" rows="5"></textarea>
-                    <!-- Removed Save notes button -->
                 </div>
             </div>
         </div>
@@ -115,6 +114,17 @@
                         addStudent();
                     }
                 });
+                // Fallback for placeholder behavior
+                newStudentInput.addEventListener('focus', () => {
+                    if (newStudentInput.value === '') {
+                        newStudentInput.placeholder = '';
+                    }
+                });
+                newStudentInput.addEventListener('blur', () => {
+                    if (newStudentInput.value === '') {
+                        newStudentInput.placeholder = translations[lang].studentNamePlaceholder;
+                    }
+                });
             } else {
                 console.error('newStudentInput element not found');
             }
@@ -133,6 +143,17 @@
                 });
                 window.addEventListener('beforeunload', () => {
                     saveNotes(true);
+                });
+                // Fallback for placeholder behavior
+                studentNotes.addEventListener('focus', () => {
+                    if (studentNotes.value === '') {
+                        studentNotes.placeholder = '';
+                    }
+                });
+                studentNotes.addEventListener('blur', () => {
+                    if (studentNotes.value === '') {
+                        studentNotes.placeholder = translations[lang].notesPlaceholder;
+                    }
                 });
             } else {
                 console.error('studentNotes element not found');
