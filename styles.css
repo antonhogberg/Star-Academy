@@ -838,7 +838,7 @@ body {
 }
 
 .student-manager input#newStudentName {
-    padding: 6px 40px 6px 10px; /* Add padding-right for the button */
+    padding: 6px 40px 6px 10px; /* Adjusted padding from inline style */
     margin: 0;
     font-size: 16px;
     line-height: 19.2px;

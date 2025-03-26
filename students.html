@@ -39,7 +39,7 @@
         <h1 id="chapterTitle" class="chapter-title"></h1>
         <div id="addStudentLabel"></div>
         <div class="input-button-container">
-            <input type="text" id="newStudentName" style="padding: 10px; font-size: 16px; width: 200px;">
+            <input type="text" id="newStudentName">
             <button id="addStudentButton" onclick="addStudent()">+</button>
         </div>
         <div id="studentsLabel" style="margin: 0;"></div>
@@ -71,14 +71,17 @@
         }
 
         function saveNotes(silent = false) {
+            console.log('saveNotes called with silent:', silent);
             const select = document.getElementById('studentSelect');
             const studentNotes = document.getElementById('studentNotes');
             let studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
         
             // Use the dropdown's value as the current student
             const currentStudent = select.value;
+            console.log('Current student:', currentStudent);
         
             if (!currentStudent) {
+                console.log('No student selected');
                 if (!silent) {
                     alert('Please select a student before saving notes.');
                 }
@@ -86,6 +89,7 @@
             }
         
             if (!studentsData.students[currentStudent]) {
+                console.log('Student not found in studentsData:', currentStudent);
                 if (!silent) {
                     alert('Selected student not found. Please add the student first.');
                 }
@@ -96,6 +100,7 @@
             studentsData.currentStudent = currentStudent;
             studentsData.students[currentStudent].notes = studentNotes.value;
             localStorage.setItem('starAcademyStudents', JSON.stringify(studentsData));
+            console.log('Notes saved for student:', currentStudent, 'Content:', studentNotes.value);
             // Update the global studentsData in students.js
             if (typeof window.studentsData !== 'undefined') {
                 window.studentsData = studentsData;
@@ -119,6 +124,7 @@
             if (newStudentInput) {
                 newStudentInput.addEventListener('keypress', (e) => {
                     if (e.key === 'Enter' && newStudentInput.value.trim()) {
+                        console.log('Enter key pressed, calling addStudent()');
                         addStudent();
                     }
                 });
@@ -129,9 +135,23 @@
 
             // Add event listeners for auto-saving
             const studentNotes = document.getElementById('studentNotes');
-            studentNotes.addEventListener('input', debouncedSaveNotes); // Save on input (debounced)
-            studentNotes.addEventListener('blur', () => saveNotes(true)); // Save on blur
-            window.addEventListener('beforeunload', () => saveNotes(true)); // Save on window close
+            if (studentNotes) {
+                console.log('Adding auto-save event listeners to studentNotes');
+                studentNotes.addEventListener('input', () => {
+                    console.log('Input event triggered');
+                    debouncedSaveNotes();
+                });
+                studentNotes.addEventListener('blur', () => {
+                    console.log('Blur event triggered');
+                    saveNotes(true);
+                });
+                window.addEventListener('beforeunload', () => {
+                    console.log('Beforeunload event triggered');
+                    saveNotes(true);
+                });
+            } else {
+                console.error('studentNotes element not found');
+            }
         });
 
         // Function to load notes for the current student
