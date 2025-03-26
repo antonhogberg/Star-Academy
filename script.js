@@ -32,15 +32,13 @@ const translations = {
         chapterName5: "Chords",
         chapterName6: "Arpeggios",
         chapterName7: "Repertoire",
-        addButton: "Add", // Changed from "Submit"
+        addButton: "Add",
         studentNamePlaceholder: "Enter student name",
         studentsLabel: "Students:",
-        addAnotherStudent: "Add another student",
         addNewStudent: "Add new student",
         notesLabel: "Notes:",
         notesPlaceholder: "Add notes about planned homework, progress, or other details here.",
-        saveNotesButton: "Save notes",
-        defaultOption: "Select a student" // Added
+        saveNotesButton: "Save notes"
     },
     sv: {
         menuFrontPage: "Stjärnöversikt",
@@ -77,12 +75,10 @@ const translations = {
         addButton: "Lägg till",
         studentNamePlaceholder: "Skriv elevens namn",
         studentsLabel: "Elever:",
-        addAnotherStudent: "Lägg till elev",
         addNewStudent: "Lägg till ny elev",
         notesLabel: "Anteckningar:",
         notesPlaceholder: "Skriv dina anteckningar om läxor m.m. här.",
-        saveNotesButton: "Spara anteckningar",
-        defaultOption: "Välj en elev" // Added
+        saveNotesButton: "Spara anteckningar"
     }
 };
 
@@ -284,8 +280,6 @@ function updateStarStates() {
     }
 }
 
-// ... (keep the rest of script.js unchanged, e.g., translations, switchLanguage, setInitialLanguage)
-
 function switchLanguage(lang) {
     localStorage.setItem('language', lang);
     console.log(`Switching language to: ${lang}`);
@@ -350,7 +344,10 @@ function switchLanguage(lang) {
         addStudentLabel.textContent = translations[lang].addNewStudent;
         notesLabel.textContent = translations[lang].notesLabel;
         studentNotes.placeholder = translations[lang].notesPlaceholder;
-        saveNotesButton.textContent = translations[lang].saveNotesButton;
+        // Add null check to prevent error when saveNotesButton is not present
+        if (saveNotesButton) {
+            saveNotesButton.textContent = translations[lang].saveNotesButton;
+        }
         console.log(`Updated students.html title, label, placeholder, button to ${lang}`);
     }
 }
