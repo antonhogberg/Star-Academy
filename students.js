@@ -6,6 +6,7 @@ window.studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) ||
 
 // Initialize the first student if they exist in userName but not in studentsData
 if (window.studentsData.currentStudent && !window.studentsData.students[window.studentsData.currentStudent]) {
+    console.log('Initializing first student:', window.studentsData.currentStudent);
     window.studentsData.students[window.studentsData.currentStudent] = {
         name: window.studentsData.currentStudent,
         progress: {},
@@ -27,13 +28,16 @@ if (window.studentsData.currentStudent && !window.studentsData.students[window.s
 }
 
 function addStudent() {
+    console.log('addStudent called');
     const name = document.getElementById('newStudentName').value.trim();
+    console.log('Student name entered:', name);
     // Re-fetch the latest studentsData from localStorage to avoid overwriting
     window.studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || {
         students: {},
         currentStudent: localStorage.getItem('userName') || ''
     };
     if (name && !window.studentsData.students[name]) {
+        console.log('Adding new student:', name);
         window.studentsData.students[name] = {
             name: name,
             progress: {},
@@ -60,15 +64,19 @@ function addStudent() {
             console.error('loadNotes function not found. Ensure it is defined in students.html.');
         }
     } else if (window.studentsData.students[name]) {
+        console.log('Student name already exists:', name);
         alert('Student name already exists!');
     } else {
+        console.log('Invalid name entered');
         alert('Please enter a valid name!');
     }
 }
 
 function switchStudent() {
+    console.log('switchStudent called');
     const select = document.getElementById('studentSelect');
     window.studentsData.currentStudent = select.value;
+    console.log('Switching to student:', window.studentsData.currentStudent);
     localStorage.setItem('starAcademyStudents', JSON.stringify(window.studentsData));
     
     // Call loadNotes() without updating the dropdown (already up-to-date)
@@ -80,10 +88,12 @@ function switchStudent() {
 }
 
 function updateDropdown() {
+    console.log('updateDropdown called');
     const select = document.getElementById('studentSelect');
     if (select) {
         select.innerHTML = '';
         const studentNames = Object.keys(window.studentsData.students || {}).sort((a, b) => a.localeCompare(b));
+        console.log('Student names:', studentNames);
         studentNames.forEach(name => {
             const option = document.createElement('option');
             option.value = name;
@@ -97,7 +107,12 @@ function updateDropdown() {
             select.value = currentStudent;
             window.studentsData.currentStudent = currentStudent;
             localStorage.setItem('starAcademyStudents', JSON.stringify(window.studentsData));
+            console.log('Dropdown updated, current student:', currentStudent);
+        } else {
+            console.log('No students to display in dropdown');
         }
+    } else {
+        console.error('studentSelect element not found');
     }
 }
 
