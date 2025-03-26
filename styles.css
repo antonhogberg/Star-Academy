@@ -843,17 +843,9 @@ body {
     font-size: 16px;
     line-height: 19.2px;
     width: 200px;
-    border: 1px solid #ff8c00; /* Orange border */
+    border: 1px solid #ccc;
     border-radius: 5px;
     box-sizing: border-box;
-    background: #4a4a4a; /* Dark grey background */
-    color: #ffffff; /* White text */
-    font-family: Cochin, Georgia, Arial, sans-serif;
-}
-
-/* Placeholder text styling */
-.student-manager input#newStudentName::placeholder {
-    color: #999999; /* Slightly grey placeholder text */
 }
 
 .student-manager button#addStudentButton {
@@ -977,46 +969,16 @@ body {
     box-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
 }
 
-.student-manager select#studentSelect {
-    padding: 10px;
-    font-size: 16px;
-    width: 200px;
-    margin: 0;
-    border: 1px solid #ff8c00; /* Orange border */
-    border-radius: 5px;
-    background: #4a4a4a; /* Dark grey background */
-    color: #ffffff; /* White text */
-    font-family: Cochin, Georgia, Arial, sans-serif;
-    appearance: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    background-image: url('data:image/svg+xml;utf8,<svg fill="%23ffffff" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>'); /* White dropdown arrow */
-    background-repeat: no-repeat;
-    background-position: right 10px center;
-    background-size: 12px;
-    cursor: pointer;
-    transition: border-color 0.3s ease;
-}
-
-.student-manager select#studentSelect:hover {
-    border-color: #ff8c00; /* Keep orange border on hover */
-}
-
-.student-manager select#studentSelect:focus {
-    outline: none;
-    border-color: #ff8c00; /* Keep orange border on focus */
-    box-shadow: 0 0 5px rgba(255, 140, 0, 0.5); /* Orange glow on focus */
-}
-
 .input-button-container {
-    display: inline-flex; /* Keep shrink-wrapping */
-    align-items: center;
-    justify-content: center;
-    padding: 10px; /* Keep padding for spacing */
-    border: none; /* Remove yellow border */
-    background: none; /* Remove grey background */
-    margin: 5px auto;
-    position: relative; /* Keep for absolute positioning of the button */
+    display: inline-flex; /* Shrink-wrap to content */
+    align-items: center; /* Center vertically */
+    justify-content: center; /* Center horizontally */
+    gap: 10px; /* Space between input and button */
+    padding: 10px; /* 10px on all sides for 10px spacing */
+    border: 1px solid #ffd700; /* Gold border to create a box */
+    border-radius: 5px;
+    background: rgba(74, 74, 74, 0.8); /* Match text-box background */
+    margin: 5px auto; /* Reduced vertical margin to minimize extra spacing */
 }
 
 .notes-wrapper {
@@ -1074,25 +1036,19 @@ body {
     }
 
     .input-button-container {
-        display: inline-flex;
+        flex-direction: row; /* Place input and button on the same row */
         align-items: center;
-        justify-content: center;
-        padding: 10px;
-        border: none; /* Remove yellow border */
-        background: none; /* Remove grey background */
-        margin: 5px auto;
-        position: relative; /* Keep for absolute positioning of the button */
+        gap: 10px;
+        padding: 10px; /* 10px on all sides for 10px spacing */
+        margin: 5px auto; /* Reduced vertical margin to minimize extra spacing */
     }
 
     .dropdown-container {
-        display: inline-flex; /* Keep shrink-wrapping */
+        flex-direction: column;
         align-items: center;
-        justify-content: center;
-        gap: 10px;
-        padding: 10px; /* Keep padding for spacing */
-        border: none; /* Remove yellow border */
-        background: none; /* Remove grey background */
-        margin: 5px auto;
+        gap: 5px;
+        padding: 10px; /* 10px on all sides for 10px spacing */
+        margin: 5px auto; /* Reduced vertical margin to minimize extra spacing */
     }
 
     .notes-container {
@@ -1124,7 +1080,8 @@ body {
     justify-content: center;
     gap: 10px;
     padding: 10px; /* 10px on all sides for 10px spacing */
-    border: none; /* Remove yellow border */
-    background: none; /* Remove grey background */
+    border: 1px solid #ffd700;
+    border-radius: 5px;
+    background: rgba(74, 74, 74, 0.8);
     margin: 5px auto; /* Reduced vertical margin to minimize extra spacing */
 }
