@@ -55,7 +55,7 @@ body {
     left: -250px;
     width: 200px;
     height: calc(var(--vh, 1vh) * 100);
-    background: rgba(255, 255, 255, 0.9);
+    background: rgba(255, 255, 255);
     padding: 20px 10px;
     border-radius: 0 5px 5px 0;
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
@@ -837,6 +837,35 @@ body {
     }
 }
 
+.student-manager input#newStudentName {
+    padding: 6px 40px 6px 10px; /* Add padding-right to make space for the button */
+    margin: 0;
+    font-size: 16px;
+    line-height: 19.2px;
+    width: 200px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+.student-manager button#addStudentButton {
+    position: absolute;
+    right: 15px; /* Position inside the input field, accounting for container padding */
+    top: 50%;
+    transform: translateY(-50%);
+    padding: 0;
+    background: none; /* Remove current background */
+    border: none; /* Remove current border */
+    box-shadow: none; /* Remove current shadow */
+    color: #ffd700; /* Keep the gold color for visibility */
+    font-size: 16px;
+    cursor: pointer;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .language-switcher {
     display: flex;
     align-items: center; /* Vertically aligns flags */
@@ -980,16 +1009,6 @@ body {
     margin: 5px auto; /* Center with auto margins, matching top boxes */
 }
 
-/* Specific styles for notes-button-container button ("Spara info") */
-.notes-button-container button {
-    margin: 10px 0 1px 0; 
-    white-space: nowrap;
-    display: flex; /* Ensure flexbox is applied */
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-}
-
 #studentNotes {
     width: 400px;
     height: 240px;
@@ -1017,11 +1036,16 @@ body {
     }
 
     .input-button-container {
-        flex-direction: row; /* Place input and button on the same row */
+        display: inline-flex;
         align-items: center;
+        justify-content: center;
         gap: 10px;
-        padding: 10px; /* 10px on all sides for 10px spacing */
-        margin: 5px auto; /* Reduced vertical margin to minimize extra spacing */
+        padding: 10px;
+        border: 1px solid #ffd700;
+        border-radius: 5px;
+        background: rgba(74, 74, 74, 0.8);
+        margin: 5px auto;
+        position: relative; /* Add position: relative to contain the absolutely positioned button */
     }
 
     .dropdown-container {
