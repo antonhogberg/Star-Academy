@@ -62,43 +62,50 @@
     <script src="students.js"></script>
     <script src="menu.js"></script>
     <script>
-        function saveNotes() {
-            const select = document.getElementById('studentSelect');
+        // Debounce function to limit how often we save to localStorage
+        function debounce(func, wait) {
+            let timeout;
+            return function (...args) {
+                clearTimeout(timeout);
+                timeout = setTimeout(() => func.apply(this, args), wait);
+            };
+        }
+
+        function saveNotes(silent = false) {
+            console.log('saveNotes called with silent:', silent);
             const studentNotes = document.getElementById('studentNotes');
-            let studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
-        
-            // Use the dropdown's value as the current student
-            const currentStudent = select.value;
+            // Use window.studentsData.currentStudent instead of select.value
+            const currentStudent = window.studentsData.currentStudent;
+            console.log('Current student from studentsData:', currentStudent);
         
             if (!currentStudent) {
-                alert('Please select a student before saving notes.');
+                console.log('No student selected');
+                if (!silent) {
+                    alert('Please select a student before saving notes.');
+                }
                 return;
             }
         
-            if (!studentsData.students[currentStudent]) {
-                alert('Selected student not found. Please add the student first.');
+            if (!window.studentsData.students[currentStudent]) {
+                console.log('Student not found in studentsData:', currentStudent);
+                if (!silent) {
+                    alert('Selected student not found. Please add the student first.');
+                }
                 return;
             }
         
             // Save the notes
-            studentsData.currentStudent = currentStudent;
-            studentsData.students[currentStudent].notes = studentNotes.value;
-            localStorage.setItem('starAcademyStudents', JSON.stringify(studentsData));
-            // Update the global studentsData in students.js
-            if (typeof window.studentsData !== 'undefined') {
-                window.studentsData = studentsData;
+            window.studentsData.students[currentStudent].notes = studentNotes.value;
+            localStorage.setItem('starAcademyStudents', JSON.stringify(window.studentsData));
+            console.log('Notes saved for student:', currentStudent, 'Content:', studentNotes.value);
+            if (!silent) {
+                alert('Notes saved successfully!');
             }
-            alert('Notes saved successfully!');
         }
-    </script>
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // Reset viewport scale to 1.0 on page load
-            const metaViewport = document.querySelector('meta[name="viewport"]');
-            metaViewport.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover');
-        });
-    </script>
-    <script>
+
+        // Debounced version of saveNotes
+        const debouncedSaveNotes = debounce(() => saveNotes(true), 500);
+
         document.addEventListener('DOMContentLoaded', () => {
             const lang = localStorage.getItem('language') || 'sv';
 
@@ -108,15 +115,38 @@
             // Add Enter key functionality to trigger Add button
             const newStudentInput = document.getElementById('newStudentName');
             if (newStudentInput) {
-                newStudentInput.addEventListener('keypress', (e) => {
+                newStudentInput.addEventListener('keydown', (e) => {
                     if (e.key === 'Enter' && newStudentInput.value.trim()) {
+                        console.log('Enter key pressed, calling addStudent()');
                         addStudent();
                     }
                 });
+            } else {
+                console.error('newStudentInput element not found');
             }
 
             // Load notes for the current student
             loadNotes();
+
+            // Add event listeners for auto-saving
+            const studentNotes = document.getElementById('studentNotes');
+            if (studentNotes) {
+                console.log('Adding auto-save event listeners to studentNotes');
+                studentNotes.addEventListener('input', () => {
+                    console.log('Input event triggered');
+                    debouncedSaveNotes();
+                });
+                studentNotes.addEventListener('blur', () => {
+                    console.log('Blur event triggered');
+                    saveNotes(true);
+                });
+                window.addEventListener('beforeunload', () => {
+                    console.log('Beforeunload event triggered');
+                    saveNotes(true);
+                });
+            } else {
+                console.error('studentNotes element not found');
+            }
         });
 
         // Function to load notes for the current student
@@ -135,6 +165,11 @@
             } else {
                 studentNotes.value = ''; // Let placeholder show
             }
+
+            // Ensure select.value matches window.studentsData.currentStudent
+            if (select && currentStudent) {
+                select.value = currentStudent;
+            }
         }
 
         function switchStudent() {
@@ -146,6 +181,7 @@
             if (selectedStudent) {
                 studentsData.currentStudent = selectedStudent;
                 localStorage.setItem('starAcademyStudents', JSON.stringify(studentsData));
+                window.studentsData.currentStudent = selectedStudent; // Keep in sync
 
                 if (studentsData.students[selectedStudent] && studentsData.students[selectedStudent].notes) {
                     studentNotes.value = studentsData.students[selectedStudent].notes;
@@ -155,9 +191,17 @@
             } else {
                 studentsData.currentStudent = '';
                 localStorage.setItem('starAcademyStudents', JSON.stringify(studentsData));
+                window.studentsData.currentStudent = ''; // Keep in sync
                 studentNotes.value = '';
             }
         }
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Reset viewport scale to 1.0 on page load
+            const metaViewport = document.querySelector('meta[name="viewport"]');
+            metaViewport.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover');
+        });
     </script>
     <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9226e69469696205',t:'MTc0MjMyMzY2OS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
     <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'923e56ccff59b3d4',t:'MTc0MjU2OTQzOC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
