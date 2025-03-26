@@ -53,6 +53,7 @@
                 <div id="notesLabel"></div>
                 <div class="notes-button-container">
                     <textarea id="studentNotes" rows="5"></textarea>
+                    <button id="saveNotesButton" onclick="saveNotes()"></button>
                 </div>
             </div>
         </div>
@@ -70,25 +71,37 @@
             };
         }
 
-        // Helper function to save the current student's notes
-        function saveCurrentNotes() {
+        function saveNotes() {
             const select = document.getElementById('studentSelect');
             const studentNotes = document.getElementById('studentNotes');
             let studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
-
-            const currentStudent = studentsData.currentStudent;
-            if (currentStudent && studentsData.students[currentStudent]) {
-                studentsData.students[currentStudent].notes = studentNotes.value;
-                localStorage.setItem('starAcademyStudents', JSON.stringify(studentsData));
-                // Update the global studentsData in students.js
-                if (typeof window.studentsData !== 'undefined') {
-                    window.studentsData = studentsData;
-                }
+        
+            // Use the dropdown's value as the current student
+            const currentStudent = select.value;
+        
+            if (!currentStudent) {
+                alert('Please select a student before saving notes.');
+                return;
             }
+        
+            if (!studentsData.students[currentStudent]) {
+                alert('Selected student not found. Please add the student first.');
+                return;
+            }
+        
+            // Save the notes
+            studentsData.currentStudent = currentStudent;
+            studentsData.students[currentStudent].notes = studentNotes.value;
+            localStorage.setItem('starAcademyStudents', JSON.stringify(studentsData));
+            // Update the global studentsData in students.js
+            if (typeof window.studentsData !== 'undefined') {
+                window.studentsData = studentsData;
+            }
+            alert('Notes saved successfully!');
         }
 
-        // Debounced version of saveCurrentNotes
-        const debouncedSaveNotes = debounce(saveCurrentNotes, 500);
+        // Debounced version of saveNotes
+        const debouncedSaveNotes = debounce(saveNotes, 500);
 
         document.addEventListener('DOMContentLoaded', () => {
             const lang = localStorage.getItem('language') || 'sv';
@@ -112,8 +125,8 @@
             // Add event listeners for auto-saving
             const studentNotes = document.getElementById('studentNotes');
             studentNotes.addEventListener('input', debouncedSaveNotes); // Save on input (debounced)
-            studentNotes.addEventListener('blur', saveCurrentNotes); // Save on blur
-            window.addEventListener('beforeunload', saveCurrentNotes); // Save on window close
+            studentNotes.addEventListener('blur', saveNotes); // Save on blur
+            window.addEventListener('beforeunload', saveNotes); // Save on window close
         });
 
         // Function to load notes for the current student
@@ -154,30 +167,6 @@
                 localStorage.setItem('starAcademyStudents', JSON.stringify(studentsData));
                 studentNotes.value = '';
             }
-        }
-
-        function addStudent() {
-            const newStudentNameInput = document.getElementById('newStudentName');
-            const studentName = newStudentNameInput.value.trim();
-            if (!studentName) {
-                alert('Please enter a student name.');
-                return;
-            }
-
-            let studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
-            if (studentsData.students[studentName]) {
-                alert('Student already exists!');
-                return;
-            }
-
-            studentsData.students[studentName] = { notes: '' };
-            studentsData.currentStudent = studentName;
-            localStorage.setItem('starAcademyStudents', JSON.stringify(studentsData));
-            updateDropdown();
-            newStudentNameInput.value = '';
-
-            const studentNotes = document.getElementById('studentNotes');
-            studentNotes.value = ''; // Clear notes for the new student
         }
     </script>
     <script>
