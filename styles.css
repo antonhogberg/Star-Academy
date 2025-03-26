@@ -838,7 +838,7 @@ body {
 }
 
 .student-manager input#newStudentName {
-    padding: 6px 40px 6px 10px; /* Adjusted padding from inline style */
+    padding: 6px 40px 6px 10px; /* Add padding-right for the button */
     margin: 0;
     font-size: 16px;
     line-height: 19.2px;
@@ -850,14 +850,14 @@ body {
 
 .student-manager button#addStudentButton {
     position: absolute;
-    right: 20px; /* Adjust to position inside the input, accounting for padding */
+    right: 20px; /* Position inside the input, accounting for padding */
     top: 50%;
     transform: translateY(-50%);
     padding: 0;
-    background: none;
-    border: none;
-    box-shadow: none;
-    color: #ffd700;
+    background: none; /* Remove current background */
+    border: none; /* Remove current border */
+    box-shadow: none; /* Remove current shadow */
+    color: #ffd700; /* Keep the gold color for visibility */
     font-size: 16px;
     cursor: pointer;
     margin: 0;
