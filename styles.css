@@ -623,6 +623,19 @@ body {
         background: #4a4a4a; /* Dark grey background */
         color: #ffffff; /* White text */
         font-family: Cochin, Georgia, Arial, sans-serif;
+        font-size: 18px; /* Increase font size for iPad */
+    }
+    .student-manager input#newStudentName {
+        font-size: 18px; /* Increase font size for iPad */
+        padding: 8px 40px 8px 10px; /* Adjust padding to achieve 40px height */
+        line-height: 24px; /* Match increased font size */
+    }
+    .student-manager select#studentSelect {
+        font-size: 18px; /* Increase font size for iPad */
+        padding: 8px 40px 8px 10px; /* Adjust padding to achieve 40px height, extra padding-right for larger arrow */
+        line-height: 24px; /* Match increased font size */
+        background-position: right 14px center; /* Adjust position for larger arrow */
+        background-size: 16px; /* Increase arrow size */
     }
 }
 
@@ -843,10 +856,10 @@ body {
 }
 
 .student-manager input#newStudentName {
-    padding: 6px 40px 6px 10px; /* Keep padding-right for the button */
+    padding: 8px 40px 8px 10px; /* Adjust padding to achieve 40px height */
     margin: 0;
     font-size: 16px;
-    line-height: 19.2px;
+    line-height: 24px; /* Match increased font size */
     width: 320px; /* Set to match text area */
     border: 1px solid #ff8c00; /* Orange border */
     border-radius: 5px;
@@ -920,10 +933,10 @@ body {
 }
 
 .student-manager input {
-    padding: 6px 10px; /* Reduce top/bottom padding to match button height */
+    padding: 8px 10px; /* Adjust padding to achieve 40px height */
     margin: 0; /* Remove margin to rely on container padding */
     font-size: 16px;
-    line-height: 19.2px; /* Match button’s line-height */
+    line-height: 24px; /* Match increased font size */
     width: 320px; /* Set to match text area */
     border: 1px solid #ccc; /* Add border to match button */
     border-radius: 5px; /* Match button’s border-radius */
@@ -952,7 +965,7 @@ body {
 }
 
 .student-manager select {
-    padding: 10px;
+    padding: 8px 40px 8px 10px; /* Adjust padding to achieve 40px height, extra padding-right for larger arrow */
     font-size: 16px;
     width: 320px; /* Set to match text area */
     margin: 0; /* Remove margin to rely on container padding */
@@ -966,10 +979,11 @@ body {
     -moz-appearance: none;
     background-image: url('data:image/svg+xml;utf8,<svg fill="%23333" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
     background-repeat: no-repeat;
-    background-position: right 10px center;
-    background-size: 12px;
+    background-position: right 14px center; /* Adjust position for larger arrow */
+    background-size: 16px; /* Increase arrow size */
     cursor: pointer;
     transition: border-color 0.3s ease;
+    line-height: 24px; /* Match increased font size */
 }
 
 .student-manager select:hover {
@@ -983,7 +997,7 @@ body {
 }
 
 .student-manager select#studentSelect {
-    padding: 10px;
+    padding: 8px 40px 8px 10px; /* Adjust padding to achieve 40px height, extra padding-right for larger arrow */
     font-size: 16px;
     width: 320px; /* Set to match text area */
     margin: 0;
@@ -997,10 +1011,11 @@ body {
     -moz-appearance: none;
     background-image: url('data:image/svg+xml;utf8,<svg fill="%23ffffff" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>'); /* White dropdown arrow */
     background-repeat: no-repeat;
-    background-position: right 10px center;
-    background-size: 12px;
+    background-position: right 14px center; /* Adjust position for larger arrow */
+    background-size: 16px; /* Increase arrow size */
     cursor: pointer;
     transition: border-color 0.3s ease;
+    line-height: 24px; /* Match increased font size */
 }
 
 .student-manager select#studentSelect:hover {
@@ -1121,14 +1136,23 @@ body {
         background: #4a4a4a; /* Dark grey background */
         color: #ffffff; /* White text */
         font-family: Cochin, Georgia, Arial, sans-serif;
+        font-size: 18px; /* Increase font size for iPhone */
     }
 
     .student-manager input#newStudentName {
         width: 72vw; /* Match text area in mobile */
+        font-size: 18px; /* Increase font size for iPhone */
+        padding: 8px 40px 8px 10px; /* Adjust padding to achieve 40px height */
+        line-height: 24px; /* Match increased font size */
     }
 
     .student-manager select#studentSelect {
         width: 72vw; /* Match text area in mobile */
+        font-size: 18px; /* Increase font size for iPhone */
+        padding: 8px 40px 8px 10px; /* Adjust padding to achieve 40px height, extra padding-right for larger arrow */
+        line-height: 24px; /* Match increased font size */
+        background-position: right 14px center; /* Adjust position for larger arrow */
+        background-size: 16px; /* Increase arrow size */
     }
 
     .student-manager #studentsLabel {
