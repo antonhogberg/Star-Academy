@@ -491,6 +491,7 @@ body {
 }
 
 .student-manager input#newStudentName {
+    height: 40px;
     margin-top: 10px;
     margin-bottom: 30px;
     flex: 1;
@@ -848,6 +849,7 @@ body {
         font-size: 18px !important;
     }
     .student-manager input#newStudentName {
+    height: 40px;
     margin-top: 10px;
     margin-bottom: 30px;
         font-size: 18px !important;
@@ -941,6 +943,9 @@ body {
 
 /* iPhone (portrait screens, target phones only) */
 @media (max-width: 767px) and (orientation: portrait) {
+    #studentNotes {
+        width: 320px !important;
+    }
     .progress-container {
         width: 100%;
         height: auto;
@@ -1088,6 +1093,7 @@ body {
         font-size: 18px !important;
     }
     .student-manager input#newStudentName {
+    height: 40px;
     margin-top: 10px;
     margin-bottom: 30px;
         width: auto;
@@ -1156,4 +1162,12 @@ body {
         width: 320px;
         height: 360px;
     }
+}
+
+/* Reinforce consistent spacing for form fields */
+.student-manager input#newStudentName,
+.student-manager select#studentSelect,
+#studentNotes {
+    margin-top: 10px !important;
+    margin-bottom: 30px !important;
 }
