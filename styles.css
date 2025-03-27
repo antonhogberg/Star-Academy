@@ -424,14 +424,40 @@ body {
     align-items: center;
 }
 
-/* Update .popup-content to adjust padding */
 .popup-content {
-    background: #fff;
+    background-color: #000000;
+    background-image: url('background.jpg');
+    background-size: 100% auto;
+    background-repeat: repeat-y;
+    background-position: center top;
     padding: 20px 40px;
     border-radius: 5px;
     text-align: center;
     border: 2px solid #ffd700;
     box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+    display: flex; /* Use flexbox for centering */
+    flex-direction: column;
+    align-items: center; /* Center children horizontally */
+}
+
+/* Ensure .input-group is centered */
+.popup-content .input-group {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    width: 320px;
+    border: 1px solid #ff8c00;
+    border-radius: 5px;
+    background: #4a4a4a;
+    box-sizing: border-box;
+    padding-top: 10px;
+    padding-bottom: 30px;
+}
+
+/* Make text white to be readable on the dark background */
+.popup-content h2,
+.popup-content p {
+    color: #ffffff;
 }
 
 /* Remove the old margin for #nameInput since it's now in .input-group */

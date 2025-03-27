@@ -316,5 +316,79 @@ xmlns:svg="http://www.w3.org/2000/svg"><defs
 <script src="chapter.js"></script>
 <script src="script.js"></script>
 <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9216a5389f55b058',t:'MTc0MjE1MzIyMC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
+<script>
+    function switchLanguage(lang) {
+    localStorage.setItem('language', lang);
+    console.log(`Switching language to: ${lang}`);
+
+    // Update menu links
+    document.querySelectorAll('.menu-link').forEach(link => {
+        const href = link.getAttribute('href').toLowerCase();
+        if (href === 'index.html') {
+            link.textContent = translations[lang].menuFrontPage;
+        } else if (href === 'students.html') {
+            link.textContent = translations[lang].menuStudents;
+        } else {
+            const chapterNum = href.match(/chapter(\d+)\.html/)?.[1];
+            if (chapterNum) {
+                link.textContent = `${translations[lang].menuChapter} ${chapterNum}`;
+            }
+        }
+    });
+
+    // Update popup text (if present)
+    const popupWelcome = document.querySelector('#namePopup h2');
+    const popupEnterName = document.querySelector('#namePopup p');
+    const submitNameButton = document.getElementById('submitNameButton'); // Add this
+    if (popupWelcome) popupWelcome.textContent = translations[lang].popupWelcome;
+    if (popupEnterName) popupEnterName.textContent = translations[lang].popupEnterName;
+    if (submitNameButton) submitNameButton.textContent = translations[lang].addButton; // Set button text
+
+    // Update chapter title (if present)
+    const chapterNumber = document.querySelector('.chapter-number');
+    const chapterName = document.querySelector('.chapter-name');
+    if (chapterNumber && chapterName) {
+        const chapterNum = window.location.pathname.match(/chapter(\d+)\.html/)?.[1];
+        if (chapterNum) {
+            chapterNumber.textContent = translations[lang][`chapter${chapterNum}`];
+            chapterName.textContent = translations[lang][`chapterName${chapterNum}`];
+        } else {
+            console.warn('No chapter number found in URL:', window.location.pathname);
+        }
+    }
+
+    // Update rank badge and textbox (if present)
+    const rankName = document.getElementById('rankName');
+    const rankTitle = document.getElementById('rankTitle');
+    const rankDescription = document.getElementById('rankDescription');
+    if (rankName && rankTitle && rankDescription) {
+        console.log('Found rank elements, updating with updateStarStates()');
+        updateStarStates();
+    }
+
+    // Update students.html specific elements
+    const chapterTitle = document.getElementById('chapterTitle');
+    const studentsLabel = document.getElementById('studentsLabel');
+    const newStudentInput = document.getElementById('newStudentName');
+    const addButton = document.getElementById('addStudentButton');
+    const addStudentLabel = document.getElementById('addStudentLabel');
+    const notesLabel = document.getElementById('notesLabel');
+    const studentNotes = document.getElementById('studentNotes');
+    const saveNotesButton = document.getElementById('saveNotesButton');
+    if (chapterTitle && studentsLabel) {
+        chapterTitle.textContent = translations[lang].menuStudents;
+        studentsLabel.textContent = translations[lang].studentsLabel;
+        newStudentInput.placeholder = translations[lang].studentNamePlaceholder;
+        addButton.textContent = translations[lang].addButton;
+        addStudentLabel.textContent = translations[lang].addNewStudent;
+        notesLabel.textContent = translations[lang].notesLabel;
+        studentNotes.placeholder = translations[lang].notesPlaceholder;
+        if (saveNotesButton) {
+            saveNotesButton.textContent = translations[lang].saveNotesButton;
+        }
+        console.log(`Updated students.html title, label, placeholder, button to ${lang}`);
+    }
+}
+</script>
 </body>
 </html>
