@@ -944,9 +944,6 @@ body {
 /* iPhone (portrait screens, target phones only) */
 @media (max-width: 767px) and (orientation: portrait) {
     #studentNotes {
-        height: 360px;
-    }
-    #studentNotes {
         width: 320px !important;
     }
     .progress-container {
@@ -1066,7 +1063,7 @@ body {
         background: none;
         margin: 0px auto;
     }
-    .input-group {width: 320px;}
+    .input-group {width: 72vw;}
     .dropdown-container {
         display: inline-flex;
         align-items: center;
@@ -1086,7 +1083,7 @@ body {
         background: none;
     }
     #studentNotes {
-        width: 320px;
+        width: 72vw;
         height: 360px;
         border: 1px solid #ff8c00;
         border-radius: 5px;
@@ -1107,7 +1104,7 @@ body {
     .student-manager select#studentSelect {
     margin-top: 10px;
     margin-bottom: 30px;
-        width: 320px;
+        width: 72vw;
         font-size: 18px !important;
         padding: 8px 40px 8px 10px;
         line-height: 24px;
