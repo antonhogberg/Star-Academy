@@ -491,9 +491,6 @@ body {
 }
 
 .student-manager input#newStudentName {
-    height: 40px;
-    margin-top: 10px;
-    margin-bottom: 30px;
     flex: 1;
     padding: 8px 10px;
     margin: 0;
@@ -639,8 +636,6 @@ body {
 }
 
 .student-manager select#studentSelect {
-    margin-top: 10px;
-    margin-bottom: 30px;
     padding: 8px 40px 8px 10px;
     font-size: 16px;
     width: 320px;
@@ -849,16 +844,11 @@ body {
         font-size: 18px !important;
     }
     .student-manager input#newStudentName {
-    height: 40px;
-    margin-top: 10px;
-    margin-bottom: 30px;
         font-size: 18px !important;
         padding: 8px 10px;
         line-height: 24px;
     }
     .student-manager select#studentSelect {
-    margin-top: 10px;
-    margin-bottom: 30px;
         font-size: 18px !important;
         padding: 8px 40px 8px 10px;
         line-height: 24px;
@@ -943,9 +933,6 @@ body {
 
 /* iPhone (portrait screens, target phones only) */
 @media (max-width: 767px) and (orientation: portrait) {
-    #studentNotes {
-        width: 320px !important;
-    }
     .progress-container {
         width: 100%;
         height: auto;
@@ -1093,17 +1080,12 @@ body {
         font-size: 18px !important;
     }
     .student-manager input#newStudentName {
-    height: 40px;
-    margin-top: 10px;
-    margin-bottom: 30px;
         width: auto;
         font-size: 18px !important;
         padding: 8px 10px;
         line-height: 24px;
     }
     .student-manager select#studentSelect {
-    margin-top: 10px;
-    margin-bottom: 30px;
         width: 72vw;
         font-size: 18px !important;
         padding: 8px 40px 8px 10px;
@@ -1141,15 +1123,7 @@ body {
 }
 
 /* === Uniform Field Spacing === */
-#studentNotes {
-    width: 320px;
-    height: 360px;
-    margin-top: 10px;
-    margin-bottom: 30px;
-}
-
-.student-manager input,
-
+#studentNotes,
 .student-manager input,
 .student-manager select {
     margin-top: 10px;
@@ -1160,14 +1134,5 @@ body {
 @media (min-width: 768px) and (max-width: 1400px) {
     #studentNotes {
         width: 320px;
-        height: 360px;
     }
-}
-
-/* Reinforce consistent spacing for form fields */
-.student-manager input#newStudentName,
-.student-manager select#studentSelect,
-#studentNotes {
-    margin-top: 10px !important;
-    margin-bottom: 30px !important;
 }
