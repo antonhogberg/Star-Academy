@@ -59,7 +59,6 @@
             </div>
         </div>
     </div>
-    <div id="focusTrap" style="position: absolute; width: 1px; height: 1px; opacity: 0;" tabindex="0"></div>
     <script src="script.js"></script>
     <script src="students.js"></script>
     <script src="menu.js"></script>
@@ -190,7 +189,6 @@
         function switchStudent() {
             const select = document.getElementById('studentSelect');
             const studentNotes = document.getElementById('studentNotes');
-            const focusTrap = document.getElementById('focusTrap');
             let studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
 
             const selectedStudent = select.value;
@@ -205,10 +203,14 @@
                     studentNotes.value = '';
                     const currentLang = localStorage.getItem('language') || 'sv';
                     studentNotes.placeholder = translations[currentLang].notesPlaceholder;
-                    // Remove focus from the text area and focus a hidden element
-                    studentNotes.blur();
-                    if (focusTrap) {
-                        focusTrap.focus();
+                    // Force a re-render by removing and re-adding the text area
+                    const parent = studentNotes.parentNode;
+                    const nextSibling = studentNotes.nextSibling;
+                    parent.removeChild(studentNotes);
+                    if (nextSibling) {
+                        parent.insertBefore(studentNotes, nextSibling);
+                    } else {
+                        parent.appendChild(studentNotes);
                     }
                 }
             } else {
@@ -218,10 +220,14 @@
                 studentNotes.value = '';
                 const currentLang = localStorage.getItem('language') || 'sv';
                 studentNotes.placeholder = translations[currentLang].notesPlaceholder;
-                // Remove focus from the text area and focus a hidden element
-                studentNotes.blur();
-                if (focusTrap) {
-                    focusTrap.focus();
+                // Force a re-render by removing and re-adding the text area
+                const parent = studentNotes.parentNode;
+                const nextSibling = studentNotes.nextSibling;
+                parent.removeChild(studentNotes);
+                if (nextSibling) {
+                    parent.insertBefore(studentNotes, nextSibling);
+                } else {
+                    parent.appendChild(studentNotes);
                 }
             }
         }
