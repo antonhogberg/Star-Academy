@@ -37,14 +37,14 @@
     </nav>
     <div class="student-manager" style="text-align: center;">
         <h1 id="chapterTitle" class="chapter-title"></h1>
-        <div id="addStudentLabel"></div>
+        <div id="addStudentLabel" class="field-label"></div>
         <div class="input-button-container">
             <div class="input-group">
                 <input type="text" id="newStudentName">
                 <button id="addStudentButton" onclick="addStudent()"></button>
             </div>
         </div>
-        <div id="studentsLabel" style="margin: 0;"></div>
+        <div id="studentsLabel" class="field-label"></div>
         <div class="dropdown-container">
             <select id="studentSelect" onchange="switchStudent()" style="padding: 10px; font-size: 16px;">
                 <!-- Default option removed -->
@@ -52,7 +52,7 @@
         </div>
         <div class="notes-wrapper">
             <div class="notes-container">
-                <div id="notesLabel"></div>
+                <div id="notesLabel" class="field-label"></div>
                 <div class="notes-button-container">
                     <textarea id="studentNotes" rows="5"></textarea>
                 </div>
