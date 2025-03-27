@@ -876,13 +876,13 @@ body {
 
 .student-manager button#addStudentButton {
     position: absolute;
-    right: 10px; /* Adjust position to account for the vertical line and spacing */
+    right: 20px; /* Position inside the input, accounting for padding */
     top: 50%;
     transform: translateY(-50%);
-    padding: 0 10px 0 15px; /* Add padding-left for the vertical line, padding-right for spacing */
-    background: none; /* Keep no background */
-    border: none; /* Keep no border */
-    box-shadow: none; /* Keep no shadow */
+    padding: 0;
+    background: none; /* Remove current background */
+    border: none; /* Remove current border */
+    box-shadow: none; /* Remove current shadow */
     color: #ffd700; /* Keep the gold color for visibility */
     font-size: 16px;
     cursor: pointer;
@@ -890,19 +890,6 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    line-height: 40px; /* Match the input field’s height for the vertical line */
-    height: 40px; /* Ensure the button height matches the input field */
-    position: relative; /* For positioning the ::before pseudo-element */
-}
-
-.student-manager button#addStudentButton::before {
-    content: '';
-    position: absolute;
-    left: 5px; /* Position the line 5px from the left edge of the button */
-    top: 0;
-    bottom: 0;
-    width: 2px; /* Thickness of the vertical line */
-    background-color: #ff8c00; /* Orange color to match the input field’s border */
 }
 
 .language-switcher {
