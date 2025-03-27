@@ -2,6 +2,17 @@
     --vh: 1vh; /* Fallback for older browsers */
 }
 
+
+.field-label {
+    margin: 0 !important;
+    padding: 0 !important;
+    display: block;
+}
+
+.field-group {
+    margin-top: 30px;
+}
+
 body {
     font-family: Arial, sans-serif;
     padding: 0;
@@ -583,6 +594,8 @@ body {
     color: #ffffff;
     font-size: 22px;
     line-height: 1.2;
+    margin: 0;
+    padding: 0;
 }
 
 .student-manager #studentsLabel {
@@ -1080,11 +1093,11 @@ body {
         background-position: right 10px center;
         background-size: 24px;
     }
-    .student-manager #studentsLabel {
+    /* .student-manager #studentsLabel {
         padding-top: 10px;
         padding-bottom: 0;
         margin-bottom: 0px;
-    }
+    } */
 }
 
 @media (max-width: 744px) and (orientation: portrait) {
