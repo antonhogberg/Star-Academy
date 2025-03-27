@@ -876,13 +876,13 @@ body {
 
 .student-manager button#addStudentButton {
     position: absolute;
-    right: 20px; /* Position inside the input, accounting for padding */
+    right: 15px; /* Revert to 20px and adjust slightly to account for the line */
     top: 50%;
     transform: translateY(-50%);
-    padding: 0;
-    background: none; /* Remove current background */
-    border: none; /* Remove current border */
-    box-shadow: none; /* Remove current shadow */
+    padding: 0; /* Revert to original padding */
+    background: none; /* Keep no background */
+    border: none; /* Keep no border */
+    box-shadow: none; /* Keep no shadow */
     color: #ffd700; /* Keep the gold color for visibility */
     font-size: 16px;
     cursor: pointer;
@@ -890,6 +890,17 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+    position: relative; /* For positioning the ::before pseudo-element */
+}
+
+.student-manager button#addStudentButton::before {
+    content: '';
+    position: absolute;
+    left: -10px; /* Position the line 10px to the left of the text */
+    top: 2px; /* Adjust to align with the text height */
+    bottom: 2px; /* Adjust to align with the text height */
+    width: 2px; /* Thickness of the vertical line */
+    background-color: #ff8c00; /* Orange color to match the input field’s border */
 }
 
 .language-switcher {
@@ -1032,7 +1043,7 @@ body {
     display: inline-flex; /* Keep shrink-wrapping */
     align-items: center;
     justify-content: center;
-    padding: 10px; /* Keep padding for spacing */
+    padding: 10px; /* 10px on all sides for 10px spacing */
     border: none; /* Remove yellow border */
     background: none; /* Remove grey background */
     margin: 5px auto;
