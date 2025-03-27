@@ -440,18 +440,33 @@ body {
     align-items: center; /* Center children horizontally */
 }
 
-/* Ensure .input-group is centered */
+/* Override padding for .input-group in the popup */
 .popup-content .input-group {
     display: flex;
     align-items: center;
-    margin-bottom: 10px;
+    margin-bottom: 0;
     width: 320px;
     border: 1px solid #ff8c00;
     border-radius: 5px;
     background: #4a4a4a;
     box-sizing: border-box;
-    padding-top: 10px;
-    padding-bottom: 30px;
+    padding-top: 0; /* Remove top padding */
+    padding-bottom: 0; /* Remove bottom padding */
+    padding-left: 0; /* Ensure no left padding */
+    padding-right: 0; /* Ensure no right padding */
+}
+
+/* Ensure responsive behavior remains */
+@media (max-width: 767px) and (orientation: portrait) {
+    .popup-content .input-group {
+        width: 72vw;
+    }
+    .popup-content input#nameInput {
+        width: auto;
+        font-size: 18px !important;
+        padding: 8px 10px;
+        line-height: 24px;
+    }
 }
 
 /* Make text white to be readable on the dark background */
@@ -559,6 +574,7 @@ body {
     background-color: #ff8c00;
 }
 
+/* Revert .input-group to its original state */
 .input-group {
     display: flex;
     align-items: center;
@@ -568,6 +584,8 @@ body {
     border-radius: 5px;
     background: #4a4a4a;
     box-sizing: border-box;
+    padding-top: 10px;
+    padding-bottom: 30px;
 }
 
 .student-manager input#newStudentName {
