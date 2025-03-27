@@ -187,28 +187,32 @@
         }
 
         function switchStudent() {
-            const select = document.getElementById('studentSelect');
-            const studentNotes = document.getElementById('studentNotes');
-            let studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
+        const select = document.getElementById('studentSelect');
+        const studentNotes = document.getElementById('studentNotes');
+        let studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
 
-            const selectedStudent = select.value;
-            if (selectedStudent) {
-                studentsData.currentStudent = selectedStudent;
-                localStorage.setItem('starAcademyStudents', JSON.stringify(studentsData));
-                window.studentsData.currentStudent = selectedStudent; // Keep in sync
+        const selectedStudent = select.value;
+        if (selectedStudent) {
+            studentsData.currentStudent = selectedStudent;
+            localStorage.setItem('starAcademyStudents', JSON.stringify(studentsData));
+            window.studentsData.currentStudent = selectedStudent; // Keep in sync
 
-                if (studentsData.students[selectedStudent] && studentsData.students[selectedStudent].notes) {
-                    studentNotes.value = studentsData.students[selectedStudent].notes;
-                } else {
-                    studentNotes.value = ''; // Let placeholder show
-                }
+            if (studentsData.students[selectedStudent] && studentsData.students[selectedStudent].notes) {
+                studentNotes.value = studentsData.students[selectedStudent].notes;
             } else {
-                studentsData.currentStudent = '';
-                localStorage.setItem('starAcademyStudents', JSON.stringify(studentsData));
-                window.studentsData.currentStudent = ''; // Keep in sync
                 studentNotes.value = '';
+                const currentLang = localStorage.getItem('language') || 'sv';
+                studentNotes.placeholder = translations[currentLang].notesPlaceholder; // Set placeholder to match current language
             }
+        } else {
+            studentsData.currentStudent = '';
+            localStorage.setItem('starAcademyStudents', JSON.stringify(studentsData));
+            window.studentsData.currentStudent = ''; // Keep in sync
+            studentNotes.value = '';
+            const currentLang = localStorage.getItem('language') || 'sv';
+            studentNotes.placeholder = translations[currentLang].notesPlaceholder; // Set placeholder to match current language
         }
+    }
     </script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
