@@ -412,6 +412,7 @@ body {
     opacity: 0.8;
 }
 
+/* Ensure .popup is just an overlay */
 .popup {
     position: fixed;
     top: 0;
@@ -424,6 +425,7 @@ body {
     align-items: center;
 }
 
+/* Update .popup-content to maintain current styling */
 .popup-content {
     background-color: #000000;
     background-image: url('background.jpg');
@@ -435,9 +437,11 @@ body {
     text-align: center;
     border: 2px solid #ffd700;
     box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
-    display: flex; /* Use flexbox for centering */
+    display: flex;
     flex-direction: column;
-    align-items: center; /* Center children horizontally */
+    align-items: center;
+    gap: 10px;
+    box-sizing: border-box; /* Ensure padding and border are included in width */
 }
 
 /* Override padding for .input-group in the popup */
@@ -458,6 +462,12 @@ body {
 
 /* Ensure responsive behavior remains */
 @media (max-width: 767px) and (orientation: portrait) {
+    .popup-content {
+        width: 90vw !important; /* Use !important to ensure it overrides any conflicting styles */
+        max-width: 90vw; /* Prevent stretching beyond 90vw */
+        padding: 20px;
+        box-sizing: border-box;
+    }
     .popup-content .input-group {
         width: 72vw;
     }
