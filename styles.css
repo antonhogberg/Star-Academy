@@ -425,14 +425,13 @@ body {
     align-items: center;
 }
 
-/* Update .popup-content to maintain current styling */
 .popup-content {
     background-color: #000000;
     background-image: url('background.jpg');
     background-size: 100% auto;
     background-repeat: repeat-y;
     background-position: center top;
-    padding: 20px 40px;
+    padding: 20px 40px 50px 40px; /* Increase padding-bottom to 50px */
     border-radius: 5px;
     text-align: center;
     border: 2px solid #ffd700;
@@ -441,7 +440,7 @@ body {
     flex-direction: column;
     align-items: center;
     gap: 10px;
-    box-sizing: border-box; /* Ensure padding and border are included in width */
+    box-sizing: border-box;
 }
 
 /* Override padding for .input-group in the popup */
@@ -463,9 +462,9 @@ body {
 /* Ensure responsive behavior remains */
 @media (max-width: 767px) and (orientation: portrait) {
     .popup-content {
-        width: 90vw !important; /* Use !important to ensure it overrides any conflicting styles */
-        max-width: 90vw; /* Prevent stretching beyond 90vw */
-        padding: 20px;
+        width: 90vw !important;
+        max-width: 90vw;
+        padding: 20px 20px 50px 20px; /* Increase padding-bottom to 50px */
         box-sizing: border-box;
     }
     .popup-content .input-group {
