@@ -59,6 +59,7 @@
             </div>
         </div>
     </div>
+    <div id="focusTrap" style="position: absolute; width: 1px; height: 1px; opacity: 0;" tabindex="0"></div>
     <script src="script.js"></script>
     <script src="students.js"></script>
     <script src="menu.js"></script>
@@ -189,6 +190,7 @@
         function switchStudent() {
             const select = document.getElementById('studentSelect');
             const studentNotes = document.getElementById('studentNotes');
+            const focusTrap = document.getElementById('focusTrap');
             let studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
 
             const selectedStudent = select.value;
@@ -203,12 +205,11 @@
                     studentNotes.value = '';
                     const currentLang = localStorage.getItem('language') || 'sv';
                     studentNotes.placeholder = translations[currentLang].notesPlaceholder;
+                    // Remove focus from the text area and focus a hidden element
                     studentNotes.blur();
-                    // Ensure placeholder displays by removing focus and focusing a neutral element
-                    setTimeout(() => {
-                        studentNotes.blur(); // Double-check blur
-                        document.body.focus(); // Focus a neutral element to ensure no other field takes focus
-                    }, 0);
+                    if (focusTrap) {
+                        focusTrap.focus();
+                    }
                 }
             } else {
                 studentsData.currentStudent = '';
@@ -217,12 +218,11 @@
                 studentNotes.value = '';
                 const currentLang = localStorage.getItem('language') || 'sv';
                 studentNotes.placeholder = translations[currentLang].notesPlaceholder;
+                // Remove focus from the text area and focus a hidden element
                 studentNotes.blur();
-                // Ensure placeholder displays by removing focus and focusing a neutral element
-                setTimeout(() => {
-                    studentNotes.blur(); // Double-check blur
-                    document.body.focus(); // Focus a neutral element to ensure no other field takes focus
-                }, 0);
+                if (focusTrap) {
+                    focusTrap.focus();
+                }
             }
         }
     </script>
