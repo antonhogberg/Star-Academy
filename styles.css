@@ -833,8 +833,8 @@ body {
     .input-button-container {padding: 0px;}
     .dropdown-container {padding: 0px;}
     #studentNotes {
-        width: 320px; /* Match the other fields */
-        height: 180px;
+        width: 320px;
+        height: 360px; /* Already set to 360px from previous change, which is 180px doubled */
         padding: 10px;
         border: 1px solid #ff8c00;
         border-radius: 5px;
