@@ -464,7 +464,7 @@ body {
     .popup-content {
         width: 90vw !important;
         max-width: 90vw;
-        padding: 20px 20px 30px 20px; /* Increase padding-bottom to 50px */
+        padding: 20px 20px 35px 20px; /* Increase padding-bottom to 50px */
         box-sizing: border-box;
     }
     .popup-content .input-group {
