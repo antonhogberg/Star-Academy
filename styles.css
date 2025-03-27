@@ -482,6 +482,7 @@ body {
 .popup-content h2,
 .popup-content p {
     color: #ffffff;
+    margin: 0; /* Remove default margin on <p> */
 }
 
 /* Remove the old margin for #nameInput since it's now in .input-group */
