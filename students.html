@@ -103,64 +103,65 @@
         const debouncedSaveNotes = debounce(() => saveNotes(true), 500);
 
         document.addEventListener('DOMContentLoaded', () => {
-            const lang = localStorage.getItem('language') || 'sv';
+        // Initial language setup (handled by script.js)
+        const initialLang = localStorage.getItem('language') || 'sv';
+        switchLanguage(initialLang);
 
-            // Initial language setup (handled by script.js)
-            switchLanguage(lang);
+        // Add Enter key functionality to trigger Add button
+        const newStudentInput = document.getElementById('newStudentName');
+        if (newStudentInput) {
+            newStudentInput.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' && newStudentInput.value.trim()) {
+                    addStudent();
+                }
+            });
+            // Fallback for placeholder behavior
+            newStudentInput.addEventListener('focus', () => {
+                if (newStudentInput.value === '') {
+                    newStudentInput.placeholder = '';
+                }
+            });
+            newStudentInput.addEventListener('blur', () => {
+                if (newStudentInput.value === '') {
+                    const currentLang = localStorage.getItem('language') || 'sv';
+                    newStudentInput.placeholder = translations[currentLang].studentNamePlaceholder;
+                }
+            });
+        } else {
+            console.error('newStudentInput element not found');
+        }
 
-            // Add Enter key functionality to trigger Add button
-            const newStudentInput = document.getElementById('newStudentName');
-            if (newStudentInput) {
-                newStudentInput.addEventListener('keydown', (e) => {
-                    if (e.key === 'Enter' && newStudentInput.value.trim()) {
-                        addStudent();
-                    }
-                });
-                // Fallback for placeholder behavior
-                newStudentInput.addEventListener('focus', () => {
-                    if (newStudentInput.value === '') {
-                        newStudentInput.placeholder = '';
-                    }
-                });
-                newStudentInput.addEventListener('blur', () => {
-                    if (newStudentInput.value === '') {
-                        newStudentInput.placeholder = translations[lang].studentNamePlaceholder;
-                    }
-                });
-            } else {
-                console.error('newStudentInput element not found');
-            }
+        // Load notes for the current student
+        loadNotes();
 
-            // Load notes for the current student
-            loadNotes();
-
-            // Add event listeners for auto-saving
-            const studentNotes = document.getElementById('studentNotes');
-            if (studentNotes) {
-                studentNotes.addEventListener('input', () => {
-                    debouncedSaveNotes();
-                });
-                studentNotes.addEventListener('blur', () => {
-                    saveNotes(true);
-                });
-                window.addEventListener('beforeunload', () => {
-                    saveNotes(true);
-                });
-                // Fallback for placeholder behavior
-                studentNotes.addEventListener('focus', () => {
-                    if (studentNotes.value === '') {
-                        studentNotes.placeholder = '';
-                    }
-                });
-                studentNotes.addEventListener('blur', () => {
-                    if (studentNotes.value === '') {
-                        studentNotes.placeholder = translations[lang].notesPlaceholder;
-                    }
-                });
-            } else {
-                console.error('studentNotes element not found');
-            }
-        });
+        // Add event listeners for auto-saving
+        const studentNotes = document.getElementById('studentNotes');
+        if (studentNotes) {
+            studentNotes.addEventListener('input', () => {
+                debouncedSaveNotes();
+            });
+            studentNotes.addEventListener('blur', () => {
+                saveNotes(true);
+            });
+            window.addEventListener('beforeunload', () => {
+                saveNotes(true);
+            });
+            // Fallback for placeholder behavior
+            studentNotes.addEventListener('focus', () => {
+                if (studentNotes.value === '') {
+                    studentNotes.placeholder = '';
+                }
+            });
+            studentNotes.addEventListener('blur', () => {
+                if (studentNotes.value === '') {
+                    const currentLang = localStorage.getItem('language') || 'sv';
+                    studentNotes.placeholder = translations[currentLang].notesPlaceholder;
+                }
+            });
+        } else {
+            console.error('studentNotes element not found');
+        }
+    });
 
         // Function to load notes for the current student
         function loadNotes() {
