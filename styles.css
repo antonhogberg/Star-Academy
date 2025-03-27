@@ -289,6 +289,16 @@ body {
     margin-bottom: 0;
 }
 
+.field-label {
+    display: block;
+    margin-bottom: 10px;  /* Avstånd till field */
+    margin-top: 30px;     /* Avstånd till föregående field */
+    font-family: Cochin, Georgia, Arial, sans-serif;
+    font-size: 22px;
+    color: #ffffff;
+    text-align: center;
+}
+  
 .text-box {
     position: absolute;
     left: 12.5%;
@@ -461,6 +471,7 @@ body {
 .input-group {
     display: flex;
     align-items: center;
+    margin-bottom: 10px;
     width: 320px;
     border: 1px solid #ff8c00;
     border-radius: 5px;
@@ -568,23 +579,15 @@ body {
 }
 
 .student-manager div {
-    margin: 10px 0 2px 0;
     font-family: Cochin, Georgia, Arial, sans-serif;
     color: #ffffff;
     font-size: 22px;
     line-height: 1.2;
 }
 
-.student-manager #addStudentLabel {
-    margin-bottom: 2px;
-}
-
 .student-manager #studentsLabel {
     color: #ffffff;
     font-family: Cochin, Georgia, Arial, sans-serif;
-    padding-top: 30px;
-    padding-bottom: 0;
-    margin-bottom: 0px;
 }
 
 .student-manager select {
@@ -655,10 +658,9 @@ body {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 10px;
     border: none;
     background: none;
-    margin: 5px auto;
+    margin: 0px auto;
 }
 
 .notes-wrapper {
@@ -682,10 +684,9 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 10px;
     border: none;
     background: none;
-    margin: 5px auto;
+    margin: 0px auto;
 }
 
 #studentNotes {
@@ -708,10 +709,9 @@ body {
     align-items: center;
     justify-content: center;
     gap: 10px;
-    padding: 10px;
     border: none;
     background: none;
-    margin: 5px auto;
+    margin: 0px auto;
 }
 
 /* Media Queries - Consolidated */
@@ -817,8 +817,8 @@ body {
         padding: 10px;
         margin: 5px auto;
     }
-    .input-button-container {padding: 10px;}
-    .dropdown-container {padding: 10px;}
+    .input-button-container {padding: 0px;}
+    .dropdown-container {padding: 0px;}
     #studentNotes {
         width: clamp(256px, 26.64vw, 364px);
         height: 180px;
@@ -1033,10 +1033,9 @@ body {
         align-items: center;
         justify-content: center;
         gap: 10px;
-        padding: 10px;
         border: none;
         background: none;
-        margin: 5px auto;
+        margin: 0px auto;
     }
     .input-group {width: 72vw;}
     .dropdown-container {
@@ -1044,17 +1043,16 @@ body {
         align-items: center;
         justify-content: center;
         gap: 10px;
-        padding: 10px;
+        padding: 0px;
         border: none;
         background: none;
-        margin: 5px auto;
+        margin: 0px auto;
     }
     .notes-container {margin: 2px auto;}
     .notes-button-container {
         flex-direction: column;
         align-items: center;
-        padding: 10px;
-        margin: 5px auto;
+        margin: 0px auto;
         border: none;
         background: none;
     }
