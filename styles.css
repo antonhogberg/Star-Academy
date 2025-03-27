@@ -488,6 +488,8 @@ body {
     border-radius: 5px;
     background: #4a4a4a;
     box-sizing: border-box;
+    padding-top: 10px; /* Added 10px top padding */
+    padding-bottom: 30px; /* Added 30px bottom padding */
 }
 
 .student-manager input#newStudentName {
@@ -655,6 +657,8 @@ body {
     cursor: pointer;
     transition: border-color 0.3s ease;
     line-height: 24px;
+    padding-top: 10px; /* Added 10px top padding */
+    padding-bottom: 30px; /* Added 30px bottom padding */
 }
 
 .student-manager select#studentSelect:hover {
@@ -715,6 +719,8 @@ body {
     color: #ffffff;
     resize: none;
     overflow-y: auto;
+    padding-top: 10px; /* Added 10px top padding */
+    padding-bottom: 30px; /* Added 30px bottom padding */
 }
 
 .dropdown-container {
