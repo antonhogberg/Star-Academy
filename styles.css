@@ -1135,7 +1135,15 @@ body {
 }
 
 /* === Uniform Field Spacing === */
-#studentNotes,
+#studentNotes {
+    width: 320px;
+    height: 360px;
+    margin-top: 10px;
+    margin-bottom: 30px;
+}
+
+.student-manager input,
+
 .student-manager input,
 .student-manager select {
     margin-top: 10px;
@@ -1146,5 +1154,6 @@ body {
 @media (min-width: 768px) and (max-width: 1400px) {
     #studentNotes {
         width: 320px;
+        height: 360px;
     }
 }
