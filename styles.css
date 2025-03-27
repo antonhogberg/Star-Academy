@@ -1121,18 +1121,3 @@ body {
         -webkit-overflow-scrolling: touch;
     }
 }
-
-/* === Uniform Field Spacing === */
-#studentNotes,
-.student-manager input,
-.student-manager select {
-    margin-top: 10px;
-    margin-bottom: 30px;
-}
-
-/* === iPad-specific Fix for Textarea Width === */
-@media (min-width: 768px) and (max-width: 1400px) {
-    #studentNotes {
-        width: 320px;
-    }
-}
