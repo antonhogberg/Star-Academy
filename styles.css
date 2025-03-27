@@ -26,22 +26,20 @@ body {
 }
 
 .hamburger {
-    font-size: 24px;
-    color: #ffd700;
+    font-size: 32px;
+    color: #ff8c00; /* Orange */
     cursor: pointer;
     transition: transform 0.3s ease;
     font-family: Cochin, Georgia, Arial, sans-serif;
-    background: #4a4a4a;
-    padding: 8px 10px 12px 10px; /* Kept to center icon vertically */
-    border-radius: 5px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    border: 1px solid #ffd700;
-    box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+    background: none;
+    border: none;
+    box-shadow: none;
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 24px;
-    height: 24px;
+    width: 32px;
+    height: 32px;
+    padding: 0;
     line-height: 1;
 }
 
@@ -85,51 +83,46 @@ body {
     transition: left 0.3s ease-in-out, opacity 0.3s ease-in-out;
 }
 
-/* Menu link base style */
 .menu-link {
-    display: block; /* Ensure block display for consistent spacing */
-    padding: 10px 15px; /* Adjust padding as needed */
-    color: #000; /* Adjust color as needed */
-    text-decoration: none; /* Remove any default underline */
-    font-family: Cochin, Georgia, Arial, sans-serif; /* Adjust font as needed */
-    font-size: 18px; /* Changed from 20px to 18px */
-    border-bottom: 1px solid #ccc; /* Separating line */
-    width: 80%; /* 80% width for the link and line */
-    margin: 0 auto; /* Center the link and line */
+    display: block;
+    padding: 10px 15px;
+    color: #000;
+    text-decoration: none;
+    font-family: Cochin, Georgia, Arial, sans-serif;
+    font-size: 18px;
+    border-bottom: 1px solid #ccc;
+    width: 80%;
+    margin: 0 auto;
 }
 
 .menu-link:last-child {
-    border-bottom: none; /* Remove line after the last link */
+    border-bottom: none;
 }
 
 .menu-link.active-page::after {
-    font-weight: bold; /* Bold text for active page */
-    text-decoration: none; /* Remove dots/underline */
+    font-weight: bold;
+    text-decoration: none;
 }
-
-/* Removed hover effects */
 
 .menu .close-btn {
     position: absolute;
     top: 20px;
     left: 20px;
-    font-size: 24px;
-    color: #000000;
+    font-size: 32px;
+    color: #000; /* Black */
     cursor: pointer;
-    opacity: 0;
-    transition: opacity 0.3s ease-in-out;
-    background: rgba(255, 255, 215, 0.9);
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px solid #ffd700;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2), 0 0 10px rgba(255, 215, 0, 0.3);
+    opacity: 1; /* Ingen fade */
+    background: none;
+    border: none;
+    box-shadow: none;
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 24px;
-    height: 24px;
+    width: 32px;
+    height: 32px;
     line-height: 1;
 }
+
 
 .menu.active .close-btn {
     opacity: 1;
@@ -144,15 +137,8 @@ body {
     display: block;
 }
 
-/* Ensure title visibility on desktop in landscape */
-@media (min-width: 1367px) and (orientation: landscape) {
-    .chapter-title {
-        display: block;
-    }
-}
-
 .chapter-number, .chapter-name {
-    display: block; /* Stack vertically */
+    display: block;
     font-family: Cochin, Georgia, Arial, sans-serif;
     color: #ffffff;
 }
@@ -163,61 +149,13 @@ body {
 }
 
 .chapter-name {
-    font-size: 20px; /* Slightly smaller */
-}
-
-/* iPad/landscape title on separate lines */
-@media (min-width: 768px) and (max-width: 1366px) and (orientation: landscape) {
-    .chapter-title {
-        display: block; /* Show in landscape */
-        margin: 5px 0; /* Further reduce margin to save space */
-    }
-    .chapter-number {
-        font-size: 32px; /* Increased from 24px for landscape */
-    }
-    .chapter-name {
-        font-size: 28px; /* Increased from 20px for landscape */
-    }
-    body:not(.is-mobile) {
-        overflow-y: hidden; /* Disable scrolling in landscape for iPad */
-    }
-    .layout-container:not(.is-mobile) {
-        overflow-y: hidden; /* Disable scrolling in landscape for iPad */
-    }
-}
-
-/* Mobile title on separate lines */
-@media (max-width: 767px) and (orientation: portrait) {
-    .chapter-title {
-        display: block;
-        margin: 5px 0; /* Match iPad landscape */
-    }
-}
-
-/* Mobile landscape (allow scrolling) */
-@media (orientation: landscape) and (max-width: 767px),
-       (orientation: landscape) and (hover: none) and (pointer: coarse) {
-    body.is-mobile,
-    body {
-        display: block; /* Allow landscape view */
-        overflow-y: auto !important; /* Force enable scrolling */
-        -webkit-overflow-scrolling: touch; /* Improve scrolling on iOS */
-    }
-    body.is-mobile:after,
-    body:after {
-        display: none; /* Remove rotation message */
-    }
-    .layout-container.is-mobile,
-    .layout-container {
-        overflow-y: auto !important; /* Force enable scrolling */
-        -webkit-overflow-scrolling: touch; /* Improve scrolling on iOS */
-    }
+    font-size: 20px;
 }
 
 .layout-container {
     position: relative;
     width: 100%;
-    min-height: calc(var(--vh, 1vh) * 100 - 50px); /* Subtract estimated navbar height */
+    min-height: calc(var(--vh, 1vh) * 100 - 50px);
     overflow-y: auto;
     overflow-x: hidden;
     display: flex;
@@ -253,31 +191,15 @@ body {
     max-width: 90vw;
     min-width: 550px;
     margin: 0 auto;
-    padding: 10px 0; /* Reduced padding to fit within viewport */
+    padding: 10px 0;
     display: flex;
     flex-direction: column;
     align-items: center;
     position: relative;
-    height: auto; /* Allow natural height */
-    min-height: calc(var(--vh, 1vh) * 100 - 220px); /* Adjusted for chapter-title (60px estimated), navbar (60px), and buffer to eliminate scroll */
-    justify-content: center; /* Center stars vertically between title and bottom edge */
+    height: auto;
+    min-height: calc(var(--vh, 1vh) * 100 - 220px);
+    justify-content: center;
     flex-grow: 1;
-}
-
-/* Landscape-specific exercises styling */
-@media (min-width: 768px) and (max-width: 1366px) and (orientation: landscape) {
-    .exercises {
-        gap: 30px; /* Adjusted gap to fit four stars */
-        max-width: 80vw; /* Use 80% of viewport width */
-        flex-wrap: wrap; /* Restore four stars per row */
-        justify-content: center; /* Center stars horizontally */
-    }
-    .parts {
-        min-height: calc(var(--vh, 1vh) * 100 - 220px); /* Adjusted for chapter-title and navbar, increased subtracted value to reduce height */
-    }
-    .part {
-        margin-bottom: 20px; /* Increased from 10px to add more space between rows */
-    }
 }
 
 .rank-badge {
@@ -339,9 +261,9 @@ body {
     display: flex;
     justify-content: center;
     width: 100%;
-    flex-wrap: wrap; /* Allow wrapping for mobile */
+    flex-wrap: wrap;
     gap: 20px;
-    max-width: 300px; /* Mobile max-width */
+    max-width: 300px;
     margin: 0 auto;
     position: relative;
     align-self: center;
@@ -357,9 +279,9 @@ body {
     display: flex;
     align-items: flex-start;
     width: 100%;
-    padding: 0 15px; /* Reduced padding to fit stars */
+    padding: 0 15px;
     box-sizing: border-box;
-    margin-bottom: 20px; /* Increased from 10px to add more space between rows */
+    margin-bottom: 20px;
     justify-content: center;
 }
 
@@ -382,7 +304,7 @@ body {
     align-items: center;
     padding: 10px;
     background: rgba(74, 74, 74, 0.8);
-    border: 1px solid #ff8c00; /* Changed from #ffd700 to #ff8c00 */
+    border: 1px solid #ff8c00;
     border-radius: 5px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
@@ -401,320 +323,9 @@ body {
     color: #ffffff;
     margin: 0;
     text-align: center;
-    padding-bottom: 5px; /* Add padding-bottom to balance spacing */
+    padding-bottom: 5px;
 }
 
-/* Larger title on wider screens */
-@media (min-width: 1001px) {
-    .text-box #rankTitle {
-        font-size: clamp(24px, 2vw, 28px);
-    }
-}
-
-/* Mobile (portrait screens, target phones only) */
-@media (max-width: 767px) and (orientation: portrait) {
-    .progress-container {
-        width: 100%;
-        height: auto;
-        display: block;
-        overflow-x: hidden;
-        overflow-y: auto;
-        padding: 0;
-        margin: 0;
-        min-height: calc(var(--vh, 1vh) * 100 - 50px);
-    }
-    .progress-svg {
-        width: 200%;
-        max-width: none;
-        height: 200%;
-        margin: 10px auto;
-        position: relative;
-        left: 50%;
-        transform: translateX(-50%);
-        overflow-x: hidden;
-        display: block;
-    }
-    .rank-badge {
-        position: static;
-        transform: none;
-        width: 17.0625%;
-        min-width: 136.5px;
-        max-width: 204.75px;
-        margin: 10px auto; /* Reduced from 30px to 10px */
-        padding-top: 35px;
-        display: block;
-    }
-    .logo-badge {
-        position: static;
-        width: 100%;
-        text-align: center;
-        margin: 20px 0;
-        display: block;
-    }
-    .logo-badge img {
-        display: none;
-    }
-    .chapter-title {
-        display: block;
-        margin: 5px 0; /* Match iPad landscape */
-    }
-    .parts {
-        max-width: 744px;
-        min-width: 0;
-        margin: 0 auto;
-        justify-content: center;
-        padding-top: 0;
-        padding-bottom: 20px;
-        min-height: calc(var(--vh, 1vh) * 100 - 50px - 40px);
-        height: auto;
-        box-sizing: border-box;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        flex-grow: 1;
-    }
-    .exercises {
-        flex-wrap: wrap;
-        gap: 10px;
-        max-width: 300px;
-        justify-content: space-between;
-        flex-direction: row;
-    }
-    .part {
-        margin-bottom: 10px; /* Default margin-bottom for mobile */
-    }
-    .part:nth-child(-n+3) {
-        margin-bottom: 50px; /* Extra space after Parts 1, 2, and 3 (total 50px = 10px base + 40px extra) */
-    }
-    .text-box {
-        position: static;
-        transform: none;
-        width: 80%;
-        max-width: 300px;
-        margin: 10px auto 20px auto;
-        display: block;
-    }
-    .text-box #rankTitle {
-        font-family: Cochin, Georgia, Arial, sans-serif;
-        font-size: 24px !important;
-        color: #ffffff;
-        margin: 0 0 5px 0;
-        text-align: center;
-    }
-    .text-box #rankDescription {
-        font-family: Cochin, Georgia, Arial, sans-serif;
-        font-size: 16px !important;
-        color: #ffffff;
-        margin: 0;
-        text-align: center;
-    }
-    .star-container {
-        width: calc(50% - 5px);
-        box-sizing: border-box;
-    }
-    .star {
-        width: 140px;
-        min-width: 140px;
-        max-width: 140px;
-        height: auto;
-        object-fit: contain; /* Ensure proper scaling */
-    }
-}
-
-/* Tablet/Desktop (landscape screens ≥ 768px and ≤ 1400px) */
-@media (min-width: 768px) and (max-width: 1400px) and (orientation: landscape) {
-    body {
-        overflow: hidden; /* Disable all scrolling */
-        width: 100%;
-        height: 100vh; /* Ensure body takes exactly the viewport height */
-        -webkit-overflow-scrolling: touch; /* Disable bounce scrolling on iOS */
-    }
-
-    .student-manager {
-        overflow: hidden; /* Disable all scrolling */
-        width: 100%;
-        max-width: 100vw; /* Prevent content from exceeding viewport */
-        height: 100vh; /* Constrain to viewport height */
-        box-sizing: border-box; /* Include padding in width */
-        padding: 0 10px 10px 10px; /* Reduce padding to minimize overflow risk */
-        display: flex; /* Use flexbox to manage layout */
-        flex-direction: column;
-        align-items: center;
-        /* Remove justify-content: center to align content at the top */
-    }
-
-    .layout-container {
-        overflow-y: hidden; /* Disable scrolling in landscape for iPad */
-    }
-    .progress-container {
-        width: 100%;
-        max-width: 1366px;
-        margin: 0 auto;
-        position: relative;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: calc(var(--vh, 1vh) * 100);
-        overflow-y: hidden;
-    }
-    .progress-svg {
-        width: 85%;
-        max-width: 1161.1px;
-        height: auto;
-        max-height: 100%;
-    }
-    .rank-badge {
-        position: absolute;
-        left: 75%;
-        top: calc(50% + 20px);
-        transform: translateY(-50%);
-        width: clamp(10%, 15%, 180px);
-        min-width: 0;
-        max-width: 180px;
-        height: auto;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        background: transparent;
-        border: none;
-        padding-top: 35px;
-    }
-    .logo-badge {
-        position: absolute;
-        left: 20px;
-        top: 50%;
-    }
-    .logo-badge img {
-        width: 150px;
-        height: auto;
-    }
-    .chapter-title {
-        display: block; /* Ensure title is visible on iPad landscape */
-        margin: 5px 0; /* Further reduce margin to save space */
-    }
-    .parts {
-        height: auto; /* Allow natural height */
-        min-height: calc(var(--vh, 1vh) * 100 - 220px); /* Adjusted for chapter-title and navbar, increased subtracted value to reduce height */
-        padding: 10px 0; /* Reduced padding to fit within viewport */
-        justify-content: center; /* Center stars vertically */
-    }
-    .notes-container {
-        width: 100%;
-        max-width: 100vw;
-        margin: 2px auto; /* Further reduce margin to save space */
-    }
-    .notes-button-container {
-        padding: 10px; /* 10px on all sides for 10px spacing */
-        margin: 5px auto; /* Match top boxes */
-    }
-    .input-button-container {
-        padding: 10px; /* 10px on all sides for 10px spacing */
-    }
-    .dropdown-container {
-        padding: 10px; /* 10px on all sides for 10px spacing */
-    }
-    #studentNotes {
-        width: clamp(256px, 26.64vw, 364px); /* 80% of previous clamp(341px, 33.33vw, 455px) */
-        height: 180px; /* Further reduce height to fit in iPad landscape */
-        padding: 10px; /* Adjust padding to fit within container */
-        border: 1px solid #ff8c00; /* Orange border */
-        border-radius: 5px;
-        background: #4a4a4a; /* Dark grey background */
-        color: #ffffff; /* White text */
-        font-family: Cochin, Georgia, Arial, sans-serif;
-        font-size: 18px !important; /* Increase font size for iPad */
-    }
-    .student-manager input#newStudentName {
-        font-size: 18px !important; /* Increase font size for iPad */
-        padding: 8px 40px 8px 10px; /* Revert padding to achieve 40px height with font-size 18px */
-        line-height: 24px; /* Match font size 18px */
-    }
-    .student-manager select#studentSelect {
-        font-size: 18px !important; /* Increase font size for iPad */
-        padding: 8px 40px 8px 10px; /* Revert padding to achieve 40px height with font-size 18px */
-        line-height: 24px; /* Match font size 18px */
-        background-position: right 14px center; /* Adjust position for larger arrow */
-        background-size: 16px; /* Increase arrow size */
-    }
-}
-
-/* iPad-specific scaling (landscape) */
-/* iPad Mini and Air */
-@media (min-width: 768px) and (max-width: 820px) {
-    .parts {
-        max-width: 820px;
-        min-width: 550px;
-        margin: 0 auto;
-        justify-content: center;
-        min-height: calc(var(--vh, 1vh) * 100 - 140px); /* Adjusted to fit all rows */
-        padding-bottom: 30px; /* Adjust for balanced spacing */
-    }
-    .exercises {
-        gap: 30px; /* Adjusted gap to fit four stars */
-        max-width: 610px; /* 80% of 768px */
-        justify-content: center;
-        margin: 0 auto;
-    }
-    .star {
-        width: 100px; /* Reduced size for iPad Mini/Air */
-        min-width: 100px;
-        max-width: 100px;
-        height: auto;
-        object-fit: contain; /* Ensure proper scaling */
-    }
-}
-
-/* iPad Pro 11” */
-@media (min-width: 821px) and (max-width: 834px) {
-    .parts {
-        max-width: 834px;
-        min-width: 580px;
-        margin: 0 auto;
-        justify-content: center;
-    }
-    .exercises {
-        gap: 30px; /* Adjusted gap to fit four stars */
-        max-width: 670px; /* 80% of 834px */
-        justify-content: center;
-        margin: 0 auto;
-    }
-    .star {
-        width: 122px; /* Fixed size for iPad Pro 11” */
-        min-width: 122px;
-        max-width: 122px;
-        height: auto;
-        object-fit: contain; /* Ensure proper scaling */
-    }
-}
-
-/* iPad Pro 12.9” and larger */
-@media (min-width: 835px) {
-    .parts {
-        max-width: 1024px;
-        min-width: 580px;
-        margin: 0 auto;
-        justify-content: center;
-        height: auto; /* Allow natural height */
-        min-height: calc(var(--vh, 1vh) * 100 - 220px); /* Adjusted for chapter-title and navbar, increased subtracted value to reduce height */
-        padding: 10px 0; /* Reduced padding to fit within viewport */
-    }
-    .exercises {
-        gap: 30px; /* Adjusted gap to fit four stars */
-        max-width: 1200px; /* Increased from 1100px to accommodate larger stars */
-        justify-content: center;
-        margin: 0 auto;
-    }
-    .star {
-        width: 150px; /* Increased from 135px for iPad Pro 12.9” */
-        min-width: 150px;
-        max-width: 150px;
-        height: auto;
-        object-fit: contain; /* Ensure proper scaling */
-    }
-}
-
-/* Common styles for chapter pages */
 .star-container {
     display: flex;
     flex-direction: column;
@@ -722,7 +333,6 @@ body {
     gap: 7px;
 }
 
-/* Default star size */
 .star {
     cursor: pointer;
     transition: opacity 0.3s ease;
@@ -730,8 +340,8 @@ body {
     margin: 0;
     width: clamp(80px, 12vw, 120px);
     height: auto;
-    max-width: 100%; /* Ensure scaling */
-    object-fit: contain; /* Ensure proper scaling */
+    max-width: 100%;
+    object-fit: contain;
 }
 
 .star:hover {
@@ -795,7 +405,7 @@ body {
 
 .popup-content {
     background: #fff;
-    padding: 20px 40px; /* 20px top and bottom, 40px left and right */
+    padding: 20px 40px;
     border-radius: 5px;
     text-align: center;
     border: 2px solid #ffd700;
@@ -803,10 +413,9 @@ body {
 }
 
 .popup-content #nameInput {
-    margin: 5px 0 20px 0; /* Reduced top margin to 5px, kept bottom margin at 20px to match top padding */
+    margin: 5px 0 20px 0;
 }
 
-/* Updated button styles for popup and student manager */
 .popup-content button,
 .student-manager button {
     font-family: Cochin, Georgia, Arial, sans-serif;
@@ -821,12 +430,12 @@ body {
 }
 
 .popup-content button {
-    margin-top: 5px; /* Specific to popup button */
+    margin-top: 5px;
 }
 
 .student-manager button {
     font-family: Cochin, Georgia, Arial, sans-serif;
-    padding: 6px 12px; /* Consistent padding on all sides */
+    padding: 6px 12px;
     background: #4a4a4a;
     border: 1px solid #ffd700;
     border-radius: 5px;
@@ -837,84 +446,90 @@ body {
     box-sizing: border-box;
     font-size: 16px;
     line-height: 19.2px;
-    margin: 0; /* Remove margin to rely on container padding */
-    display: flex; /* Use flexbox for centering */
-    justify-content: center; /* Center horizontally */
-    align-items: center; /* Center vertically */
-    text-align: center; /* Fallback for older browsers */
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
 }
 
 .popup-content button:hover,
 .student-manager button:hover {
-    transform: scale(1.05); /* Match popup button hover effect */
+    transform: scale(1.05);
 }
 
-@media (max-width: 744px) and (orientation: portrait) {
-    #userNameDisplay {
-        margin: 10px auto;
-    }
+.input-group {
+    display: flex;
+    align-items: center;
+    width: 320px;
+    border: 1px solid #ff8c00;
+    border-radius: 5px;
+    background: #4a4a4a;
+    box-sizing: border-box;
 }
 
 .student-manager input#newStudentName {
-    padding: 8px 40px 8px 10px; /* Adjust padding to achieve 40px height */
+    flex: 1;
+    padding: 8px 10px;
     margin: 0;
     font-size: 16px;
-    line-height: 24px; /* Match font size 18px */
-    width: 320px; /* Set to match text area */
-    border: 1px solid #ff8c00; /* Orange border */
-    border-radius: 5px;
-    box-sizing: border-box;
-    background: #4a4a4a; /* Dark grey background */
-    color: #ffffff; /* White text */
+    line-height: 24px;
+    border: none;
+    border-radius: 5px 0 0 5px;
+    background: #4a4a4a;
+    color: #ffffff;
     font-family: Cochin, Georgia, Arial, sans-serif;
+    box-sizing: border-box;
+    height: 40px;
 }
 
-/* Placeholder text styling */
 .student-manager input#newStudentName::placeholder {
-    color: #999999; /* Slightly grey placeholder text */
+    color: #999999;
 }
 
 .student-manager button#addStudentButton {
-    position: absolute;
-    right: 15px; /* Revert to 20px and adjust slightly to account for the line */
-    top: 50%;
-    transform: translateY(-50%);
-    padding: 0; /* Revert to original padding */
-    background: none; /* Keep no background */
-    border: none; /* Keep no border */
-    box-shadow: none; /* Keep no shadow */
-    color: #ffd700; /* Keep the gold color for visibility */
+    padding: 0 10px;
+    background: none;
+    border: none;
+    box-shadow: none;
+    color: #ffd700;
     font-size: 16px;
     cursor: pointer;
     margin: 0;
     display: flex;
     align-items: center;
     justify-content: center;
-    position: relative; /* For positioning the ::before pseudo-element */
+    height: 40px;
+    position: relative;
+    font-family: Cochin, Georgia, Arial, sans-serif;
+}
+
+.student-manager button#addStudentButton:hover {
+    transform: none;
 }
 
 .student-manager button#addStudentButton::before {
     content: '';
     position: absolute;
-    left: -10px; /* Position the line 10px to the left of the text */
-    top: 2px; /* Adjust to align with the text height */
-    bottom: 2px; /* Adjust to align with the text height */
-    width: 2px; /* Thickness of the vertical line */
-    background-color: #ff8c00; /* Orange color to match the input field’s border */
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background-color: #ff8c00;
 }
 
 .language-switcher {
     display: flex;
-    align-items: center; /* Vertically aligns flags */
-    padding: 10px 0 10px 37px; /* 40px left padding to match chapter links, 0 right padding */
+    align-items: center;
+    padding: 10px 0 10px 37px;
     margin-top: 10px;
-    justify-content: flex-start; /* Aligns to the left */
+    justify-content: flex-start;
 }
 
 .language-switcher .flag {
-    font-size: 48px; /* Keep the 50% bigger size */
-    line-height: 1; /* Keeps emoji height tight */
-    margin-right: 25px; /* Space between flags */
+    font-size: 48px;
+    line-height: 1;
+    margin-right: 25px;
 }
 
 .flag {
@@ -927,13 +542,11 @@ body {
     transform: scale(1.2);
 }
 
-/* Note: Removed mobile landscape rank badge sizing and chapter padding (20 rows) per user request to deprioritize mobile landscape. */
-
 .student-manager {
-    padding: 0 10px 20px 10px; /* Reduce horizontal padding to 10px */
+    padding: 0 10px 20px 10px;
     text-align: center;
-    width: 100%; /* Full viewport width */
-    box-sizing: border-box; /* Include padding in width */
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .student-manager h1 {
@@ -944,42 +557,41 @@ body {
 }
 
 .student-manager input {
-    padding: 8px 10px; /* Adjust padding to achieve 40px height */
-    margin: 0; /* Remove margin to rely on container padding */
+    padding: 8px 10px;
+    margin: 0;
     font-size: 16px;
-    line-height: 24px; /* Match font size 18px */
-    width: 320px; /* Set to match text area */
-    border: 1px solid #ccc; /* Add border to match button */
-    border-radius: 5px; /* Match button’s border-radius */
-    box-sizing: border-box; /* Ensure padding and border are included in height */
+    line-height: 24px;
+    width: 320px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
 }
 
 .student-manager div {
     margin: 10px 0 2px 0;
     font-family: Cochin, Georgia, Arial, sans-serif;
     color: #ffffff;
-    font-size: 22px; /* Already set to 24px, confirm it matches chapter-title */
-    line-height: 1.2; /* Add line-height to ensure consistent rendering */
+    font-size: 22px;
+    line-height: 1.2;
 }
 
-/* Adjust spacing for specific titles */
 .student-manager #addStudentLabel {
-    margin-bottom: 2px; /* Keep as is, looks good */
+    margin-bottom: 2px;
 }
 
 .student-manager #studentsLabel {
     color: #ffffff;
     font-family: Cochin, Georgia, Arial, sans-serif;
-    padding-top: 30px; /* Increase top padding */
-    padding-bottom: 0; /* No bottom padding */
-    margin-bottom: 0px; /* Slightly more space */
+    padding-top: 30px;
+    padding-bottom: 0;
+    margin-bottom: 0px;
 }
 
 .student-manager select {
-    padding: 8px 40px 8px 10px; /* Adjust padding to achieve 40px height, extra padding-right for larger arrow */
+    padding: 8px 40px 8px 10px;
     font-size: 16px;
-    width: 320px; /* Set to match text area */
-    margin: 0; /* Remove margin to rely on container padding */
+    width: 320px;
+    margin: 0;
     border: 1px solid #ccc;
     border-radius: 5px;
     background-color: #fff;
@@ -990,196 +602,511 @@ body {
     -moz-appearance: none;
     background-image: url('data:image/svg+xml;utf8,<svg fill="%23333" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
     background-repeat: no-repeat;
-    background-position: right 14px center; /* Adjust position for larger arrow */
-    background-size: 16px; /* Increase arrow size */
+    background-position: right 14px center;
+    background-size: 24px;
     cursor: pointer;
     transition: border-color 0.3s ease;
-    line-height: 24px; /* Match font size 18px */
+    line-height: 24px;
 }
 
 .student-manager select:hover {
-    border-color: #888; /* Subtle hover effect */
+    border-color: #888;
 }
 
 .student-manager select:focus {
     outline: none;
-    border-color: #ffd700; /* Highlight on focus */
+    border-color: #ffd700;
     box-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
 }
 
 .student-manager select#studentSelect {
-    padding: 8px 40px 8px 10px; /* Adjust padding to achieve 40px height, extra padding-right for larger arrow */
+    padding: 8px 40px 8px 10px;
     font-size: 16px;
-    width: 320px; /* Set to match text area */
+    width: 320px;
     margin: 0;
-    border: 1px solid #ff8c00; /* Orange border */
+    border: 1px solid #ff8c00;
     border-radius: 5px;
-    background: #4a4a4a; /* Dark grey background */
-    color: #ffffff; /* White text */
+    background: #4a4a4a;
+    color: #ffffff;
     font-family: Cochin, Georgia, Arial, sans-serif;
     appearance: none;
     -webkit-appearance: none;
     -moz-appearance: none;
-    background-image: url('data:image/svg+xml;utf8,<svg fill="%23ffffff" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>'); /* White dropdown arrow */
-    background-repeat: no-repeat;
-    background-position: right 14px center; /* Adjust position for larger arrow */
-    background-size: 16px; /* Increase arrow size */
+    background-image: url('data:image/svg+xml;utf8,<svg fill="%23ffffff" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
+    BACKGROUND-REPEAT: no-repeat;
+    background-position: right 10px center;
+    background-size: 24px;
     cursor: pointer;
     transition: border-color 0.3s ease;
-    line-height: 24px; /* Match font size 18px */
+    line-height: 24px;
 }
 
 .student-manager select#studentSelect:hover {
-    border-color: #ff8c00; /* Keep orange border on hover */
+    border-color: #ff8c00;
 }
 
 .student-manager select#studentSelect:focus {
     outline: none;
-    border-color: #ff8c00; /* Keep orange border on focus */
-    box-shadow: 0 0 5px rgba(255, 140, 0, 0.5); /* Orange glow on focus */
+    border-color: #ff8c00;
+    box-shadow: 0 0 5px rgba(255, 140, 0, 0.5);
 }
 
 .input-button-container {
-    display: inline-flex; /* Keep shrink-wrapping */
+    display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 10px; /* 10px on all sides for 10px spacing */
-    border: none; /* Remove yellow border */
-    background: none; /* Remove grey background */
+    padding: 10px;
+    border: none;
+    background: none;
     margin: 5px auto;
-    position: relative; /* Keep for absolute positioning of the button */
 }
 
 .notes-wrapper {
     display: block;
     text-align: center;
     clear: both;
-    width: 100%; /* Match .student-manager */
+    width: 100%;
 }
 
 .notes-container {
     width: 100%;
     max-width: 100vw;
     margin: 7px auto 20px auto;
-    display: flex; /* Change from inline-flex to flex to ensure full width */
+    display: flex;
     flex-direction: column;
     align-items: center;
 }
 
 .notes-button-container {
-    display: inline-flex; /* Change to inline-flex to shrink-wrap content */
+    display: inline-flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 10px; /* 10px on all sides for 10px spacing */
-    border: none; /* Remove yellow border */
-    background: none; /* Remove grey background */
-    margin: 5px auto; /* Center with auto margins, matching top boxes */
+    padding: 10px;
+    border: none;
+    background: none;
+    margin: 5px auto;
 }
 
 #studentNotes {
-    width: 320px; /* 80% of previous 400px */
+    width: 320px;
     height: 240px;
     box-sizing: border-box;
     padding: 10px;
     font-size: 16px;
     font-family: Cochin, Georgia, Arial, sans-serif;
-    border: 1px solid #ff8c00; /* Orange border */
+    border: 1px solid #ff8c00;
     border-radius: 5px;
-    background: #4a4a4a; /* Dark grey background */
-    color: #ffffff; /* White text */
+    background: #4a4a4a;
+    color: #ffffff;
     resize: none;
     overflow-y: auto;
 }
 
-/* Mobile adjustments */
-@media (max-width: 767px) {
+.dropdown-container {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 10px;
+    border: none;
+    background: none;
+    margin: 5px auto;
+}
+
+/* Media Queries - Consolidated */
+
+/* Desktop (min-width: 1367px and larger screens) */
+@media (min-width: 1367px) and (orientation: landscape) {
+    .chapter-title {display: block;}
+}
+@media (min-width: 1001px) {
+    .text-box #rankTitle {font-size: clamp(24px, 2vw, 28px);}
+}
+
+/* iPad (landscape screens ≥ 768px and ≤ 1400px) */
+@media (min-width: 768px) and (max-width: 1400px) and (orientation: landscape) {
+    body {
+        overflow: hidden;
+        width: 100%;
+        height: 100vh;
+        -webkit-overflow-scrolling: touch;
+    }
     .student-manager {
-        overflow-x: hidden; /* Prevent horizontal scrolling */
-        padding: 0 10px 20px 10px; /* Match iPad landscape padding (except bottom) */
+        overflow: hidden;
+        width: 100%;
+        max-width: 100vw;
+        height: 100vh;
+        box-sizing: border-box;
+        padding: 0 10px 10px 10px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
     }
-
+    .layout-container {overflow-y: hidden;}
+    .progress-container {
+        width: 100%;
+        max-width: 1366px;
+        margin: 0 auto;
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: calc(var(--vh, 1vh) * 100);
+        overflow-y: hidden;
+    }
+    .progress-svg {
+        width: 85%;
+        max-width: 1161.1px;
+        height: auto;
+        max-height: 100%;
+    }
+    .rank-badge {
+        position: absolute;
+        left: 75%;
+        top: calc(50% + 20px);
+        transform: translateY(-50%);
+        width: clamp(10%, 15%, 180px);
+        min-width: 0;
+        max-width: 180px;
+        height: auto;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        background: transparent;
+        border: none;
+        padding-top: 35px;
+    }
+    .logo-badge {
+        position: absolute;
+        left: 20px;
+        top: 50%;
+    }
+    .logo-badge img {
+        width: 150px;
+        height: auto;
+    }
     .chapter-title {
-        margin: 5px 0; /* Match iPad landscape */
+        display: block;
+        margin: 5px 0;
     }
+    .chapter-number {font-size: 32px;}
+    .chapter-name {font-size: 28px;}
+    body:not(.is-mobile) {overflow-y: hidden;}
+    .layout-container:not(.is-mobile) {overflow-y: hidden;}
+    .parts {
+        height: auto;
+        min-height: calc(var(--vh, 1vh) * 100 - 220px);
+        padding: 10px 0;
+        justify-content: center;
+    }
+    .exercises {
+        gap: 30px;
+        max-width: 80vw;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    .part {margin-bottom: 20px;}
+    .notes-container {
+        width: 100%;
+        max-width: 100vw;
+        margin: 2px auto;
+    }
+    .notes-button-container {
+        padding: 10px;
+        margin: 5px auto;
+    }
+    .input-button-container {padding: 10px;}
+    .dropdown-container {padding: 10px;}
+    #studentNotes {
+        width: clamp(256px, 26.64vw, 364px);
+        height: 180px;
+        padding: 10px;
+        border: 1px solid #ff8c00;
+        border-radius: 5px;
+        background: #4a4a4a;
+        color: #ffffff;
+        font-family: Cochin, Georgia, Arial, sans-serif;
+        font-size: 18px !important;
+    }
+    .student-manager input#newStudentName {
+        font-size: 18px !important;
+        padding: 8px 10px;
+        line-height: 24px;
+    }
+    .student-manager select#studentSelect {
+        font-size: 18px !important;
+        padding: 8px 40px 8px 10px;
+        line-height: 24px;
+        background-position: right 10px center;
+        background-size: 24px;
+    }
+}
 
+/* iPad-specific scaling (landscape) - iPad Mini and Air */
+@media (min-width: 768px) and (max-width: 820px) {
+    .parts {
+        max-width: 820px;
+        min-width: 550px;
+        margin: 0 auto;
+        justify-content: center;
+        min-height: calc(var(--vh, 1vh) * 100 - 140px);
+        padding-bottom: 30px;
+    }
+    .exercises {
+        gap: 30px;
+        max-width: 610px;
+        justify-content: center;
+        margin: 0 auto;
+    }
+    .star {
+        width: 100px;
+        min-width: 100px;
+        max-width: 100px;
+        height: auto;
+        object-fit: contain;
+    }
+}
+
+/* iPad Pro 11” */
+@media (min-width: 821px) and (max-width: 834px) {
+    .parts {
+        max-width: 834px;
+        min-width: 580px;
+        margin: 0 auto;
+        justify-content: center;
+    }
+    .exercises {
+        gap: 30px;
+        max-width: 670px;
+        justify-content: center;
+        margin: 0 auto;
+    }
+    .star {
+        width: 122px;
+        min-width: 122px;
+        max-width: 122px;
+        height: auto;
+        object-fit: contain;
+    }
+}
+
+/* iPad Pro 12.9” and larger */
+@media (min-width: 835px) {
+    .parts {
+        max-width: 1024px;
+        min-width: 580px;
+        margin: 0 auto;
+        justify-content: center;
+        height: auto;
+        min-height: calc(var(--vh, 1vh) * 100 - 220px);
+        padding: 10px 0;
+    }
+    .exercises {
+        gap: 30px;
+        max-width: 1200px;
+        justify-content: center;
+        margin: 0 auto;
+    }
+    .star {
+        width: 150px;
+        min-width: 150px;
+        max-width: 150px;
+        height: auto;
+        object-fit: contain;
+    }
+}
+
+/* iPhone (portrait screens, target phones only) */
+@media (max-width: 767px) and (orientation: portrait) {
+    .progress-container {
+        width: 100%;
+        height: auto;
+        display: block;
+        overflow-x: hidden;
+        overflow-y: auto;
+        padding: 0;
+        margin: 0;
+        min-height: calc(var(--vh, 1vh) * 100 - 50px);
+    }
+    .progress-svg {
+        width: 200%;
+        max-width: none;
+        height: 200%;
+        margin: 10px auto;
+        position: relative;
+        left: 50%;
+        transform: translateX(-50%);
+        overflow-x: hidden;
+        display: block;
+    }
+    .rank-badge {
+        position: static;
+        transform: none;
+        width: 17.0625%;
+        min-width: 136.5px;
+        max-width: 204.75px;
+        margin: 10px auto;
+        padding-top: 35px;
+        display: block;
+    }
+    .logo-badge {
+        position: static;
+        width: 100%;
+        text-align: center;
+        margin: 20px 0;
+        display: block;
+    }
+    .logo-badge img {display: none;}
+    .chapter-title {
+        display: block;
+        margin: 5px 0;
+    }
+    .parts {
+        max-width: 744px;
+        min-width: 0;
+        margin: 0 auto;
+        justify-content: center;
+        padding-top: 0;
+        padding-bottom: 20px;
+        min-height: calc(var(--vh, 1vh) * 100 - 50px - 40px);
+        height: auto;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        flex-grow: 1;
+    }
+    .exercises {
+        flex-wrap: wrap;
+        gap: 10px;
+        max-width: 300px;
+        justify-content: space-between;
+        flex-direction: row;
+    }
+    .part {margin-bottom: 10px;}
+    .part:nth-child(-n+3) {margin-bottom: 50px;}
+    .text-box {
+        position: static;
+        transform: none;
+        width: 80%;
+        max-width: 300px;
+        margin: 10px auto 20px auto;
+        display: block;
+    }
+    .text-box #rankTitle {
+        font-family: Cochin, Georgia, Arial, sans-serif;
+        font-size: 24px !important;
+        color: #ffffff;
+        margin: 0 0 5px 0;
+        text-align: center;
+    }
+    .text-box #rankDescription {
+        font-family: Cochin, Georgia, Arial, sans-serif;
+        font-size: 16px !important;
+        color: #ffffff;
+        margin: 0;
+        text-align: center;
+    }
+    .star-container {
+        width: calc(50% - 5px);
+        box-sizing: border-box;
+    }
+    .star {
+        width: 140px;
+        min-width: 140px;
+        max-width: 140px;
+        height: auto;
+        object-fit: contain;
+    }
+    .student-manager {
+        overflow-x: hidden;
+        padding: 0 10px 20px 10px;
+    }
+    .chapter-title {
+        display: block;
+        margin: 5px 0;
+    }
     .input-button-container {
         display: inline-flex;
         align-items: center;
         justify-content: center;
         gap: 10px;
         padding: 10px;
-        border: none; /* Remove yellow border */
-        background: none; /* Remove grey background */
+        border: none;
+        background: none;
         margin: 5px auto;
-        position: relative; /* Add position: relative to contain the absolutely positioned button */
     }
-
+    .input-group {width: 72vw;}
     .dropdown-container {
-        display: inline-flex; /* Keep shrink-wrapping */
+        display: inline-flex;
         align-items: center;
         justify-content: center;
         gap: 10px;
-        padding: 10px; /* Keep padding for spacing */
-        border: none; /* Remove yellow border */
-        background: none; /* Remove grey background */
+        padding: 10px;
+        border: none;
+        background: none;
         margin: 5px auto;
     }
-
-    .notes-container {
-        margin: 2px auto; /* Match iPad landscape */
-    }
-
+    .notes-container {margin: 2px auto;}
     .notes-button-container {
         flex-direction: column;
         align-items: center;
-        padding: 10px; /* 10px on all sides for 10px spacing */
-        margin: 5px auto; /* Match top boxes */
-        border: none; /* Remove yellow border */
-        background: none; /* Remove grey background */
+        padding: 10px;
+        margin: 5px auto;
+        border: none;
+        background: none;
     }
-
     #studentNotes {
-        width: 72vw; /* 80% of previous 90vw */
+        width: 72vw;
         height: 360px;
-        border: 1px solid #ff8c00; /* Orange border */
+        border: 1px solid #ff8c00;
         border-radius: 5px;
-        background: #4a4a4a; /* Dark grey background */
-        color: #ffffff; /* White text */
+        background: #4a4a4a;
+        color: #ffffff;
         font-family: Cochin, Georgia, Arial, sans-serif;
-        font-size: 18px !important; /* Revert font size for iPhone */
+        font-size: 18px !important;
     }
-
     .student-manager input#newStudentName {
-        width: 72vw; /* Match text area in mobile */
-        font-size: 18px !important; /* Revert font size for iPhone */
-        padding: 8px 40px 8px 10px; /* Revert padding to achieve 40px height with font-size 18px */
-        line-height: 24px; /* Match font size 18px */
+        width: auto;
+        font-size: 18px !important;
+        padding: 8px 10px;
+        line-height: 24px;
     }
-
     .student-manager select#studentSelect {
-        width: 72vw; /* Match text area in mobile */
-        font-size: 18px !important; /* Revert font size for iPhone */
-        padding: 8px 40px 8px 10px; /* Revert padding to achieve 40px height with font-size 18px */
-        line-height: 24px; /* Match font size 18px */
-        background-position: right 14px center; /* Adjust position for larger arrow */
-        background-size: 16px; /* Increase arrow size */
+        width: 72vw;
+        font-size: 18px !important;
+        padding: 8px 40px 8px 10px;
+        line-height: 24px;
+        background-position: right 10px center;
+        background-size: 24px;
     }
-
     .student-manager #studentsLabel {
-        padding-top: 10px; /* Reduce to match compact spacing */
+        padding-top: 10px;
         padding-bottom: 0;
         margin-bottom: 0px;
     }
 }
 
-.dropdown-container {
-    display: inline-flex; /* Shrink-wrap to content */
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    padding: 10px; /* 10px on all sides for 10px spacing */
-    border: none; /* Remove yellow border */
-    background: none; /* Remove grey background */
-    margin: 5px auto; /* Reduced vertical margin to minimize extra spacing */
+@media (max-width: 744px) and (orientation: portrait) {
+    #userNameDisplay {margin: 10px auto;}
+}
+
+/* iPhone landscape (allow scrolling) */
+@media (orientation: landscape) and (max-width: 767px),
+       (orientation: landscape) and (hover: none) and (pointer: coarse) {
+    body.is-mobile,
+    body {
+        display: block;
+        overflow-y: auto !important;
+        -webkit-overflow-scrolling: touch;
+    }
+    body.is-mobile:after,
+    body:after {display: none;}
+    .layout-container.is-mobile,
+    .layout-container {
+        overflow-y: auto !important;
+        -webkit-overflow-scrolling: touch;
+    }
 }
