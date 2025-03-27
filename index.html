@@ -15,7 +15,7 @@
         window.addEventListener('orientationchange', setViewportHeight);
         setViewportHeight();
 
-        // Handle name and menu functionality
+        // Handle name and menu functiona   lity
         document.addEventListener('DOMContentLoaded', () => {
             let studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || {
                 students: {},
@@ -300,8 +300,10 @@ xmlns:svg="http://www.w3.org/2000/svg"><defs
         <div class="popup-content">
             <h2 id="popupWelcome"></h2>
             <p id="popupEnterName"></p>
-            <input type="text" id="nameInput" placeholder="Your Name" onkeypress="if(event.key === 'Enter') saveName()">
-            <button onclick="saveName()">Submit</button>
+            <div class="input-group">
+                <input type="text" id="nameInput" onkeypress="if(event.key === 'Enter') saveName()">
+                <button id="submitNameButton" onclick="saveName()"></button>
+            </div>
         </div>
     </div>
     <div class="rank-badge">

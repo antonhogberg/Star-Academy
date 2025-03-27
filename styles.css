@@ -424,6 +424,7 @@ body {
     align-items: center;
 }
 
+/* Update .popup-content to adjust padding */
 .popup-content {
     background: #fff;
     padding: 20px 40px;
@@ -433,8 +434,29 @@ body {
     box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
 }
 
+/* Remove the old margin for #nameInput since it's now in .input-group */
 .popup-content #nameInput {
-    margin: 5px 0 20px 0;
+    margin: 0; /* Remove the old margin */
+}
+
+/* Style the input field in the popup to match #newStudentName */
+.popup-content input#nameInput {
+    flex: 1;
+    padding: 8px 10px;
+    margin: 0;
+    font-size: 16px;
+    line-height: 24px;
+    border: none;
+    border-radius: 5px 0 0 5px;
+    background: #4a4a4a;
+    color: #ffffff;
+    font-family: Cochin, Georgia, Arial, sans-serif;
+    box-sizing: border-box;
+    height: 40px;
+}
+
+.popup-content input#nameInput::placeholder {
+    color: #999999;
 }
 
 .popup-content button,
@@ -477,6 +499,38 @@ body {
 .popup-content button:hover,
 .student-manager button:hover {
     transform: scale(1.05);
+}
+
+/* Style the button in the popup to match #addStudentButton */
+.popup-content button#submitNameButton {
+    padding: 0 10px;
+    background: none;
+    border: none;
+    box-shadow: none;
+    color: #ffd700;
+    font-size: 16px;
+    cursor: pointer;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 40px;
+    position: relative;
+    font-family: Cochin, Georgia, Arial, sans-serif;
+}
+
+.popup-content button#submitNameButton:hover {
+    transform: none;
+}
+
+.popup-content button#submitNameButton::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background-color: #ff8c00;
 }
 
 .input-group {
@@ -857,6 +911,15 @@ body {
     }
 }
 
+/* Responsive adjustments for iPad */
+@media (min-width: 768px) and (max-width: 1400px) and (orientation: landscape) {
+    .popup-content input#nameInput {
+        font-size: 18px !important;
+        padding: 8px 10px;
+        line-height: 24px;
+    }
+}
+
 /* iPad-specific scaling (landscape) - iPad Mini and Air */
 @media (min-width: 768px) and (max-width: 820px) {
     .parts {
@@ -1119,5 +1182,18 @@ body {
     .layout-container {
         overflow-y: auto !important;
         -webkit-overflow-scrolling: touch;
+    }
+}
+
+/* Responsive adjustments for iPhone */
+@media (max-width: 767px) and (orientation: portrait) {
+    .popup-content .input-group {
+        width: 72vw;
+    }
+    .popup-content input#nameInput {
+        width: auto;
+        font-size: 18px !important;
+        padding: 8px 10px;
+        line-height: 24px;
     }
 }
