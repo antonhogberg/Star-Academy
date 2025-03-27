@@ -187,32 +187,44 @@
         }
 
         function switchStudent() {
-        const select = document.getElementById('studentSelect');
-        const studentNotes = document.getElementById('studentNotes');
-        let studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
+            const select = document.getElementById('studentSelect');
+            const studentNotes = document.getElementById('studentNotes');
+            let studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
 
-        const selectedStudent = select.value;
-        if (selectedStudent) {
-            studentsData.currentStudent = selectedStudent;
-            localStorage.setItem('starAcademyStudents', JSON.stringify(studentsData));
-            window.studentsData.currentStudent = selectedStudent; // Keep in sync
+            const selectedStudent = select.value;
+            if (selectedStudent) {
+                studentsData.currentStudent = selectedStudent;
+                localStorage.setItem('starAcademyStudents', JSON.stringify(studentsData));
+                window.studentsData.currentStudent = selectedStudent; // Keep in sync
 
-            if (studentsData.students[selectedStudent] && studentsData.students[selectedStudent].notes) {
-                studentNotes.value = studentsData.students[selectedStudent].notes;
+                if (studentsData.students[selectedStudent] && studentsData.students[selectedStudent].notes) {
+                    studentNotes.value = studentsData.students[selectedStudent].notes;
+                } else {
+                    studentNotes.value = '';
+                    const currentLang = localStorage.getItem('language') || 'sv';
+                    studentNotes.placeholder = translations[currentLang].notesPlaceholder;
+                    studentNotes.blur();
+                    // Ensure placeholder displays by removing focus and focusing a neutral element
+                    setTimeout(() => {
+                        studentNotes.blur(); // Double-check blur
+                        document.body.focus(); // Focus a neutral element to ensure no other field takes focus
+                    }, 0);
+                }
             } else {
+                studentsData.currentStudent = '';
+                localStorage.setItem('starAcademyStudents', JSON.stringify(studentsData));
+                window.studentsData.currentStudent = ''; // Keep in sync
                 studentNotes.value = '';
                 const currentLang = localStorage.getItem('language') || 'sv';
-                studentNotes.placeholder = translations[currentLang].notesPlaceholder; // Set placeholder to match current language
+                studentNotes.placeholder = translations[currentLang].notesPlaceholder;
+                studentNotes.blur();
+                // Ensure placeholder displays by removing focus and focusing a neutral element
+                setTimeout(() => {
+                    studentNotes.blur(); // Double-check blur
+                    document.body.focus(); // Focus a neutral element to ensure no other field takes focus
+                }, 0);
             }
-        } else {
-            studentsData.currentStudent = '';
-            localStorage.setItem('starAcademyStudents', JSON.stringify(studentsData));
-            window.studentsData.currentStudent = ''; // Keep in sync
-            studentNotes.value = '';
-            const currentLang = localStorage.getItem('language') || 'sv';
-            studentNotes.placeholder = translations[currentLang].notesPlaceholder; // Set placeholder to match current language
         }
-    }
     </script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
