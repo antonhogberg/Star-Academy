@@ -825,6 +825,88 @@ body {
     margin: 0px auto;
 }
 
+/* Student Popup Overlay */
+.student-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    max-width: 40%; /* Matches #namePopup on desktop/iPad */
+    height: auto;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    display: none; /* Hidden by default */
+    justify-content: center;
+    align-items: center;
+}
+
+/* Popup Content */
+.student-popup-content {
+    background-color: #000000;
+    background-image: url('background.jpg');
+    background-size: 100% auto;
+    background-repeat: repeat-y;
+    background-position: center top;
+    padding: 20px 40px;
+    border-radius: 5px;
+    text-align: center;
+    border: 2px solid #ffd700; /* Gold border */
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+    display: flex;
+    flex-direction: row; /* Row for stars + text */
+    align-items: center;
+    justify-content: center;
+    gap: 10px; /* Space between stars and text */
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 100%; /* Respect parent max-width */
+}
+
+/* Popup Message Text */
+.student-popup-content p {
+    color: #ffffff;
+    font-family: Cochin, Georgia, Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+    margin: 0; /* Remove default margin */
+}
+
+/* Gold Stars in Popup */
+.student-popup-content .popup-star {
+    width: 20px; /* Small star size */
+    height: 20px;
+    fill: #ffd700; /* Gold from .gold-star */
+    stroke: #000000;
+    stroke-width: 1;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 767px) and (orientation: portrait) {
+    .student-popup {
+        max-width: 80%; /* Wider on mobile, like #namePopup */
+    }
+    .student-popup-content {
+        width: 90vw;
+        max-width: 90vw;
+        padding: 15px 20px; /* Slightly smaller padding on mobile */
+    }
+    .student-popup-content p {
+        font-size: 14px; /* Smaller text on mobile */
+    }
+    .student-popup-content .popup-star {
+        width: 16px; /* Slightly smaller stars on mobile */
+        height: 16px;
+    }
+}
+
+/* iPad Landscape */
+@media (min-width: 768px) and (max-width: 1400px) and (orientation: landscape) {
+    .student-popup {
+        max-width: 40%; /* Matches #namePopup */
+    }
+}
+
 /* Media Queries - Consolidated */
 
 /* Desktop (min-width: 1367px and larger screens) */

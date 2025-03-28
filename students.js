@@ -30,6 +30,8 @@ function addStudent() {
     const nameInput = document.getElementById('newStudentName');
     const name = nameInput.value.trim();
     const lang = localStorage.getItem('language') || 'sv';
+    const popup = document.getElementById('studentPopup');
+    const popupMessage = document.getElementById('studentPopupMessage');
 
     // Re-fetch the latest studentsData from localStorage to avoid overwriting
     window.studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || {
@@ -38,12 +40,12 @@ function addStudent() {
     };
 
     if (!name) {
-        alert(translations[lang].addStudentNoName);
+        showStudentPopup(translations[lang].addStudentNoName, 2000);
         return;
     }
 
     if (window.studentsData.students[name]) {
-        alert(translations[lang].addStudentDuplicate);
+        showStudentPopup(translations[lang].addStudentDuplicate, 2000);
         return;
     }
 
@@ -70,8 +72,9 @@ function addStudent() {
     localStorage.setItem('starAcademyStudents', JSON.stringify(window.studentsData));
     nameInput.value = ''; // Clear input
 
-    // Success message
-    alert(translations[lang].addStudentSuccess);
+    // Success message with stars
+    const starSVG = '<svg class="popup-star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>';
+    showStudentPopup(`${starSVG} ${translations[lang].addStudentSuccess} ${starSVG}`, 2000);
 
     // Update the text area to show the new student's (empty) notes
     if (typeof loadNotes === 'function') {
@@ -79,6 +82,17 @@ function addStudent() {
     } else {
         console.error('loadNotes function not found. Ensure it is defined in students.html.');
     }
+}
+
+// Helper function to show and hide the popup
+function showStudentPopup(message, duration) {
+    const popup = document.getElementById('studentPopup');
+    const popupMessage = document.getElementById('studentPopupMessage');
+    popupMessage.innerHTML = message; // Use innerHTML to render SVG
+    popup.style.display = 'flex';
+    setTimeout(() => {
+        popup.style.display = 'none';
+    }, duration);
 }
 
 function switchStudent() {
