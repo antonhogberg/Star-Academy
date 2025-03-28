@@ -5,10 +5,10 @@ const translations = {
         menuChapter: "Chapter",
         menuStudents: "Manage Students",
         menuInfo: "How to Use",
-        popupWelcome: "Welcome to Star Academy!",
-        popupIntro: "Here you can earn the stars you deserve in the Star Academy Piano School. Reach the sixth star in the exercises to advance your rank—check your progress by going to Star Overview in the menu.", // Add this
-        popupTeacherNote: "Are you a teacher who wants to add your students as different users? Go to Manage Students in the menu to add and switch between students there. Note! All data is stored locally in your device’s cache, so you can only access it from this device—if you clear the cache, everything will be lost.", // Add this
-        popupEnterName: "Enter your name in the field below and press Enter to create your user.", // Update this
+        popupWelcome: "Welcome to the Star Map!",
+        popupIntro: "Click to reveal your Star Academy stars! Earn six stars in exercises to rise in rank—track your progress under Star Overview.",
+        popupTeacherNote: "Teacher? Add and switch students under Manage Students. Note: Data is saved locally on this device—clear the cache, and it’s gone.",
+        popupEnterName: "Type your name below and hit Enter to start!",
         rankExplorer: "Explorer",
         rankStarCadet: "Star Cadet",
         rankStarOfficer: "Star Officer",
@@ -57,10 +57,10 @@ const translations = {
         menuChapter: "Kapitel",
         menuStudents: "Hantera elever",
         menuInfo: "Så här använder du",
-        popupWelcome: "Välkommen till Stjärnakademien!",
-        popupIntro: "Här klickar du fram de stjärnor du förtjänat i Stjärnakademiens Pianoskola. Nå den sjätte stjärnan i uppgifterna för att stiga i rang - se hur du ligger till genom att gå till Stjärnöversikt i menyn.", // Add this
-        popupTeacherNote: "Är du en lärare som vill lägga till dina elever som olika användare? Gå till Hantera elever i menyn och lägg till och växla mellan elever där. Obs! Alla uppgifter lagras lokalt i din enhets cacheminne så du kan bara komma åt dem via denna enheten - och rensar du cacheminnet så försvinner allt.", // Add this
-        popupEnterName: "Skriv ditt namn i fältet nedan och tryck Enter för att skapa din användare.", // Update this
+        popupWelcome: "Välkommen till Stjärnkartan!",
+        popupIntro: "Klicka fram dina Stjärnakademi-stjärnor! Samla sex stjärnor i övningarna för att klättra i rang – kolla dina framsteg under Stjärnöversikt.",
+        popupTeacherNote: "Lärare? Lägg till och växla mellan elever under Hantera elever. Obs! Allt sparas lokalt på denna enhet – rensas cachen försvinner dina framsteg.",
+        popupEnterName: "Ange ditt namn nedan och tryck Enter för att börja!",
         rankExplorer: "Utforskare",
         rankStarCadet: "Stjärnkadett",
         rankStarOfficer: "Stjärnofficer",
