@@ -27,42 +27,57 @@ if (window.studentsData.currentStudent && !window.studentsData.students[window.s
 }
 
 function addStudent() {
-    const name = document.getElementById('newStudentName').value.trim();
+    const nameInput = document.getElementById('newStudentName');
+    const name = nameInput.value.trim();
+    const lang = localStorage.getItem('language') || 'sv';
+
     // Re-fetch the latest studentsData from localStorage to avoid overwriting
     window.studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || {
         students: {},
         currentStudent: localStorage.getItem('userName') || ''
     };
-    if (name && !window.studentsData.students[name]) {
-        window.studentsData.students[name] = {
-            name: name,
-            progress: {},
-            rank: "Explorer",
-            notes: "" // Initialize notes as empty
-        };
-        // Initialize progress for all exercises
-        for (let chapter = 1; chapter <= 7; chapter++) {
-            for (let part = 1; part <= 4; part++) {
-                for (let exercise = 1; exercise <= 4; exercise++) {
-                    const key = `exercise${chapter}:${part}:${exercise}`;
-                    window.studentsData.students[name].progress[key] = "0";
-                }
+
+    if (!name) {
+        alert(translations[lang].addStudentNoName);
+        return;
+    }
+
+    if (window.studentsData.students[name]) {
+        alert(translations[lang].addStudentDuplicate);
+        return;
+    }
+
+    // Add new student
+    window.studentsData.students[name] = {
+        name: name,
+        progress: {},
+        rank: "Explorer",
+        notes: "" // Initialize notes as empty
+    };
+
+    // Initialize progress for all exercises
+    for (let chapter = 1; chapter <= 7; chapter++) {
+        for (let part = 1; part <= 4; part++) {
+            for (let exercise = 1; exercise <= 4; exercise++) {
+                const key = `exercise${chapter}:${part}:${exercise}`;
+                window.studentsData.students[name].progress[key] = "0";
             }
         }
-        window.studentsData.currentStudent = name; // Set as current student
-        updateDropdown();
-        localStorage.setItem('starAcademyStudents', JSON.stringify(window.studentsData));
-        document.getElementById('newStudentName').value = '';
-        // Update the text area to show the new student's (empty) notes
-        if (typeof loadNotes === 'function') {
-            loadNotes(false);
-        } else {
-            console.error('loadNotes function not found. Ensure it is defined in students.html.');
-        }
-    } else if (window.studentsData.students[name]) {
-        alert('Student name already exists!');
+    }
+
+    window.studentsData.currentStudent = name; // Set as current student
+    updateDropdown();
+    localStorage.setItem('starAcademyStudents', JSON.stringify(window.studentsData));
+    nameInput.value = ''; // Clear input
+
+    // Success message
+    alert(translations[lang].addStudentSuccess);
+
+    // Update the text area to show the new student's (empty) notes
+    if (typeof loadNotes === 'function') {
+        loadNotes(false);
     } else {
-        alert('Please enter a valid name!');
+        console.error('loadNotes function not found. Ensure it is defined in students.html.');
     }
 }
 
