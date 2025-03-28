@@ -327,16 +327,18 @@ function switchLanguage(lang) {
     });
 
     // Update popup text (if present)
-const popupWelcome = document.querySelector('#namePopup h2');
-const popupIntro = document.querySelector('#popupIntro');
-const popupTeacherNote = document.querySelector('#popupTeacherNote');
-const popupEnterName = document.querySelector('#popupEnterName'); // Fix selector
-const submitNameButton = document.getElementById('submitNameButton');
-if (popupWelcome) popupWelcome.textContent = translations[lang].popupWelcome;
-if (popupIntro) popupIntro.textContent = translations[lang].popupIntro;
-if (popupTeacherNote) popupTeacherNote.textContent = translations[lang].popupTeacherNote;
-if (popupEnterName) popupEnterName.textContent = translations[lang].popupEnterName;
-if (submitNameButton) submitNameButton.textContent = translations[lang].addButton;
+    const popupWelcome = document.querySelector('#popupWelcome');
+    const popupIntro = document.querySelector('#popupIntro');
+    const popupTeacherNote = document.querySelector('#popupTeacherNote');
+    const popupEnterName = document.querySelector('#popupEnterName');
+    const submitNameButton = document.getElementById('submitNameButton');
+    
+    if (popupWelcome) popupWelcome.textContent = translations[lang].popupWelcome;
+    if (popupIntro) popupIntro.textContent = translations[lang].popupIntro;
+    if (popupTeacherNote) popupTeacherNote.textContent = translations[lang].popupTeacherNote;
+    if (popupEnterName) popupEnterName.textContent = translations[lang].popupEnterName;
+    if (submitNameButton) submitNameButton.textContent = translations[lang].addButton;
+    
 
     // Update chapter title (if present)
     const chapterNumber = document.querySelector('.chapter-number');
