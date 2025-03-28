@@ -1,7 +1,8 @@
+/* styles.css */
+
 :root {
     --vh: 1vh; /* Fallback for older browsers */
 }
-
 
 .field-label {
     margin: 30px 0 10px 0 !important;
@@ -131,7 +132,6 @@ body {
     line-height: 1;
 }
 
-
 .menu.active .close-btn {
     opacity: 1;
 }
@@ -210,6 +210,7 @@ body {
     flex-grow: 1;
 }
 
+/* Ensure rank-badge stays below popup */
 .rank-badge {
     position: absolute;
     left: 75%;
@@ -226,6 +227,7 @@ body {
     background: transparent;
     border: none;
     padding-top: 35px;
+    z-index: 10; /* Lower than popup’s 1000 */
 }
 
 #rankImage {
@@ -306,7 +308,7 @@ body {
     color: #ffffff;
     text-align: center;
 }
-  
+
 .text-box {
     position: absolute;
     left: 12.5%;
@@ -409,19 +411,22 @@ body {
     opacity: 0.8;
 }
 
-/* Ensure .popup is just an overlay */
+/* Base popup styling (full width by default for mobile) */
 .popup {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    display: flex;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* Center it */
+    width: 100%; /* Full width base for mobile */
+    height: auto; /* Adjust to content */
+    background: rgba(0, 0, 0, 0.5); /* Semi-transparent backdrop */
+    z-index: 1000; /* Higher than rank-badge to overlay it */
+    display: none; /* Default hidden, matches JS toggle */
     justify-content: center;
     align-items: center;
 }
 
+/* Popup content styling */
 .popup-content {
     background-color: #000000;
     background-image: url('background.jpg');
@@ -438,6 +443,8 @@ body {
     align-items: center;
     gap: 10px;
     box-sizing: border-box;
+    width: 100%; /* Fill the popup container */
+    max-width: 100%; /* Respect the parent .popup max-width */
 }
 
 /* Override padding for .input-group in the popup */
@@ -454,28 +461,6 @@ body {
     padding-bottom: 0; /* Remove bottom padding */
     padding-left: 0; /* Ensure no left padding */
     padding-right: 0; /* Ensure no right padding */
-}
-
-/* Ensure responsive behavior remains */
-@media (max-width: 767px) and (orientation: portrait) {
-    .popup-content {
-        width: 90vw !important;
-        max-width: 90vw;
-        padding: 20px 20px 35px 20px;
-        box-sizing: border-box;
-    }
-    .popup-content p {
-        font-size: 14px; /* Slightly smaller font size on mobile for readability */
-    }
-    .popup-content .input-group {
-        width: 72vw;
-    }
-    .popup-content input#nameInput {
-        width: auto;
-        font-size: 18px !important;
-        padding: 8px 10px;
-        line-height: 24px;
-    }
 }
 
 /* Make text white to be readable on the dark background */
@@ -844,14 +829,24 @@ body {
 
 /* Desktop (min-width: 1367px and larger screens) */
 @media (min-width: 1367px) and (orientation: landscape) {
-    .chapter-title {display: block;}
+    .popup {
+        max-width: 40%; /* 40% width for desktop */
+    }
+    .chapter-title {
+        display: block;
+    }
 }
 @media (min-width: 1001px) {
-    .text-box #rankTitle {font-size: clamp(24px, 2vw, 28px);}
+    .text-box #rankTitle {
+        font-size: clamp(24px, 2vw, 28px);
+    }
 }
 
 /* iPad (landscape screens ≥ 768px and ≤ 1400px) */
 @media (min-width: 768px) and (max-width: 1400px) and (orientation: landscape) {
+    .popup {
+        max-width: 40%; /* 40% width for iPad landscape */
+    }
     body {
         overflow: hidden;
         width: 100%;
@@ -869,7 +864,9 @@ body {
         flex-direction: column;
         align-items: center;
     }
-    .layout-container {overflow-y: hidden;}
+    .layout-container {
+        overflow-y: hidden;
+    }
     .progress-container {
         width: 100%;
         max-width: 1366px;
@@ -903,6 +900,7 @@ body {
         background: transparent;
         border: none;
         padding-top: 35px;
+        z-index: 10; /* Ensure below popup */
     }
     .logo-badge {
         position: absolute;
@@ -917,10 +915,18 @@ body {
         display: block;
         margin: 5px 0;
     }
-    .chapter-number {font-size: 32px;}
-    .chapter-name {font-size: 28px;}
-    body:not(.is-mobile) {overflow-y: hidden;}
-    .layout-container:not(.is-mobile) {overflow-y: hidden;}
+    .chapter-number {
+        font-size: 32px;
+    }
+    .chapter-name {
+        font-size: 28px;
+    }
+    body:not(.is-mobile) {
+        overflow-y: hidden;
+    }
+    .layout-container:not(.is-mobile) {
+        overflow-y: hidden;
+    }
     .parts {
         height: auto;
         min-height: calc(var(--vh, 1vh) * 100 - 220px);
@@ -933,7 +939,9 @@ body {
         flex-wrap: wrap;
         justify-content: center;
     }
-    .part {margin-bottom: 20px;}
+    .part {
+        margin-bottom: 20px;
+    }
     .notes-container {
         width: 100%;
         max-width: 100vw;
@@ -943,11 +951,15 @@ body {
         padding: 10px;
         margin: 5px auto;
     }
-    .input-button-container {padding: 0px;}
-    .dropdown-container {padding: 0px;}
+    .input-button-container {
+        padding: 0px;
+    }
+    .dropdown-container {
+        padding: 0px;
+    }
     #studentNotes {
         width: 320px;
-        height: 360px; /* Already set to 360px from previous change, which is 180px doubled */
+        height: 360px; /* Already set to 360px from previous change */
         padding: 10px;
         border: 1px solid #ff8c00;
         border-radius: 5px;
@@ -973,7 +985,7 @@ body {
 /* Responsive adjustments for iPad */
 @media (min-width: 768px) and (max-width: 1400px) and (orientation: landscape) {
     .popup-content {
-        padding: 20px 40px 45px 40px; /* Reduce padding-bottom to 45px (60px - 5px = 55px total space) */
+        padding: 20px 40px 45px 40px; /* Reduce padding-bottom to 45px */
     }
     .popup-content input#nameInput {
         font-size: 18px !important;
@@ -1058,6 +1070,24 @@ body {
 
 /* iPhone (portrait screens, target phones only) */
 @media (max-width: 767px) and (orientation: portrait) {
+    .popup-content {
+        width: 90vw !important; /* Existing mobile width */
+        max-width: 90vw;
+        padding: 20px 20px 35px 20px;
+        box-sizing: border-box;
+    }
+    .popup-content p {
+        font-size: 14px; /* Slightly smaller font size on mobile */
+    }
+    .popup-content .input-group {
+        width: 72vw;
+    }
+    .popup-content input#nameInput {
+        width: auto;
+        font-size: 18px !important;
+        padding: 8px 10px;
+        line-height: 24px;
+    }
     .progress-container {
         width: 100%;
         height: auto;
@@ -1088,6 +1118,7 @@ body {
         margin: 10px auto;
         padding-top: 35px;
         display: block;
+        z-index: 10; /* Still below popup */
     }
     .logo-badge {
         position: static;
@@ -1096,7 +1127,9 @@ body {
         margin: 20px 0;
         display: block;
     }
-    .logo-badge img {display: none;}
+    .logo-badge img {
+        display: none;
+    }
     .chapter-title {
         display: block;
         margin: 5px 0;
@@ -1123,8 +1156,12 @@ body {
         justify-content: space-between;
         flex-direction: row;
     }
-    .part {margin-bottom: 10px;}
-    .part:nth-child(-n+3) {margin-bottom: 50px;}
+    .part {
+        margin-bottom: 10px;
+    }
+    .part:nth-child(-n+3) {
+        margin-bottom: 50px;
+    }
     .text-box {
         position: static;
         transform: none;
@@ -1175,7 +1212,9 @@ body {
         background: none;
         margin: 0px auto;
     }
-    .input-group {width: 72vw;}
+    .input-group {
+        width: 72vw;
+    }
     .dropdown-container {
         display: inline-flex;
         align-items: center;
@@ -1186,7 +1225,9 @@ body {
         background: none;
         margin: 0px auto;
     }
-    .notes-container {margin: 2px auto;}
+    .notes-container {
+        margin: 2px auto;
+    }
     .notes-button-container {
         flex-direction: column;
         align-items: center;
@@ -1218,15 +1259,12 @@ body {
         background-position: right 10px center;
         background-size: 24px;
     }
-    /* .student-manager #studentsLabel {
-        padding-top: 10px;
-        padding-bottom: 0;
-        margin-bottom: 0px;
-    } */
 }
 
 @media (max-width: 744px) and (orientation: portrait) {
-    #userNameDisplay {margin: 10px auto;}
+    #userNameDisplay {
+        margin: 10px auto;
+    }
 }
 
 /* iPhone landscape (allow scrolling) */
@@ -1239,23 +1277,12 @@ body {
         -webkit-overflow-scrolling: touch;
     }
     body.is-mobile:after,
-    body:after {display: none;}
+    body:after {
+        display: none;
+    }
     .layout-container.is-mobile,
     .layout-container {
         overflow-y: auto !important;
         -webkit-overflow-scrolling: touch;
-    }
-}
-
-/* Responsive adjustments for iPhone */
-@media (max-width: 767px) and (orientation: portrait) {
-    .popup-content .input-group {
-        width: 72vw;
-    }
-    .popup-content input#nameInput {
-        width: auto;
-        font-size: 18px !important;
-        padding: 8px 10px;
-        line-height: 24px;
     }
 }
