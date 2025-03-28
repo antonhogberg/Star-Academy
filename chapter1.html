@@ -50,15 +50,71 @@
         <span class="chapter-number"></span>
         <span class="chapter-name"></span>
     </h1>
+    <div id="namePopup" class="popup">
+        <div class="popup-content">
+            <h2 id="popupWelcome"></h2>
+            <p id="popupIntro"></p>
+            <p id="popupTeacherNote"></p>
+            <p id="popupEnterName"></p>
+            <div class="input-group">
+                <input type="text" id="nameInput" onkeypress="if(event.key === 'Enter') saveName()">
+                <button id="submitNameButton" onclick="saveName()"></button>
+            </div>
+        </div>
+    </div>
     <div class="parts"></div>
     <script src="chapter.js"></script>
     <script src="script.js"></script>
-    <script src="menu.js"></script> <!-- Add this line -->
+    <script src="menu.js"></script>
     <script>
+        function saveName() {
+            const nameInput = document.getElementById('nameInput');
+            const namePopup = document.getElementById('namePopup');
+            let studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
+            const name = nameInput?.value.trim();
+
+            if (name) {
+                if (studentsData.students[name]) {
+                    alert('This name is already in use. Please choose a different name.');
+                    return;
+                }
+                studentsData.students[name] = {
+                    name: name,
+                    progress: {},
+                    rank: "Explorer"
+                };
+                for (let chapter = 1; chapter <= 7; chapter++) {
+                    for (let part = 1; part <= 4; part++) {
+                        for (let exercise = 1; exercise <= 4; exercise++) {
+                            const key = `exercise${chapter}:${part}:${exercise}`;
+                            studentsData.students[name].progress[key] = localStorage.getItem(key) || "0";
+                            localStorage.removeItem(key); // Clean up old keys
+                        }
+                    }
+                }
+                studentsData.currentStudent = name;
+                localStorage.setItem('starAcademyStudents', JSON.stringify(studentsData));
+                if (namePopup) namePopup.style.display = 'none';
+                alert('New Star Student created!'); // Success message
+            } else {
+                alert('Please enter a name!');
+            }
+        }
+
         document.addEventListener('DOMContentLoaded', () => {
             document.body.style.touchAction = 'manipulation'; // Prevents double-tap zoom
+            let studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
+            const namePopup = document.getElementById('namePopup');
+
+            if (!studentsData.currentStudent) {
+                namePopup.style.display = 'flex';
+            }
+
+            const initialLang = localStorage.getItem('language') || 'sv';
+            switchLanguage(initialLang); // Ensure language is set
         });
     </script>
     <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9226e693cf4844ef',t:'MTc0MjMyMzY2OS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
+    <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9279bfe7ec60c01f',t:'MTc0MzE5MjQwMy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
 </body>
 </html>
