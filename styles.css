@@ -461,8 +461,11 @@ body {
     .popup-content {
         width: 90vw !important;
         max-width: 90vw;
-        padding: 20px 20px 35px 20px; /* Increase padding-bottom to 50px */
+        padding: 20px 20px 35px 20px;
         box-sizing: border-box;
+    }
+    .popup-content p {
+        font-size: 14px; /* Slightly smaller font size on mobile for readability */
     }
     .popup-content .input-group {
         width: 72vw;
@@ -482,8 +485,11 @@ body {
 }
 
 .popup-content p {
-    margin: 0; /* Remove default margin on <p> */
+    font-size: 16px;
+    line-height: 1.5;
+    margin-bottom: 10px; /* Add spacing between paragraphs */
 }
+
 /* Remove the old margin for #nameInput since it's now in .input-group */
 .popup-content #nameInput {
     margin: 0; /* Remove the old margin */
