@@ -4,8 +4,11 @@ const translations = {
         menuFrontPage: "Star Overview",
         menuChapter: "Chapter",
         menuStudents: "Manage Students",
+        menuInfo: "How to Use",
         popupWelcome: "Welcome to Star Academy!",
-        popupEnterName: "Please enter your name:",
+        popupIntro: "Here you can earn the stars you deserve in the Star Academy Piano School. Reach the sixth star in the exercises to advance your rank—check your progress by going to Star Overview in the menu.", // Add this
+        popupTeacherNote: "Are you a teacher who wants to add your students as different users? Go to Manage Students in the menu to add and switch between students there. Note! All data is stored locally in your device’s cache, so you can only access it from this device—if you clear the cache, everything will be lost.", // Add this
+        popupEnterName: "Enter your name in the field below and press Enter to create your user.", // Update this
         rankExplorer: "Explorer",
         rankStarCadet: "Star Cadet",
         rankStarOfficer: "Star Officer",
@@ -38,14 +41,26 @@ const translations = {
         addNewStudent: "Add new student",
         notesLabel: "Notes:",
         notesPlaceholder: "Add notes about planned homework, progress, or other details here.",
-        saveNotesButton: "Save notes"
+        saveNotesButton: "Save notes",
+        infoTitle: "How to Use Star Academy",
+        gettingStartedTitle: "Getting Started",
+        gettingStartedText: "When you first visit Star Academy, you’ll be asked to enter your name. This creates your profile, where your progress will be saved. You’ll start as an Explorer, ready to begin your piano journey!",
+        understandingProgressTitle: "Understanding Your Progress",
+        understandingProgressText: "The homepage shows your progress with stars and chevrons. The 16 bottom stars track your first steps—complete 16 exercises to become a Star Cadet! The chevrons above represent the four parts across seven chapters. Fill each chevron’s stars by completing exercises to advance your rank, from Explorer to Star Admiral.",
+        navigatingSiteTitle: "Navigating the Site",
+        navigatingSiteText: "Use the menu (☰) in the top-left corner to access the homepage, chapters, student management, and this info page. Each chapter has four parts with four exercises each. Complete exercises to earn stars and progress through the ranks!",
+        managingUsersTitle: "Managing Users",
+        managingUsersText: "If you’re a teacher or have multiple users, visit the 'Manage Students' page to add students, switch between them, and add notes about their progress. Each student’s progress is saved separately."
     },
     sv: {
         menuFrontPage: "Stjärnöversikt",
         menuChapter: "Kapitel",
         menuStudents: "Hantera elever",
+        menuInfo: "Så här använder du",
         popupWelcome: "Välkommen till Stjärnakademien!",
-        popupEnterName: "Skriv ditt namn här:",
+        popupIntro: "Här klickar du fram de stjärnor du förtjänat i Stjärnakademiens Pianoskola. Nå den sjätte stjärnan i uppgifterna för att stiga i rang - se hur du ligger till genom att gå till Stjärnöversikt i menyn.", // Add this
+        popupTeacherNote: "Är du en lärare som vill lägga till dina elever som olika användare? Gå till Hantera elever i menyn och lägg till och växla mellan elever där. Obs! Alla uppgifter lagras lokalt i din enhets cacheminne så du kan bara komma åt dem via denna enheten - och rensar du cacheminnet så försvinner allt.", // Add this
+        popupEnterName: "Skriv ditt namn i fältet nedan och tryck Enter för att skapa din användare.", // Update this
         rankExplorer: "Utforskare",
         rankStarCadet: "Stjärnkadett",
         rankStarOfficer: "Stjärnofficer",
@@ -78,7 +93,16 @@ const translations = {
         addNewStudent: "Lägg till ny elev",
         notesLabel: "Anteckningar:",
         notesPlaceholder: "Skriv dina anteckningar om läxor m.m. här.",
-        saveNotesButton: "Spara anteckningar"
+        saveNotesButton: "Spara anteckningar",
+        infoTitle: "Så här använder du Stjärnakademien",
+        gettingStartedTitle: "Kom igång",
+        gettingStartedText: "När du först besöker Stjärnakademien blir du ombedd att ange ditt namn. Detta skapar din profil där dina framsteg sparas. Du börjar som en Utforskare, redo att påbörja din pianoresa!",
+        understandingProgressTitle: "Förstå dina framsteg",
+        understandingProgressText: "Hemsidan visar dina framsteg med stjärnor och chevroner. De 16 stjärnorna längst ner följer dina första steg – klara 16 övningar för att bli Stjärnkadett! Chevronerna ovan representerar de fyra delarna i sju kapitel. Fyll varje chevrons stjärnor genom att slutföra övningar för att avancera din rang, från Utforskare till Stjärnamiral.",
+        navigatingSiteTitle: "Navigera på webbplatsen",
+        navigatingSiteText: "Använd menyn (☰) i det övre vänstra hörnet för att komma åt hemsidan, kapitlen, elevhantering och denna infosida. Varje kapitel har fyra delar med fyra övningar vardera. Slutför övningar för att tjäna stjärnor och avancera genom rankerna!",
+        managingUsersTitle: "Hantera användare",
+        managingUsersText: "Om du är lärare eller har flera användare, besök sidan 'Hantera elever' för att lägga till elever, växla mellan dem och lägga till anteckningar om deras framsteg. Varje elevs framsteg sparas separat."
     }
 };
 
@@ -280,6 +304,7 @@ function updateStarStates() {
     }
 }
 
+// Update switchLanguage to set the new popup text
 function switchLanguage(lang) {
     localStorage.setItem('language', lang);
     console.log(`Switching language to: ${lang}`);
@@ -291,6 +316,8 @@ function switchLanguage(lang) {
             link.textContent = translations[lang].menuFrontPage;
         } else if (href === 'students.html') {
             link.textContent = translations[lang].menuStudents;
+        } else if (href === 'info.html') {
+            link.textContent = translations[lang].menuInfo;
         } else {
             const chapterNum = href.match(/chapter(\d+)\.html/)?.[1];
             if (chapterNum) {
@@ -301,9 +328,15 @@ function switchLanguage(lang) {
 
     // Update popup text (if present)
     const popupWelcome = document.querySelector('#namePopup h2');
+    const popupIntro = document.querySelector('#popupIntro'); // Add this
+    const popupTeacherNote = document.querySelector('#popupTeacherNote'); // Add this
     const popupEnterName = document.querySelector('#namePopup p');
+    const submitNameButton = document.getElementById('submitNameButton');
     if (popupWelcome) popupWelcome.textContent = translations[lang].popupWelcome;
+    if (popupIntro) popupIntro.textContent = translations[lang].popupIntro; // Add this
+    if (popupTeacherNote) popupTeacherNote.textContent = translations[lang].popupTeacherNote; // Add this
     if (popupEnterName) popupEnterName.textContent = translations[lang].popupEnterName;
+    if (submitNameButton) submitNameButton.textContent = translations[lang].addButton;
 
     // Update chapter title (if present)
     const chapterNumber = document.querySelector('.chapter-number');
@@ -344,11 +377,33 @@ function switchLanguage(lang) {
         addStudentLabel.textContent = translations[lang].addNewStudent;
         notesLabel.textContent = translations[lang].notesLabel;
         studentNotes.placeholder = translations[lang].notesPlaceholder;
-        // Add null check to prevent error when saveNotesButton is not present
         if (saveNotesButton) {
             saveNotesButton.textContent = translations[lang].saveNotesButton;
         }
         console.log(`Updated students.html title, label, placeholder, button to ${lang}`);
+    }
+
+    // Update info.html specific elements
+    const infoTitle = document.getElementById('infoTitle');
+    const gettingStartedTitle = document.getElementById('gettingStartedTitle');
+    const gettingStartedText = document.getElementById('gettingStartedText');
+    const understandingProgressTitle = document.getElementById('understandingProgressTitle');
+    const understandingProgressText = document.getElementById('understandingProgressText');
+    const navigatingSiteTitle = document.getElementById('navigatingSiteTitle');
+    const navigatingSiteText = document.getElementById('navigatingSiteText');
+    const managingUsersTitle = document.getElementById('managingUsersTitle');
+    const managingUsersText = document.getElementById('managingUsersText');
+    if (infoTitle) {
+        infoTitle.textContent = translations[lang].infoTitle;
+        gettingStartedTitle.textContent = translations[lang].gettingStartedTitle;
+        gettingStartedText.textContent = translations[lang].gettingStartedText;
+        understandingProgressTitle.textContent = translations[lang].understandingProgressTitle;
+        understandingProgressText.textContent = translations[lang].understandingProgressText;
+        navigatingSiteTitle.textContent = translations[lang].navigatingSiteTitle;
+        navigatingSiteText.textContent = translations[lang].navigatingSiteText;
+        managingUsersTitle.textContent = translations[lang].managingUsersTitle;
+        managingUsersText.textContent = translations[lang].managingUsersText;
+        console.log(`Updated info.html content to ${lang}`);
     }
 }
 
