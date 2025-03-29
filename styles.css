@@ -867,9 +867,9 @@ body {
 .student-popup-content p {
     color: #ffffff;
     font-family: Cochin, Georgia, Arial, sans-serif;
-    font-size: 16px;
+    font-size: 20px; /* Was 16px, now 20px */
     line-height: 1.5;
-    margin: 0; /* Remove default margin */
+    margin: 0;
 }
 
 /* Gold Stars in Popup */
@@ -892,8 +892,9 @@ body {
         padding: 15px 20px; /* Slightly smaller padding on mobile */
     }
     .student-popup-content p {
-        font-size: 14px; /* Smaller text on mobile */
+        font-size: 18px; /* Was 14px, now 18px */
     }
+    
     .student-popup-content .popup-star {
         width: 16px; /* Slightly smaller stars on mobile */
         height: 16px;
