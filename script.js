@@ -43,7 +43,7 @@ const translations = {
         addStudentDuplicate: "Student name already exists! Please choose a different name.",
         addStudentNoName: "Please enter a name!",
         notesLabel: "Notes:",
-        notesPlaceholder: "Add notes about planned homework, progress, or other details here. (They're saved automatically)",
+        notesPlaceholder: "Add notes about planned homework, progress, or other details here—they’re saved automatically.",
         saveNotesButton: "Save notes",
         infoTitle: "How to Use Star Academy",
         gettingStartedTitle: "Getting Started",
