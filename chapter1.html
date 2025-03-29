@@ -72,10 +72,11 @@
             const namePopup = document.getElementById('namePopup');
             let studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
             const name = nameInput?.value.trim();
-
+            const lang = localStorage.getItem('language') || 'sv';
+    
             if (name) {
                 if (studentsData.students[name]) {
-                    alert('This name is already in use. Please choose a different name.');
+                    showStudentPopup(translations[lang].addStudentDuplicate, 2500);
                     return;
                 }
                 studentsData.students[name] = {
@@ -88,30 +89,64 @@
                         for (let exercise = 1; exercise <= 4; exercise++) {
                             const key = `exercise${chapter}:${part}:${exercise}`;
                             studentsData.students[name].progress[key] = localStorage.getItem(key) || "0";
-                            localStorage.removeItem(key); // Clean up old keys
+                            localStorage.removeItem(key);
                         }
                     }
                 }
                 studentsData.currentStudent = name;
                 localStorage.setItem('starAcademyStudents', JSON.stringify(studentsData));
-                if (namePopup) namePopup.style.display = 'none';
-                alert('New Star Student created!'); // Success message
+                namePopup.style.display = 'none';
+    
+                // Success message with stars
+                const starSVG = '<svg class="popup-star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>';
+                showStudentPopup(`${starSVG} ${translations[lang].addStudentSuccess} ${starSVG}`, 2500);
             } else {
-                alert('Please enter a name!');
+                showStudentPopup(translations[lang].addStudentNoName, 2500);
             }
         }
-
+    
+        // Reusing the same helper function as students.js
+        function showStudentPopup(message, duration) {
+            const popup = document.getElementById('studentPopup');
+            const popupMessage = document.getElementById('studentPopupMessage');
+            const nameInput = document.getElementById('nameInput');
+    
+            if (nameInput) nameInput.blur(); // Dismiss keyboard
+            popupMessage.innerHTML = message;
+            popup.style.display = 'flex';
+            popup.style.opacity = '1';
+    
+            setTimeout(() => {
+                popup.style.transition = 'opacity 0.5s ease';
+                popup.style.opacity = '0';
+                setTimeout(() => {
+                    popup.style.display = 'none';
+                    popup.style.opacity = '1';
+                    popup.style.transition = '';
+                }, 500);
+            }, duration - 500);
+        }
+    
         document.addEventListener('DOMContentLoaded', () => {
-            document.body.style.touchAction = 'manipulation'; // Prevents double-tap zoom
+            document.body.style.touchAction = 'manipulation';
             let studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
             const namePopup = document.getElementById('namePopup');
-
+    
             if (!studentsData.currentStudent) {
                 namePopup.style.display = 'flex';
             }
-
+    
             const initialLang = localStorage.getItem('language') || 'sv';
-            switchLanguage(initialLang); // Ensure language is set
+            switchLanguage(initialLang);
+    
+            // Add studentPopup HTML dynamically if not present
+            if (!document.getElementById('studentPopup')) {
+                const popupDiv = document.createElement('div');
+                popupDiv.id = 'studentPopup';
+                popupDiv.className = 'student-popup';
+                popupDiv.innerHTML = '<div class="student-popup-content"><p id="studentPopupMessage"></p></div>';
+                document.body.appendChild(popupDiv);
+            }
         });
     </script>
     <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9226e693cf4844ef',t:'MTc0MjMyMzY2OS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>

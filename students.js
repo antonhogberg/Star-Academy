@@ -30,8 +30,6 @@ function addStudent() {
     const nameInput = document.getElementById('newStudentName');
     const name = nameInput.value.trim();
     const lang = localStorage.getItem('language') || 'sv';
-    const popup = document.getElementById('studentPopup');
-    const popupMessage = document.getElementById('studentPopupMessage');
 
     // Re-fetch the latest studentsData from localStorage to avoid overwriting
     window.studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || {
@@ -40,12 +38,12 @@ function addStudent() {
     };
 
     if (!name) {
-        showStudentPopup(translations[lang].addStudentNoName, 2000);
+        showStudentPopup(translations[lang].addStudentNoName, 2500); // Updated duration for fade
         return;
     }
 
     if (window.studentsData.students[name]) {
-        showStudentPopup(translations[lang].addStudentDuplicate, 2000);
+        showStudentPopup(translations[lang].addStudentDuplicate, 2500);
         return;
     }
 
@@ -54,10 +52,9 @@ function addStudent() {
         name: name,
         progress: {},
         rank: "Explorer",
-        notes: "" // Initialize notes as empty
+        notes: ""
     };
 
-    // Initialize progress for all exercises
     for (let chapter = 1; chapter <= 7; chapter++) {
         for (let part = 1; part <= 4; part++) {
             for (let exercise = 1; exercise <= 4; exercise++) {
@@ -67,16 +64,15 @@ function addStudent() {
         }
     }
 
-    window.studentsData.currentStudent = name; // Set as current student
+    window.studentsData.currentStudent = name;
     updateDropdown();
     localStorage.setItem('starAcademyStudents', JSON.stringify(window.studentsData));
-    nameInput.value = ''; // Clear input
+    nameInput.value = '';
 
     // Success message with stars
     const starSVG = '<svg class="popup-star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>';
-    showStudentPopup(`${starSVG} ${translations[lang].addStudentSuccess} ${starSVG}`, 2000);
+    showStudentPopup(`${starSVG} ${translations[lang].addStudentSuccess} ${starSVG}`, 2500);
 
-    // Update the text area to show the new student's (empty) notes
     if (typeof loadNotes === 'function') {
         loadNotes(false);
     } else {
@@ -84,15 +80,25 @@ function addStudent() {
     }
 }
 
-// Helper function to show and hide the popup
 function showStudentPopup(message, duration) {
     const popup = document.getElementById('studentPopup');
     const popupMessage = document.getElementById('studentPopupMessage');
-    popupMessage.innerHTML = message; // Use innerHTML to render SVG
+    const nameInput = document.getElementById('newStudentName');
+
+    if (nameInput) nameInput.blur(); // Dismiss keyboard
+    popupMessage.innerHTML = message;
     popup.style.display = 'flex';
+    popup.style.opacity = '1'; // Ensure full opacity on show
+
     setTimeout(() => {
-        popup.style.display = 'none';
-    }, duration);
+        popup.style.transition = 'opacity 0.5s ease'; // Fade out over 0.5s
+        popup.style.opacity = '0';
+        setTimeout(() => {
+            popup.style.display = 'none';
+            popup.style.opacity = '1'; // Reset for next show
+            popup.style.transition = ''; // Clear transition
+        }, 500); // Match fade duration
+    }, duration - 500); // Start fade 0.5s before end
 }
 
 function switchStudent() {
