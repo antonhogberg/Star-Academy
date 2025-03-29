@@ -136,13 +136,19 @@ body {
     opacity: 1;
 }
 
+/* Adjust chapter-title to minimize top gap */
 .chapter-title {
     text-align: center;
-    margin: 20px 0;
+    margin: 10px 0; /* Reduced from 20px */
     font-family: Cochin, Georgia, Arial, sans-serif;
     color: #ffffff !important;
     font-size: 24px;
     display: block;
+    position: absolute; /* Position above .parts */
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
 }
 
 .chapter-number, .chapter-name {
@@ -182,7 +188,7 @@ body {
     align-items: center;
     height: calc(var(--vh, 1vh) * 100);
     overflow-x: hidden;
-    overflow-y: hidden; /* Default for larger screens */
+    overflow-y: hidden;
 }
 
 .progress-svg {
@@ -204,9 +210,10 @@ body {
     flex-direction: column;
     align-items: center;
     position: relative;
-    height: calc(var(--vh, 1vh) * 100);
-    overflow-y: hidden; /* Default for larger screens */
-    justify-content: center;
+    height: calc(var(--vh, 1vh) * 100 - 70px); /* Adjusted for chapter-title height */
+    top: 70px; /* Offset for chapter-title */
+    overflow-y: hidden;
+    justify-content: center; /* Center stars vertically */
     flex-grow: 1;
 }
 
@@ -1012,8 +1019,9 @@ body {
     .layout-container:not(.is-mobile) {
         overflow-y: hidden;
     }
-    parts {
-        height: calc(var(--vh, 1vh) * 100);
+    .parts {
+        height: calc(var(--vh, 1vh) * 100 - 70px); /* Adjusted for chapter-title */
+        top: 70px;
         overflow-y: hidden;
         padding: 10px 0;
         justify-content: center;
@@ -1086,7 +1094,8 @@ body {
         min-width: 550px;
         margin: 0 auto;
         justify-content: center;
-        height: calc(var(--vh, 1vh) * 100); /* Keep unscrollable */
+        height: calc(var(--vh, 1vh) * 100 - 70px);
+        top: 70px;
         overflow-y: hidden;
         padding-bottom: 30px;
     }
@@ -1112,7 +1121,8 @@ body {
         min-width: 580px;
         margin: 0 auto;
         justify-content: center;
-        height: calc(var(--vh, 1vh) * 100); /* Keep unscrollable */
+        height: calc(var(--vh, 1vh) * 100 - 70px);
+        top: 70px;
         overflow-y: hidden;
     }
     .exercises {
@@ -1137,7 +1147,8 @@ body {
         min-width: 580px;
         margin: 0 auto;
         justify-content: center;
-        height: calc(var(--vh, 1vh) * 100); /* Keep unscrollable */
+        height: calc(var(--vh, 1vh) * 100 - 70px);
+        top: 70px;
         overflow-y: hidden;
         padding: 10px 0;
     }
@@ -1182,15 +1193,16 @@ body {
     }
     .progress-container {
         width: 100%;
-        height: auto; /* Allow content to dictate height */
+        height: auto;
         display: block;
         overflow-x: hidden;
-        overflow-y: auto; /* Enable scrolling */
+        overflow-y: auto;
     }
     .progress-svg {
         width: 200%;
         max-width: none;
-        height: 200%;
+        height: auto;
+        max-height: none; /* Remove cap to match previous behavior */
         margin: 10px auto;
         position: relative;
         left: 50%;
@@ -1230,8 +1242,9 @@ body {
         justify-content: center;
         padding-top: 25px;
         padding-bottom: 20px;
-        height: auto; /* Allow content to dictate height */
-        overflow-y: auto; /* Enable scrolling */
+        height: auto;
+        top: 50px; /* Adjusted for smaller chapter-title */
+        overflow-y: auto;
         box-sizing: border-box;
         display: flex;
         flex-direction: column;
@@ -1252,11 +1265,11 @@ body {
         margin-bottom: 50px;
     }
     .text-box {
-        position: static;
+        position: static; /* Already static on iPhone */
         transform: none;
         width: 80%;
         max-width: 300px;
-        margin: 10px auto 20px auto;
+        margin: 10px auto 20px auto; /* Reduced top margin */
         display: block;
     }
     .text-box #rankTitle {
