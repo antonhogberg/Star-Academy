@@ -10,16 +10,15 @@ if (window.studentsData.currentStudent && !window.studentsData.students[window.s
         name: window.studentsData.currentStudent,
         progress: {},
         rank: "Explorer",
-        notes: "" // Initialize notes
+        notes: ""
     };
-    // Migrate existing progress from flat localStorage keys
     for (let chapter = 1; chapter <= 7; chapter++) {
         for (let part = 1; part <= 4; part++) {
             for (let exercise = 1; exercise <= 4; exercise++) {
                 const key = `exercise${chapter}:${part}:${exercise}`;
                 window.studentsData.students[window.studentsData.currentStudent].progress[key] = 
                     localStorage.getItem(key) || "0";
-                localStorage.removeItem(key); // Clean up old keys
+                localStorage.removeItem(key);
             }
         }
     }
@@ -31,23 +30,21 @@ function addStudent() {
     const name = nameInput.value.trim();
     const lang = localStorage.getItem('language') || 'sv';
 
-    // Re-fetch the latest studentsData from localStorage to avoid overwriting
     window.studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || {
         students: {},
         currentStudent: localStorage.getItem('userName') || ''
     };
 
     if (!name) {
-        showStudentPopup(translations[lang].addStudentNoName, 2500); // Updated duration for fade
+        showStudentPopup(translations[lang].addStudentNoName, 3000); // 2s + 1s fade
         return;
     }
 
     if (window.studentsData.students[name]) {
-        showStudentPopup(translations[lang].addStudentDuplicate, 2500);
+        showStudentPopup(translations[lang].addStudentDuplicate, 3000);
         return;
     }
 
-    // Add new student
     window.studentsData.students[name] = {
         name: name,
         progress: {},
@@ -69,9 +66,8 @@ function addStudent() {
     localStorage.setItem('starAcademyStudents', JSON.stringify(window.studentsData));
     nameInput.value = '';
 
-    // Success message with stars
     const starSVG = '<svg class="popup-star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>';
-    showStudentPopup(`${starSVG} ${translations[lang].addStudentSuccess} ${starSVG}`, 2500);
+    showStudentPopup(`${starSVG} ${translations[lang].addStudentSuccess} ${starSVG}`, 3000);
 
     if (typeof loadNotes === 'function') {
         loadNotes(false);
@@ -85,20 +81,26 @@ function showStudentPopup(message, duration) {
     const popupMessage = document.getElementById('studentPopupMessage');
     const nameInput = document.getElementById('newStudentName');
 
-    if (nameInput) nameInput.blur(); // Dismiss keyboard
+    if (!popup || !popupMessage) {
+        console.error('Student popup elements not found in DOM');
+        alert(message); // Fallback
+        return;
+    }
+
+    if (nameInput) nameInput.blur();
     popupMessage.innerHTML = message;
     popup.style.display = 'flex';
-    popup.style.opacity = '1'; // Ensure full opacity on show
+    popup.style.opacity = '1';
 
     setTimeout(() => {
-        popup.style.transition = 'opacity 0.5s ease'; // Fade out over 0.5s
+        popup.style.transition = 'opacity 1s ease'; // 1s fade
         popup.style.opacity = '0';
         setTimeout(() => {
             popup.style.display = 'none';
-            popup.style.opacity = '1'; // Reset for next show
-            popup.style.transition = ''; // Clear transition
-        }, 500); // Match fade duration
-    }, duration - 500); // Start fade 0.5s before end
+            popup.style.opacity = '1';
+            popup.style.transition = '';
+        }, 1000);
+    }, duration - 1000); // Fade starts after 2s
 }
 
 function switchStudent() {
@@ -106,7 +108,6 @@ function switchStudent() {
     window.studentsData.currentStudent = select.value;
     localStorage.setItem('starAcademyStudents', JSON.stringify(window.studentsData));
     
-    // Call loadNotes() without updating the dropdown (already up-to-date)
     if (typeof loadNotes === 'function') {
         loadNotes(false);
     } else {
@@ -138,9 +139,8 @@ function updateDropdown() {
 
 document.addEventListener('DOMContentLoaded', () => {
     updateDropdown();
-    // Update page title based on language
     const lang = localStorage.getItem('language') || 'sv';
-    const studentTitle = document.getElementById('studentTitle'); // Updated to match HTML
+    const studentTitle = document.getElementById('chapterTitle'); // Match your HTML ID
     if (studentTitle) {
         studentTitle.textContent = lang === 'en' ? 'Manage Students' : 'Hantera elever';
     }
