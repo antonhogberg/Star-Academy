@@ -825,18 +825,18 @@ body {
     margin: 0px auto;
 }
 
-/* Student Popup Overlay */
+/* Student Popup Overlay (used in both chapter1.html and students.html) */
 .student-popup {
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     width: 100%;
-    max-width: 40%; /* Matches #namePopup on desktop/iPad */
+    max-width: 40%;
     height: auto;
     background: rgba(0, 0, 0, 0.5);
     z-index: 1000;
-    display: none; /* Hidden by default */
+    display: none;
     justify-content: center;
     align-items: center;
 }
@@ -851,32 +851,32 @@ body {
     padding: 20px 40px;
     border-radius: 5px;
     text-align: center;
-    border: 2px solid #ffd700; /* Gold border */
+    border: 2px solid #ffd700;
     box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
     display: flex;
-    flex-direction: row; /* Row for stars + text */
+    flex-direction: row;
     align-items: center;
     justify-content: center;
-    gap: 10px; /* Space between stars and text */
+    gap: 10px;
     box-sizing: border-box;
     width: 100%;
-    max-width: 100%; /* Respect parent max-width */
+    max-width: 100%;
 }
 
 /* Popup Message Text */
 .student-popup-content p {
     color: #ffffff;
     font-family: Cochin, Georgia, Arial, sans-serif;
-    font-size: 20px; /* Was 16px, now 20px */
+    font-size: 20px; /* Increased from 16px */
     line-height: 1.5;
     margin: 0;
 }
 
 /* Gold Stars in Popup */
 .student-popup-content .popup-star {
-    width: 20px; /* Small star size */
+    width: 20px;
     height: 20px;
-    fill: #ffd700; /* Gold from .gold-star */
+    fill: #ffd700;
     stroke: #000000;
     stroke-width: 1;
 }
@@ -884,19 +884,18 @@ body {
 /* Responsive Adjustments */
 @media (max-width: 767px) and (orientation: portrait) {
     .student-popup {
-        max-width: 80%; /* Wider on mobile, like #namePopup */
+        max-width: 80%;
     }
     .student-popup-content {
         width: 90vw;
         max-width: 90vw;
-        padding: 15px 20px; /* Slightly smaller padding on mobile */
+        padding: 15px 20px;
     }
     .student-popup-content p {
-        font-size: 18px; /* Was 14px, now 18px */
+        font-size: 18px; /* Increased from 14px */
     }
-    
     .student-popup-content .popup-star {
-        width: 16px; /* Slightly smaller stars on mobile */
+        width: 16px;
         height: 16px;
     }
 }
@@ -904,7 +903,7 @@ body {
 /* iPad Landscape */
 @media (min-width: 768px) and (max-width: 1400px) and (orientation: landscape) {
     .student-popup {
-        max-width: 40%; /* Matches #namePopup */
+        max-width: 40%;
     }
 }
 
