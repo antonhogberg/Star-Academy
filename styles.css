@@ -1240,10 +1240,10 @@ body {
         min-width: 0;
         margin: 0 auto;
         justify-content: center;
-        padding-top: 25px; /* Ensure gap below title */
+        padding-top: 30px; /* Increased to ensure gap */
         padding-bottom: 20px;
         height: auto;
-        top: 40px; /* Adjusted for smaller chapter-title */
+        top: 60px; /* Increased from 40px to account for title height */
         overflow-y: auto;
         box-sizing: border-box;
         display: flex;
