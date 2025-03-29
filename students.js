@@ -85,21 +85,33 @@ function showStudentPopup(message, duration) {
     const popupMessage = document.getElementById('studentPopupMessage');
     const nameInput = document.getElementById('newStudentName');
 
-    if (nameInput) nameInput.blur(); // Dismiss keyboard
+    if (nameInput) nameInput.blur();
     popupMessage.innerHTML = message;
     popup.style.display = 'flex';
-    popup.style.opacity = '1'; // Ensure full opacity on show
+    popup.style.opacity = '1';
 
     setTimeout(() => {
-        popup.style.transition = 'opacity 0.5s ease'; // Fade out over 0.5s
+        popup.style.transition = 'opacity 1s ease'; // Changed to 1s
         popup.style.opacity = '0';
         setTimeout(() => {
             popup.style.display = 'none';
-            popup.style.opacity = '1'; // Reset for next show
-            popup.style.transition = ''; // Clear transition
-        }, 500); // Match fade duration
-    }, duration - 500); // Start fade 0.5s before end
+            popup.style.opacity = '1';
+            popup.style.transition = '';
+        }, 1000); // Match 1s fade
+    }, duration - 1000); // Start fade 1s before end (2000ms)
 }
+
+// In addStudent(), update calls to 3000ms
+if (!name) {
+    showStudentPopup(translations[lang].addStudentNoName, 3000);
+    return;
+}
+if (window.studentsData.students[name]) {
+    showStudentPopup(translations[lang].addStudentDuplicate, 3000);
+    return;
+}
+// Success call
+showStudentPopup(`${starSVG} ${translations[lang].addStudentSuccess} ${starSVG}`, 3000);
 
 function switchStudent() {
     const select = document.getElementById('studentSelect');
