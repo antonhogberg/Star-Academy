@@ -756,7 +756,7 @@ body {
     -webkit-appearance: none;
     -moz-appearance: none;
     background-image: url('data:image/svg+xml;utf8,<svg fill="%23ffffff" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
-    BACKGROUND-REPEAT: no-repeat;
+    background-repeat: no-repeat;
     background-position: right 10px center;
     background-size: 24px;
     cursor: pointer;
@@ -918,15 +918,46 @@ body {
 
 /* Media Queries - Consolidated */
 
-/* Desktop (min-width: 1367px and larger screens) */
-@media (min-width: 1367px) and (orientation: landscape) {
+/* Desktop (min-width: 1401px to exclude iPads, with hover and aspect ratio for better desktop targeting) */
+@media (min-width: 1401px) and (orientation: landscape) and (hover: hover) and (min-aspect-ratio: 16/10) {
     .popup {
         max-width: 40%; /* 40% width for desktop */
     }
     .chapter-title {
         display: block;
+        margin: 5px 0;
+    }
+    .chapter-number {
+        font-size: 32px;
+    }
+    .chapter-name {
+        font-size: 28px;
+    }
+    .parts {
+        max-width: 1024px;
+        min-width: 580px;
+        margin: 0 auto;
+        justify-content: flex-start; /* Align stars at the top */
+        height: calc(var(--vh, 1vh) * 100 - 80px); /* Adjusted for larger title */
+        top: 80px; /* Increased to clear title */
+        overflow-y: auto; /* Allow scrolling if stars overflow */
+        padding: 10px 0;
+    }
+    .exercises {
+        gap: 20px; /* Reduced from 30px to fit stars */
+        max-width: 800px; /* Reduced to fit stars */
+        justify-content: center;
+        margin: 0 auto;
+    }
+    .star {
+        width: 100px; /* Reduced from 150px to fit viewport */
+        min-width: 100px;
+        max-width: 100px;
+        height: auto;
+        object-fit: contain;
     }
 }
+
 @media (min-width: 1001px) {
     .text-box #rankTitle {
         font-size: clamp(24px, 2vw, 28px);
@@ -939,13 +970,13 @@ body {
         max-width: 40%; /* 40% width for iPad landscape */
     }
     body {
-        overflow: hidden;
+        overflow: hidden !important; /* Reinforced */
         width: 100%;
         height: calc(var(--vh, 1vh) * 100);
         -webkit-overflow-scrolling: none;
     }
     .student-manager {
-        overflow: hidden;
+        overflow: hidden !important; /* Reinforced */
         width: 100%;
         max-width: 100vw;
         height: calc(var(--vh, 1vh) * 100);
@@ -956,7 +987,7 @@ body {
         align-items: center;
     }
     .layout-container {
-        overflow-y: hidden;
+        overflow-y: hidden !important; /* Reinforced */
         height: calc(var(--vh, 1vh) * 100);
     }
     .progress-container {
@@ -968,7 +999,7 @@ body {
         justify-content: center;
         align-items: center;
         height: calc(var(--vh, 1vh) * 100);
-        overflow-y: hidden;
+        overflow-y: hidden !important; /* Reinforced */
     }
     .progress-svg {
         width: 85%;
@@ -1014,15 +1045,15 @@ body {
         font-size: 28px;
     }
     body:not(.is-mobile) {
-        overflow-y: hidden;
+        overflow-y: hidden !important; /* Reinforced */
     }
     .layout-container:not(.is-mobile) {
-        overflow-y: hidden;
+        overflow-y: hidden !important; /* Reinforced */
     }
     .parts {
         height: calc(var(--vh, 1vh) * 100 - 50px); /* Reduced from 70px */
         top: 50px; /* Reduced from 70px */
-        overflow-y: hidden;
+        overflow-y: hidden !important; /* Reinforced */
         padding: 10px 0;
         justify-content: center;
     }
@@ -1141,7 +1172,7 @@ body {
 }
 
 /* iPad Pro 12.9” and larger */
-@media (min-width: 835px) {
+@media (min-width: 835px) and (max-width: 1400px) {
     .parts {
         max-width: 1024px;
         min-width: 580px;
