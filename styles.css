@@ -925,39 +925,8 @@ body {
     }
     .chapter-title {
         display: block;
-        margin: 5px 0;
-    }
-    .chapter-number {
-        font-size: 32px;
-    }
-    .chapter-name {
-        font-size: 28px;
-    }
-    .parts {
-        max-width: 1024px;
-        min-width: 580px;
-        margin: 0 auto;
-        justify-content: center;
-        height: calc(var(--vh, 1vh) * 100 - 80px); /* Adjusted for larger title */
-        top: 80px; /* Increased to clear title */
-        overflow-y: hidden;
-        padding: 10px 0;
-    }
-    .exercises {
-        gap: 20px; /* Reduced from 30px to fit stars */
-        max-width: 800px; /* Reduced to fit stars */
-        justify-content: center;
-        margin: 0 auto;
-    }
-    .star {
-        width: 100px; /* Reduced from 150px to fit viewport */
-        min-width: 100px;
-        max-width: 100px;
-        height: auto;
-        object-fit: contain;
     }
 }
-
 @media (min-width: 1001px) {
     .text-box #rankTitle {
         font-size: clamp(24px, 2vw, 28px);
