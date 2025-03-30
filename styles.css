@@ -938,8 +938,8 @@ body {
         min-width: 580px;
         margin: 0 auto;
         justify-content: flex-start; /* Align stars at the top */
-        height: calc(var(--vh, 1vh) * 100 - 80px); /* Adjusted for larger title */
-        top: 80px; /* Increased to clear title */
+        height: calc(var(--vh, 1vh) * 100 - 100px); /* Adjusted for larger title and extra 20px gap */
+        top: 100px; /* Increased from 80px to bring stars down by 20px */
         overflow-y: auto; /* Allow scrolling if stars overflow */
         padding: 10px 0;
     }
@@ -950,9 +950,9 @@ body {
         margin: 0 auto;
     }
     .star {
-        width: 100px; /* Reduced from 150px to fit viewport */
-        min-width: 100px;
-        max-width: 100px;
+        width: 110px; /* Increased by 10% from 100px */
+        min-width: 110px;
+        max-width: 110px;
         height: auto;
         object-fit: contain;
     }
