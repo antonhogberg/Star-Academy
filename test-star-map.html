@@ -4,12 +4,11 @@
   <title>Test Stjärnkartan</title>
   <style>
     body {
-      /* Set the background image and make it repeat horizontally */
       background-image: url('background.jpg');
       background-repeat: repeat-x;
       background-position: center top;
-      background-color: #000000; /* Fallback color if the image fails to load */
-      margin: 0; /* Remove default body margin */
+      background-color: #000000;
+      margin: 0;
     }
     .star-map-container {
       overflow-x: auto;
@@ -21,7 +20,6 @@
       width: 2800px;
       height: 600px;
     }
-    /* Optional: Style for labels to ensure readability */
     text {
       font-family: Cochin, Georgia, Arial, sans-serif;
       font-size: 16px;
@@ -49,16 +47,15 @@
     const objectElement = document.getElementById('starMap');
     objectElement.addEventListener('load', () => {
       let svgDoc = objectElement.contentDocument;
-      // Add a fallback in case contentDocument is null initially
       const checkSvgDoc = setInterval(() => {
         svgDoc = objectElement.contentDocument;
         if (svgDoc) {
-          clearInterval(checkSvgDoc); // Stop checking once loaded
+          clearInterval(checkSvgDoc);
           initializeSvg(svgDoc);
         } else {
           console.error('SVG document not loaded yet');
         }
-      }, 100); // Check every 100ms
+      }, 100);
     });
 
     // Log if the load event fails to fire
@@ -66,44 +63,79 @@
       if (!objectElement.contentDocument) {
         console.error('SVG load event did not fire or SVG failed to load. Check file path, server setup, and SVG syntax.');
       }
-    }, 10000); // Check after 10 seconds
+    }, 10000);
 
     function initializeSvg(svgDoc) {
-      // Test the glow filter on line1 immediately
       const line1 = svgDoc.getElementById('line1');
-      if (line1) {
-        console.log('Line1 found:', line1);
-        // Apply the glow and change stroke color immediately for testing
-        line1.setAttribute('filter', 'url(#golden-glow)');
-        line1.style.stroke = '#FFD700'; // Set stroke color to gold via style
-        console.log('Glow and gold color applied to line1:', line1.getAttribute('filter'), line1.style.stroke);
-      } else {
+      if (!line1) {
         console.error('Line1 not found in SVG');
+        return;
       }
 
-      // Add click event to star-1-1-1 for testing
       const star111 = svgDoc.getElementById('star-1-1-1');
-      if (star111) {
-        let level = 0; // Initial level
-        star111.style.cursor = 'pointer'; // Make the star visually clickable
-        star111.addEventListener('click', () => {
-          level = (level + 1) % 7; // Cycle through 0-6
+      if (!star111) {
+        console.error('Star-1-1-1 not found in SVG');
+        return;
+      }
+
+      // Get the initial level from LocalStorage
+      let level = parseInt(localStorage.getItem('exercise1:1:1')) || 0;
+      star111.setAttributeNS('http://www.w3.org/1999/xlink', 'href', starImages[level]);
+
+      // Apply glow and color based on initial level
+      if (level === 6) {
+        line1.setAttribute('filter', 'url(#golden-glow)');
+        line1.style.stroke = '#FFD700';
+        line1.setAttribute('stroke', '#FFD700');
+        console.log('Initial glow and gold color applied to line1:', line1.getAttribute('filter'), line1.style.stroke, line1.getAttribute('stroke'));
+      } else {
+        line1.removeAttribute('filter');
+        line1.style.stroke = '#FFFFFF';
+        line1.setAttribute('stroke', '#FFFFFF');
+        console.log('Initial glow removed and color set to white for line1:', line1.getAttribute('filter'), line1.style.stroke, line1.getAttribute('stroke'));
+      }
+
+      // Add click event to star-1-1-1
+      star111.style.cursor = 'pointer';
+      star111.addEventListener('click', () => {
+        level = (level + 1) % 7;
+        star111.setAttributeNS('http://www.w3.org/1999/xlink', 'href', starImages[level]);
+        // Save the level to LocalStorage
+        localStorage.setItem('exercise1:1:1', level);
+        // Apply or remove glow and stroke color based on level
+        if (level === 6) {
+          line1.setAttribute('filter', 'url(#golden-glow)');
+          line1.style.stroke = '#FFD700';
+          line1.setAttribute('stroke', '#FFD700');
+          console.log('Glow and gold color applied to line1:', line1.getAttribute('filter'), line1.style.stroke, line1.getAttribute('stroke'));
+        } else {
+          line1.removeAttribute('filter');
+          line1.style.stroke = '#FFFFFF';
+          line1.setAttribute('stroke', '#FFFFFF');
+          console.log('Glow removed and color reverted to white for line1:', line1.getAttribute('filter'), line1.style.stroke, line1.getAttribute('stroke'));
+        }
+        console.log(`Star-1-1-1 clicked, level: ${level}, glow ${level === 6 ? 'applied' : 'removed'}`);
+      });
+
+      // Listen for storage events to sync with other pages
+      window.addEventListener('storage', (event) => {
+        if (event.key === 'exercise1:1:1') {
+          level = parseInt(event.newValue) || 0;
           star111.setAttributeNS('http://www.w3.org/1999/xlink', 'href', starImages[level]);
-          // Apply or remove glow and stroke color based on level
-          if (level >= 1) {
+          if (level === 6) {
             line1.setAttribute('filter', 'url(#golden-glow)');
-            line1.style.stroke = '#FFD700'; // Set stroke color to gold via style
-            console.log('Glow and gold color applied to line1:', line1.getAttribute('filter'), line1.style.stroke);
+            line1.style.stroke = '#FFD700';
+            line1.setAttribute('stroke', '#FFD700');
+            console.log('Glow and gold color applied to line1 (via storage event):', line1.getAttribute('filter'), line1.style.stroke, line1.getAttribute('stroke'));
           } else {
             line1.removeAttribute('filter');
-            line1.style.stroke = '#FFFFFF'; // Revert stroke color to white via style
-            console.log('Glow removed and color reverted to white for line1:', line1.getAttribute('filter'), line1.style.stroke);
+            line1.style.stroke = '#FFFFFF';
+            line1.setAttribute('stroke', '#FFFFFF');
+            console.log('Glow removed and color reverted to white for line1 (via storage event):', line1.getAttribute('filter'), line1.style.stroke, line1.getAttribute('stroke'));
           }
-          console.log(`Star-1-1-1 clicked, level: ${level}, glow ${level >= 1 ? 'applied' : 'removed'}`);
-        });
-      } else {
-        console.error('Star-1-1-1 not found in SVG');
-      }
+          console.log(`Star-1-1-1 updated via storage event, level: ${level}, glow ${level === 6 ? 'applied' : 'removed'}`);
+        }
+      });
     }
   </script>
 </body>
