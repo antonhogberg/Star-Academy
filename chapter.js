@@ -1,3 +1,5 @@
+// chapter.js
+
 document.addEventListener('DOMContentLoaded', () => {
     const starImages = [
         'white-star.png',
@@ -57,6 +59,24 @@ document.addEventListener('DOMContentLoaded', () => {
                     img.src = starImages[level];
                     img.style.opacity = '1';
                 }, 300);
+            });
+
+            // Listen for storage events to sync with other pages
+            window.addEventListener('storage', (event) => {
+                if (event.key === 'starAcademyStudents') {
+                    const updatedStudentsData = JSON.parse(event.newValue) || { students: {}, currentStudent: '' };
+                    const updatedProgress = updatedStudentsData.students[updatedStudentsData.currentStudent]?.progress || {};
+                    const updatedLevel = updatedProgress[exerciseKey] ? parseInt(updatedProgress[exerciseKey]) : 0;
+                    if (updatedLevel !== level) {
+                        level = updatedLevel;
+                        img.style.opacity = '0';
+                        setTimeout(() => {
+                            img.src = starImages[level];
+                            img.style.opacity = '1';
+                        }, 300);
+                        console.log(`Star ${exerciseCode} updated via storage event, level: ${level}`);
+                    }
+                }
             });
 
             starContainer.appendChild(img);
