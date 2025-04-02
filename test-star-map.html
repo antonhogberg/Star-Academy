@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Test Stjärnkartan</title>
+  <style>
+    .star-map-container {
+      overflow-x: auto;
+      overflow-y: hidden;
+      width: 100%;
+      height: 600px;
+      background-color: #000000;
+    }
+    .star-map-container object {
+      width: 2800px;
+      height: 600px;
+    }
+    /* Optional: Style for labels to ensure readability */
+    text {
+      font-family: Cochin, Georgia, Arial, sans-serif;
+      font-size: 16px;
+      fill: #999999;
+    }
+  </style>
+</head>
+<body>
+  <div class="star-map-container">
+    <object id="starMap" type="image/svg+xml" data="star-map.svg"></object>
+  </div>
+  <script>
+    // Star images array
+    const starImages = [
+      'white-star.png',    // 0 stars
+      'one-star.png',     // 1 star
+      'two-stars.png',    // 2 stars
+      'three-stars.png',  // 3 stars
+      'four-stars.png',   // 4 stars
+      'five-stars.png',   // 5 stars
+      'six-stars.png'     // 6 stars
+    ];
+
+    // Wait for the SVG to load
+    const objectElement = document.getElementById('starMap');
+    objectElement.addEventListener('load', () => {
+      let svgDoc = objectElement.contentDocument;
+      // Add a fallback in case contentDocument is null initially
+      const checkSvgDoc = setInterval(() => {
+        svgDoc = objectElement.contentDocument;
+        if (svgDoc) {
+          clearInterval(checkSvgDoc); // Stop checking once loaded
+          initializeSvg(svgDoc);
+        } else {
+          console.error('SVG document not loaded yet');
+        }
+      }, 100); // Check every 100ms
+    });
+
+    // Log if the load event fails to fire
+    setTimeout(() => {
+      if (!objectElement.contentDocument) {
+        console.error('SVG load event did not fire or SVG failed to load. Check file path, server setup, and SVG syntax.');
+      }
+    }, 10000); // Check after 10 seconds
+
+    function initializeSvg(svgDoc) {
+      // Test the glow filter on line1 immediately
+      const line1 = svgDoc.getElementById('line1');
+      if (line1) {
+        // Apply the glow initially for testing
+        line1.setAttribute('filter', 'url(#golden-glow)');
+      } else {
+        console.error('Line1 not found in SVG');
+      }
+
+      // Add click event to star-1-1-1 for testing
+      const star111 = svgDoc.getElementById('star-1-1-1');
+      if (star111) {
+        let level = 0; // Initial level
+        star111.style.cursor = 'pointer'; // Make the star visually clickable
+        star111.addEventListener('click', () => {
+          level = (level + 1) % 7; // Cycle through 0-6
+          star111.setAttributeNS('http://www.w3.org/1999/xlink', 'href', starImages[level]);
+          // Apply or remove glow based on level
+          if (level >= 1) {
+            line1.setAttribute('filter', 'url(#golden-glow)');
+          } else {
+            line1.removeAttribute('filter');
+          }
+          console.log(`Star-1-1-1 clicked, level: ${level}, glow ${level >= 1 ? 'applied' : 'removed'}`);
+        });
+      } else {
+        console.error('Star-1-1-1 not found in SVG');
+      }
+    }
+  </script>
+</body>
+</html>
