@@ -65,8 +65,11 @@
       // Test the glow filter on line1 immediately
       const line1 = svgDoc.getElementById('line1');
       if (line1) {
-        // Apply the glow initially for testing
+        console.log('Line1 found:', line1);
+        // Apply the glow and change stroke color immediately for testing
         line1.setAttribute('filter', 'url(#golden-glow)');
+        line1.setAttribute('stroke', '#FFD700'); // Set stroke color to gold
+        console.log('Glow and gold color applied to line1:', line1.getAttribute('filter'), line1.getAttribute('stroke'));
       } else {
         console.error('Line1 not found in SVG');
       }
@@ -79,11 +82,15 @@
         star111.addEventListener('click', () => {
           level = (level + 1) % 7; // Cycle through 0-6
           star111.setAttributeNS('http://www.w3.org/1999/xlink', 'href', starImages[level]);
-          // Apply or remove glow based on level
+          // Apply or remove glow and stroke color based on level
           if (level >= 1) {
             line1.setAttribute('filter', 'url(#golden-glow)');
+            line1.setAttribute('stroke', '#FFD700'); // Set stroke color to gold
+            console.log('Glow and gold color applied to line1:', line1.getAttribute('filter'), line1.getAttribute('stroke'));
           } else {
             line1.removeAttribute('filter');
+            line1.setAttribute('stroke', '#FFFFFF'); // Revert stroke color to white
+            console.log('Glow removed and color reverted to white for line1:', line1.getAttribute('filter'), line1.getAttribute('stroke'));
           }
           console.log(`Star-1-1-1 clicked, level: ${level}, glow ${level >= 1 ? 'applied' : 'removed'}`);
         });
