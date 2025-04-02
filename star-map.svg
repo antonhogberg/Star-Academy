@@ -48,33 +48,26 @@
        empspacing="5"
        enabled="true"
        visible="true" /></sodipodi:namedview><defs
-     id="defs1"><filter
-       id="golden-glow"
-       x="-50%"
-       y="-50%"
-       width="200%"
-       height="200%"><feGaussianBlur
-         stdDeviation="5"
-         result="blur"
-         id="feGaussianBlur1"
-         in="SourceAlpha" /><feColorMatrix
-         id="feColorMatrix96"
-         type="matrix"
-         values="0 0 0 0 1 0 0 0 0 0.84 0 0 0 0 0 0 0 0 1 0"
-         result="glow" /><feGaussianBlur
-         stdDeviation="3"
-         result="blur"
-         id="feGaussianBlur2"
-         in="SourceAlpha" /><feColorMatrix
-         id="feColorMatrix3"
-         type="matrix"
-         values="0 0 0 0 1 0 0 0 0 0.84 0 0 0 0 0 0 0 0 1 0"
-         result="glow" /><feMerge
-         id="feMerge96"><feMergeNode
-           id="feMergeNode96"
-           in="glow" /><feMergeNode
-           id="feMergeNode97"
-           in="SourceGraphic" /></feMerge></filter></defs><g
+     id="defs1"><filter id="golden-glow" x="-50%" y="-50%" width="200%" height="200%">
+  <!-- First glow: tight, intense glow -->
+  <feGaussianBlur in="SourceAlpha" stdDeviation="5" result="blur1" id="feGaussianBlur1" />
+  <feColorMatrix in="blur1" type="matrix" values="0 0 0 0 1 0 0 0 0 0.9 0 0 0 0 0 0 0 0 1 0" result="glow1" id="feColorMatrix96" />
+  <feComponentTransfer in="glow1" result="glow1Enhanced">
+    <feFuncA type="linear" slope="3" intercept="0" />
+  </feComponentTransfer>
+  <!-- Second glow: wider, softer glow -->
+  <feGaussianBlur in="SourceAlpha" stdDeviation="15" result="blur2" id="feGaussianBlur2" />
+  <feColorMatrix in="blur2" type="matrix" values="0 0 0 0 1 0 0 0 0 0.9 0 0 0 0 0 0 0 0 0.5 0" result="glow2" id="feColorMatrix97" />
+  <feComponentTransfer in="glow2" result="glow2Enhanced">
+    <feFuncA type="linear" slope="2" intercept="0" />
+  </feComponentTransfer>
+  <!-- Merge the two glows with the original line -->
+  <feMerge id="feMerge96">
+    <feMergeNode in="glow2Enhanced" id="feMergeNode98" />
+    <feMergeNode in="glow1Enhanced" id="feMergeNode96" />
+    <feMergeNode in="SourceGraphic" id="feMergeNode97" />
+  </feMerge>
+</filter></defs><g
      inkscape:groupmode="layer"
      id="layer2"
      inkscape:label="BG"
