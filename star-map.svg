@@ -25,15 +25,15 @@
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="px"
      showgrid="true"
-     inkscape:zoom="1.1124796"
-     inkscape:cx="137.08116"
-     inkscape:cy="444.05308"
+     inkscape:zoom="0.88781805"
+     inkscape:cx="318.19583"
+     inkscape:cy="264.69387"
      inkscape:window-width="1440"
      inkscape:window-height="795"
      inkscape:window-x="0"
      inkscape:window-y="25"
      inkscape:window-maximized="0"
-     inkscape:current-layer="g65"
+     inkscape:current-layer="layer5"
      showguides="false"><inkscape:grid
        id="grid1"
        units="px"
@@ -78,7 +78,7 @@
      inkscape:groupmode="layer"
      id="layer2"
      inkscape:label="BG"
-     style="display:none;fill:#000000;fill-opacity:1"
+     style="display:inline;fill:#000000;fill-opacity:1"
      sodipodi:insensitive="true"><image
        width="892.94116"
        height="600"
@@ -687,7 +687,7 @@
      inkscape:groupmode="layer"
      id="layer5"
      inkscape:label="Lines"><path
-       style="fill:none;fill-opacity:1;stroke:#ffffff;stroke-linecap:round;stroke-opacity:1;stroke-width:1;stroke-dasharray:none"
+       style="fill:none;fill-opacity:1;stroke:#ffffff;stroke-linecap:round;stroke-opacity:1;stroke-width:2;stroke-dasharray:none"
        d="m 139,296 c 1.81748,-47.15945 11.56303,-70.3984 78,-71"
        id="line1"
        sodipodi:nodetypes="cc" /><path
