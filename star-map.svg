@@ -53,14 +53,16 @@
        y="-50%"
        width="200%"
        height="200%"><feGaussianBlur
-         stdDeviation="3"
+         stdDeviation="5"
          result="blur"
          id="feGaussianBlur1"
          in="SourceAlpha" /><feColorMatrix
          id="feColorMatrix96"
          type="matrix"
          values="0 0 0 0 1 0 0 0 0 0.84 0 0 0 0 0 0 0 0 1 0"
-         result="glow" /><feMerge
+         result="glow" /><feComponentTransfer in="glow" result="glowEnhanced">
+    <feFuncA type="linear" slope="2" intercept="0" />
+  </feComponentTransfer><feMerge
          id="feMerge96"><feMergeNode
            id="feMergeNode96"
            in="glow" /><feMergeNode
