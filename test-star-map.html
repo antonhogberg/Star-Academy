@@ -34,13 +34,47 @@
   <script>
     // Star images array
     const starImages = [
-      'white-star.png',    // 0 stars
-      'one-star.png',     // 1 star
-      'two-stars.png',    // 2 stars
-      'three-stars.png',  // 3 stars
-      'four-stars.png',   // 4 stars
-      'five-stars.png',   // 5 stars
-      'six-stars.png'     // 6 stars
+      'white-star.png',
+      'one-star.png',
+      'two-stars.png',
+      'three-stars.png',
+      'four-stars.png',
+      'five-stars.png',
+      'six-stars.png'
+    ];
+
+    // Progression path mapping: star to next star and corresponding line
+    const progressionPath = [
+      { star: '1:1:1', nextStar: '2:1:1', line: 'line1' },
+      { star: '2:1:1', nextStar: '3:1:1', line: 'line2' },
+      { star: '3:1:1', nextStar: '7:1:1', line: 'line3' },
+      { star: '7:1:1', nextStar: '1:2:1', line: 'line4' },
+      { star: '1:2:1', nextStar: '1:1:2', line: 'line4-3' },
+      { star: '1:1:2', nextStar: '5:1:1', line: 'line5' },
+      { star: '5:1:1', nextStar: '2:1:2', line: 'line6' },
+      { star: '2:1:2', nextStar: '3:1:2', line: 'line7' },
+      { star: '3:1:2', nextStar: '6:1:1', line: 'line8' },
+      { star: '6:1:1', nextStar: '2:1:3', line: 'line9' },
+      { star: '2:1:3', nextStar: '7:1:2', line: 'line10' },
+      { star: '7:1:2', nextStar: '1:1:3', line: 'line11' },
+      { star: '1:1:3', nextStar: '5:1:2', line: 'line12' },
+      { star: '5:1:2', nextStar: '6:1:2', line: 'line13' },
+      { star: '6:1:2', nextStar: '1:4:1', line: 'line13-2' },
+      { star: '1:4:1', nextStar: '1:1:4', line: 'line13-3' },
+      { star: '1:1:4', nextStar: '3:1:3', line: 'line14' },
+      { star: '3:1:3', nextStar: '3:1:4', line: 'line15' },
+      { star: '3:1:4', nextStar: '7:1:3', line: 'line16' },
+      { star: '7:1:3', nextStar: '5:1:3', line: 'line17' },
+      { star: '5:1:3', nextStar: '6:1:3', line: 'line18' },
+      { star: '6:1:3', nextStar: '4:1:1', line: 'line19' },
+      { star: '4:1:1', nextStar: '7:1:4', line: 'line20' },
+      { star: '7:1:4', nextStar: '4:1:2', line: 'line21' },
+      { star: '4:1:2', nextStar: '5:1:4', line: 'line22' },
+      { star: '5:1:4', nextStar: '4:1:3', line: 'line23' },
+      { star: '4:1:3', nextStar: '6:1:4', line: 'line24' },
+      { star: '6:1:4', nextStar: '4:1:4', line: 'line25' },
+      { star: '4:1:4', nextStar: '2:1:4', line: 'line26' }
+      // Note: '2:1:4' is the last star, so it doesn't connect to a next star
     ];
 
     // Wait for the SVG to load
@@ -58,7 +92,6 @@
       }, 100);
     });
 
-    // Log if the load event fails to fire
     setTimeout(() => {
       if (!objectElement.contentDocument) {
         console.error('SVG load event did not fire or SVG failed to load. Check file path, server setup, and SVG syntax.');
@@ -66,75 +99,96 @@
     }, 10000);
 
     function initializeSvg(svgDoc) {
-      const line1 = svgDoc.getElementById('line1');
-      if (!line1) {
-        console.error('Line1 not found in SVG');
-        return;
-      }
+      // Initialize all stars
+      progressionPath.forEach(({ star, nextStar, line }) => {
+        const starElement = svgDoc.getElementById(`star-${star.replace(/:/g, '-')}`);
+        const lineElement = line ? svgDoc.getElementById(line) : null;
 
-      const star111 = svgDoc.getElementById('star-1-1-1');
-      if (!star111) {
-        console.error('Star-1-1-1 not found in SVG');
-        return;
-      }
-
-      // Get the initial level from LocalStorage
-      let level = parseInt(localStorage.getItem('exercise1:1:1')) || 0;
-      star111.setAttributeNS('http://www.w3.org/1999/xlink', 'href', starImages[level]);
-
-      // Apply glow and color based on initial level
-      if (level === 6) {
-        line1.setAttribute('filter', 'url(#golden-glow)');
-        line1.style.stroke = '#FFD700';
-        line1.setAttribute('stroke', '#FFD700');
-        console.log('Initial glow and gold color applied to line1:', line1.getAttribute('filter'), line1.style.stroke, line1.getAttribute('stroke'));
-      } else {
-        line1.removeAttribute('filter');
-        line1.style.stroke = '#FFFFFF';
-        line1.setAttribute('stroke', '#FFFFFF');
-        console.log('Initial glow removed and color set to white for line1:', line1.getAttribute('filter'), line1.style.stroke, line1.getAttribute('stroke'));
-      }
-
-      // Add click event to star-1-1-1
-      star111.style.cursor = 'pointer';
-      star111.addEventListener('click', () => {
-        level = (level + 1) % 7;
-        star111.setAttributeNS('http://www.w3.org/1999/xlink', 'href', starImages[level]);
-        // Save the level to LocalStorage
-        localStorage.setItem('exercise1:1:1', level);
-        // Apply or remove glow and stroke color based on level
-        if (level === 6) {
-          line1.setAttribute('filter', 'url(#golden-glow)');
-          line1.style.stroke = '#FFD700';
-          line1.setAttribute('stroke', '#FFD700');
-          console.log('Glow and gold color applied to line1:', line1.getAttribute('filter'), line1.style.stroke, line1.getAttribute('stroke'));
-        } else {
-          line1.removeAttribute('filter');
-          line1.style.stroke = '#FFFFFF';
-          line1.setAttribute('stroke', '#FFFFFF');
-          console.log('Glow removed and color reverted to white for line1:', line1.getAttribute('filter'), line1.style.stroke, line1.getAttribute('stroke'));
+        if (!starElement) {
+          console.error(`Star-${star} not found in SVG`);
+          return;
         }
-        console.log(`Star-1-1-1 clicked, level: ${level}, glow ${level === 6 ? 'applied' : 'removed'}`);
-      });
 
-      // Listen for storage events to sync with other pages
-      window.addEventListener('storage', (event) => {
-        if (event.key === 'exercise1:1:1') {
-          level = parseInt(event.newValue) || 0;
-          star111.setAttributeNS('http://www.w3.org/1999/xlink', 'href', starImages[level]);
+        // Get the initial level from starAcademyStudents in LocalStorage
+        const studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
+        const progress = studentsData.students[studentsData.currentStudent]?.progress || {};
+        const exerciseKey = `exercise${star}`;
+        let level = progress[exerciseKey] ? parseInt(progress[exerciseKey]) : 0;
+        starElement.setAttributeNS('http://www.w3.org/1999/xlink', 'href', starImages[level]);
+
+        // Apply glow and color based on initial level
+        if (lineElement) {
           if (level === 6) {
-            line1.setAttribute('filter', 'url(#golden-glow)');
-            line1.style.stroke = '#FFD700';
-            line1.setAttribute('stroke', '#FFD700');
-            console.log('Glow and gold color applied to line1 (via storage event):', line1.getAttribute('filter'), line1.style.stroke, line1.getAttribute('stroke'));
+            lineElement.setAttribute('filter', 'url(#golden-glow)');
+            lineElement.style.stroke = '#FFD700';
+            lineElement.setAttribute('stroke', '#FFD700');
+            console.log(`Initial glow and gold color applied to ${line}:`, lineElement.getAttribute('filter'), lineElement.style.stroke, lineElement.getAttribute('stroke'));
           } else {
-            line1.removeAttribute('filter');
-            line1.style.stroke = '#FFFFFF';
-            line1.setAttribute('stroke', '#FFFFFF');
-            console.log('Glow removed and color reverted to white for line1 (via storage event):', line1.getAttribute('filter'), line1.style.stroke, line1.getAttribute('stroke'));
+            lineElement.removeAttribute('filter');
+            lineElement.style.stroke = '#FFFFFF';
+            lineElement.setAttribute('stroke', '#FFFFFF');
+            console.log(`Initial glow removed and color set to white for ${line}:`, lineElement.getAttribute('filter'), lineElement.style.stroke, lineElement.getAttribute('stroke'));
           }
-          console.log(`Star-1-1-1 updated via storage event, level: ${level}, glow ${level === 6 ? 'applied' : 'removed'}`);
         }
+
+        // Add click event to the star
+        starElement.style.cursor = 'pointer';
+        starElement.addEventListener('click', () => {
+          // Update the level in starAcademyStudents
+          const studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
+          const progress = studentsData.students[studentsData.currentStudent]?.progress || {};
+          let level = progress[exerciseKey] ? parseInt(progress[exerciseKey]) : 0;
+          level = (level + 1) % 7; // Increment and cycle (0 to 6)
+          progress[exerciseKey] = level.toString();
+          studentsData.students[studentsData.currentStudent].progress = progress;
+          localStorage.setItem('starAcademyStudents', JSON.stringify(studentsData));
+
+          // Update the star image
+          starElement.setAttributeNS('http://www.w3.org/1999/xlink', 'href', starImages[level]);
+
+          // Apply or remove glow and stroke color based on level
+          if (lineElement) {
+            if (level === 6) {
+              lineElement.setAttribute('filter', 'url(#golden-glow)');
+              lineElement.style.stroke = '#FFD700';
+              lineElement.setAttribute('stroke', '#FFD700');
+              console.log(`Glow and gold color applied to ${line}:`, lineElement.getAttribute('filter'), lineElement.style.stroke, lineElement.getAttribute('stroke'));
+            } else {
+              lineElement.removeAttribute('filter');
+              lineElement.style.stroke = '#FFFFFF';
+              lineElement.setAttribute('stroke', '#FFFFFF');
+              console.log(`Glow removed and color reverted to white for ${line}:`, lineElement.getAttribute('filter'), lineElement.style.stroke, lineElement.getAttribute('stroke'));
+            }
+          }
+          console.log(`Star-${star} clicked, level: ${level}, glow ${level === 6 ? 'applied' : 'removed'}`);
+        });
+
+        // Listen for storage events to sync with other pages
+        window.addEventListener('storage', (event) => {
+          if (event.key === 'starAcademyStudents') {
+            const updatedStudentsData = JSON.parse(event.newValue) || { students: {}, currentStudent: '' };
+            const updatedProgress = updatedStudentsData.students[updatedStudentsData.currentStudent]?.progress || {};
+            const updatedLevel = updatedProgress[exerciseKey] ? parseInt(updatedProgress[exerciseKey]) : 0;
+            if (updatedLevel !== level) {
+              level = updatedLevel;
+              starElement.setAttributeNS('http://www.w3.org/1999/xlink', 'href', starImages[level]);
+              if (lineElement) {
+                if (level === 6) {
+                  lineElement.setAttribute('filter', 'url(#golden-glow)');
+                  lineElement.style.stroke = '#FFD700';
+                  lineElement.setAttribute('stroke', '#FFD700');
+                  console.log(`Glow and gold color applied to ${line} (via storage event):`, lineElement.getAttribute('filter'), lineElement.style.stroke, lineElement.getAttribute('stroke'));
+                } else {
+                  lineElement.removeAttribute('filter');
+                  lineElement.style.stroke = '#FFFFFF';
+                  lineElement.setAttribute('stroke', '#FFFFFF');
+                  console.log(`Glow removed and color reverted to white for ${line} (via storage event):`, lineElement.getAttribute('filter'), lineElement.style.stroke, lineElement.getAttribute('stroke'));
+                }
+              }
+              console.log(`Star-${star} updated via storage event, level: ${level}, glow ${level === 6 ? 'applied' : 'removed'}`);
+            }
+          }
+        });
       });
     }
   </script>
