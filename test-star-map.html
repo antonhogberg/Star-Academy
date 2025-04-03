@@ -10,6 +10,7 @@
       background-color: #000000;
       margin: 0;
     }
+    
     .star-map-container {
       overflow-x: auto;
       overflow-y: hidden;
@@ -19,6 +20,9 @@
     .star-map-container object {
       width: 2800px;
       height: 600px;
+    }
+    .star-map-container object image {
+  transition: opacity 0.3s ease-in-out;
     }
     text {
       font-family: Cochin, Georgia, Arial, sans-serif;
@@ -204,7 +208,7 @@
           setTimeout(() => {
             starElement.setAttributeNS('http://www.w3.org/1999/xlink', 'href', starImages[level]);
             starElement.style.opacity = '1';
-          }, 300);
+          }, 500);
 
           // Apply or remove glow and stroke color based on level
           lineElements.forEach(lineElement => {
