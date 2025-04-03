@@ -958,109 +958,60 @@
 
     // Initialize the SVG (now inline)
     const svgDoc = document.getElementById('starMap');
-    initializeSvg(svgDoc);
+  initializeSvg(svgDoc);
 
-    function initializeSvg(svgDoc) {
-  const starMapContainer = document.querySelector('.star-map-container');
-  const overlayContainer = document.createElement('div');
-  overlayContainer.style.position = 'absolute';
-  overlayContainer.style.top = '0';
-  overlayContainer.style.left = '0';
-  overlayContainer.style.width = '100%';
-  overlayContainer.style.height = '100%';
-  starMapContainer.appendChild(overlayContainer);
+  function initializeSvg(svgDoc) {
+    const starMapContainer = document.querySelector('.star-map-container');
+    const overlayContainer = document.createElement('div');
+    overlayContainer.style.position = 'absolute';
+    overlayContainer.style.top = '0';
+    overlayContainer.style.left = '0';
+    overlayContainer.style.width = '100%';
+    overlayContainer.style.height = '100%';
+    overlayContainer.style.zIndex = '10'; // Ensure overlays are above SVG
+    starMapContainer.appendChild(overlayContainer);
 
-  // Get SVG bounding rectangle for scaling
-  const svgElement = svgDoc.querySelector('svg');
-  const svgRect = svgElement.getBoundingClientRect();
-  const viewBox = svgElement.getAttribute('viewBox').split(' ').map(Number);
-  const viewBoxWidth = viewBox[2]; // 2800
-  const viewBoxHeight = viewBox[3]; // 600
-  const scaleX = svgRect.width / viewBoxWidth;
-  const scaleY = svgRect.height / viewBoxHeight;
+    const svgElement = svgDoc.querySelector('svg');
+    const svgRect = svgElement.getBoundingClientRect();
+    const viewBox = svgElement.getAttribute('viewBox').split(' ').map(Number);
+    const viewBoxWidth = viewBox[2]; // 2800
+    const viewBoxHeight = viewBox[3]; // 600
+    const scaleX = svgRect.width / viewBoxWidth;
+    const scaleY = svgRect.height / viewBoxHeight;
 
-  progressionPath.forEach(({ star, nextStar, lines }) => {
-    const starElement = svgDoc.getElementById(`star-${star.replace(/:/g, '-')}`);
-    const lineElements = lines.map(line => svgDoc.getElementById(line)).filter(line => line);
+    progressionPath.forEach(({ star, nextStar, lines }) => {
+      const starElement = svgDoc.getElementById(`star-${star.replace(/:/g, '-')}`);
+      const lineElements = lines.map(line => svgDoc.getElementById(line)).filter(line => line);
 
-    if (!starElement) {
-      console.error(`Star-${star} not found in SVG`);
-      return;
-    }
-
-    // Get initial level from LocalStorage
-    const studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
-    const progress = studentsData.students[studentsData.currentStudent]?.progress || {};
-    const exerciseKey = `exercise${star}`;
-    let level = progress[exerciseKey] ? parseInt(progress[exerciseKey]) : 0;
-    starElement.setAttributeNS('http://www.w3.org/1999/xlink', 'href', starImages[level]);
-
-    // Create and position the HTML click overlay
-    const clickOverlay = document.createElement('div');
-    clickOverlay.className = 'click-overlay';
-    clickOverlay.id = `click-overlay-${star.replace(/:/g, '-')}`;
-    const x = parseFloat(starElement.getAttribute('x'));
-    const y = parseFloat(starElement.getAttribute('y'));
-    const width = parseFloat(starElement.getAttribute('width'));
-    const height = parseFloat(starElement.getAttribute('height'));
-    clickOverlay.style.left = `${x * scaleX}px`;
-    clickOverlay.style.top = `${y * scaleY}px`;
-    clickOverlay.style.width = `${width * scaleX}px`;
-    clickOverlay.style.height = `${height * scaleY}px`;
-    overlayContainer.appendChild(clickOverlay);
-
-    // Apply glow and color based on initial level
-    lineElements.forEach(lineElement => {
-      if (level === 6) {
-        lineElement.setAttribute('filter', 'url(#golden-glow)');
-        lineElement.style.stroke = '#FFD700';
-        lineElement.setAttribute('stroke', '#FFD700');
-      } else {
-        lineElement.removeAttribute('filter');
-        lineElement.style.stroke = '#FFFFFF';
-        lineElement.setAttribute('stroke', '#FFFFFF');
+      if (!starElement) {
+        console.error(`Star-${star} not found in SVG`);
+        return;
       }
-    });
 
-    // Check if all stars are at level 6 on initial load
-    const allStarsAtSix = progressionPath.every(({ star }) => {
       const studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
+      console.log('studentsData:', studentsData);
+      if (!studentsData.currentStudent) {
+        console.warn('No current student set in LocalStorage');
+      }
       const progress = studentsData.students[studentsData.currentStudent]?.progress || {};
       const exerciseKey = `exercise${star}`;
-      return (progress[exerciseKey] ? parseInt(progress[exerciseKey]) : 0) === 6;
-    });
-    if (allStarsAtSix) {
-      const overlay = document.getElementById('congratulationsOverlay');
-      overlay.style.display = 'flex';
-      setTimeout(() => {
-        overlay.style.display = 'none';
-      }, 5000);
-    }
-
-    // Add click event to the HTML overlay
-    clickOverlay.style.cursor = 'pointer';
-    let timeoutId;
-    clickOverlay.addEventListener('click', () => {
-      if (timeoutId) return; // Prevent rapid clicks
-
-      // Update the level in LocalStorage
-      const studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
-      const progress = studentsData.students[studentsData.currentStudent]?.progress || {};
       let level = progress[exerciseKey] ? parseInt(progress[exerciseKey]) : 0;
-      level = (level + 1) % 7; // Increment and cycle (0 to 6)
-      progress[exerciseKey] = level.toString();
-      studentsData.students[studentsData.currentStudent].progress = progress;
-      localStorage.setItem('starAcademyStudents', JSON.stringify(studentsData));
+      console.log(`Star-${star} level: ${level}`);
+      starElement.setAttributeNS('http://www.w3.org/1999/xlink', 'href', starImages[level]);
 
-      // Animate the change (500ms fade to match chapter pages)
-      starElement.style.opacity = '0';
-      timeoutId = setTimeout(() => {
-        starElement.setAttributeNS('http://www.w3.org/1999/xlink', 'href', starImages[level]);
-        starElement.style.opacity = '1';
-        timeoutId = null;
-      }, 500);
+      const clickOverlay = document.createElement('div');
+      clickOverlay.className = 'click-overlay';
+      clickOverlay.id = `click-overlay-${star.replace(/:/g, '-')}`;
+      const x = parseFloat(starElement.getAttribute('x'));
+      const y = parseFloat(starElement.getAttribute('y'));
+      const width = parseFloat(starElement.getAttribute('width'));
+      const height = parseFloat(starElement.getAttribute('height'));
+      clickOverlay.style.left = `${x * scaleX}px`;
+      clickOverlay.style.top = `${y * scaleY}px`;
+      clickOverlay.style.width = `${width * scaleX}px`;
+      clickOverlay.style.height = `${height * scaleY}px`;
+      overlayContainer.appendChild(clickOverlay);
 
-      // Apply or remove glow and stroke color based on level
       lineElements.forEach(lineElement => {
         if (level === 6) {
           lineElement.setAttribute('filter', 'url(#golden-glow)');
@@ -1073,7 +1024,6 @@
         }
       });
 
-      // Check if all stars are at level 6 for congratulatory animation
       const allStarsAtSix = progressionPath.every(({ star }) => {
         const studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
         const progress = studentsData.students[studentsData.currentStudent]?.progress || {};
@@ -1087,52 +1037,98 @@
           overlay.style.display = 'none';
         }, 5000);
       }
-    });
 
-    // Listen for storage events to sync with other pages
-    window.addEventListener('storage', (event) => {
-      if (event.key === 'starAcademyStudents') {
-        const updatedStudentsData = JSON.parse(event.newValue) || { students: {}, currentStudent: '' };
-        const updatedProgress = updatedStudentsData.students[updatedStudentsData.currentStudent]?.progress || {};
-        const updatedLevel = updatedProgress[exerciseKey] ? parseInt(updatedProgress[exerciseKey]) : 0;
-        if (updatedLevel !== level) {
-          level = updatedLevel;
-          starElement.style.opacity = '0';
+      clickOverlay.style.cursor = 'pointer';
+      let timeoutId;
+      clickOverlay.addEventListener('click', () => {
+        console.log(`Clicked star-${star}`);
+        if (timeoutId) return;
+
+        const studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
+        const progress = studentsData.students[studentsData.currentStudent]?.progress || {};
+        let level = progress[exerciseKey] ? parseInt(progress[exerciseKey]) : 0;
+        level = (level + 1) % 7;
+        progress[exerciseKey] = level.toString();
+        studentsData.students[studentsData.currentStudent].progress = progress;
+        localStorage.setItem('starAcademyStudents', JSON.stringify(studentsData));
+
+        starElement.style.opacity = '0';
+        timeoutId = setTimeout(() => {
+          starElement.setAttributeNS('http://www.w3.org/1999/xlink', 'href', starImages[level]);
+          starElement.style.opacity = '1';
+          timeoutId = null;
+        }, 500);
+
+        lineElements.forEach(lineElement => {
+          if (level === 6) {
+            lineElement.setAttribute('filter', 'url(#golden-glow)');
+            lineElement.style.stroke = '#FFD700';
+            lineElement.setAttribute('stroke', '#FFD700');
+          } else {
+            lineElement.removeAttribute('filter');
+            lineElement.style.stroke = '#FFFFFF';
+            lineElement.setAttribute('stroke', '#FFFFFF');
+          }
+        });
+
+        const allStarsAtSix = progressionPath.every(({ star }) => {
+          const studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
+          const progress = studentsData.students[studentsData.currentStudent]?.progress || {};
+          const exerciseKey = `exercise${star}`;
+          return (progress[exerciseKey] ? parseInt(progress[exerciseKey]) : 0) === 6;
+        });
+        if (allStarsAtSix) {
+          const overlay = document.getElementById('congratulationsOverlay');
+          overlay.style.display = 'flex';
           setTimeout(() => {
-            starElement.setAttributeNS('http://www.w3.org/1999/xlink', 'href', starImages[level]);
-            starElement.style.opacity = '1';
-          }, 500);
+            overlay.style.display = 'none';
+          }, 5000);
+        }
+      });
 
-          lineElements.forEach(lineElement => {
-            if (level === 6) {
-              lineElement.setAttribute('filter', 'url(#golden-glow)');
-              lineElement.style.stroke = '#FFD700';
-              lineElement.setAttribute('stroke', '#FFD700');
-            } else {
-              lineElement.removeAttribute('filter');
-              lineElement.style.stroke = '#FFFFFF';
-              lineElement.setAttribute('stroke', '#FFFFFF');
-            }
-          });
-
-          const allStarsAtSix = progressionPath.every(({ star }) => {
-            const studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
-            const progress = studentsData.students[studentsData.currentStudent]?.progress || {};
-            const exerciseKey = `exercise${star}`;
-            return (progress[exerciseKey] ? parseInt(progress[exerciseKey]) : 0) === 6;
-          });
-          if (allStarsAtSix) {
-            const overlay = document.getElementById('congratulationsOverlay');
-            overlay.style.display = 'flex';
+      window.addEventListener('storage', (event) => {
+        if (event.key === 'starAcademyStudents') {
+          const updatedStudentsData = JSON.parse(event.newValue) || { students: {}, currentStudent: '' };
+          const updatedProgress = updatedStudentsData.students[updatedStudentsData.currentStudent]?.progress || {};
+          const updatedLevel = updatedProgress[exerciseKey] ? parseInt(updatedProgress[exerciseKey]) : 0;
+          if (updatedLevel !== level) {
+            level = updatedLevel;
+            starElement.style.opacity = '0';
             setTimeout(() => {
-              overlay.style.display = 'none';
-            }, 5000);
+              starElement.setAttributeNS('http://www.w3.org/1999/xlink', 'href', starImages[level]);
+              starElement.style.opacity = '1';
+            }, 500);
+
+            lineElements.forEach(lineElement => {
+              if (level === 6) {
+                lineElement.setAttribute('filter', 'url(#golden-glow)');
+                lineElement.style.stroke = '#FFD700';
+                lineElement.setAttribute('stroke', '#FFD700');
+              } else {
+                lineElement.removeAttribute('filter');
+                lineElement.style.stroke = '#FFFFFF';
+                lineElement.setAttribute('stroke', '#FFFFFF');
+              }
+            });
+
+            const allStarsAtSix = progressionPath.every(({ star }) => {
+              const studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
+              const progress = studentsData.students[studentsData.currentStudent]?.progress || {};
+              const exerciseKey = `exercise${star}`;
+              return (progress[exerciseKey] ? parseInt(progress[exerciseKey]) : 0) === 6;
+            });
+            if (allStarsAtSix) {
+              const overlay = document.getElementById('congratulationsOverlay');
+              overlay.style.display = 'flex';
+              setTimeout(() => {
+                overlay.style.display = 'none';
+              }, 5000);
+            }
           }
         }
-      }
+      });
     });
-  });
-}
-  </script>
+  }
+</script>
 </body>
 </html>
