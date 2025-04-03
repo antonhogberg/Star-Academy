@@ -152,7 +152,7 @@
       const styleElement = svgDoc.createElementNS('http://www.w3.org/2000/svg', 'style');
       styleElement.textContent = `
         image { pointer-events: all; transition: opacity 0.3s ease-in-out; }
-        path.line-transition { transition: stroke 0.3s ease-in-out; }
+        path { transition: stroke 0.3s ease-in-out !important; }
       `;
       svgDoc.querySelector('svg').appendChild(styleElement);
   
@@ -171,15 +171,17 @@
         starElement.setAttributeNS('http://www.w3.org/1999/xlink', 'href', starImages[level]);
   
         lineElements.forEach(lineElement => {
-          // Add class for transition and clear initial stroke attribute
-          lineElement.classList.add('line-transition');
-          lineElement.removeAttribute('stroke'); // Remove inline stroke to let CSS handle it
+          // Remove stroke from inline style to let style.stroke control it
+          const currentStyle = lineElement.getAttribute('style') || '';
+          const newStyle = currentStyle.replace(/stroke\s*:\s*[^;]+;?/, '').trim();
+          lineElement.setAttribute('style', newStyle);
+  
+          // Set initial stroke color
+          lineElement.style.stroke = level === 6 ? '#FFD700' : '#FFFFFF';
           if (level === 6) {
             lineElement.setAttribute('filter', 'url(#golden-glow)');
-            lineElement.style.stroke = '#FFD700';
           } else {
             lineElement.removeAttribute('filter');
-            lineElement.style.stroke = '#FFFFFF';
           }
         });
   
@@ -214,17 +216,13 @@
           }, 300);
   
           lineElements.forEach(lineElement => {
-            // Ensure transition applies by setting initial state explicitly
-            lineElement.style.stroke = lineElement.style.stroke || '#FFFFFF'; // Fallback if unset
-            setTimeout(() => {
-              if (level === 6) {
-                lineElement.setAttribute('filter', 'url(#golden-glow)');
-                lineElement.style.stroke = '#FFD700';
-              } else {
-                lineElement.removeAttribute('filter');
-                lineElement.style.stroke = '#FFFFFF';
-              }
-            }, 10); // Tiny delay to trigger transition
+            if (level === 6) {
+              lineElement.setAttribute('filter', 'url(#golden-glow)');
+              lineElement.style.stroke = '#FFD700';
+            } else {
+              lineElement.removeAttribute('filter');
+              lineElement.style.stroke = '#FFFFFF';
+            }
           });
   
           const allStarsAtSix = progressionPath.every(({ star }) => {
@@ -256,16 +254,13 @@
               }, 300);
   
               lineElements.forEach(lineElement => {
-                lineElement.style.stroke = lineElement.style.stroke || '#FFFFFF';
-                setTimeout(() => {
-                  if (level === 6) {
-                    lineElement.setAttribute('filter', 'url(#golden-glow)');
-                    lineElement.style.stroke = '#FFD700';
-                  } else {
-                    lineElement.removeAttribute('filter');
-                    lineElement.style.stroke = '#FFFFFF';
-                  }
-                }, 10);
+                if (level === 6) {
+                  lineElement.setAttribute('filter', 'url(#golden-glow)');
+                  lineElement.style.stroke = '#FFD700';
+                } else {
+                  lineElement.removeAttribute('filter');
+                  lineElement.style.stroke = '#FFFFFF';
+                }
               });
   
               const allStarsAtSix = progressionPath.every(({ star }) => {
