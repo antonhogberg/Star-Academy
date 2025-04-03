@@ -140,6 +140,11 @@
     }, 10000);
 
     function initializeSvg(svgDoc) {
+      // Inject CSS for pointer-events and fade transition into the SVG
+      const styleElement = svgDoc.createElementNS('http://www.w3.org/2000/svg', 'style');
+      styleElement.textContent = 'image { pointer-events: all; transition: opacity 0.5s ease-in-out; }';
+      svgDoc.querySelector('svg').appendChild(styleElement);
+
       // Initialize all stars
       progressionPath.forEach(({ star, nextStar, lines }) => {
         const starElement = svgDoc.getElementById(`star-${star.replace(/:/g, '-')}`);
@@ -199,8 +204,12 @@
           studentsData.students[studentsData.currentStudent].progress = progress;
           localStorage.setItem('starAcademyStudents', JSON.stringify(studentsData));
 
-          // Update the star image
-          starElement.setAttributeNS('http://www.w3.org/1999/xlink', 'href', starImages[level]);
+          // Animate the change (fade effect)
+          starElement.style.opacity = '0';
+          setTimeout(() => {
+            starElement.setAttributeNS('http://www.w3.org/1999/xlink', 'href', starImages[level]);
+            starElement.style.opacity = '1';
+          }, 500);
 
           // Apply or remove glow and stroke color based on level
           lineElements.forEach(lineElement => {
@@ -243,7 +252,13 @@
             const updatedLevel = updatedProgress[exerciseKey] ? parseInt(updatedProgress[exerciseKey]) : 0;
             if (updatedLevel !== level) {
               level = updatedLevel;
-              starElement.setAttributeNS('http://www.w3.org/1999/xlink', 'href', starImages[level]);
+              // Animate the change (fade effect)
+              starElement.style.opacity = '0';
+              setTimeout(() => {
+                starElement.setAttributeNS('http://www.w3.org/1999/xlink', 'href', starImages[level]);
+                starElement.style.opacity = '1';
+              }, 500);
+
               lineElements.forEach(lineElement => {
                 if (level === 6) {
                   lineElement.setAttribute('filter', 'url(#golden-glow)');
