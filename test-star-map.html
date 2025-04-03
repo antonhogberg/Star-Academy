@@ -11,6 +11,7 @@
       margin: 0;
     }
     .star-map-container {
+      position: relative;
       overflow-x: auto;
       overflow-y: hidden;
       width: 100%;
@@ -25,9 +26,14 @@
       font-size: 16px;
       fill: #999999;
     }
-    /* Ensure pointer events and fade transition for SVG image elements */
+    /* Ensure fade transition for SVG image elements */
     .star-map-container svg image {
       transition: opacity 0.5s ease-in-out;
+    }
+    /* Style for HTML click overlays */
+    .click-overlay {
+      position: absolute;
+      cursor: pointer;
     }
     /* Congratulatory animation styles */
     .congratulations-overlay {
@@ -955,18 +961,23 @@
     initializeSvg(svgDoc);
 
     function initializeSvg(svgDoc) {
+      // Create a container for HTML click overlays
+      const starMapContainer = document.querySelector('.star-map-container');
+      const overlayContainer = document.createElement('div');
+      overlayContainer.style.position = 'absolute';
+      overlayContainer.style.top = '0';
+      overlayContainer.style.left = '0';
+      overlayContainer.style.width = '100%';
+      overlayContainer.style.height = '100%';
+      starMapContainer.appendChild(overlayContainer);
+
       // Initialize all stars
       progressionPath.forEach(({ star, nextStar, lines }) => {
         const starElement = svgDoc.getElementById(`star-${star.replace(/:/g, '-')}`);
-        const clickOverlay = svgDoc.getElementById(`click-overlay-${star.replace(/:/g, '-')}`);
         const lineElements = lines.map(line => svgDoc.getElementById(line)).filter(line => line);
 
         if (!starElement) {
           console.error(`Star-${star} not found in SVG`);
-          return;
-        }
-        if (!clickOverlay) {
-          console.error(`Click overlay for Star-${star} not found in SVG`);
           return;
         }
 
@@ -976,6 +987,20 @@
         const exerciseKey = `exercise${star}`;
         let level = progress[exerciseKey] ? parseInt(progress[exerciseKey]) : 0;
         starElement.setAttributeNS('http://www.w3.org/1999/xlink', 'href', starImages[level]);
+
+        // Create an HTML click overlay for the star
+        const clickOverlay = document.createElement('div');
+        clickOverlay.className = 'click-overlay';
+        clickOverlay.id = `click-overlay-${star.replace(/:/g, '-')}`;
+        const x = parseFloat(starElement.getAttribute('x'));
+        const y = parseFloat(starElement.getAttribute('y'));
+        const width = parseFloat(starElement.getAttribute('width'));
+        const height = parseFloat(starElement.getAttribute('height'));
+        clickOverlay.style.left = `${x}px`;
+        clickOverlay.style.top = `${y}px`;
+        clickOverlay.style.width = `${width}px`;
+        clickOverlay.style.height = `${height}px`;
+        overlayContainer.appendChild(clickOverlay);
 
         // Apply glow and color based on initial level
         lineElements.forEach(lineElement => {
@@ -1007,7 +1032,7 @@
           }, 5000);
         }
 
-        // Add click event to the overlay
+        // Add click event to the HTML overlay
         clickOverlay.style.cursor = 'pointer';
         clickOverlay.addEventListener('click', () => {
           // Update the level in starAcademyStudents
