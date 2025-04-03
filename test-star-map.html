@@ -961,46 +961,55 @@
     initializeSvg(svgDoc);
 
     function initializeSvg(svgDoc) {
-      // Create a container for HTML click overlays
-      const starMapContainer = document.querySelector('.star-map-container');
-      const overlayContainer = document.createElement('div');
-      overlayContainer.style.position = 'absolute';
-      overlayContainer.style.top = '0';
-      overlayContainer.style.left = '0';
-      overlayContainer.style.width = '100%';
-      overlayContainer.style.height = '100%';
-      starMapContainer.appendChild(overlayContainer);
+  const starMapContainer = document.querySelector('.star-map-container');
+  const overlayContainer = document.createElement('div');
+  overlayContainer.style.position = 'absolute';
+  overlayContainer.style.top = '0';
+  overlayContainer.style.left = '0';
+  overlayContainer.style.width = '100%';
+  overlayContainer.style.height = '100%';
+  starMapContainer.appendChild(overlayContainer);
 
-      // Initialize all stars
-      progressionPath.forEach(({ star, nextStar, lines }) => {
-        const starElement = svgDoc.getElementById(`star-${star.replace(/:/g, '-')}`);
-        const lineElements = lines.map(line => svgDoc.getElementById(line)).filter(line => line);
+  // Get the SVG's bounding rectangle for scaling
+  const svgElement = svgDoc.querySelector('svg');
+  const svgRect = svgElement.getBoundingClientRect();
+  const viewBox = svgElement.getAttribute('viewBox').split(' ').map(Number);
+  const viewBoxWidth = viewBox[2]; // 2800
+  const viewBoxHeight = viewBox[3]; // 600
+  const scaleX = svgRect.width / viewBoxWidth;
+  const scaleY = svgRect.height / viewBoxHeight;
 
-        if (!starElement) {
-          console.error(`Star-${star} not found in SVG`);
-          return;
-        }
+  progressionPath.forEach(({ star, nextStar, lines }) => {
+    const starElement = svgDoc.getElementById(`star-${star.replace(/:/g, '-')}`);
+    const lineElements = lines.map(line => svgDoc.getElementById(line)).filter(line => line);
 
-        // Get the initial level from starAcademyStudents in LocalStorage
-        const studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
-        const progress = studentsData.students[studentsData.currentStudent]?.progress || {};
-        const exerciseKey = `exercise${star}`;
-        let level = progress[exerciseKey] ? parseInt(progress[exerciseKey]) : 0;
-        starElement.setAttributeNS('http://www.w3.org/1999/xlink', 'href', starImages[level]);
+    if (!starElement) {
+      console.error(`Star-${star} not found in SVG`);
+      return;
+    }
 
-        // Create an HTML click overlay for the star
-        const clickOverlay = document.createElement('div');
-        clickOverlay.className = 'click-overlay';
-        clickOverlay.id = `click-overlay-${star.replace(/:/g, '-')}`;
-        const x = parseFloat(starElement.getAttribute('x'));
-        const y = parseFloat(starElement.getAttribute('y'));
-        const width = parseFloat(starElement.getAttribute('width'));
-        const height = parseFloat(starElement.getAttribute('height'));
-        clickOverlay.style.left = `${x}px`;
-        clickOverlay.style.top = `${y}px`;
-        clickOverlay.style.width = `${width}px`;
-        clickOverlay.style.height = `${height}px`;
-        overlayContainer.appendChild(clickOverlay);
+    // Get initial level from LocalStorage
+    const studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
+    const progress = studentsData.students[studentsData.currentStudent]?.progress || {};
+    const exerciseKey = `exercise${star}`;
+    let level = progress[exerciseKey] ? parseInt(progress[exerciseKey]) : 0;
+    starElement.setAttributeNS('http://www.w3.org/1999/xlink', 'href', starImages[level]);
+
+    // Create and position the HTML click overlay
+    const clickOverlay = document.createElement('div');
+    clickOverlay.className = 'click-overlay';
+    clickOverlay.id = `click-overlay-${star.replace(/:/g, '-')}`;
+    const x = parseFloat(starElement.getAttribute('x'));
+    const y = parseFloat(starElement.getAttribute('y'));
+    const width = parseFloat(starElement.getAttribute('width'));
+    const height = parseFloat(starElement.getAttribute('height'));
+
+    // Map SVG coordinates to screen coordinates
+    clickOverlay.style.left = `${x * scaleX}px`;
+    clickOverlay.style.top = `${y * scaleY}px`;
+    clickOverlay.style.width = `${width * scaleX}px`;
+    clickOverlay.style.height = `${height * scaleY}px`;
+    overlayContainer.appendChild(clickOverlay);
 
         // Apply glow and color based on initial level
         lineElements.forEach(lineElement => {
