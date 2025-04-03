@@ -27,7 +27,6 @@
     }
     /* Ensure pointer events and fade transition for SVG image elements */
     .star-map-container svg image {
-      pointer-events: all;
       transition: opacity 0.5s ease-in-out;
     }
     /* Congratulatory animation styles */
@@ -217,7 +216,8 @@
          x="80"
          y="300"
          inkscape:label="image0"
-         inkscape:svg-dpi="96" /></g><g
+         inkscape:svg-dpi="96" />
+         <rect id="click-overlay-1-1-1" x="80" y="330" width="120" height="102.23077" fill="transparent" pointer-events="all" /></g><g
        id="g66"><text
          xml:space="preserve"
          style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:21.33329964px;font-family:Cochin;-inkscape-font-specification:'Cochin, Medium';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;writing-mode:lr-tb;direction:ltr;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:#999999;stroke-linecap:square;stroke-opacity:1"
@@ -958,10 +958,15 @@
       // Initialize all stars
       progressionPath.forEach(({ star, nextStar, lines }) => {
         const starElement = svgDoc.getElementById(`star-${star.replace(/:/g, '-')}`);
+        const clickOverlay = svgDoc.getElementById(`click-overlay-${star.replace(/:/g, '-')}`);
         const lineElements = lines.map(line => svgDoc.getElementById(line)).filter(line => line);
 
         if (!starElement) {
           console.error(`Star-${star} not found in SVG`);
+          return;
+        }
+        if (!clickOverlay) {
+          console.error(`Click overlay for Star-${star} not found in SVG`);
           return;
         }
 
@@ -1002,9 +1007,9 @@
           }, 5000);
         }
 
-        // Add click event to the star
-        starElement.style.cursor = 'pointer';
-        starElement.addEventListener('click', () => {
+        // Add click event to the overlay
+        clickOverlay.style.cursor = 'pointer';
+        clickOverlay.addEventListener('click', () => {
           // Update the level in starAcademyStudents
           const studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
           const progress = studentsData.students[studentsData.currentStudent]?.progress || {};
