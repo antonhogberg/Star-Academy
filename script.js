@@ -53,7 +53,9 @@ const translations = {
         navigatingSiteTitle: "Navigating the Site",
         navigatingSiteText: "Use the menu (☰) in the top-left corner to access the homepage, chapters, student management, and this info page. Each chapter has four parts with four exercises each. Complete exercises to earn stars and progress through the ranks!",
         managingUsersTitle: "Managing Users",
-        managingUsersText: "If you’re a teacher or have multiple users, visit the 'Manage Students' page to add students, switch between them, and add notes about their progress. Each student’s progress is saved separately."
+        managingUsersText: "If you’re a teacher or have multiple users, visit the 'Manage Students' page to add students, switch between them, and add notes about their progress. Each student’s progress is saved separately.",
+        menuStarMap: "Star Map",
+        congratsMessage: "Congratulations! You’ve completed the Star Map! 🌟"
     },
     sv: {
         menuFrontPage: "Stjärnöversikt",
@@ -108,7 +110,9 @@ const translations = {
         navigatingSiteTitle: "Navigera på webbplatsen",
         navigatingSiteText: "Använd menyn (☰) i det övre vänstra hörnet för att komma åt hemsidan, kapitlen, elevhantering och denna infosida. Varje kapitel har fyra delar med fyra övningar vardera. Slutför övningar för att tjäna stjärnor och avancera genom rankerna!",
         managingUsersTitle: "Hantera användare",
-        managingUsersText: "Om du är lärare eller har flera användare, besök sidan 'Hantera elever' för att lägga till elever, växla mellan dem och lägga till anteckningar om deras framsteg. Varje elevs framsteg sparas separat."
+        managingUsersText: "Om du är lärare eller har flera användare, besök sidan 'Hantera elever' för att lägga till elever, växla mellan dem och lägga till anteckningar om deras framsteg. Varje elevs framsteg sparas separat.",
+        menuStarMap: "Stjärnkarta",
+        congratsMessage: "Grattis! Du har slutfört Stjärnkartan! 🌟"
     }
 };
 
@@ -322,8 +326,8 @@ function switchLanguage(lang) {
             link.textContent = translations[lang].menuFrontPage;
         } else if (href === 'students.html') {
             link.textContent = translations[lang].menuStudents;
-        } else if (href === 'info.html') {
-            link.textContent = translations[lang].menuInfo;
+        } else if (href === 'starmap.html') {
+            link.textContent = translations[lang].menuStarMap;
         } else {
             const chapterNum = href.match(/chapter(\d+)\.html/)?.[1];
             if (chapterNum) {
@@ -332,19 +336,21 @@ function switchLanguage(lang) {
         }
     });
 
-    // Update popup text (if present)
+    // Update popup text (shared across pages)
     const popupWelcome = document.querySelector('#popupWelcome');
     const popupIntro = document.querySelector('#popupIntro');
     const popupTeacherNote = document.querySelector('#popupTeacherNote');
     const popupEnterName = document.querySelector('#popupEnterName');
     const submitNameButton = document.getElementById('submitNameButton');
-    
     if (popupWelcome) popupWelcome.textContent = translations[lang].popupWelcome;
     if (popupIntro) popupIntro.textContent = translations[lang].popupIntro;
     if (popupTeacherNote) popupTeacherNote.textContent = translations[lang].popupTeacherNote;
     if (popupEnterName) popupEnterName.textContent = translations[lang].popupEnterName;
     if (submitNameButton) submitNameButton.textContent = translations[lang].addButton;
-    
+
+    // Update congrats message (Star Map specific)
+    const congratsMessage = document.getElementById('congratsMessage');
+    if (congratsMessage) congratsMessage.textContent = translations[lang].congratsMessage;
 
     // Update chapter title (if present)
     const chapterNumber = document.querySelector('.chapter-number');
