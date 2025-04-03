@@ -10,7 +10,6 @@
       background-color: #000000;
       margin: 0;
     }
-    
     .star-map-container {
       overflow-x: auto;
       overflow-y: hidden;
@@ -20,9 +19,6 @@
     .star-map-container object {
       width: 2800px;
       height: 600px;
-    }
-    .star-map-container object image {
-  transition: opacity 0.3s ease-in-out;
     }
     text {
       font-family: Cochin, Georgia, Arial, sans-serif;
@@ -203,12 +199,8 @@
           studentsData.students[studentsData.currentStudent].progress = progress;
           localStorage.setItem('starAcademyStudents', JSON.stringify(studentsData));
 
-          // Animate the change (fade effect)
-          starElement.style.opacity = '0';
-          setTimeout(() => {
-            starElement.setAttributeNS('http://www.w3.org/1999/xlink', 'href', starImages[level]);
-            starElement.style.opacity = '1';
-          }, 500);
+          // Update the star image
+          starElement.setAttributeNS('http://www.w3.org/1999/xlink', 'href', starImages[level]);
 
           // Apply or remove glow and stroke color based on level
           lineElements.forEach(lineElement => {
@@ -251,13 +243,7 @@
             const updatedLevel = updatedProgress[exerciseKey] ? parseInt(updatedProgress[exerciseKey]) : 0;
             if (updatedLevel !== level) {
               level = updatedLevel;
-              // Animate the change (fade effect)
-              starElement.style.opacity = '0';
-              setTimeout(() => {
-                starElement.setAttributeNS('http://www.w3.org/1999/xlink', 'href', starImages[level]);
-                starElement.style.opacity = '1';
-              }, 300);
-
+              starElement.setAttributeNS('http://www.w3.org/1999/xlink', 'href', starImages[level]);
               lineElements.forEach(lineElement => {
                 if (level === 6) {
                   lineElement.setAttribute('filter', 'url(#golden-glow)');
