@@ -25,11 +25,52 @@
       font-size: 16px;
       fill: #999999;
     }
+    /* Congratulatory animation styles */
+    .congratulations-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      animation: fadeIn 1s ease-in-out;
+    }
+    .congratulations-message {
+      background: #000000;
+      border: 2px solid #ffd700;
+      border-radius: 10px;
+      padding: 20px;
+      text-align: center;
+      color: #ffd700;
+      font-family: Cochin, Georgia, Arial, sans-serif;
+      font-size: 24px;
+      box-shadow: 0 0 20px rgba(255, 215, 0, 0.7);
+      animation: pulse 2s infinite;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    @keyframes pulse {
+      0% { transform: scale(1); box-shadow: 0 0 20px rgba(255, 215, 0, 0.7); }
+      50% { transform: scale(1.05); box-shadow: 0 0 30px rgba(255, 215, 0, 1); }
+      100% { transform: scale(1); box-shadow: 0 0 20px rgba(255, 215, 0, 0.7); }
+    }
   </style>
 </head>
 <body>
   <div class="star-map-container">
     <object id="starMap" type="image/svg+xml" data="star-map.svg"></object>
+  </div>
+  <!-- Congratulatory overlay -->
+  <div class="congratulations-overlay" id="congratulationsOverlay">
+    <div class="congratulations-message">
+      Congratulations! You’ve completed the Star Map! 🌟
+    </div>
   </div>
   <script>
     // Star images array
@@ -43,38 +84,38 @@
       'six-stars.png'
     ];
 
-    // Progression path mapping: star to next star and corresponding line
+    // Progression path mapping: star to next star and corresponding lines
     const progressionPath = [
-      { star: '1:1:1', nextStar: '2:1:1', line: 'line1' },
-      { star: '2:1:1', nextStar: '3:1:1', line: 'line2' },
-      { star: '3:1:1', nextStar: '7:1:1', line: 'line3' },
-      { star: '7:1:1', nextStar: '1:2:1', line: 'line4' },
-      { star: '1:2:1', nextStar: '1:1:2', line: 'line4-3' },
-      { star: '1:1:2', nextStar: '5:1:1', line: 'line5' },
-      { star: '5:1:1', nextStar: '2:1:2', line: 'line6' },
-      { star: '2:1:2', nextStar: '3:1:2', line: 'line7' },
-      { star: '3:1:2', nextStar: '6:1:1', line: 'line8' },
-      { star: '6:1:1', nextStar: '2:1:3', line: 'line9' },
-      { star: '2:1:3', nextStar: '7:1:2', line: 'line10' },
-      { star: '7:1:2', nextStar: '1:1:3', line: 'line11' },
-      { star: '1:1:3', nextStar: '5:1:2', line: 'line12' },
-      { star: '5:1:2', nextStar: '6:1:2', line: 'line13' },
-      { star: '6:1:2', nextStar: '1:4:1', line: 'line13-2' },
-      { star: '1:4:1', nextStar: '1:1:4', line: 'line13-3' },
-      { star: '1:1:4', nextStar: '3:1:3', line: 'line14' },
-      { star: '3:1:3', nextStar: '3:1:4', line: 'line15' },
-      { star: '3:1:4', nextStar: '7:1:3', line: 'line16' },
-      { star: '7:1:3', nextStar: '5:1:3', line: 'line17' },
-      { star: '5:1:3', nextStar: '6:1:3', line: 'line18' },
-      { star: '6:1:3', nextStar: '4:1:1', line: 'line19' },
-      { star: '4:1:1', nextStar: '7:1:4', line: 'line20' },
-      { star: '7:1:4', nextStar: '4:1:2', line: 'line21' },
-      { star: '4:1:2', nextStar: '5:1:4', line: 'line22' },
-      { star: '5:1:4', nextStar: '4:1:3', line: 'line23' },
-      { star: '4:1:3', nextStar: '6:1:4', line: 'line24' },
-      { star: '6:1:4', nextStar: '4:1:4', line: 'line25' },
-      { star: '4:1:4', nextStar: '2:1:4', line: 'line26' }
-      // Note: '2:1:4' is the last star, so it doesn't connect to a next star
+      { star: '1:1:1', nextStar: '2:1:1', lines: ['line1'] },
+      { star: '2:1:1', nextStar: '3:1:1', lines: ['line2'] },
+      { star: '3:1:1', nextStar: '7:1:1', lines: ['line3'] },
+      { star: '7:1:1', nextStar: '1:2:1', lines: ['line4', 'line4-2'] }, // Lights up both line4 and line4-2
+      { star: '1:2:1', nextStar: '1:1:2', lines: ['line4-3'] },
+      { star: '1:1:2', nextStar: '5:1:1', lines: ['line5'] },
+      { star: '5:1:1', nextStar: '2:1:2', lines: ['line6'] },
+      { star: '2:1:2', nextStar: '3:1:2', lines: ['line7'] },
+      { star: '3:1:2', nextStar: '6:1:1', lines: ['line8'] },
+      { star: '6:1:1', nextStar: '2:1:3', lines: ['line9'] },
+      { star: '2:1:3', nextStar: '7:1:2', lines: ['line10'] },
+      { star: '7:1:2', nextStar: '1:1:3', lines: ['line11'] },
+      { star: '1:1:3', nextStar: '5:1:2', lines: ['line12'] },
+      { star: '5:1:2', nextStar: '6:1:2', lines: ['line13'] },
+      { star: '6:1:2', nextStar: '1:4:1', lines: ['line13', 'line13-2'] }, // Lights up both line13 and line13-2
+      { star: '1:4:1', nextStar: '1:1:4', lines: ['line13-3'] },
+      { star: '1:1:4', nextStar: '3:1:3', lines: ['line14'] }, // Fixed: 1:1:4 lights up line14
+      { star: '3:1:3', nextStar: '3:1:4', lines: ['line15'] },
+      { star: '3:1:4', nextStar: '7:1:3', lines: ['line16'] },
+      { star: '7:1:3', nextStar: '5:1:3', lines: ['line17'] },
+      { star: '5:1:3', nextStar: '6:1:3', lines: ['line18'] },
+      { star: '6:1:3', nextStar: '4:1:1', lines: ['line19'] },
+      { star: '4:1:1', nextStar: '7:1:4', lines: ['line20'] },
+      { star: '7:1:4', nextStar: '4:1:2', lines: ['line21'] },
+      { star: '4:1:2', nextStar: '5:1:4', lines: ['line22'] },
+      { star: '5:1:4', nextStar: '4:1:3', lines: ['line23'] },
+      { star: '4:1:3', nextStar: '6:1:4', lines: ['line24'] },
+      { star: '6:1:4', nextStar: '4:1:4', lines: ['line25'] },
+      { star: '4:1:4', nextStar: '2:1:4', lines: ['line26'] },
+      { star: '2:1:4', nextStar: null, lines: [] } // Last star, no line to light up
     ];
 
     // Wait for the SVG to load
@@ -100,9 +141,9 @@
 
     function initializeSvg(svgDoc) {
       // Initialize all stars
-      progressionPath.forEach(({ star, nextStar, line }) => {
+      progressionPath.forEach(({ star, nextStar, lines }) => {
         const starElement = svgDoc.getElementById(`star-${star.replace(/:/g, '-')}`);
-        const lineElement = line ? svgDoc.getElementById(line) : null;
+        const lineElements = lines.map(line => svgDoc.getElementById(line)).filter(line => line);
 
         if (!starElement) {
           console.error(`Star-${star} not found in SVG`);
@@ -117,19 +158,19 @@
         starElement.setAttributeNS('http://www.w3.org/1999/xlink', 'href', starImages[level]);
 
         // Apply glow and color based on initial level
-        if (lineElement) {
+        lineElements.forEach(lineElement => {
           if (level === 6) {
             lineElement.setAttribute('filter', 'url(#golden-glow)');
             lineElement.style.stroke = '#FFD700';
             lineElement.setAttribute('stroke', '#FFD700');
-            console.log(`Initial glow and gold color applied to ${line}:`, lineElement.getAttribute('filter'), lineElement.style.stroke, lineElement.getAttribute('stroke'));
+            console.log(`Initial glow and gold color applied to ${lineElement.id}:`, lineElement.getAttribute('filter'), lineElement.style.stroke, lineElement.getAttribute('stroke'));
           } else {
             lineElement.removeAttribute('filter');
             lineElement.style.stroke = '#FFFFFF';
             lineElement.setAttribute('stroke', '#FFFFFF');
-            console.log(`Initial glow removed and color set to white for ${line}:`, lineElement.getAttribute('filter'), lineElement.style.stroke, lineElement.getAttribute('stroke'));
+            console.log(`Initial glow removed and color set to white for ${lineElement.id}:`, lineElement.getAttribute('filter'), lineElement.style.stroke, lineElement.getAttribute('stroke'));
           }
-        }
+        });
 
         // Add click event to the star
         starElement.style.cursor = 'pointer';
@@ -147,19 +188,37 @@
           starElement.setAttributeNS('http://www.w3.org/1999/xlink', 'href', starImages[level]);
 
           // Apply or remove glow and stroke color based on level
-          if (lineElement) {
+          lineElements.forEach(lineElement => {
             if (level === 6) {
               lineElement.setAttribute('filter', 'url(#golden-glow)');
               lineElement.style.stroke = '#FFD700';
               lineElement.setAttribute('stroke', '#FFD700');
-              console.log(`Glow and gold color applied to ${line}:`, lineElement.getAttribute('filter'), lineElement.style.stroke, lineElement.getAttribute('stroke'));
+              console.log(`Glow and gold color applied to ${lineElement.id}:`, lineElement.getAttribute('filter'), lineElement.style.stroke, lineElement.getAttribute('stroke'));
             } else {
               lineElement.removeAttribute('filter');
               lineElement.style.stroke = '#FFFFFF';
               lineElement.setAttribute('stroke', '#FFFFFF');
-              console.log(`Glow removed and color reverted to white for ${line}:`, lineElement.getAttribute('filter'), lineElement.style.stroke, lineElement.getAttribute('stroke'));
+              console.log(`Glow removed and color reverted to white for ${lineElement.id}:`, lineElement.getAttribute('filter'), lineElement.style.stroke, lineElement.getAttribute('stroke'));
+            }
+          });
+
+          // Check if all stars are at level 6 for the congratulatory animation
+          if (star === '2:1:4' && level === 6) {
+            const allStarsAtSix = progressionPath.every(({ star }) => {
+              const studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
+              const progress = studentsData.students[studentsData.currentStudent]?.progress || {};
+              const exerciseKey = `exercise${star}`;
+              return (progress[exerciseKey] ? parseInt(progress[exerciseKey]) : 0) === 6;
+            });
+            if (allStarsAtSix) {
+              const overlay = document.getElementById('congratulationsOverlay');
+              overlay.style.display = 'flex';
+              setTimeout(() => {
+                overlay.style.display = 'none';
+              }, 5000); // Hide after 5 seconds
             }
           }
+
           console.log(`Star-${star} clicked, level: ${level}, glow ${level === 6 ? 'applied' : 'removed'}`);
         });
 
@@ -172,19 +231,37 @@
             if (updatedLevel !== level) {
               level = updatedLevel;
               starElement.setAttributeNS('http://www.w3.org/1999/xlink', 'href', starImages[level]);
-              if (lineElement) {
+              lineElements.forEach(lineElement => {
                 if (level === 6) {
                   lineElement.setAttribute('filter', 'url(#golden-glow)');
                   lineElement.style.stroke = '#FFD700';
                   lineElement.setAttribute('stroke', '#FFD700');
-                  console.log(`Glow and gold color applied to ${line} (via storage event):`, lineElement.getAttribute('filter'), lineElement.style.stroke, lineElement.getAttribute('stroke'));
+                  console.log(`Glow and gold color applied to ${lineElement.id} (via storage event):`, lineElement.getAttribute('filter'), lineElement.style.stroke, lineElement.getAttribute('stroke'));
                 } else {
                   lineElement.removeAttribute('filter');
                   lineElement.style.stroke = '#FFFFFF';
                   lineElement.setAttribute('stroke', '#FFFFFF');
-                  console.log(`Glow removed and color reverted to white for ${line} (via storage event):`, lineElement.getAttribute('filter'), lineElement.style.stroke, lineElement.getAttribute('stroke'));
+                  console.log(`Glow removed and color reverted to white for ${lineElement.id} (via storage event):`, lineElement.getAttribute('filter'), lineElement.style.stroke, lineElement.getAttribute('stroke'));
+                }
+              });
+
+              // Check for congratulatory animation on storage event
+              if (star === '2:1:4' && level === 6) {
+                const allStarsAtSix = progressionPath.every(({ star }) => {
+                  const studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
+                  const progress = studentsData.students[studentsData.currentStudent]?.progress || {};
+                  const exerciseKey = `exercise${star}`;
+                  return (progress[exerciseKey] ? parseInt(progress[exerciseKey]) : 0) === 6;
+                });
+                if (allStarsAtSix) {
+                  const overlay = document.getElementById('congratulationsOverlay');
+                  overlay.style.display = 'flex';
+                  setTimeout(() => {
+                    overlay.style.display = 'none';
+                  }, 5000);
                 }
               }
+
               console.log(`Star-${star} updated via storage event, level: ${level}, glow ${level === 6 ? 'applied' : 'removed'}`);
             }
           }
