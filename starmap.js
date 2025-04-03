@@ -13,7 +13,7 @@ const progressionPath = [
     { star: '1:1:1', nextStar: '2:1:1', lines: ['line1'] },
     { star: '2:1:1', nextStar: '3:1:1', lines: ['line2'] },
     { star: '3:1:1', nextStar: '7:1:1', lines: ['line3'] },
-    { star: '7 on1:1', nextStar: '1:2:1', lines: ['line4', 'line4-2'] },
+    { star: '7:1:1', nextStar: '1:2:1', lines: ['line4', 'line4-2'] },
     { star: '1:2:1', nextStar: '1:1:2', lines: ['line4-3'] },
     { star: '1:1:2', nextStar: '5:1:1', lines: ['line5'] },
     { star: '5:1:1', nextStar: '2:1:2', lines: ['line6'] },
