@@ -89,7 +89,7 @@
       { star: '1:1:1', nextStar: '2:1:1', lines: ['line1'] },
       { star: '2:1:1', nextStar: '3:1:1', lines: ['line2'] },
       { star: '3:1:1', nextStar: '7:1:1', lines: ['line3'] },
-      { star: '7:1:1', nextStar: '1:2:1', lines: ['line4', 'line4-2'] }, // Lights up both line4 and line4-2
+      { star: '7:1:1', nextStar: '1:2:1', lines: ['line4', 'line4-2'] },
       { star: '1:2:1', nextStar: '1:1:2', lines: ['line4-3'] },
       { star: '1:1:2', nextStar: '5:1:1', lines: ['line5'] },
       { star: '5:1:1', nextStar: '2:1:2', lines: ['line6'] },
@@ -99,23 +99,23 @@
       { star: '2:1:3', nextStar: '7:1:2', lines: ['line10'] },
       { star: '7:1:2', nextStar: '1:1:3', lines: ['line11'] },
       { star: '1:1:3', nextStar: '5:1:2', lines: ['line12'] },
-      { star: '5:1:2', nextStar: '6:1:2', lines: ['line13'] },
-      { star: '6:1:2', nextStar: '1:4:1', lines: ['line13', 'line13-2'] }, // Lights up both line13 and line13-2
-      { star: '1:4:1', nextStar: '1:1:4', lines: ['line13-3'] },
-      { star: '1:1:4', nextStar: '3:1:3', lines: ['line14'] }, // Fixed: 1:1:4 lights up line14
-      { star: '3:1:3', nextStar: '3:1:4', lines: ['line15'] },
-      { star: '3:1:4', nextStar: '7:1:3', lines: ['line16'] },
-      { star: '7:1:3', nextStar: '5:1:3', lines: ['line17'] },
-      { star: '5:1:3', nextStar: '6:1:3', lines: ['line18'] },
-      { star: '6:1:3', nextStar: '4:1:1', lines: ['line19'] },
-      { star: '4:1:1', nextStar: '7:1:4', lines: ['line20'] },
-      { star: '7:1:4', nextStar: '4:1:2', lines: ['line21'] },
-      { star: '4:1:2', nextStar: '5:1:4', lines: ['line22'] },
-      { star: '5:1:4', nextStar: '4:1:3', lines: ['line23'] },
-      { star: '4:1:3', nextStar: '6:1:4', lines: ['line24'] },
-      { star: '6:1:4', nextStar: '4:1:4', lines: ['line25'] },
-      { star: '4:1:4', nextStar: '2:1:4', lines: ['line26'] },
-      { star: '2:1:4', nextStar: null, lines: [] } // Last star, no line to light up
+      { star: '5:1:2', nextStar: '6:1:2', lines: ['line13'] }, // Fixed: 5:1:2 lights up line13
+      { star: '6:1:2', nextStar: '1:4:1', lines: ['line14', 'line14-2'] }, // Fixed: 6:1:2 lights up line14 and line14-2
+      { star: '1:4:1', nextStar: '1:1:4', lines: ['line14-3'] },
+      { star: '1:1:4', nextStar: '3:1:3', lines: ['line15'] }, // Fixed: 1:1:4 lights up line15
+      { star: '3:1:3', nextStar: '3:1:4', lines: ['line16'] },
+      { star: '3:1:4', nextStar: '7:1:3', lines: ['line17'] },
+      { star: '7:1:3', nextStar: '5:1:3', lines: ['line18'] },
+      { star: '5:1:3', nextStar: '6:1:3', lines: ['line19'] },
+      { star: '6:1:3', nextStar: '4:1:1', lines: ['line20'] },
+      { star: '4:1:1', nextStar: '7:1:4', lines: ['line21'] },
+      { star: '7:1:4', nextStar: '4:1:2', lines: ['line22'] },
+      { star: '4:1:2', nextStar: '5:1:4', lines: ['line23'] },
+      { star: '5:1:4', nextStar: '4:1:3', lines: ['line24'] },
+      { star: '4:1:3', nextStar: '6:1:4', lines: ['line25'] },
+      { star: '6:1:4', nextStar: '4:1:4', lines: ['line26'] },
+      { star: '4:1:4', nextStar: '2:1:4', lines: ['line27'] }, // Fixed: 4:1:4 lights up line27 (previously line26)
+      { star: '2:1:4', nextStar: null, lines: [] }
     ];
 
     // Wait for the SVG to load
@@ -215,7 +215,7 @@
               overlay.style.display = 'flex';
               setTimeout(() => {
                 overlay.style.display = 'none';
-              }, 5000); // Hide after 5 seconds
+              }, 5000);
             }
           }
 
