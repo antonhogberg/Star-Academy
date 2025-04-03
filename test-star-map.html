@@ -99,10 +99,10 @@
       { star: '2:1:3', nextStar: '7:1:2', lines: ['line10'] },
       { star: '7:1:2', nextStar: '1:1:3', lines: ['line11'] },
       { star: '1:1:3', nextStar: '5:1:2', lines: ['line12'] },
-      { star: '5:1:2', nextStar: '6:1:2', lines: ['line13'] }, // Fixed: 5:1:2 lights up line13
-      { star: '6:1:2', nextStar: '1:4:1', lines: ['line14', 'line14-2'] }, // Fixed: 6:1:2 lights up line14 and line14-2
+      { star: '5:1:2', nextStar: '6:1:2', lines: ['line13'] },
+      { star: '6:1:2', nextStar: '1:4:1', lines: ['line14', 'line14-2'] },
       { star: '1:4:1', nextStar: '1:1:4', lines: ['line14-3'] },
-      { star: '1:1:4', nextStar: '3:1:3', lines: ['line15'] }, // Fixed: 1:1:4 lights up line15
+      { star: '1:1:4', nextStar: '3:1:3', lines: ['line15'] },
       { star: '3:1:3', nextStar: '3:1:4', lines: ['line16'] },
       { star: '3:1:4', nextStar: '7:1:3', lines: ['line17'] },
       { star: '7:1:3', nextStar: '5:1:3', lines: ['line18'] },
@@ -114,7 +114,7 @@
       { star: '5:1:4', nextStar: '4:1:3', lines: ['line24'] },
       { star: '4:1:3', nextStar: '6:1:4', lines: ['line25'] },
       { star: '6:1:4', nextStar: '4:1:4', lines: ['line26'] },
-      { star: '4:1:4', nextStar: '2:1:4', lines: ['line27'] }, // Fixed: 4:1:4 lights up line27 (previously line26)
+      { star: '4:1:4', nextStar: '2:1:4', lines: ['line27'] },
       { star: '2:1:4', nextStar: null, lines: [] }
     ];
 
@@ -172,6 +172,21 @@
           }
         });
 
+        // Check if all stars are at level 6 on initial load
+        const allStarsAtSix = progressionPath.every(({ star }) => {
+          const studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
+          const progress = studentsData.students[studentsData.currentStudent]?.progress || {};
+          const exerciseKey = `exercise${star}`;
+          return (progress[exerciseKey] ? parseInt(progress[exerciseKey]) : 0) === 6;
+        });
+        if (allStarsAtSix) {
+          const overlay = document.getElementById('congratulationsOverlay');
+          overlay.style.display = 'flex';
+          setTimeout(() => {
+            overlay.style.display = 'none';
+          }, 5000);
+        }
+
         // Add click event to the star
         starElement.style.cursor = 'pointer';
         starElement.addEventListener('click', () => {
@@ -184,8 +199,12 @@
           studentsData.students[studentsData.currentStudent].progress = progress;
           localStorage.setItem('starAcademyStudents', JSON.stringify(studentsData));
 
-          // Update the star image
-          starElement.setAttributeNS('http://www.w3.org/1999/xlink', 'href', starImages[level]);
+          // Animate the change (fade effect)
+          starElement.style.opacity = '0';
+          setTimeout(() => {
+            starElement.setAttributeNS('http://www.w3.org/1999/xlink', 'href', starImages[level]);
+            starElement.style.opacity = '1';
+          }, 300);
 
           // Apply or remove glow and stroke color based on level
           lineElements.forEach(lineElement => {
@@ -203,20 +222,18 @@
           });
 
           // Check if all stars are at level 6 for the congratulatory animation
-          if (star === '2:1:4' && level === 6) {
-            const allStarsAtSix = progressionPath.every(({ star }) => {
-              const studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
-              const progress = studentsData.students[studentsData.currentStudent]?.progress || {};
-              const exerciseKey = `exercise${star}`;
-              return (progress[exerciseKey] ? parseInt(progress[exerciseKey]) : 0) === 6;
-            });
-            if (allStarsAtSix) {
-              const overlay = document.getElementById('congratulationsOverlay');
-              overlay.style.display = 'flex';
-              setTimeout(() => {
-                overlay.style.display = 'none';
-              }, 5000);
-            }
+          const allStarsAtSix = progressionPath.every(({ star }) => {
+            const studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
+            const progress = studentsData.students[studentsData.currentStudent]?.progress || {};
+            const exerciseKey = `exercise${star}`;
+            return (progress[exerciseKey] ? parseInt(progress[exerciseKey]) : 0) === 6;
+          });
+          if (allStarsAtSix) {
+            const overlay = document.getElementById('congratulationsOverlay');
+            overlay.style.display = 'flex';
+            setTimeout(() => {
+              overlay.style.display = 'none';
+            }, 5000);
           }
 
           console.log(`Star-${star} clicked, level: ${level}, glow ${level === 6 ? 'applied' : 'removed'}`);
@@ -230,7 +247,13 @@
             const updatedLevel = updatedProgress[exerciseKey] ? parseInt(updatedProgress[exerciseKey]) : 0;
             if (updatedLevel !== level) {
               level = updatedLevel;
-              starElement.setAttributeNS('http://www.w3.org/1999/xlink', 'href', starImages[level]);
+              // Animate the change (fade effect)
+              starElement.style.opacity = '0';
+              setTimeout(() => {
+                starElement.setAttributeNS('http://www.w3.org/1999/xlink', 'href', starImages[level]);
+                starElement.style.opacity = '1';
+              }, 300);
+
               lineElements.forEach(lineElement => {
                 if (level === 6) {
                   lineElement.setAttribute('filter', 'url(#golden-glow)');
@@ -246,20 +269,18 @@
               });
 
               // Check for congratulatory animation on storage event
-              if (star === '2:1:4' && level === 6) {
-                const allStarsAtSix = progressionPath.every(({ star }) => {
-                  const studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
-                  const progress = studentsData.students[studentsData.currentStudent]?.progress || {};
-                  const exerciseKey = `exercise${star}`;
-                  return (progress[exerciseKey] ? parseInt(progress[exerciseKey]) : 0) === 6;
-                });
-                if (allStarsAtSix) {
-                  const overlay = document.getElementById('congratulationsOverlay');
-                  overlay.style.display = 'flex';
-                  setTimeout(() => {
-                    overlay.style.display = 'none';
-                  }, 5000);
-                }
+              const allStarsAtSix = progressionPath.every(({ star }) => {
+                const studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
+                const progress = studentsData.students[studentsData.currentStudent]?.progress || {};
+                const exerciseKey = `exercise${star}`;
+                return (progress[exerciseKey] ? parseInt(progress[exerciseKey]) : 0) === 6;
+              });
+              if (allStarsAtSix) {
+                const overlay = document.getElementById('congratulationsOverlay');
+                overlay.style.display = 'flex';
+                setTimeout(() => {
+                  overlay.style.display = 'none';
+                }, 5000);
               }
 
               console.log(`Star-${star} updated via storage event, level: ${level}, glow ${level === 6 ? 'applied' : 'removed'}`);
