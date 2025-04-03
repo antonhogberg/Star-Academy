@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta charset="UTF-8">
+    <title>Stjärnakademien - Star Map</title>
+    <link rel="stylesheet" href="styles.css">
+    <script>
+        function setViewportHeight() {
+            let vh = window.innerHeight * 0.01;
+            document.documentElement.style.setProperty('--vh', `${vh}px`);
+        }
+        window.addEventListener('resize', setViewportHeight);
+        window.addEventListener('orientationchange', setViewportHeight);
+        setViewportHeight();
+    </script>
+</head>
+<body>
+    <nav class="hamburger-nav">
+        <div class="hamburger" aria-expanded="false" aria-controls="main-menu">☰</div>
+        <div class="menu" id="main-menu">
+            <span class="close-btn" aria-label="Close menu">✖</span>
+            <a href="index.html" class="menu-link"></a>
+            <a href="chapter1.html" class="menu-link"></a>
+            <a href="chapter2.html" class="menu-link"></a>
+            <a href="chapter3.html" class="menu-link"></a>
+            <a href="chapter4.html" class="menu-link"></a>
+            <a href="chapter5.html" class="menu-link"></a>
+            <a href="chapter6.html" class="menu-link"></a>
+            <a href="chapter7.html" class="menu-link"></a>
+            <a href="students.html" class="menu-link"></a>
+            <a href="starmap.html" class="menu-link">Star Map</a>
+            <div class="language-switcher">
+                <span class="flag" onclick="switchLanguage('en')">🇬🇧</span>
+                <span class="flag" onclick="switchLanguage('sv')">🇸🇪</span>
+            </div>
+        </div>
+    </nav>
+    <h1 class="chapter-title">Star Map</h1>
+    <div id="namePopup" class="popup">
+        <div class="popup-content">
+            <h2 id="popupWelcome"></h2>
+            <p id="popupIntro"></p>
+            <p id="popupTeacherNote"></p>
+            <p id="popupEnterName"></p>
+            <div class="input-group">
+                <input type="text" id="nameInput" onkeypress="if(event.key === 'Enter') saveName()">
+                <button id="submitNameButton" onclick="saveName()"></button>
+            </div>
+        </div>
+    </div>
+    <div class="star-map-container">
+        <object id="starMap" type="image/svg+xml" data="star-map.svg"></object>
+    </div>
+    <div class="congratulations-overlay" id="congratulationsOverlay">
+        <div class="congratulations-message">
+            <span id="congratsMessage"></span>
+        </div>
+    </div>
+    <script src="script.js"></script>
+    <script src="starmap.js"></script>
+    <script src="menu.js"></script>
+</body>
+</html>

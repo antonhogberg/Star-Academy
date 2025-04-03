@@ -1423,3 +1423,66 @@ body {
         height: calc(var(--vh, 1vh) * 100);
     }
 }
+/* Star Map Styles */
+.star-map-container {
+    position: relative;
+    overflow-x: auto;
+    overflow-y: hidden;
+    width: 100%;
+    height: 600px;
+}
+
+.star-map-container object {
+    width: 2800px;
+    height: 600px;
+}
+
+.congratulations-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    animation: fadeIn 1s ease-in-out;
+}
+
+.congratulations-message {
+    background: #000000;
+    border: 2px solid #ffd700;
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    color: #ffd700;
+    font-family: Cochin, Georgia, Arial, sans-serif;
+    font-size: 24px;
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.7);
+    animation: pulse 2s infinite;
+}
+
+/* Responsive Adjustments */
+@media (min-width: 1401px) and (orientation: landscape) and (hover: hover) and (min-aspect-ratio: 16/10) {
+    .star-map-container {
+        height: calc(var(--vh, 1vh) * 100 - 100px);
+        top: 100px;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 1400px) and (orientation: landscape) {
+    .star-map-container {
+        height: calc(var(--vh, 1vh) * 100 - 50px);
+        top: 50px;
+    }
+}
+
+@media (max-width: 767px) and (orientation: portrait) {
+    .star-map-container {
+        height: auto;
+        top: 60px;
+        overflow-y: auto;
+    }
+}
