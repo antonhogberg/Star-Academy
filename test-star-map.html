@@ -171,18 +171,20 @@
         starElement.setAttributeNS('http://www.w3.org/1999/xlink', 'href', starImages[level]);
   
         lineElements.forEach(lineElement => {
-          // Remove stroke from inline style to let style.stroke control it
+          // Clear stroke from inline style
           const currentStyle = lineElement.getAttribute('style') || '';
           const newStyle = currentStyle.replace(/stroke\s*:\s*[^;]+;?/, '').trim();
           lineElement.setAttribute('style', newStyle);
   
-          // Set initial stroke color
-          lineElement.style.stroke = level === 6 ? '#FFD700' : '#FFFFFF';
+          // Set initial stroke explicitly to ensure transition works
+          lineElement.style.stroke = '#FFFFFF'; // Default starting point
           if (level === 6) {
             lineElement.setAttribute('filter', 'url(#golden-glow)');
-          } else {
-            lineElement.removeAttribute('filter');
+            setTimeout(() => {
+              lineElement.style.stroke = '#FFD700';
+            }, 10); // Small delay to trigger transition
           }
+          console.log(`Init ${lineElement.id}: transition=${lineElement.style.transition}, stroke=${lineElement.style.stroke}`);
         });
   
         const allStarsAtSix = progressionPath.every(({ star }) => {
@@ -216,13 +218,17 @@
           }, 300);
   
           lineElements.forEach(lineElement => {
-            if (level === 6) {
-              lineElement.setAttribute('filter', 'url(#golden-glow)');
-              lineElement.style.stroke = '#FFD700';
-            } else {
-              lineElement.removeAttribute('filter');
-              lineElement.style.stroke = '#FFFFFF';
-            }
+            console.log(`Before ${lineElement.id}: transition=${lineElement.style.transition}, stroke=${lineElement.style.stroke}`);
+            setTimeout(() => {
+              if (level === 6) {
+                lineElement.setAttribute('filter', 'url(#golden-glow)');
+                lineElement.style.stroke = '#FFD700';
+              } else {
+                lineElement.removeAttribute('filter');
+                lineElement.style.stroke = '#FFFFFF';
+              }
+              console.log(`After ${lineElement.id}: transition=${lineElement.style.transition}, stroke=${lineElement.style.stroke}`);
+            }, 10);
           });
   
           const allStarsAtSix = progressionPath.every(({ star }) => {
@@ -254,13 +260,17 @@
               }, 300);
   
               lineElements.forEach(lineElement => {
-                if (level === 6) {
-                  lineElement.setAttribute('filter', 'url(#golden-glow)');
-                  lineElement.style.stroke = '#FFD700';
-                } else {
-                  lineElement.removeAttribute('filter');
-                  lineElement.style.stroke = '#FFFFFF';
-                }
+                console.log(`Before storage ${lineElement.id}: transition=${lineElement.style.transition}, stroke=${lineElement.style.stroke}`);
+                setTimeout(() => {
+                  if (level === 6) {
+                    lineElement.setAttribute('filter', 'url(#golden-glow)');
+                    lineElement.style.stroke = '#FFD700';
+                  } else {
+                    lineElement.removeAttribute('filter');
+                    lineElement.style.stroke = '#FFFFFF';
+                  }
+                  console.log(`After storage ${lineElement.id}: transition=${lineElement.style.transition}, stroke=${lineElement.style.stroke}`);
+                }, 10);
               });
   
               const allStarsAtSix = progressionPath.every(({ star }) => {
