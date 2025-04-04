@@ -319,26 +319,25 @@ function updateStarStates() {
 function initializeMenu() {
     const studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
     const toggle = document.querySelector('.dropdown-toggle');
+    const arrow = document.querySelector('.toggle-arrow');
     const submenu = document.getElementById('chapters');
 
-    if (!toggle || !submenu) return;
+    if (!toggle || !submenu || !arrow) return;
 
-    // Load saved state
-    const isOpen = studentsData.students[studentsData.currentStudent]?.menuChaptersOpen ?? true; // Default to open
+    const isOpen = studentsData.students[studentsData.currentStudent]?.menuChaptersOpen ?? true;
     if (isOpen) {
         submenu.classList.add('active');
-        toggle.textContent = toggle.textContent.replace('▼', '▲');
+        arrow.textContent = '▲';
     } else {
         submenu.classList.remove('active');
-        toggle.textContent = toggle.textContent.replace('▲', '▼');
+        arrow.textContent = '▼';
     }
 
     toggle.addEventListener('click', () => {
         const isCurrentlyOpen = submenu.classList.contains('active');
         submenu.classList.toggle('active');
-        toggle.textContent = toggle.textContent.replace(isCurrentlyOpen ? '▲' : '▼', isCurrentlyOpen ? '▼' : '▲');
+        arrow.textContent = isCurrentlyOpen ? '▼' : '▲';
 
-        // Save state
         const updatedStudentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
         if (updatedStudentsData.currentStudent) {
             updatedStudentsData.students[updatedStudentsData.currentStudent].menuChaptersOpen = !isCurrentlyOpen;
@@ -370,7 +369,10 @@ function switchLanguage(lang) {
 
     const dropdownToggle = document.querySelector('.dropdown-toggle');
     if (dropdownToggle) {
-        dropdownToggle.textContent = translations[lang].menuChapters + ' ▼';
+        const arrow = document.querySelector('.toggle-arrow');
+        const isOpen = document.getElementById('chapters')?.classList.contains('active');
+        dropdownToggle.firstChild.textContent = translations[lang].menuChapters; // Text node before arrow
+        arrow.textContent = isOpen ? '▲' : '▼';
     }
 
     // Update popup text (shared across pages)
@@ -471,7 +473,24 @@ function setInitialLanguage() {
 document.addEventListener('DOMContentLoaded', () => {
     setInitialLanguage();
     updateStarStates();
-    initializeMenu(); // Add this
+    initializeMenu();
+
+    const namePopup = document.getElementById('namePopup');
+    if (namePopup && !JSON.parse(localStorage.getItem('starAcademyStudents'))?.currentStudent) {
+        namePopup.style.display = 'flex';
+    }
+
+    // Add popup event listeners
+    const nameInput = document.getElementById('nameInput');
+    const submitNameButton = document.getElementById('submitNameButton');
+    if (nameInput) {
+        nameInput.addEventListener('keypress', (event) => {
+            if (event.key === 'Enter') saveName();
+        });
+    }
+    if (submitNameButton) {
+        submitNameButton.addEventListener('click', saveName);
+    }
 
     console.log('Running active page detection script');
     const currentPath = window.location.pathname.toLowerCase();
@@ -491,3 +510,30 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
+
+function saveName() {
+    const nameInput = document.getElementById('nameInput');
+    const namePopup = document.getElementById('namePopup');
+    let studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
+    const name = nameInput?.value.trim();
+    const lang = localStorage.getItem('language') || 'sv';
+
+    if (name) {
+        if (studentsData.students[name]) {
+            alert(translations[lang].addStudentDuplicate);
+            return;
+        }
+        studentsData.students[name] = {
+            name: name,
+            progress: {},
+            rank: "Explorer",
+            menuChaptersOpen: true
+        };
+        studentsData.currentStudent = name;
+        localStorage.setItem('starAcademyStudents', JSON.stringify(studentsData));
+        namePopup.style.display = 'none';
+        initializeMenu(); // Refresh menu state
+    } else {
+        alert(translations[lang].addStudentNoName);
+    }
+}
