@@ -8,16 +8,21 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
     }
 
-    menu.style.left = '-250px';
+    console.log('Menu.js initialized, setting initial state');
+    menu.style.left = '-250px'; // Ensure menu starts closed
 
     hamburger.addEventListener('click', () => {
         const isExpanded = hamburger.getAttribute('aria-expanded') === 'true';
-        hamburger.setAttribute('aria-expanded', !isExpanded);
+        console.log('Hamburger clicked, isExpanded:', isExpanded);
 
         if (!isExpanded) {
+            console.log('Opening menu');
+            hamburger.setAttribute('aria-expanded', 'true');
             menu.classList.add('active');
             menu.animate([{ left: '-250px' }, { left: '0' }], { duration: 300, easing: 'ease-in-out', fill: 'forwards' });
         } else {
+            console.log('Closing menu');
+            hamburger.setAttribute('aria-expanded', 'false');
             menu.animate([{ left: '0' }, { left: '-250px' }], { duration: 300, easing: 'ease-in-out', fill: 'forwards' }).onfinish = () => {
                 menu.classList.remove('active');
             };
@@ -25,28 +30,10 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     closeBtn.addEventListener('click', () => {
+        console.log('Close button clicked');
         hamburger.setAttribute('aria-expanded', 'false');
         menu.animate([{ left: '0' }, { left: '-250px' }], { duration: 300, easing: 'ease-in-out', fill: 'forwards' }).onfinish = () => {
             menu.classList.remove('active');
         };
     });
-
-    // Only close on .menu-link clicks that aren’t .dropdown-toggle
-    document.querySelectorAll('.menu-link:not(.dropdown-toggle)').forEach(link => {
-        link.addEventListener('click', () => {
-            hamburger.setAttribute('aria-expanded', 'false');
-            menu.animate([{ left: '0' }, { left: '-250px' }], { duration: 300, easing: 'ease-in-out', fill: 'forwards' }).onfinish = () => {
-                menu.classList.remove('active');
-            };
-        });
-    });
-
-    document.addEventListener('click', (e) => {
-        if (!hamburger.contains(e.target) && !menu.contains(e.target)) {
-            hamburger.setAttribute('aria-expanded', 'false');
-            menu.animate([{ left: '0' }, { left: '-250px' }], { duration: 300, easing: 'ease-in-out', fill: 'forwards' }).onfinish = () => {
-                menu.classList.remove('active');
-            };
-        }
-    });
-});
+}); 
