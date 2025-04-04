@@ -315,14 +315,13 @@ function updateStarStates() {
     }
 }
 
-// Updated switchLanguage for submenu structure
 function switchLanguage(lang) {
     localStorage.setItem('language', lang);
     console.log(`Switching language to: ${lang}`);
 
-    // Update top-level menu links
-    document.querySelectorAll('.menu-link:not(.submenu-link)').forEach(link => {
-        const href = link.getAttribute('href')?.toLowerCase();
+    // Update top-level menu links (only <a> tags with href)
+    document.querySelectorAll('.menu-link:not(.submenu-link):not(.dropdown-toggle)[href]').forEach(link => {
+        const href = link.getAttribute('href').toLowerCase();
         if (href === 'index.html') {
             link.textContent = translations[lang].menuFrontPage;
         } else if (href === 'students.html') {
@@ -335,12 +334,9 @@ function switchLanguage(lang) {
     // Update dropdown toggle
     const dropdownToggle = document.querySelector('.dropdown-toggle');
     if (dropdownToggle) {
-        const textNode = dropdownToggle.childNodes[0];
-        if (textNode.nodeType === Node.TEXT_NODE) {
-            textNode.textContent = translations[lang].menuChapters + ' ';
-        } else {
-            dropdownToggle.insertBefore(document.createTextNode(translations[lang].menuChapters + ' '), dropdownToggle.firstChild);
-        }
+        const textNode = Array.from(dropdownToggle.childNodes).find(node => node.nodeType === Node.TEXT_NODE) || 
+                        dropdownToggle.insertBefore(document.createTextNode(''), dropdownToggle.querySelector('.toggle-arrow'));
+        textNode.textContent = translations[lang].menuChapters + ' ';
     }
 
     // Update submenu links
