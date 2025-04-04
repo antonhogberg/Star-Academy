@@ -31,7 +31,8 @@ document.addEventListener('DOMContentLoaded', () => {
         };
     });
 
-    document.querySelectorAll('.menu-link').forEach(link => {
+    // Only close on .menu-link clicks that aren’t .dropdown-toggle
+    document.querySelectorAll('.menu-link:not(.dropdown-toggle)').forEach(link => {
         link.addEventListener('click', () => {
             hamburger.setAttribute('aria-expanded', 'false');
             menu.animate([{ left: '0' }, { left: '-250px' }], { duration: 300, easing: 'ease-in-out', fill: 'forwards' }).onfinish = () => {
