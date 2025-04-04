@@ -316,6 +316,123 @@ function updateStarStates() {
     }
 }
 
+function switchLanguage(lang) {
+    localStorage.setItem('language', lang);
+    console.log(`Switching language to: ${lang}`);
+
+    document.querySelectorAll('.menu-link').forEach(link => {
+        const href = link.getAttribute('href')?.toLowerCase();
+        if (href === 'index.html') {
+            link.textContent = translations[lang].menuFrontPage;
+        } else if (href === 'starmap.html') {
+            link.textContent = translations[lang].menuStarMap;
+        } else if (href === 'students.html') {
+            link.textContent = translations[lang].menuStudents;
+        } else if (link.classList.contains('submenu-link')) {
+            const chapterNum = href?.match(/chapter(\d+)\.html/)?.[1];
+            if (chapterNum) {
+                link.textContent = `${translations[lang].menuChapter} ${chapterNum}`;
+            }
+        }
+    });
+
+    const dropdownToggle = document.querySelector('.dropdown-toggle');
+    if (dropdownToggle) {
+        const arrow = document.querySelector('.toggle-arrow');
+        const isOpen = document.getElementById('chapters')?.classList.contains('active');
+        dropdownToggle.firstChild.textContent = translations[lang].menuChapters;
+        arrow.textContent = isOpen ? '▲' : '▼';
+    }
+
+    const popupWelcome = document.querySelector('#popupWelcome');
+    const popupIntro = document.querySelector('#popupIntro');
+    const popupTeacherNote = document.querySelector('#popupTeacherNote');
+    const popupEnterName = document.querySelector('#popupEnterName');
+    const submitNameButton = document.getElementById('submitNameButton');
+
+    if (popupWelcome) popupWelcome.textContent = translations[lang].popupWelcome;
+    if (popupIntro) popupIntro.textContent = translations[lang].popupIntro;
+    if (popupTeacherNote) popupTeacherNote.textContent = translations[lang].popupTeacherNote;
+    if (popupEnterName) popupEnterName.textContent = translations[lang].popupEnterName;
+    if (submitNameButton) submitNameButton.textContent = translations[lang].addButton;
+
+    const congratsMessage = document.getElementById('congratsMessage');
+    if (congratsMessage) congratsMessage.textContent = translations[lang].congratsMessage;
+
+    const chapterNumber = document.querySelector('.chapter-number');
+    const chapterName = document.querySelector('.chapter-name');
+    if (chapterNumber && chapterName) {
+        const chapterNum = window.location.pathname.match(/chapter(\d+)\.html/)?.[1];
+        if (chapterNum) {
+            chapterNumber.textContent = translations[lang][`chapter${chapterNum}`];
+            chapterName.textContent = translations[lang][`chapterName${chapterNum}`];
+        } else {
+            console.warn('No chapter number found in URL:', window.location.pathname);
+        }
+    }
+
+    const rankName = document.getElementById('rankName');
+    const rankTitle = document.getElementById('rankTitle');
+    const rankDescription = document.getElementById('rankDescription');
+    if (rankName && rankTitle && rankDescription) {
+        console.log('Found rank elements, updating with updateStarStates()');
+        updateStarStates();
+    }
+
+    const chapterTitle = document.getElementById('chapterTitle');
+    const studentsLabel = document.getElementById('studentsLabel');
+    const newStudentInput = document.getElementById('newStudentName');
+    const addButton = document.getElementById('addStudentButton');
+    const addStudentLabel = document.getElementById('addStudentLabel');
+    const notesLabel = document.getElementById('notesLabel');
+    const studentNotes = document.getElementById('studentNotes');
+    const saveNotesButton = document.getElementById('saveNotesButton');
+    if (chapterTitle && studentsLabel) {
+        chapterTitle.textContent = translations[lang].menuStudents;
+        studentsLabel.textContent = translations[lang].studentsLabel;
+        newStudentInput.placeholder = translations[lang].studentNamePlaceholder;
+        addButton.textContent = translations[lang].addButton;
+        addStudentLabel.textContent = translations[lang].addNewStudent;
+        notesLabel.textContent = translations[lang].notesLabel;
+        studentNotes.placeholder = translations[lang].notesPlaceholder;
+        if (saveNotesButton) {
+            saveNotesButton.textContent = translations[lang].saveNotesButton;
+        }
+        console.log(`Updated students.html title, label, placeholder, button to ${lang}`);
+    }
+
+    const infoTitle = document.getElementById('infoTitle');
+    const gettingStartedTitle = document.getElementById('gettingStartedTitle');
+    const gettingStartedText = document.getElementById('gettingStartedText');
+    const understandingProgressTitle = document.getElementById('understandingProgressTitle');
+    const understandingProgressText = document.getElementById('understandingProgressText');
+    const navigatingSiteTitle = document.getElementById('navigatingSiteTitle');
+    const navigatingSiteText = document.getElementById('navigatingSiteText');
+    const managingUsersTitle = document.getElementById('managingUsersTitle');
+    const managingUsersText = document.getElementById('managingUsersText');
+    if (infoTitle) {
+        infoTitle.textContent = translations[lang].infoTitle;
+        gettingStartedTitle.textContent = translations[lang].gettingStartedTitle;
+        gettingStartedText.textContent = translations[lang].gettingStartedText;
+        understandingProgressTitle.textContent = translations[lang].understandingProgressTitle;
+        understandingProgressText.textContent = translations[lang].understandingProgressText;
+        navigatingSiteTitle.textContent = translations[lang].navigatingSiteTitle;
+        navigatingSiteText.textContent = translations[lang].navigatingSiteText;
+        managingUsersTitle.textContent = translations[lang].managingUsersTitle;
+        managingUsersText.textContent = translations[lang].managingUsersText;
+        console.log(`Updated info.html content to ${lang}`);
+    }
+}
+
+function setInitialLanguage() {
+    const hash = window.location.hash.replace('#', '').toLowerCase();
+    let lang = hash === 'swedish' ? 'sv' : hash === 'english' ? 'en' : null;
+    if (!lang) {
+        lang = localStorage.getItem('language') || 'sv';
+    }
+    switchLanguage(lang);
+}
+
 function initializeMenu() {
     const studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
     const toggle = document.querySelector('.dropdown-toggle');
@@ -346,171 +463,6 @@ function initializeMenu() {
     });
 }
 
-// Update switchLanguage
-function switchLanguage(lang) {
-    localStorage.setItem('language', lang);
-    console.log(`Switching language to: ${lang}`);
-
-    document.querySelectorAll('.menu-link').forEach(link => {
-        const href = link.getAttribute('href')?.toLowerCase();
-        if (href === 'index.html') {
-            link.textContent = translations[lang].menuFrontPage;
-        } else if (href === 'starmap.html') {
-            link.textContent = translations[lang].menuStarMap;
-        } else if (href === 'students.html') {
-            link.textContent = translations[lang].menuStudents;
-        } else if (link.classList.contains('submenu-link')) {
-            const chapterNum = href?.match(/chapter(\d+)\.html/)?.[1];
-            if (chapterNum) {
-                link.textContent = `${translations[lang].menuChapter} ${chapterNum}`;
-            }
-        }
-    });
-
-    const dropdownToggle = document.querySelector('.dropdown-toggle');
-    if (dropdownToggle) {
-        const arrow = document.querySelector('.toggle-arrow');
-        const isOpen = document.getElementById('chapters')?.classList.contains('active');
-        dropdownToggle.firstChild.textContent = translations[lang].menuChapters; // Text node before arrow
-        arrow.textContent = isOpen ? '▲' : '▼';
-    }
-
-    // Update popup text (shared across pages)
-    const popupWelcome = document.querySelector('#popupWelcome');
-    const popupIntro = document.querySelector('#popupIntro');
-    const popupTeacherNote = document.querySelector('#popupTeacherNote');
-    const popupEnterName = document.querySelector('#popupEnterName');
-    const submitNameButton = document.getElementById('submitNameButton');
-    if (popupWelcome) popupWelcome.textContent = translations[lang].popupWelcome;
-    if (popupIntro) popupIntro.textContent = translations[lang].popupIntro;
-    if (popupTeacherNote) popupTeacherNote.textContent = translations[lang].popupTeacherNote;
-    if (popupEnterName) popupEnterName.textContent = translations[lang].popupEnterName;
-    if (submitNameButton) submitNameButton.textContent = translations[lang].addButton;
-
-    // Update congrats message (Star Map specific)
-    const congratsMessage = document.getElementById('congratsMessage');
-    if (congratsMessage) congratsMessage.textContent = translations[lang].congratsMessage;
-
-    // Update chapter title (if present)
-    const chapterNumber = document.querySelector('.chapter-number');
-    const chapterName = document.querySelector('.chapter-name');
-    if (chapterNumber && chapterName) {
-        const chapterNum = window.location.pathname.match(/chapter(\d+)\.html/)?.[1];
-        if (chapterNum) {
-            chapterNumber.textContent = translations[lang][`chapter${chapterNum}`];
-            chapterName.textContent = translations[lang][`chapterName${chapterNum}`];
-        } else {
-            console.warn('No chapter number found in URL:', window.location.pathname);
-        }
-    }
-
-    // Update rank badge and textbox (if present)
-    const rankName = document.getElementById('rankName');
-    const rankTitle = document.getElementById('rankTitle');
-    const rankDescription = document.getElementById('rankDescription');
-    if (rankName && rankTitle && rankDescription) {
-        console.log('Found rank elements, updating with updateStarStates()');
-        updateStarStates();
-    }
-
-    // Update students.html specific elements
-    const chapterTitle = document.getElementById('chapterTitle');
-    const studentsLabel = document.getElementById('studentsLabel');
-    const newStudentInput = document.getElementById('newStudentName');
-    const addButton = document.getElementById('addStudentButton');
-    const addStudentLabel = document.getElementById('addStudentLabel');
-    const notesLabel = document.getElementById('notesLabel');
-    const studentNotes = document.getElementById('studentNotes');
-    const saveNotesButton = document.getElementById('saveNotesButton');
-    if (chapterTitle && studentsLabel) {
-        chapterTitle.textContent = translations[lang].menuStudents;
-        studentsLabel.textContent = translations[lang].studentsLabel;
-        newStudentInput.placeholder = translations[lang].studentNamePlaceholder;
-        addButton.textContent = translations[lang].addButton;
-        addStudentLabel.textContent = translations[lang].addNewStudent;
-        notesLabel.textContent = translations[lang].notesLabel;
-        studentNotes.placeholder = translations[lang].notesPlaceholder;
-        if (saveNotesButton) {
-            saveNotesButton.textContent = translations[lang].saveNotesButton;
-        }
-        console.log(`Updated students.html title, label, placeholder, button to ${lang}`);
-    }
-
-    // Update info.html specific elements
-    const infoTitle = document.getElementById('infoTitle');
-    const gettingStartedTitle = document.getElementById('gettingStartedTitle');
-    const gettingStartedText = document.getElementById('gettingStartedText');
-    const understandingProgressTitle = document.getElementById('understandingProgressTitle');
-    const understandingProgressText = document.getElementById('understandingProgressText');
-    const navigatingSiteTitle = document.getElementById('navigatingSiteTitle');
-    const navigatingSiteText = document.getElementById('navigatingSiteText');
-    const managingUsersTitle = document.getElementById('managingUsersTitle');
-    const managingUsersText = document.getElementById('managingUsersText');
-    if (infoTitle) {
-        infoTitle.textContent = translations[lang].infoTitle;
-        gettingStartedTitle.textContent = translations[lang].gettingStartedTitle;
-        gettingStartedText.textContent = translations[lang].gettingStartedText;
-        understandingProgressTitle.textContent = translations[lang].understandingProgressTitle;
-        understandingProgressText.textContent = translations[lang].understandingProgressText;
-        navigatingSiteTitle.textContent = translations[lang].navigatingSiteTitle;
-        navigatingSiteText.textContent = translations[lang].navigatingSiteText;
-        managingUsersTitle.textContent = translations[lang].managingUsersTitle;
-        managingUsersText.textContent = translations[lang].managingUsersText;
-        console.log(`Updated info.html content to ${lang}`);
-    }
-}
-
-// Function to set initial language on page load
-function setInitialLanguage() {
-    const hash = window.location.hash.replace('#', '').toLowerCase();
-    let lang = hash === 'swedish' ? 'sv' : hash === 'english' ? 'en' : null;
-    if (!lang) {
-        lang = localStorage.getItem('language') || 'sv';
-    }
-    switchLanguage(lang);
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-    setInitialLanguage();
-    updateStarStates();
-    initializeMenu();
-
-    const namePopup = document.getElementById('namePopup');
-    if (namePopup && !JSON.parse(localStorage.getItem('starAcademyStudents'))?.currentStudent) {
-        namePopup.style.display = 'flex';
-    }
-
-    // Add popup event listeners
-    const nameInput = document.getElementById('nameInput');
-    const submitNameButton = document.getElementById('submitNameButton');
-    if (nameInput) {
-        nameInput.addEventListener('keypress', (event) => {
-            if (event.key === 'Enter') saveName();
-        });
-    }
-    if (submitNameButton) {
-        submitNameButton.addEventListener('click', saveName);
-    }
-
-    console.log('Running active page detection script');
-    const currentPath = window.location.pathname.toLowerCase();
-    const links = document.querySelectorAll('.menu-link');
-    console.log(`Found ${links.length} menu links`);
-    links.forEach(link => {
-        const href = link.getAttribute('href')?.toLowerCase();
-        if (href) {
-            if (currentPath.endsWith(href) || (currentPath === '/' && href === 'index.html')) {
-                link.classList.add('active-page');
-                console.log(`Added .active-page to link: ${href} (matches ${currentPath})`);
-            } else {
-                console.log(`No match: currentPath=${currentPath}, href=${href}`);
-            }
-        } else {
-            console.error('Link missing href attribute:', link);
-        }
-    });
-});
-
 function saveName() {
     const nameInput = document.getElementById('nameInput');
     const namePopup = document.getElementById('namePopup');
@@ -532,8 +484,50 @@ function saveName() {
         studentsData.currentStudent = name;
         localStorage.setItem('starAcademyStudents', JSON.stringify(studentsData));
         namePopup.style.display = 'none';
-        initializeMenu(); // Refresh menu state
+        initializeMenu();
     } else {
         alert(translations[lang].addStudentNoName);
     }
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+    setInitialLanguage();
+    initializeMenu();
+
+    const namePopup = document.getElementById('namePopup');
+    const nameInput = document.getElementById('nameInput');
+    const submitNameButton = document.getElementById('submitNameButton');
+
+    if (namePopup && !JSON.parse(localStorage.getItem('starAcademyStudents'))?.currentStudent) {
+        namePopup.style.display = 'flex';
+    }
+
+    if (nameInput) {
+        nameInput.addEventListener('keypress', (event) => {
+            if (event.key === 'Enter') saveName();
+        });
+    }
+    if (submitNameButton) {
+        submitNameButton.addEventListener('click', saveName);
+    }
+
+    updateStarStates(); // Moved here to ensure DOM is ready
+
+    console.log('Running active page detection script');
+    const currentPath = window.location.pathname.toLowerCase();
+    const links = document.querySelectorAll('.menu-link');
+    console.log(`Found ${links.length} menu links`);
+    links.forEach(link => {
+        const href = link.getAttribute('href')?.toLowerCase();
+        if (href) {
+            if (currentPath.endsWith(href) || (currentPath === '/' && href === 'index.html')) {
+                link.classList.add('active-page');
+                console.log(`Added .active-page to link: ${href} (matches ${currentPath})`);
+            } else {
+                console.log(`No match: currentPath=${currentPath}, href=${href}`);
+            }
+        } else {
+            console.error('Link missing href attribute:', link);
+        }
+    });
+});
