@@ -492,16 +492,16 @@ function saveName() {
 
 document.addEventListener('DOMContentLoaded', () => {
     setInitialLanguage();
+    updateStarStates(); // Back to original position
     initializeMenu();
 
     const namePopup = document.getElementById('namePopup');
-    const nameInput = document.getElementById('nameInput');
-    const submitNameButton = document.getElementById('submitNameButton');
-
     if (namePopup && !JSON.parse(localStorage.getItem('starAcademyStudents'))?.currentStudent) {
         namePopup.style.display = 'flex';
     }
 
+    const nameInput = document.getElementById('nameInput');
+    const submitNameButton = document.getElementById('submitNameButton');
     if (nameInput) {
         nameInput.addEventListener('keypress', (event) => {
             if (event.key === 'Enter') saveName();
@@ -510,8 +510,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (submitNameButton) {
         submitNameButton.addEventListener('click', saveName);
     }
-
-    updateStarStates(); // Moved here to ensure DOM is ready
 
     console.log('Running active page detection script');
     const currentPath = window.location.pathname.toLowerCase();
