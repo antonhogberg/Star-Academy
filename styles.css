@@ -1486,3 +1486,37 @@ body {
         overflow-y: auto;
     }
 }
+
+.menu-dropdown {
+    width: 80%;
+    margin: 0 auto;
+}
+
+.dropdown-toggle {
+    cursor: pointer;
+    display: block;
+    padding: 10px 15px;
+    border-bottom: 1px solid #ccc;
+    font-family: Cochin, Georgia, Arial, sans-serif;
+    font-size: 18px;
+    color: #000;
+}
+
+.submenu {
+    display: none; /* Hidden by default, toggled by JS */
+    padding-left: 20px;
+}
+
+.submenu.active {
+    display: block;
+}
+
+.submenu-link {
+    font-size: 16px;
+    padding: 8px 15px;
+}
+
+/* Ensure submenu fits within menu */
+.menu {
+    padding-bottom: 20px; /* Extra space for submenu */
+}

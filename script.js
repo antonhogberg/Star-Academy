@@ -55,7 +55,8 @@ const translations = {
         managingUsersTitle: "Managing Users",
         managingUsersText: "If you’re a teacher or have multiple users, visit the 'Manage Students' page to add students, switch between them, and add notes about their progress. Each student’s progress is saved separately.",
         menuStarMap: "Star Map",
-        congratsMessage: "Congratulations! You’ve completed the Star Map! 🌟"
+        congratsMessage: "Congratulations! You’ve completed the Star Map! 🌟",
+        menuChapters: "Chapters"
     },
     sv: {
         menuFrontPage: "Stjärnöversikt",
@@ -112,7 +113,8 @@ const translations = {
         managingUsersTitle: "Hantera användare",
         managingUsersText: "Om du är lärare eller har flera användare, besök sidan 'Hantera elever' för att lägga till elever, växla mellan dem och lägga till anteckningar om deras framsteg. Varje elevs framsteg sparas separat.",
         menuStarMap: "Stjärnkarta",
-        congratsMessage: "Grattis! Du har slutfört Stjärnkartan! 🌟"
+        congratsMessage: "Grattis! Du har slutfört Stjärnkartan! 🌟",
+        menuChapters: "Kapitel"
     }
 };
 
@@ -314,27 +316,62 @@ function updateStarStates() {
     }
 }
 
-// Update switchLanguage to set the new popup text
+function initializeMenu() {
+    const studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
+    const toggle = document.querySelector('.dropdown-toggle');
+    const submenu = document.getElementById('chapters');
+
+    if (!toggle || !submenu) return;
+
+    // Load saved state
+    const isOpen = studentsData.students[studentsData.currentStudent]?.menuChaptersOpen ?? true; // Default to open
+    if (isOpen) {
+        submenu.classList.add('active');
+        toggle.textContent = toggle.textContent.replace('▼', '▲');
+    } else {
+        submenu.classList.remove('active');
+        toggle.textContent = toggle.textContent.replace('▲', '▼');
+    }
+
+    toggle.addEventListener('click', () => {
+        const isCurrentlyOpen = submenu.classList.contains('active');
+        submenu.classList.toggle('active');
+        toggle.textContent = toggle.textContent.replace(isCurrentlyOpen ? '▲' : '▼', isCurrentlyOpen ? '▼' : '▲');
+
+        // Save state
+        const updatedStudentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
+        if (updatedStudentsData.currentStudent) {
+            updatedStudentsData.students[updatedStudentsData.currentStudent].menuChaptersOpen = !isCurrentlyOpen;
+            localStorage.setItem('starAcademyStudents', JSON.stringify(updatedStudentsData));
+        }
+    });
+}
+
+// Update switchLanguage
 function switchLanguage(lang) {
     localStorage.setItem('language', lang);
     console.log(`Switching language to: ${lang}`);
 
-    // Update menu links
     document.querySelectorAll('.menu-link').forEach(link => {
-        const href = link.getAttribute('href').toLowerCase();
+        const href = link.getAttribute('href')?.toLowerCase();
         if (href === 'index.html') {
             link.textContent = translations[lang].menuFrontPage;
-        } else if (href === 'students.html') {
-            link.textContent = translations[lang].menuStudents;
         } else if (href === 'starmap.html') {
             link.textContent = translations[lang].menuStarMap;
-        } else {
-            const chapterNum = href.match(/chapter(\d+)\.html/)?.[1];
+        } else if (href === 'students.html') {
+            link.textContent = translations[lang].menuStudents;
+        } else if (link.classList.contains('submenu-link')) {
+            const chapterNum = href?.match(/chapter(\d+)\.html/)?.[1];
             if (chapterNum) {
                 link.textContent = `${translations[lang].menuChapter} ${chapterNum}`;
             }
         }
     });
+
+    const dropdownToggle = document.querySelector('.dropdown-toggle');
+    if (dropdownToggle) {
+        dropdownToggle.textContent = translations[lang].menuChapters + ' ▼';
+    }
 
     // Update popup text (shared across pages)
     const popupWelcome = document.querySelector('#popupWelcome');
@@ -434,6 +471,7 @@ function setInitialLanguage() {
 document.addEventListener('DOMContentLoaded', () => {
     setInitialLanguage();
     updateStarStates();
+    initializeMenu(); // Add this
 
     console.log('Running active page detection script');
     const currentPath = window.location.pathname.toLowerCase();
