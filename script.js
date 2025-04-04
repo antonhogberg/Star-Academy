@@ -55,8 +55,7 @@ const translations = {
         managingUsersTitle: "Managing Users",
         managingUsersText: "If you’re a teacher or have multiple users, visit the 'Manage Students' page to add students, switch between them, and add notes about their progress. Each student’s progress is saved separately.",
         menuStarMap: "Star Map",
-        congratsMessage: "Congratulations! You’ve completed the Star Map! 🌟",
-        menuChapters: "Chapters"
+        congratsMessage: "Congratulations! You’ve completed the Star Map! 🌟"
     },
     sv: {
         menuFrontPage: "Stjärnöversikt",
@@ -113,8 +112,7 @@ const translations = {
         managingUsersTitle: "Hantera användare",
         managingUsersText: "Om du är lärare eller har flera användare, besök sidan 'Hantera elever' för att lägga till elever, växla mellan dem och lägga till anteckningar om deras framsteg. Varje elevs framsteg sparas separat.",
         menuStarMap: "Stjärnkarta",
-        congratsMessage: "Grattis! Du har slutfört Stjärnkartan! 🌟",
-        menuChapters: "Kapitel"
+        congratsMessage: "Grattis! Du har slutfört Stjärnkartan! 🌟"
     }
 };
 
@@ -316,49 +314,45 @@ function updateStarStates() {
     }
 }
 
+// Update switchLanguage to set the new popup text
 function switchLanguage(lang) {
     localStorage.setItem('language', lang);
     console.log(`Switching language to: ${lang}`);
 
+    // Update menu links
     document.querySelectorAll('.menu-link').forEach(link => {
-        const href = link.getAttribute('href')?.toLowerCase();
+        const href = link.getAttribute('href').toLowerCase();
         if (href === 'index.html') {
             link.textContent = translations[lang].menuFrontPage;
-        } else if (href === 'starmap.html') {
-            link.textContent = translations[lang].menuStarMap;
         } else if (href === 'students.html') {
             link.textContent = translations[lang].menuStudents;
-        } else if (link.classList.contains('submenu-link')) {
-            const chapterNum = href?.match(/chapter(\d+)\.html/)?.[1];
+        } else if (href === 'starmap.html') {
+            link.textContent = translations[lang].menuStarMap;
+        } else {
+            const chapterNum = href.match(/chapter(\d+)\.html/)?.[1];
             if (chapterNum) {
                 link.textContent = `${translations[lang].menuChapter} ${chapterNum}`;
             }
         }
     });
 
-    const dropdownToggle = document.querySelector('.dropdown-toggle');
-    if (dropdownToggle) {
-        const arrow = document.querySelector('.toggle-arrow');
-        const isOpen = document.getElementById('chapters')?.classList.contains('active');
-        dropdownToggle.firstChild.textContent = translations[lang].menuChapters;
-        arrow.textContent = isOpen ? '▲' : '▼';
-    }
-
+    // Update popup text (shared across pages)
     const popupWelcome = document.querySelector('#popupWelcome');
     const popupIntro = document.querySelector('#popupIntro');
     const popupTeacherNote = document.querySelector('#popupTeacherNote');
     const popupEnterName = document.querySelector('#popupEnterName');
     const submitNameButton = document.getElementById('submitNameButton');
-
     if (popupWelcome) popupWelcome.textContent = translations[lang].popupWelcome;
     if (popupIntro) popupIntro.textContent = translations[lang].popupIntro;
     if (popupTeacherNote) popupTeacherNote.textContent = translations[lang].popupTeacherNote;
     if (popupEnterName) popupEnterName.textContent = translations[lang].popupEnterName;
     if (submitNameButton) submitNameButton.textContent = translations[lang].addButton;
 
+    // Update congrats message (Star Map specific)
     const congratsMessage = document.getElementById('congratsMessage');
     if (congratsMessage) congratsMessage.textContent = translations[lang].congratsMessage;
 
+    // Update chapter title (if present)
     const chapterNumber = document.querySelector('.chapter-number');
     const chapterName = document.querySelector('.chapter-name');
     if (chapterNumber && chapterName) {
@@ -371,6 +365,7 @@ function switchLanguage(lang) {
         }
     }
 
+    // Update rank badge and textbox (if present)
     const rankName = document.getElementById('rankName');
     const rankTitle = document.getElementById('rankTitle');
     const rankDescription = document.getElementById('rankDescription');
@@ -379,6 +374,7 @@ function switchLanguage(lang) {
         updateStarStates();
     }
 
+    // Update students.html specific elements
     const chapterTitle = document.getElementById('chapterTitle');
     const studentsLabel = document.getElementById('studentsLabel');
     const newStudentInput = document.getElementById('newStudentName');
@@ -401,6 +397,7 @@ function switchLanguage(lang) {
         console.log(`Updated students.html title, label, placeholder, button to ${lang}`);
     }
 
+    // Update info.html specific elements
     const infoTitle = document.getElementById('infoTitle');
     const gettingStartedTitle = document.getElementById('gettingStartedTitle');
     const gettingStartedText = document.getElementById('gettingStartedText');
@@ -424,6 +421,7 @@ function switchLanguage(lang) {
     }
 }
 
+// Function to set initial language on page load
 function setInitialLanguage() {
     const hash = window.location.hash.replace('#', '').toLowerCase();
     let lang = hash === 'swedish' ? 'sv' : hash === 'english' ? 'en' : null;
@@ -433,83 +431,9 @@ function setInitialLanguage() {
     switchLanguage(lang);
 }
 
-function initializeMenu() {
-    const studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
-    const toggle = document.querySelector('.dropdown-toggle');
-    const arrow = document.querySelector('.toggle-arrow');
-    const submenu = document.getElementById('chapters');
-
-    if (!toggle || !submenu || !arrow) return;
-
-    const isOpen = studentsData.students[studentsData.currentStudent]?.menuChaptersOpen ?? true;
-    if (isOpen) {
-        submenu.classList.add('active');
-        arrow.textContent = '▲';
-    } else {
-        submenu.classList.remove('active');
-        arrow.textContent = '▼';
-    }
-
-    toggle.addEventListener('click', () => {
-        const isCurrentlyOpen = submenu.classList.contains('active');
-        submenu.classList.toggle('active');
-        arrow.textContent = isCurrentlyOpen ? '▼' : '▲';
-
-        const updatedStudentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
-        if (updatedStudentsData.currentStudent) {
-            updatedStudentsData.students[updatedStudentsData.currentStudent].menuChaptersOpen = !isCurrentlyOpen;
-            localStorage.setItem('starAcademyStudents', JSON.stringify(updatedStudentsData));
-        }
-    });
-}
-
-function saveName() {
-    const nameInput = document.getElementById('nameInput');
-    const namePopup = document.getElementById('namePopup');
-    let studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
-    const name = nameInput?.value.trim();
-    const lang = localStorage.getItem('language') || 'sv';
-
-    if (name) {
-        if (studentsData.students[name]) {
-            alert(translations[lang].addStudentDuplicate);
-            return;
-        }
-        studentsData.students[name] = {
-            name: name,
-            progress: {},
-            rank: "Explorer",
-            menuChaptersOpen: true
-        };
-        studentsData.currentStudent = name;
-        localStorage.setItem('starAcademyStudents', JSON.stringify(studentsData));
-        namePopup.style.display = 'none';
-        initializeMenu();
-    } else {
-        alert(translations[lang].addStudentNoName);
-    }
-}
-
 document.addEventListener('DOMContentLoaded', () => {
     setInitialLanguage();
-    updateStarStates(); // Back to original position
-    initializeMenu();
-
-    const namePopup = document.getElementById('namePopup');
-    if (namePopup && !JSON.parse(localStorage.getItem('starAcademyStudents'))?.currentStudent) {
-        namePopup.style.display = 'flex';
-    }
-
-    const nameInput = document.getElementById('nameInput');
-    const submitNameButton = document.getElementById('submitNameButton');
-    if (nameInput) {
-        nameInput.addEventListener('keypress', (event) => {
-            if (event.key === 'Enter') saveName();
-        });
-    }
-    if (submitNameButton) {
-        submitNameButton.addEventListener('click', saveName);
-    }
+    updateStarStates();
 
     console.log('Running active page detection script');
     const currentPath = window.location.pathname.toLowerCase();
