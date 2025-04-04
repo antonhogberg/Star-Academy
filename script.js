@@ -56,7 +56,7 @@ const translations = {
         managingUsersText: "If you’re a teacher or have multiple users, visit the 'Manage Students' page to add students, switch between them, and add notes about their progress. Each student’s progress is saved separately.",
         menuStarMap: "Star Map",
         congratsMessage: "Congratulations! You’ve completed the Star Map! 🌟",
-        menuChapters: "Chapters" // Added for dropdown toggle
+        menuChapters: "Chapters" // For future submenu
     },
     sv: {
         menuFrontPage: "Stjärnöversikt",
@@ -114,7 +114,7 @@ const translations = {
         managingUsersText: "Om du är lärare eller har flera användare, besök sidan 'Hantera elever' för att lägga till elever, växla mellan dem och lägga till anteckningar om deras framsteg. Varje elevs framsteg sparas separat.",
         menuStarMap: "Stjärnkarta",
         congratsMessage: "Grattis! Du har slutfört Stjärnkartan! 🌟",
-        menuChapters: "Kapitel" // Added for dropdown toggle
+        menuChapters: "Kapitel" // For future submenu
     }
 };
 
@@ -316,13 +316,12 @@ function updateStarStates() {
     }
 }
 
-// Update switchLanguage to handle dropdown toggle and ensure all links translate
+// Update switchLanguage to handle flat menu structure
 function switchLanguage(lang) {
     localStorage.setItem('language', lang);
     console.log(`Switching language to: ${lang}`);
 
-    // Update top-level menu links
-    document.querySelectorAll('.menu-link:not(.submenu-link)').forEach(link => {
+    document.querySelectorAll('.menu-link').forEach(link => {
         const href = link.getAttribute('href')?.toLowerCase();
         if (href === 'index.html') {
             link.textContent = translations[lang].menuFrontPage;
@@ -330,21 +329,11 @@ function switchLanguage(lang) {
             link.textContent = translations[lang].menuStudents;
         } else if (href === 'starmap.html') {
             link.textContent = translations[lang].menuStarMap;
-        }
-    });
-
-    // Update dropdown toggle
-    const dropdownToggle = document.querySelector('.dropdown-toggle');
-    if (dropdownToggle) {
-        dropdownToggle.firstChild.textContent = translations[lang].menuChapters; // Set "Chapters" or "Kapitel"
-    }
-
-    // Update submenu links
-    document.querySelectorAll('.submenu-link').forEach(link => {
-        const href = link.getAttribute('href')?.toLowerCase();
-        const chapterNum = href?.match(/chapter(\d+)\.html/)?.[1];
-        if (chapterNum) {
-            link.textContent = `${translations[lang].menuChapter} ${chapterNum}`;
+        } else {
+            const chapterNum = href?.match(/chapter(\d+)\.html/)?.[1];
+            if (chapterNum) {
+                link.textContent = `${translations[lang].menuChapter} ${chapterNum}`;
+            }
         }
     });
 
