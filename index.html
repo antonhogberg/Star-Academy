@@ -84,6 +84,11 @@
             menu.style.left = '-250px';
             submenu.style.display = 'none';
     
+            // Fallback style for chapters-toggle
+            chaptersToggle.style.color = '#000'; /* Black to match design */
+            chaptersToggle.style.display = 'block';
+            chaptersToggle.style.textAlign = 'center';
+    
             hamburger.addEventListener('click', () => {
                 const isExpanded = hamburger.getAttribute('aria-expanded') === 'true';
                 hamburger.setAttribute('aria-expanded', !isExpanded);
