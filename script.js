@@ -49,14 +49,13 @@ const translations = {
         saveNotesButton: "Save notes",
         infoTitle: "How to Use Star Academy",
         gettingStartedTitle: "Getting Started",
-        gettingStartedText: "When you first visit Star Academy, you’ll be asked to enter your name. This creates your profile, where your progress will be saved. You’ll start as an Explorer, ready to begin your piano journey!",
+        gettingStartedText: "When you first visit Star Academy, you’ll be asked to enter your name. This creates your profile, where your progress will be saved. You’ll start as an Explorer, ready to beginあなたのピアノの旅を始めましょう！",
         understandingProgressTitle: "Understanding Your Progress",
         understandingProgressText: "The homepage shows your progress with stars and chevrons. The 16 bottom stars track your first steps—complete 16 exercises to become a Star Cadet! The chevrons above represent the four parts across seven chapters. Fill each chevron’s stars by completing exercises to advance your rank, from Explorer to Star Admiral.",
         navigatingSiteTitle: "Navigating the Site",
         navigatingSiteText: "Use the menu (☰) in the top-left corner to access the homepage, chapters, student management, and this info page. Each chapter has four parts with four exercises each. Complete exercises to earn stars and progress through the ranks!",
         managingUsersTitle: "Managing Users",
         managingUsersText: "If you’re a teacher or have multiple users, visit the 'Manage Students' page to add students, switch between them, and add notes about their progress. Each student’s progress is saved separately.",
-        menuStarMap: "Star Map",
         congratsMessage: "Congratulations! You’ve completed the Star Map! 🌟"
     },
     sv: {
@@ -115,7 +114,6 @@ const translations = {
         navigatingSiteText: "Använd menyn (☰) i det övre vänstra hörnet för att komma åt hemsidan, kapitlen, elevhantering och denna infosida. Varje kapitel har fyra delar med fyra övningar vardera. Slutför övningar för att tjäna stjärnor och avancera genom rankerna!",
         managingUsersTitle: "Hantera användare",
         managingUsersText: "Om du är lärare eller har flera användare, besök sidan 'Hantera elever' för att lägga till elever, växla mellan dem och lägga till anteckningar om deras framsteg. Varje elevs framsteg sparas separat.",
-        menuStarMap: "Stjärnkarta",
         congratsMessage: "Grattis! Du har slutfört Stjärnkartan! 🌟"
     }
 };
@@ -287,7 +285,6 @@ function updateStarStates() {
         studentsData.students[studentsData.currentStudent].rank = newRank;
         localStorage.setItem('starAcademyStudents', JSON.stringify(studentsData));
 
-        // Keep the all-chapters logic for top rank
         const allChaptersComplete = [1, 2, 3, 4, 5, 6, 7].every(chapter => {
             const chapterExercises = Array.from({ length: 16 }, (_, i) =>
                 `exercise${chapter}:${Math.ceil((i + 1) / 4)}:${(i % 4) + 1}`
@@ -431,7 +428,6 @@ function switchLanguage(lang) {
     }
 }
 
-// Function to set initial language on page load
 function setInitialLanguage() {
     const hash = window.location.hash.replace('#', '').toLowerCase();
     let lang = hash === 'swedish' ? 'sv' : hash === 'english' ? 'en' : null;
@@ -441,7 +437,19 @@ function setInitialLanguage() {
     switchLanguage(lang);
 }
 
-document.addEventListener('DOMContentLoaded', () => {
+// Ensure script.js runs after DOM and inline script
+function waitForDOM() {
+    return new Promise(resolve => {
+        if (document.readyState === 'complete' || document.readyState === 'interactive') {
+            resolve();
+        } else {
+            document.addEventListener('DOMContentLoaded', resolve);
+        }
+    });
+}
+
+waitForDOM().then(() => {
+    console.log('script.js DOM fully loaded, running initial setup');
     setInitialLanguage();
     updateStarStates();
 
