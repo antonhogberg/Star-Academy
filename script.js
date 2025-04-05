@@ -319,9 +319,8 @@ function switchLanguage(lang) {
     localStorage.setItem('language', lang);
     console.log(`Switching language to: ${lang}`);
 
-    // Update menu links
     document.querySelectorAll('.menu-link').forEach(link => {
-        const href = link.getAttribute('href').toLowerCase();
+        const href = link.getAttribute('href')?.toLowerCase();
         if (href === 'index.html') {
             link.textContent = translations[lang].menuFrontPage;
         } else if (href === 'students.html') {
@@ -329,12 +328,17 @@ function switchLanguage(lang) {
         } else if (href === 'starmap.html') {
             link.textContent = translations[lang].menuStarMap;
         } else {
-            const chapterNum = href.match(/chapter(\d+)\.html/)?.[1];
+            const chapterNum = href?.match(/chapter(\d+)\.html/)?.[1];
             if (chapterNum) {
                 link.textContent = `${translations[lang].menuChapter} ${chapterNum}`;
             }
         }
     });
+
+    const chaptersToggle = document.querySelector('.chapters-toggle');
+    if (chaptersToggle) {
+        chaptersToggle.textContent = translations[lang].menuChapters;
+    }
 
     // Update popup text (shared across pages)
     const popupWelcome = document.querySelector('#popupWelcome');
