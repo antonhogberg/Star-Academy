@@ -55,8 +55,7 @@ const translations = {
         managingUsersTitle: "Managing Users",
         managingUsersText: "If you’re a teacher or have multiple users, visit the 'Manage Students' page to add students, switch between them, and add notes about their progress. Each student’s progress is saved separately.",
         menuStarMap: "Star Map",
-        congratsMessage: "Congratulations! You’ve completed the Star Map! 🌟",
-        menuChapters: "Chapters"
+        congratsMessage: "Congratulations! You’ve completed the Star Map! 🌟"
     },
     sv: {
         menuFrontPage: "Stjärnöversikt",
@@ -113,8 +112,7 @@ const translations = {
         managingUsersTitle: "Hantera användare",
         managingUsersText: "Om du är lärare eller har flera användare, besök sidan 'Hantera elever' för att lägga till elever, växla mellan dem och lägga till anteckningar om deras framsteg. Varje elevs framsteg sparas separat.",
         menuStarMap: "Stjärnkarta",
-        congratsMessage: "Grattis! Du har slutfört Stjärnkartan! 🌟",
-        menuChapters: "Kapitel"
+        congratsMessage: "Grattis! Du har slutfört Stjärnkartan! 🌟"
     }
 };
 
@@ -285,6 +283,7 @@ function updateStarStates() {
         studentsData.students[studentsData.currentStudent].rank = newRank;
         localStorage.setItem('starAcademyStudents', JSON.stringify(studentsData));
 
+        // Keep the all-chapters logic for top rank
         const allChaptersComplete = [1, 2, 3, 4, 5, 6, 7].every(chapter => {
             const chapterExercises = Array.from({ length: 16 }, (_, i) =>
                 `exercise${chapter}:${Math.ceil((i + 1) / 4)}:${(i % 4) + 1}`
@@ -315,36 +314,24 @@ function updateStarStates() {
     }
 }
 
+// Update switchLanguage to set the new popup text
 function switchLanguage(lang) {
     localStorage.setItem('language', lang);
     console.log(`Switching language to: ${lang}`);
 
-    // Update top-level menu links (only <a> tags with href)
-    document.querySelectorAll('.menu-link:not(.submenu-link):not(.dropdown-toggle)[href]').forEach(link => {
-        const href = link.getAttribute('href').toLowerCase();
+    document.querySelectorAll('.menu-link').forEach(link => {
+        const href = link.getAttribute('href')?.toLowerCase();
         if (href === 'index.html') {
             link.textContent = translations[lang].menuFrontPage;
         } else if (href === 'students.html') {
             link.textContent = translations[lang].menuStudents;
         } else if (href === 'starmap.html') {
             link.textContent = translations[lang].menuStarMap;
-        }
-    });
-
-    // Update dropdown toggle
-    const dropdownToggle = document.querySelector('.dropdown-toggle');
-    if (dropdownToggle) {
-        const textNode = Array.from(dropdownToggle.childNodes).find(node => node.nodeType === Node.TEXT_NODE) || 
-                        dropdownToggle.insertBefore(document.createTextNode(''), dropdownToggle.querySelector('.toggle-arrow'));
-        textNode.textContent = translations[lang].menuChapters + ' ';
-    }
-
-    // Update submenu links
-    document.querySelectorAll('.submenu-link').forEach(link => {
-        const href = link.getAttribute('href')?.toLowerCase();
-        const chapterNum = href?.match(/chapter(\d+)\.html/)?.[1];
-        if (chapterNum) {
+        } else if (href && href.match(/chapter(\d+)\.html/)) {
+            const chapterNum = href.match(/chapter(\d+)\.html/)[1];
             link.textContent = `${translations[lang].menuChapter} ${chapterNum}`;
+        } else if (!href && link.classList.contains('chapters-toggle')) {
+            link.textContent = translations[lang].menuChapters;
         }
     });
 
@@ -433,6 +420,7 @@ function switchLanguage(lang) {
     }
 }
 
+// Function to set initial language on page load
 function setInitialLanguage() {
     const hash = window.location.hash.replace('#', '').toLowerCase();
     let lang = hash === 'swedish' ? 'sv' : hash === 'english' ? 'en' : null;
@@ -442,18 +430,7 @@ function setInitialLanguage() {
     switchLanguage(lang);
 }
 
-function waitForDOM() {
-    return new Promise(resolve => {
-        if (document.readyState === 'complete' || document.readyState === 'interactive') {
-            resolve();
-        } else {
-            document.addEventListener('DOMContentLoaded', resolve);
-        }
-    });
-}
-
-waitForDOM().then(() => {
-    console.log('DOM fully loaded, running initial setup');
+document.addEventListener('DOMContentLoaded', () => {
     setInitialLanguage();
     updateStarStates();
 
@@ -471,7 +448,7 @@ waitForDOM().then(() => {
                 console.log(`No match: currentPath=${currentPath}, href=${href}`);
             }
         } else {
-            console.log('Link missing href attribute:', link);
+            console.error('Link missing href attribute:', link);
         }
     });
 });

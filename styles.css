@@ -1486,3 +1486,24 @@ body {
         overflow-y: auto;
     }
 }
+
+.menu-item {
+    position: relative;
+}
+
+.chapters-toggle::after {
+    content: '▼';
+    margin-left: 5px;
+}
+
+.submenu {
+    display: none;
+    position: relative; /* Stays within sliding menu */
+    left: 0;
+    padding-left: 20px; /* Indent submenu */
+    background-color: #444; /* Slightly lighter for contrast */
+}
+
+.menu-item:hover .submenu {
+    display: block;
+}
