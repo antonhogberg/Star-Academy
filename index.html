@@ -6,149 +6,143 @@
     <title>Stjärnakademien - Star Academy</title>
     <link rel="stylesheet" href="styles.css">
     <script>
-    // Dynamically set viewport height to account for navigation bar
-    function setViewportHeight() {
-        let vh = window.innerHeight * 0.01;
-        document.documentElement.style.setProperty('--vh', `${vh}px`);
-    }
-    window.addEventListener('resize', setViewportHeight);
-    window.addEventListener('orientationchange', setViewportHeight);
-    setViewportHeight();
-
-    // Handle name and menu functionality
-    document.addEventListener('DOMContentLoaded', () => {
-        let studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || {
-            students: {},
-            currentStudent: localStorage.getItem('userName') || ''
-        };
-        const userNameDisplay = document.getElementById('userNameDisplay');
-        const namePopup = document.getElementById('namePopup');
-        const nameInput = document.getElementById('nameInput');
-
-        // Initialize first student if none exist
-        if (!studentsData.currentStudent) {
-            if (namePopup) namePopup.style.display = 'flex';
-        } else {
-            userNameDisplay.textContent = studentsData.currentStudent;
+        // Dynamically set viewport height to account for navigation bar
+        function setViewportHeight() {
+            let vh = window.innerHeight * 0.01;
+            document.documentElement.style.setProperty('--vh', `${vh}px`);
         }
-
-        // Save name function
-        function saveName() {
-            const name = nameInput?.value.trim();
-            if (name && userNameDisplay) {
-                studentsData.students[name] = {
-                    name: name,
-                    progress: {},
-                    rank: "Explorer"
-                };
-                for (let chapter = 1; chapter <= 7; chapter++) {
-                    for (let part = 1; part <= 4; part++) {
-                        for (let exercise = 1; exercise <= 4; exercise++) {
-                            const key = `exercise${chapter}:${part}:${exercise}`;
-                            studentsData.students[name].progress[key] = 
-                                localStorage.getItem(key) || "0";
-                            localStorage.removeItem(key); // Clean up old keys
+        window.addEventListener('resize', setViewportHeight);
+        window.addEventListener('orientationchange', setViewportHeight);
+        setViewportHeight();
+    
+        // Handle name and menu functionality
+        document.addEventListener('DOMContentLoaded', () => {
+            let studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || {
+                students: {},
+                currentStudent: localStorage.getItem('userName') || ''
+            };
+            const userNameDisplay = document.getElementById('userNameDisplay');
+            const namePopup = document.getElementById('namePopup');
+            const nameInput = document.getElementById('nameInput');
+    
+            if (!studentsData.currentStudent) {
+                if (namePopup) namePopup.style.display = 'flex';
+            } else {
+                userNameDisplay.textContent = studentsData.currentStudent;
+            }
+    
+            function saveName() {
+                const name = nameInput?.value.trim();
+                if (name && userNameDisplay) {
+                    studentsData.students[name] = {
+                        name: name,
+                        progress: {},
+                        rank: "Explorer"
+                    };
+                    for (let chapter = 1; chapter <= 7; chapter++) {
+                        for (let part = 1; part <= 4; part++) {
+                            for (let exercise = 1; exercise <= 4; exercise++) {
+                                const key = `exercise${chapter}:${part}:${exercise}`;
+                                studentsData.students[name].progress[key] = 
+                                    localStorage.getItem(key) || "0";
+                                localStorage.removeItem(key);
+                            }
                         }
                     }
+                    studentsData.currentStudent = name;
+                    localStorage.setItem('starAcademyStudents', JSON.stringify(studentsData));
+                    userNameDisplay.textContent = name;
+                    if (namePopup) namePopup.style.display = 'none';
+                } else {
+                    alert('Please enter a name!');
                 }
-                studentsData.currentStudent = name;
-                localStorage.setItem('starAcademyStudents', JSON.stringify(studentsData));
-                userNameDisplay.textContent = name;
-                if (namePopup) namePopup.style.display = 'none';
-            } else {
-                alert('Please enter a name!');
             }
-        }
-
-        // Attach saveName to button and Enter key
-        const submitBtn = document.querySelector('button[onclick="saveName()"]');
-        if (submitBtn) submitBtn.addEventListener('click', saveName);
-        if (nameInput) nameInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') saveName();
-        });
-
-        // Menu functionality
-        const hamburger = document.querySelector('.hamburger');
-        const menu = document.querySelector('.menu');
-        const closeBtn = document.querySelector('.close-btn');
-        const chaptersToggle = document.querySelector('.chapters-toggle');
-        const submenu = document.querySelector('.submenu');
-
-        if (!hamburger || !menu || !closeBtn || !chaptersToggle || !submenu) {
-            console.error('Menu elements missing:', {
-                hamburger: !!hamburger,
-                menu: !!menu,
-                closeBtn: !!closeBtn,
-                chaptersToggle: !!chaptersToggle,
-                submenu: !!submenu
+    
+            const submitBtn = document.querySelector('button[onclick="saveName()"]');
+            if (submitBtn) submitBtn.addEventListener('click', saveName);
+            if (nameInput) nameInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') saveName();
             });
-            return;
-        }
-
-        menu.style.left = '-250px';
-        submenu.style.display = 'none'; // Ensure submenu starts hidden
-
-        hamburger.addEventListener('click', () => {
-            const isExpanded = hamburger.getAttribute('aria-expanded') === 'true';
-            hamburger.setAttribute('aria-expanded', !isExpanded);
-            if (!isExpanded) {
-                menu.classList.add('active');
-                menu.animate([{ left: '-250px' }, { left: '0' }], { duration: 300, easing: 'ease-in-out', fill: 'forwards' });
-            } else {
-                menu.animate([{ left: '0' }, { left: '-250px' }], { duration: 300, easing: 'ease-in-out', fill: 'forwards' }).onfinish = () => {
-                    menu.classList.remove('active');
-                    submenu.style.display = 'none'; // Reset submenu
-                };
+    
+            const hamburger = document.querySelector('.hamburger');
+            const menu = document.querySelector('.menu');
+            const closeBtn = document.querySelector('.close-btn');
+            const chaptersToggle = document.querySelector('.chapters-toggle');
+            const submenu = document.querySelector('.submenu');
+    
+            if (!hamburger || !menu || !closeBtn || !chaptersToggle || !submenu) {
+                console.error('Menu elements missing:', {
+                    hamburger: !!hamburger,
+                    menu: !!menu,
+                    closeBtn: !!closeBtn,
+                    chaptersToggle: !!chaptersToggle,
+                    submenu: !!submenu
+                });
+                return;
             }
-        });
-
-        closeBtn.addEventListener('click', () => {
-            hamburger.setAttribute('aria-expanded', 'false');
-            menu.animate([{ left: '0' }, { left: '-250px' }], { duration: 300, easing: 'ease-in-out', fill: 'forwards' }).onfinish = () => {
-                menu.classList.remove('active');
-                submenu.style.display = 'none'; // Reset submenu
-            };
-        });
-
-        document.querySelectorAll('.menu-link').forEach(link => {
-            link.addEventListener('click', () => {
+    
+            menu.style.left = '-250px';
+            submenu.style.display = 'none';
+    
+            hamburger.addEventListener('click', () => {
+                const isExpanded = hamburger.getAttribute('aria-expanded') === 'true';
+                hamburger.setAttribute('aria-expanded', !isExpanded);
+                if (!isExpanded) {
+                    menu.classList.add('active');
+                    menu.animate([{ left: '-250px' }, { left: '0' }], { duration: 300, easing: 'ease-in-out', fill: 'forwards' });
+                } else {
+                    menu.animate([{ left: '0' }, { left: '-250px' }], { duration: 300, easing: 'ease-in-out', fill: 'forwards' }).onfinish = () => {
+                        menu.classList.remove('active');
+                        submenu.style.display = 'none';
+                    };
+                }
+            });
+    
+            closeBtn.addEventListener('click', () => {
                 hamburger.setAttribute('aria-expanded', 'false');
                 menu.animate([{ left: '0' }, { left: '-250px' }], { duration: 300, easing: 'ease-in-out', fill: 'forwards' }).onfinish = () => {
                     menu.classList.remove('active');
-                    submenu.style.display = 'none'; // Reset submenu
+                    submenu.style.display = 'none';
                 };
             });
-        });
-
-        document.addEventListener('click', (e) => {
-            if (!hamburger.contains(e.target) && !menu.contains(e.target)) {
-                hamburger.setAttribute('aria-expanded', 'false');
-                menu.animate([{ left: '0' }, { left: '-250px' }], { duration: 300, easing: 'ease-in-out', fill: 'forwards' }).onfinish = () => {
-                    menu.classList.remove('active');
-                    submenu.style.display = 'none'; // Reset submenu
-                };
+    
+            document.querySelectorAll('.menu-link').forEach(link => {
+                link.addEventListener('click', () => {
+                    hamburger.setAttribute('aria-expanded', 'false');
+                    menu.animate([{ left: '0' }, { left: '-250px' }], { duration: 300, easing: 'ease-in-out', fill: 'forwards' }).onfinish = () => {
+                        menu.classList.remove('active');
+                        submenu.style.display = 'none';
+                    };
+                });
+            });
+    
+            document.addEventListener('click', (e) => {
+                if (!hamburger.contains(e.target) && !menu.contains(e.target)) {
+                    hamburger.setAttribute('aria-expanded', 'false');
+                    menu.animate([{ left: '0' }, { left: '-250px' }], { duration: 300, easing: 'ease-in-out', fill: 'forwards' }).onfinish = () => {
+                        menu.classList.remove('active');
+                        submenu.style.display = 'none';
+                    };
+                }
+            });
+    
+            chaptersToggle.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const isSubmenuVisible = submenu.style.display === 'block';
+                submenu.style.display = isSubmenuVisible ? 'none' : 'block';
+                console.log('Chapters toggle clicked, submenu display:', submenu.style.display);
+            });
+    
+            if (!chaptersToggle.textContent) {
+                chaptersToggle.textContent = 'Chapters';
+                console.log('Set fallback chaptersToggle text to: Chapters');
             }
+    
+            const lang = localStorage.getItem('language') || 'sv';
+            switchLanguage(lang);
+            updateStarStates();
         });
-
-        // Submenu toggle
-        chaptersToggle.addEventListener('click', (e) => {
-            e.stopPropagation(); // Prevent menu close
-            const isSubmenuVisible = submenu.style.display === 'block';
-            submenu.style.display = isSubmenuVisible ? 'none' : 'block';
-            console.log('Chapters toggle clicked, submenu display:', submenu.style.display);
-        });
-
-        // Fallback text if switchLanguage fails
-        if (!chaptersToggle.textContent) {
-            chaptersToggle.textContent = 'Chapters'; // Default English
-        }
-
-        // Set initial language and update star states from script.js
-        const lang = localStorage.getItem('language') || 'sv';
-        switchLanguage(lang);
-        updateStarStates();
-    });
-</script>
+    </script>
 </head>
 <body>
     <nav class="hamburger-nav">
