@@ -79,7 +79,6 @@ body {
     opacity: 0;
     transition: left 0.6s ease-in-out, opacity 0.3s ease-in-out, visibility 0s linear 0.3s;
     display: flex;
-    border: 2px solid red;
 }
 
 .menu::before {
@@ -106,7 +105,6 @@ body {
     border-bottom: 1px solid #444; /* Darker separating line for visibility */
     width: 80%;
     margin: 0 auto;
-    border: 2px solid blue;
 }
 
 .menu-link:last-child {
@@ -183,12 +181,11 @@ body {
     font-size: 18px;
     cursor: pointer;
     border-bottom: 1px solid #444;
-    width: 80%; /* 160px */
-    margin: 0 0 0 10px; /* Align left edge at 20px from menu's left (10px padding + 10px margin) */
+    width: 80%;
+    margin: 0 auto; /* Match .menu-link */
     text-align: left;
     text-decoration: none;
     position: relative;
-    border: 2px solid green;
 }
 
 .chapters-toggle::after {
@@ -208,14 +205,12 @@ body {
     margin: 0;
     padding: 0;
     width: 100%;
-    border: 2px solid purple;
 }
 
 .submenu li {
     padding: 0;
     margin: 0;
     width: 100%;
-    border: 2px solid orange;
 }
 
 .submenu li a {
@@ -225,11 +220,10 @@ body {
     text-decoration: none;
     font-family: Cochin, Georgia, Arial, sans-serif;
     font-size: 18px;
-    text-align: left; /* Align text left to match main menu */
+    text-align: left;
     border-bottom: 1px solid #444;
     width: 80%; /* 160px */
-    margin: 0 0 0 10px; /* Align left edge at 20px from menu's left, same as main menu */
-    border: 2px solid cyan;
+    margin: 0 auto; /* Match .menu-link */
 }
 
 .submenu li a:hover {
