@@ -330,7 +330,13 @@ function switchLanguage(lang) {
         } else {
             const chapterNum = href?.match(/chapter(\d+)\.html/)?.[1];
             if (chapterNum) {
-                link.textContent = `${translations[lang].menuChapter} ${chapterNum}`;
+                const span = link.querySelector('span');
+                if (span) {
+                    span.textContent = `${translations[lang].menuChapter} ${chapterNum}`;
+                } else {
+                    console.warn(`No <span> found inside chapter link: ${href}`);
+                    link.textContent = `${translations[lang].menuChapter} ${chapterNum}`; // Fallback
+                }
             }
         }
     });
