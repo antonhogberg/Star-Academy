@@ -5,6 +5,8 @@ const translations = {
         menuChapter: "Chapter",
         menuStudents: "Manage Students",
         menuInfo: "How to Use",
+        menuStarMap: "Star Map",
+        menuChapters: "Chapters",
         popupWelcome: "Welcome to the Star Map!",
         popupIntro: "Click to reveal your Star Academy stars! Earn six stars in exercises to rise in rank—track your progress under Star Overview.",
         popupTeacherNote: "Teacher? Add and switch students under Manage Students. Note: Data is saved locally on this device—clear the cache, and it’s gone.",
@@ -62,6 +64,8 @@ const translations = {
         menuChapter: "Kapitel",
         menuStudents: "Hantera elever",
         menuInfo: "Så här använder du",
+        menuStarMap: "Stjärnkarta",
+        menuChapters: "Kapitel",
         popupWelcome: "Välkommen till Stjärnkartan!",
         popupIntro: "Klicka fram dina Stjärnakademien-stjärnor här! Samla sex stjärnor i övningarna för att klättra i rang – kolla dina framsteg under Stjärnöversikt.",
         popupTeacherNote: "Lärare? Lägg till och växla mellan elever under Hantera elever. Obs! Allt sparas lokalt på denna enhet – rensas cachen försvinner dina framsteg.",
@@ -314,7 +318,6 @@ function updateStarStates() {
     }
 }
 
-// Update switchLanguage to set the new popup text
 function switchLanguage(lang) {
     localStorage.setItem('language', lang);
     console.log(`Switching language to: ${lang}`);
@@ -337,7 +340,10 @@ function switchLanguage(lang) {
 
     const chaptersToggle = document.querySelector('.chapters-toggle');
     if (chaptersToggle) {
-        chaptersToggle.textContent = translations[lang].menuChapters;
+        chaptersToggle.textContent = translations[lang].menuChapters || 'Chapters'; // Fallback
+        console.log('Set chaptersToggle text to:', chaptersToggle.textContent);
+    } else {
+        console.error('.chapters-toggle not found');
     }
 
     // Update popup text (shared across pages)
