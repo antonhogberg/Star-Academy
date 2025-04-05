@@ -577,6 +577,67 @@ function setActivePage() {
     });
 }
 
+// Handle username and popup logic (specific to index.html)
+function handleUserNamePopup() {
+    let studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || {
+        students: {},
+        currentStudent: localStorage.getItem('userName') || ''
+    };
+    const userNameDisplay = document.getElementById('userNameDisplay');
+    const namePopup = document.getElementById('namePopup');
+    const nameInput = document.getElementById('nameInput');
+
+    if (userNameDisplay && namePopup && nameInput) {
+        // Check if there's a current student, otherwise show the popup
+        if (!studentsData.currentStudent) {
+            namePopup.style.display = 'flex';
+        } else {
+            userNameDisplay.textContent = studentsData.currentStudent;
+        }
+
+        // Define saveName function for the popup
+        window.saveName = function() {
+            const name = nameInput?.value.trim();
+            if (name && userNameDisplay) {
+                studentsData.students[name] = {
+                    name: name,
+                    progress: {},
+                    rank: "Explorer"
+                };
+                for (let chapter = 1; chapter <= 7; chapter++) {
+                    for (let part = 1; part <= 4; part++) {
+                        for (let exercise = 1; exercise <= 4; exercise++) {
+                            const key = `exercise${chapter}:${part}:${exercise}`;
+                            studentsData.students[name].progress[key] = 
+                                localStorage.getItem(key) || "0";
+                            localStorage.removeItem(key);
+                        }
+                    }
+                }
+                studentsData.currentStudent = name;
+                localStorage.setItem('starAcademyStudents', JSON.stringify(studentsData));
+                userNameDisplay.textContent = name;
+                namePopup.style.display = 'none';
+            } else {
+                alert('Please enter a name!');
+            }
+        };
+
+        // Add event listeners for the popup
+        const submitBtn = document.querySelector('button[onclick="saveName()"]');
+        if (submitBtn) submitBtn.addEventListener('click', window.saveName);
+        if (nameInput) nameInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') window.saveName();
+        });
+    } else {
+        console.log('Username/popup elements not found, likely not on index.html:', {
+            userNameDisplay: !!userNameDisplay,
+            namePopup: !!namePopup,
+            nameInput: !!nameInput
+        });
+    }
+}
+
 // Ensure script.js runs after DOM and inline script
 function waitForDOM() {
     return new Promise(resolve => {
@@ -591,7 +652,7 @@ function waitForDOM() {
 waitForDOM().then(() => {
     console.log('script.js DOM fully loaded, running initial setup');
     injectMenu(); // Inject the menu first
+    handleUserNamePopup(); // Handle username and popup logic
     setInitialLanguage();
     updateStarStates();
-    setActivePage(); // Moved to injectMenu to ensure menu links are present
 });
