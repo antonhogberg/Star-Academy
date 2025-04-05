@@ -1487,3 +1487,24 @@ body {
     }
 }
 
+.menu-item {
+    position: relative;
+}
+
+.chapters-toggle {
+    display: block;
+    color: white;
+    padding: 10px 0;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.chapters-toggle::after {
+    content: '▼';
+    margin-left: 5px;
+}
+
+.submenu {
+    padding-left: 20px;
+    background-color: #444;
+}
