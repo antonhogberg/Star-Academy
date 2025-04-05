@@ -216,14 +216,14 @@ body {
 .submenu li a {
     display: block;
     color: #000;
-    padding: 10px 15px 10px 35px; /* Indents text 20px more than main menu (15px + 20px) */
+    padding: 10px 15px; /* Remove the extra left padding */
     text-decoration: none;
     font-family: Cochin, Georgia, Arial, sans-serif;
     font-size: 18px;
     text-align: left;
     border-bottom: 1px solid #444;
     width: 80%; /* 160px */
-    margin: 0 auto; /* Match .menu-link */
+    margin: 0 0 0 30px; /* 10px (menu padding) + 20px (indent) = 30px from menu's left edge */
 }
 
 .submenu li a:hover {
