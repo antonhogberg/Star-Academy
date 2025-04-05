@@ -319,19 +319,20 @@ function switchLanguage(lang) {
     localStorage.setItem('language', lang);
     console.log(`Switching language to: ${lang}`);
 
+    // Update menu links
     document.querySelectorAll('.menu-link').forEach(link => {
-        const href = link.getAttribute('href')?.toLowerCase();
+        const href = link.getAttribute('href').toLowerCase();
         if (href === 'index.html') {
             link.textContent = translations[lang].menuFrontPage;
         } else if (href === 'students.html') {
             link.textContent = translations[lang].menuStudents;
         } else if (href === 'starmap.html') {
             link.textContent = translations[lang].menuStarMap;
-        } else if (href && href.match(/chapter(\d+)\.html/)) {
-            const chapterNum = href.match(/chapter(\d+)\.html/)[1];
-            link.textContent = `${translations[lang].menuChapter} ${chapterNum}`;
-        } else if (!href && link.classList.contains('chapters-toggle')) {
-            link.textContent = translations[lang].menuChapters;
+        } else {
+            const chapterNum = href.match(/chapter(\d+)\.html/)?.[1];
+            if (chapterNum) {
+                link.textContent = `${translations[lang].menuChapter} ${chapterNum}`;
+            }
         }
     });
 
