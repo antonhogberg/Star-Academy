@@ -8,21 +8,16 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
     }
 
-    console.log('Menu.js initialized, setting initial state');
-    menu.style.left = '-250px'; // Ensure menu starts closed
+    menu.style.left = '-250px';
 
     hamburger.addEventListener('click', () => {
         const isExpanded = hamburger.getAttribute('aria-expanded') === 'true';
-        console.log('Hamburger clicked, isExpanded:', isExpanded);
+        hamburger.setAttribute('aria-expanded', !isExpanded);
 
         if (!isExpanded) {
-            console.log('Opening menu');
-            hamburger.setAttribute('aria-expanded', 'true');
             menu.classList.add('active');
             menu.animate([{ left: '-250px' }, { left: '0' }], { duration: 300, easing: 'ease-in-out', fill: 'forwards' });
         } else {
-            console.log('Closing menu');
-            hamburger.setAttribute('aria-expanded', 'false');
             menu.animate([{ left: '0' }, { left: '-250px' }], { duration: 300, easing: 'ease-in-out', fill: 'forwards' }).onfinish = () => {
                 menu.classList.remove('active');
             };
@@ -30,10 +25,27 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     closeBtn.addEventListener('click', () => {
-        console.log('Close button clicked');
         hamburger.setAttribute('aria-expanded', 'false');
         menu.animate([{ left: '0' }, { left: '-250px' }], { duration: 300, easing: 'ease-in-out', fill: 'forwards' }).onfinish = () => {
             menu.classList.remove('active');
         };
     });
-}); 
+
+    document.querySelectorAll('.menu-link').forEach(link => {
+        link.addEventListener('click', () => {
+            hamburger.setAttribute('aria-expanded', 'false');
+            menu.animate([{ left: '0' }, { left: '-250px' }], { duration: 300, easing: 'ease-in-out', fill: 'forwards' }).onfinish = () => {
+                menu.classList.remove('active');
+            };
+        });
+    });
+
+    document.addEventListener('click', (e) => {
+        if (!hamburger.contains(e.target) && !menu.contains(e.target)) {
+            hamburger.setAttribute('aria-expanded', 'false');
+            menu.animate([{ left: '0' }, { left: '-250px' }], { duration: 300, easing: 'ease-in-out', fill: 'forwards' }).onfinish = () => {
+                menu.classList.remove('active');
+            };
+        }
+    });
+});
