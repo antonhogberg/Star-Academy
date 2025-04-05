@@ -168,7 +168,7 @@ body {
 /* Submenu styles */
 .menu-item {
     position: relative;
-    width: 100%; /* Ensure it takes full width for centering */
+    width: 100%; /* Ensure it takes full width for alignment */
 }
 
 .chapters-toggle {
@@ -181,13 +181,18 @@ body {
     border-bottom: 1px solid #ccc; /* Match main menu separating line */
     width: 80%;
     margin: 0 auto;
-    text-align: center; /* Center "Kapitel" */
     text-decoration: none; /* Ensure no underline */
+    position: relative; /* For absolute positioning of the arrow */
 }
 
 .chapters-toggle::after {
     content: '▼';
-    margin-left: 5px;
+    font-size: 9px; /* Half of 18px */
+    position: absolute;
+    right: 15px; /* Align with the right edge of the 80% width */
+    top: 50%;
+    transform: translateY(-50%);
+    margin-left: 0; /* Remove previous margin */
 }
 
 .submenu {
@@ -209,7 +214,7 @@ body {
     padding: 10px 15px 10px 35px; /* Indent 20px more than main menu (15px + 20px) */
     text-decoration: none;
     font-family: Cochin, Georgia, Arial, sans-serif;
-    font-size: 16px;
+    font-size: 18px; /* Increased from 16px to 18px */
     text-align: center; /* Align text center */
     border-bottom: 1px solid #ccc; /* Match main menu separating line */
     width: 80%;
