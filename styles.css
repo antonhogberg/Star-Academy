@@ -1507,4 +1507,11 @@ body {
 .submenu {
     padding-left: 20px;
     background-color: #444;
+    list-style: none; /* Remove bullets */
+    margin: 0; /* Reset default margins */
 }
+
+.submenu li {
+    padding: 5px 0; /* Space out submenu items */
+}
+
