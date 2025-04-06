@@ -18,6 +18,18 @@
 </head>
 <body>
     <nav id="menu-placeholder"></nav>
+    <div id="namePopup" class="popup" style="display: none;">
+        <div class="popup-content">
+            <h2 id="popupWelcome"></h2>
+            <p id="popupIntro"></p>
+            <p id="popupTeacherNote"></p>
+            <p id="popupEnterName"></p>
+            <div class="input-group">
+                <input type="text" id="nameInput">
+                <button id="submitNameButton" onclick="saveName()"></button>
+            </div>
+        </div>
+    </div>
     <div class="layout-container">
         <div class="progress-container">
             <svg class="progress-svg" viewBox="0 0 1366 924"
@@ -179,18 +191,6 @@ xmlns:svg="http://www.w3.org/2000/svg"><defs
     <div class="text-box">
         <h2 id="rankTitle"></h2>
         <p id="rankDescription"></p>
-    </div>
-    <div id="namePopup" class="popup" style="display: none;">
-        <div class="popup-content">
-            <h2 id="popupWelcome"></h2>
-            <p id="popupIntro"></p>
-            <p id="popupTeacherNote"></p>
-            <p id="popupEnterName"></p>
-            <div class="input-group">
-                <input type="text" id="nameInput">
-                <button id="submitNameButton" onclick="saveName()"></button>
-            </div>
-        </div>
     </div>
     <div class="rank-badge">
         <img id="rankImage" src="rank-start.png" alt="Rank Badge" style="max-width: 100%; height: auto; display: block; margin: 0 auto;">
