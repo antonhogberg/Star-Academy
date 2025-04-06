@@ -602,11 +602,41 @@ function handleUserNamePopup() {
         // Check if there's a current student, otherwise show the popup
         if (!studentsData.currentStudent) {
             console.log('No current student, showing popup');
+            // Temporarily override styles to rule out CSS conflicts
             namePopup.style.display = 'flex';
+            namePopup.style.position = 'fixed';
+            namePopup.style.top = '0';
+            namePopup.style.left = '0';
+            namePopup.style.width = '100%';
+            namePopup.style.height = '100%';
+            namePopup.style.background = 'rgba(0, 0, 0, 0.5)';
+            namePopup.style.zIndex = '1000';
+            namePopup.style.justifyContent = 'center';
+            namePopup.style.alignItems = 'center';
             // Force a repaint to ensure the popup is rendered
             namePopup.style.opacity = '0';
             setTimeout(() => {
                 namePopup.style.opacity = '1';
+                // Additional debugging: Check computed styles and visibility
+                const computedStyle = window.getComputedStyle(namePopup);
+                console.log('Popup computed styles:', {
+                    display: computedStyle.display,
+                    visibility: computedStyle.visibility,
+                    opacity: computedStyle.opacity,
+                    position: computedStyle.position,
+                    top: computedStyle.top,
+                    left: computedStyle.left,
+                    width: computedStyle.width,
+                    height: computedStyle.height,
+                    zIndex: computedStyle.zIndex,
+                    background: computedStyle.background
+                });
+                // Check if the popup is visible in the viewport
+                const rect = namePopup.getBoundingClientRect();
+                console.log('Popup bounding rect:', rect);
+                console.log('Is popup in viewport?', {
+                    isVisible: rect.top >= 0 && rect.left >= 0 && rect.bottom <= window.innerHeight && rect.right <= window.innerWidth
+                });
             }, 0);
         } else if (userNameDisplay) {
             console.log('Current student exists, setting userNameDisplay:', studentsData.currentStudent);
