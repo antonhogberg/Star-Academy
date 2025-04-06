@@ -16,25 +16,7 @@
     </script>
 </head>
 <body>
-    <nav class="hamburger-nav">
-        <div class="hamburger" aria-expanded="false" aria-controls="main-menu">☰</div>
-        <div class="menu" id="main-menu">
-            <span class="close-btn" aria-label="Close menu">✖</span>
-            <a href="index.html" class="menu-link"></a>
-            <a href="chapter1.html" class="menu-link"></a>
-            <a href="chapter2.html" class="menu-link"></a>
-            <a href="chapter3.html" class="menu-link"></a>
-            <a href="chapter4.html" class="menu-link"></a>
-            <a href="chapter5.html" class="menu-link"></a>
-            <a href="chapter6.html" class="menu-link"></a>
-            <a href="chapter7.html" class="menu-link"></a>
-            <a href="students.html" class="menu-link"></a>
-            <div class="language-switcher">
-                <span class="flag" onclick="switchLanguage('en')">🇬🇧</span>
-                <span class="flag" onclick="switchLanguage('sv')">🇸🇪</span>
-            </div>
-        </div>
-    </nav>
+    <nav id="menu-placeholder"></nav>
     <div class="student-manager" style="text-align: center;">
         <h1 id="chapterTitle" class="chapter-title"></h1>
         <div id="addStudentLabel" class="field-label"></div>
@@ -66,7 +48,6 @@
     </div>
     <script src="script.js"></script>
     <script src="students.js"></script>
-    <script src="menu.js"></script>
     <script>
         // Debounce function to limit how often we save to localStorage
         function debounce(func, wait) {
