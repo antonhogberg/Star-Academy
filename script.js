@@ -118,120 +118,6 @@ const translations = {
     }
 };
 
-// Menu HTML template as a string
-const menuHtml = `
-    <nav class="hamburger-nav">
-        <div class="hamburger" aria-expanded="false" aria-controls="main-menu">☰</div>
-        <div class="menu" id="main-menu">
-            <span class="close-btn" aria-label="Close menu">✖</span>
-            <a href="index.html" class="menu-link"></a>
-            <a href="starmap.html" class="menu-link"></a>
-            <div class="menu-item">
-                <span class="chapters-toggle"></span>
-                <ul class="submenu" style="display: none;">
-                    <li><a href="chapter1.html" class="menu-link"><span></span></a></li>
-                    <li><a href="chapter2.html" class="menu-link"><span></span></a></li>
-                    <li><a href="chapter3.html" class="menu-link"><span></span></a></li>
-                    <li><a href="chapter4.html" class="menu-link"><span></span></a></li>
-                    <li><a href="chapter5.html" class="menu-link"><span></span></a></li>
-                    <li><a href="chapter6.html" class="menu-link"><span></span></a></li>
-                    <li><a href="chapter7.html" class="menu-link"><span></span></a></li>
-                </ul>
-            </div>
-            <a href="students.html" class="menu-link"></a>
-            <div class="language-switcher">
-                <span class="flag" onclick="switchLanguage('en')">🇬🇧</span>
-                <span class="flag" onclick="switchLanguage('sv')">🇸🇪</span>
-            </div>
-        </div>
-    </nav>
-`;
-
-// Function to inject the menu into the page
-function injectMenu() {
-    const placeholder = document.getElementById('menu-placeholder');
-    if (placeholder) {
-        placeholder.innerHTML = menuHtml;
-
-        // Initialize menu functionality
-        const hamburger = document.querySelector('.hamburger');
-        const menu = document.querySelector('.menu');
-        const closeBtn = document.querySelector('.close-btn');
-        const chaptersToggle = document.querySelector('.chapters-toggle');
-        const submenu = document.querySelector('.submenu');
-
-        if (!hamburger || !menu || !closeBtn || !chaptersToggle || !submenu) {
-            console.error('Menu elements missing:', {
-                hamburger: !!hamburger,
-                menu: !!menu,
-                closeBtn: !!closeBtn,
-                chaptersToggle: !!chaptersToggle,
-                submenu: !!submenu
-            });
-            return;
-        }
-
-        menu.style.left = '-250px';
-        submenu.style.display = 'none';
-
-        hamburger.addEventListener('click', () => {
-            const isExpanded = hamburger.getAttribute('aria-expanded') === 'true';
-            hamburger.setAttribute('aria-expanded', !isExpanded);
-            if (!isExpanded) {
-                menu.classList.add('active');
-                menu.animate([{ left: '-250px' }, { left: '0' }], { duration: 300, easing: 'ease-in-out', fill: 'forwards' });
-            } else {
-                menu.animate([{ left: '0' }, { left: '-250px' }], { duration: 300, easing: 'ease-in-out', fill: 'forwards' }).onfinish = () => {
-                    menu.classList.remove('active');
-                    submenu.style.display = 'none';
-                };
-            }
-        });
-
-        closeBtn.addEventListener('click', () => {
-            hamburger.setAttribute('aria-expanded', 'false');
-            menu.animate([{ left: '0' }, { left: '-250px' }], { duration: 300, easing: 'ease-in-out', fill: 'forwards' }).onfinish = () => {
-                menu.classList.remove('active');
-                submenu.style.display = 'none';
-            };
-        });
-
-        document.querySelectorAll('.menu-link').forEach(link => {
-            link.addEventListener('click', () => {
-                hamburger.setAttribute('aria-expanded', 'false');
-                menu.animate([{ left: '0' }, { left: '-250px' }], { duration: 300, easing: 'ease-in-out', fill: 'forwards' }).onfinish = () => {
-                    menu.classList.remove('active');
-                    submenu.style.display = 'none';
-                };
-            });
-        });
-
-        document.addEventListener('click', (e) => {
-            if (!hamburger.contains(e.target) && !menu.contains(e.target)) {
-                hamburger.setAttribute('aria-expanded', 'false');
-                menu.animate([{ left: '0' }, { left: '-250px' }], { duration: 300, easing: 'ease-in-out', fill: 'forwards' }).onfinish = () => {
-                    menu.classList.remove('active');
-                    submenu.style.display = 'none';
-                };
-            }
-        });
-
-        chaptersToggle.addEventListener('click', (e) => {
-            e.stopPropagation();
-            const isSubmenuVisible = submenu.style.display === 'block';
-            submenu.style.display = isSubmenuVisible ? 'none' : 'block';
-            console.log('Chapters toggle clicked, submenu display:', submenu.style.display);
-        });
-
-        // Apply language and active page detection after injecting the menu
-        const lang = localStorage.getItem('language') || 'sv';
-        switchLanguage(lang);
-        setActivePage();
-    } else {
-        console.error('Menu placeholder not found');
-    }
-}
-
 function updateStarStates() {
     console.log('Storage check initiated, checking localStorage');
     console.log('All localStorage keys:', Object.keys(localStorage));
@@ -557,7 +443,22 @@ function setInitialLanguage() {
     switchLanguage(lang);
 }
 
-function setActivePage() {
+// Ensure script.js runs after DOM and inline script
+function waitForDOM() {
+    return new Promise(resolve => {
+        if (document.readyState === 'complete' || document.readyState === 'interactive') {
+            resolve();
+        } else {
+            document.addEventListener('DOMContentLoaded', resolve);
+        }
+    });
+}
+
+waitForDOM().then(() => {
+    console.log('script.js DOM fully loaded, running initial setup');
+    setInitialLanguage();
+    updateStarStates();
+
     console.log('Running active page detection script');
     const currentPath = window.location.pathname.toLowerCase();
     const links = document.querySelectorAll('.menu-link');
@@ -575,26 +476,4 @@ function setActivePage() {
             console.error('Link missing href attribute:', link);
         }
     });
-}
-
-// Ensure script.js runs after DOM and inline script
-function waitForDOM() {
-    return new Promise(resolve => {
-        if (document.readyState === 'complete') {
-            resolve();
-        } else {
-            document.addEventListener('DOMContentLoaded', () => {
-                // Ensure all DOM elements are loaded
-                setTimeout(resolve, 0);
-            });
-        }
-    });
-}
-
-waitForDOM().then(() => {
-    console.log('script.js DOM fully loaded, running initial setup');
-    injectMenu(); // Inject the menu first
-    handleUserNamePopup(); // Handle username and popup logic
-    setInitialLanguage();
-    updateStarStates();
 });
