@@ -577,8 +577,11 @@ function setActivePage() {
     });
 }
 
-// Handle username and popup logic (specific to index.html)
+// Handle username and popup logic
 function handleUserNamePopup() {
+    console.log('handleUserNamePopup called, document.readyState:', document.readyState);
+    console.log('Checking for popup elements...');
+
     let studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || {
         students: {},
         currentStudent: localStorage.getItem('userName') || ''
@@ -587,18 +590,28 @@ function handleUserNamePopup() {
     const namePopup = document.getElementById('namePopup');
     const nameInput = document.getElementById('nameInput');
 
-    if (userNameDisplay && namePopup && nameInput) {
+    console.log('Popup elements found:', {
+        userNameDisplay: !!userNameDisplay,
+        namePopup: !!namePopup,
+        nameInput: !!nameInput,
+        currentStudent: studentsData.currentStudent
+    });
+
+    // Only proceed if namePopup and nameInput exist (userNameDisplay is optional)
+    if (namePopup && nameInput) {
         // Check if there's a current student, otherwise show the popup
         if (!studentsData.currentStudent) {
+            console.log('No current student, showing popup');
             namePopup.style.display = 'flex';
-        } else {
+        } else if (userNameDisplay) {
+            console.log('Current student exists, setting userNameDisplay:', studentsData.currentStudent);
             userNameDisplay.textContent = studentsData.currentStudent;
         }
 
         // Define saveName function for the popup
         window.saveName = function() {
             const name = nameInput?.value.trim();
-            if (name && userNameDisplay) {
+            if (name) {
                 studentsData.students[name] = {
                     name: name,
                     progress: {},
@@ -616,8 +629,9 @@ function handleUserNamePopup() {
                 }
                 studentsData.currentStudent = name;
                 localStorage.setItem('starAcademyStudents', JSON.stringify(studentsData));
-                userNameDisplay.textContent = name;
+                if (userNameDisplay) userNameDisplay.textContent = name;
                 namePopup.style.display = 'none';
+                console.log('User saved:', name);
             } else {
                 alert('Please enter a name!');
             }
@@ -625,13 +639,20 @@ function handleUserNamePopup() {
 
         // Add event listeners for the popup
         const submitBtn = document.querySelector('button[onclick="saveName()"]');
-        if (submitBtn) submitBtn.addEventListener('click', window.saveName);
-        if (nameInput) nameInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') window.saveName();
-        });
+        if (submitBtn) {
+            submitBtn.addEventListener('click', window.saveName);
+            console.log('Added click event listener to submit button');
+        } else {
+            console.error('Submit button not found');
+        }
+        if (nameInput) {
+            nameInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') window.saveName();
+            });
+            console.log('Added keypress event listener to name input');
+        }
     } else {
-        console.log('Username/popup elements not found, likely not on index.html:', {
-            userNameDisplay: !!userNameDisplay,
+        console.error('Required popup elements not found:', {
             namePopup: !!namePopup,
             nameInput: !!nameInput
         });
@@ -641,10 +662,23 @@ function handleUserNamePopup() {
 // Ensure script.js runs after DOM and inline script
 function waitForDOM() {
     return new Promise(resolve => {
-        if (document.readyState === 'complete' || document.readyState === 'interactive') {
+        console.log('waitForDOM started, document.readyState:', document.readyState);
+        if (document.readyState === 'complete') {
+            console.log('Document already complete, resolving immediately');
             resolve();
         } else {
-            document.addEventListener('DOMContentLoaded', resolve);
+            window.addEventListener('load', () => {
+                console.log('Load event fired, resolving');
+                setTimeout(resolve, 0);
+            });
+            // Fallback: Also listen for DOMContentLoaded in case load event is delayed
+            document.addEventListener('DOMContentLoaded', () => {
+                console.log('DOMContentLoaded event fired');
+                if (document.readyState === 'complete') {
+                    console.log('Document complete after DOMContentLoaded, resolving');
+                    resolve();
+                }
+            });
         }
     });
 }
