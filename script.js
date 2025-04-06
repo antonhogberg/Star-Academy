@@ -632,6 +632,12 @@ function handleUserNamePopup() {
                 if (userNameDisplay) userNameDisplay.textContent = name;
                 namePopup.style.display = 'none';
                 console.log('User saved:', name);
+
+                // Re-initialize star map after saving user (for starmap.html)
+                if (window.location.pathname.toLowerCase().includes('starmap.html') && typeof window.initializeStarMap === 'function') {
+                    console.log('Calling initializeStarMap after saving user');
+                    window.initializeStarMap();
+                }
             } else {
                 alert('Please enter a name!');
             }
@@ -689,4 +695,13 @@ waitForDOM().then(() => {
     handleUserNamePopup(); // Handle username and popup logic
     setInitialLanguage();
     updateStarStates();
+
+    // Initial star map setup for starmap.html if user already exists
+    if (window.location.pathname.toLowerCase().includes('starmap.html') && typeof window.initializeStarMap === 'function') {
+        const studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
+        if (studentsData.currentStudent) {
+            console.log('User exists on starmap.html, initializing star map');
+            window.initializeStarMap();
+        }
+    }
 });

@@ -1,4 +1,3 @@
-// starmap.js
 const starImages = [
     'white-star.png',
     'one-star.png',
@@ -42,33 +41,52 @@ const progressionPath = [
     { star: '2:1:4', nextStar: null, lines: [] }
 ];
 
-document.addEventListener('DOMContentLoaded', () => {
+function initializeStarMap() {
+    console.log('initializeStarMap called');
     const objectElement = document.getElementById('starMap');
-    objectElement.addEventListener('load', () => {
-        let svgDoc = objectElement.contentDocument;
-        const checkSvgDoc = setInterval(() => {
+    if (!objectElement) {
+        console.error('Star Map object element not found');
+        return;
+    }
+
+    let svgDoc = null;
+    let loadAttempts = 0;
+    const maxAttempts = 50; // 5 seconds (50 * 100ms)
+
+    const checkSvgDoc = setInterval(() => {
+        loadAttempts++;
+        svgDoc = objectElement.contentDocument;
+
+        if (svgDoc) {
+            clearInterval(checkSvgDoc);
+            initializeSvg(svgDoc);
+        } else if (loadAttempts >= maxAttempts) {
+            clearInterval(checkSvgDoc);
+            console.error('Failed to load SVG contentDocument after 5 seconds');
+        } else {
+            console.log(`Attempt ${loadAttempts}: SVG contentDocument not yet available`);
+        }
+    }, 100);
+
+    // Fallback: Try to initialize after window load event
+    window.addEventListener('load', () => {
+        if (!svgDoc) {
             svgDoc = objectElement.contentDocument;
             if (svgDoc) {
                 clearInterval(checkSvgDoc);
                 initializeSvg(svgDoc);
             } else {
-                console.error('SVG document not loaded yet');
+                console.error('SVG contentDocument still not available after window load');
             }
-        }, 100);
-    });
-
-    setTimeout(() => {
-        if (!objectElement.contentDocument) {
-            console.error('SVG load event did not fire or SVG failed to load.');
         }
-    }, 10000);
-});
+    });
+}
 
 function initializeSvg(svgDoc) {
+    console.log('initializeSvg called');
     const studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
-    const namePopup = document.getElementById('namePopup');
     if (!studentsData.currentStudent) {
-        namePopup.style.display = 'flex';
+        console.warn('No current student set; star map initialization aborted');
         return;
     }
 
@@ -107,6 +125,7 @@ function initializeSvg(svgDoc) {
 
         starElement.style.cursor = 'pointer';
         starElement.addEventListener('click', () => {
+            console.log(`Star ${star} clicked`);
             const studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
             const progress = studentsData.students[studentsData.currentStudent]?.progress || {};
             let level = progress[exerciseKey] ? parseInt(progress[exerciseKey]) : 0;
@@ -180,3 +199,6 @@ function checkCompletion(studentsData) {
         }, 5000);
     }
 }
+
+// Expose initializeStarMap globally
+window.initializeStarMap = initializeStarMap;
