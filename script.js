@@ -118,6 +118,120 @@ const translations = {
     }
 };
 
+// Menu HTML template as a string
+const menuHtml = `
+    <nav class="hamburger-nav">
+        <div class="hamburger" aria-expanded="false" aria-controls="main-menu">☰</div>
+        <div class="menu" id="main-menu">
+            <span class="close-btn" aria-label="Close menu">✖</span>
+            <a href="index.html" class="menu-link"></a>
+            <a href="starmap.html" class="menu-link"></a>
+            <div class="menu-item">
+                <span class="chapters-toggle"></span>
+                <ul class="submenu" style="display: none;">
+                    <li><a href="chapter1.html" class="menu-link"><span></span></a></li>
+                    <li><a href="chapter2.html" class="menu-link"><span></span></a></li>
+                    <li><a href="chapter3.html" class="menu-link"><span></span></a></li>
+                    <li><a href="chapter4.html" class="menu-link"><span></span></a></li>
+                    <li><a href="chapter5.html" class="menu-link"><span></span></a></li>
+                    <li><a href="chapter6.html" class="menu-link"><span></span></a></li>
+                    <li><a href="chapter7.html" class="menu-link"><span></span></a></li>
+                </ul>
+            </div>
+            <a href="students.html" class="menu-link"></a>
+            <div class="language-switcher">
+                <span class="flag" onclick="switchLanguage('en')">🇬🇧</span>
+                <span class="flag" onclick="switchLanguage('sv')">🇸🇪</span>
+            </div>
+        </div>
+    </nav>
+`;
+
+// Function to inject the menu into the page
+function injectMenu() {
+    const placeholder = document.getElementById('menu-placeholder');
+    if (placeholder) {
+        placeholder.innerHTML = menuHtml;
+
+        // Initialize menu functionality
+        const hamburger = document.querySelector('.hamburger');
+        const menu = document.querySelector('.menu');
+        const closeBtn = document.querySelector('.close-btn');
+        const chaptersToggle = document.querySelector('.chapters-toggle');
+        const submenu = document.querySelector('.submenu');
+
+        if (!hamburger || !menu || !closeBtn || !chaptersToggle || !submenu) {
+            console.error('Menu elements missing:', {
+                hamburger: !!hamburger,
+                menu: !!menu,
+                closeBtn: !!closeBtn,
+                chaptersToggle: !!chaptersToggle,
+                submenu: !!submenu
+            });
+            return;
+        }
+
+        menu.style.left = '-250px';
+        submenu.style.display = 'none';
+
+        hamburger.addEventListener('click', () => {
+            const isExpanded = hamburger.getAttribute('aria-expanded') === 'true';
+            hamburger.setAttribute('aria-expanded', !isExpanded);
+            if (!isExpanded) {
+                menu.classList.add('active');
+                menu.animate([{ left: '-250px' }, { left: '0' }], { duration: 300, easing: 'ease-in-out', fill: 'forwards' });
+            } else {
+                menu.animate([{ left: '0' }, { left: '-250px' }], { duration: 300, easing: 'ease-in-out', fill: 'forwards' }).onfinish = () => {
+                    menu.classList.remove('active');
+                    submenu.style.display = 'none';
+                };
+            }
+        });
+
+        closeBtn.addEventListener('click', () => {
+            hamburger.setAttribute('aria-expanded', 'false');
+            menu.animate([{ left: '0' }, { left: '-250px' }], { duration: 300, easing: 'ease-in-out', fill: 'forwards' }).onfinish = () => {
+                menu.classList.remove('active');
+                submenu.style.display = 'none';
+            };
+        });
+
+        document.querySelectorAll('.menu-link').forEach(link => {
+            link.addEventListener('click', () => {
+                hamburger.setAttribute('aria-expanded', 'false');
+                menu.animate([{ left: '0' }, { left: '-250px' }], { duration: 300, easing: 'ease-in-out', fill: 'forwards' }).onfinish = () => {
+                    menu.classList.remove('active');
+                    submenu.style.display = 'none';
+                };
+            });
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!hamburger.contains(e.target) && !menu.contains(e.target)) {
+                hamburger.setAttribute('aria-expanded', 'false');
+                menu.animate([{ left: '0' }, { left: '-250px' }], { duration: 300, easing: 'ease-in-out', fill: 'forwards' }).onfinish = () => {
+                    menu.classList.remove('active');
+                    submenu.style.display = 'none';
+                };
+            }
+        });
+
+        chaptersToggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const isSubmenuVisible = submenu.style.display === 'block';
+            submenu.style.display = isSubmenuVisible ? 'none' : 'block';
+            console.log('Chapters toggle clicked, submenu display:', submenu.style.display);
+        });
+
+        // Apply language and active page detection after injecting the menu
+        const lang = localStorage.getItem('language') || 'sv';
+        switchLanguage(lang);
+        setActivePage();
+    } else {
+        console.error('Menu placeholder not found');
+    }
+}
+
 function updateStarStates() {
     console.log('Storage check initiated, checking localStorage');
     console.log('All localStorage keys:', Object.keys(localStorage));
@@ -443,22 +557,7 @@ function setInitialLanguage() {
     switchLanguage(lang);
 }
 
-// Ensure script.js runs after DOM and inline script
-function waitForDOM() {
-    return new Promise(resolve => {
-        if (document.readyState === 'complete' || document.readyState === 'interactive') {
-            resolve();
-        } else {
-            document.addEventListener('DOMContentLoaded', resolve);
-        }
-    });
-}
-
-waitForDOM().then(() => {
-    console.log('script.js DOM fully loaded, running initial setup');
-    setInitialLanguage();
-    updateStarStates();
-
+function setActivePage() {
     console.log('Running active page detection script');
     const currentPath = window.location.pathname.toLowerCase();
     const links = document.querySelectorAll('.menu-link');
@@ -476,4 +575,84 @@ waitForDOM().then(() => {
             console.error('Link missing href attribute:', link);
         }
     });
+}
+
+// Handle username and popup logic (specific to index.html)
+function handleUserNamePopup() {
+    let studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || {
+        students: {},
+        currentStudent: localStorage.getItem('userName') || ''
+    };
+    const userNameDisplay = document.getElementById('userNameDisplay');
+    const namePopup = document.getElementById('namePopup');
+    const nameInput = document.getElementById('nameInput');
+
+    if (userNameDisplay && namePopup && nameInput) {
+        // Check if there's a current student, otherwise show the popup
+        if (!studentsData.currentStudent) {
+            namePopup.style.display = 'flex';
+        } else {
+            userNameDisplay.textContent = studentsData.currentStudent;
+        }
+
+        // Define saveName function for the popup
+        window.saveName = function() {
+            const name = nameInput?.value.trim();
+            if (name && userNameDisplay) {
+                studentsData.students[name] = {
+                    name: name,
+                    progress: {},
+                    rank: "Explorer"
+                };
+                for (let chapter = 1; chapter <= 7; chapter++) {
+                    for (let part = 1; part <= 4; part++) {
+                        for (let exercise = 1; exercise <= 4; exercise++) {
+                            const key = `exercise${chapter}:${part}:${exercise}`;
+                            studentsData.students[name].progress[key] = 
+                                localStorage.getItem(key) || "0";
+                            localStorage.removeItem(key);
+                        }
+                    }
+                }
+                studentsData.currentStudent = name;
+                localStorage.setItem('starAcademyStudents', JSON.stringify(studentsData));
+                userNameDisplay.textContent = name;
+                namePopup.style.display = 'none';
+            } else {
+                alert('Please enter a name!');
+            }
+        };
+
+        // Add event listeners for the popup
+        const submitBtn = document.querySelector('button[onclick="saveName()"]');
+        if (submitBtn) submitBtn.addEventListener('click', window.saveName);
+        if (nameInput) nameInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') window.saveName();
+        });
+    } else {
+        console.log('Username/popup elements not found, likely not on index.html:', {
+            userNameDisplay: !!userNameDisplay,
+            namePopup: !!namePopup,
+            nameInput: !!nameInput
+        });
+    }
+}
+
+// Ensure script.js runs after DOM and inline script
+function waitForDOM() {
+    return new Promise(resolve => {
+        if (document.readyState === 'complete' || document.readyState === 'interactive') {
+            resolve();
+        } else {
+            document.addEventListener('DOMContentLoaded', resolve);
+        }
+    });
+}
+
+waitForDOM().then(() => {
+    console.log('script.js DOM fully loaded, running initial setup');
+    injectMenu(); // Inject the menu first
+    handleUserNamePopup(); // Handle username and popup logic
+    setInitialLanguage();
+    updateStarStates();
 });
