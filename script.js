@@ -580,8 +580,30 @@ function setActivePage() {
 // Handle username and popup logic
 function handleUserNamePopup() {
     console.log('handleUserNamePopup called, document.readyState:', document.readyState);
-    console.log('Checking for popup elements...');
+    console.log('Current page:', window.location.pathname);
 
+    // Skip popup logic on index.html
+    const currentPath = window.location.pathname.toLowerCase();
+    if (currentPath.endsWith('index.html') || currentPath === '/') {
+        console.log('Skipping popup logic on index.html');
+        const userNameDisplay = document.getElementById('userNameDisplay');
+        const studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || {
+            students: {},
+            currentStudent: localStorage.getItem('userName') || ''
+        };
+        if (userNameDisplay && studentsData.currentStudent) {
+            userNameDisplay.textContent = studentsData.currentStudent;
+        }
+        return;
+    }
+
+    // Only proceed on starmap.html or chapter pages
+    if (!currentPath.includes('starmap.html') && !currentPath.match(/chapter\d+\.html/)) {
+        console.log('Skipping popup logic on non-starmap and non-chapter pages');
+        return;
+    }
+
+    console.log('Checking for popup elements...');
     let studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || {
         students: {},
         currentStudent: localStorage.getItem('userName') || ''
@@ -602,21 +624,15 @@ function handleUserNamePopup() {
         // Check if there's a current student, otherwise show the popup
         if (!studentsData.currentStudent) {
             console.log('No current student, showing popup');
-            // Temporarily override styles to rule out CSS conflicts
+            // Set display to flex and ensure centering
             namePopup.style.display = 'flex';
-            namePopup.style.position = 'fixed';
-            namePopup.style.top = '0';
-            namePopup.style.left = '0';
-            namePopup.style.width = '100%';
-            namePopup.style.height = '100%';
-            namePopup.style.background = 'rgba(0, 0, 0, 0.5)';
-            namePopup.style.zIndex = '1000';
-            namePopup.style.justifyContent = 'center';
-            namePopup.style.alignItems = 'center';
             // Force a repaint to ensure the popup is rendered
             namePopup.style.opacity = '0';
             setTimeout(() => {
                 namePopup.style.opacity = '1';
+                // Reapply flexbox centering properties to ensure they take effect
+                namePopup.style.justifyContent = 'center';
+                namePopup.style.alignItems = 'center';
                 // Additional debugging: Check computed styles and visibility
                 const computedStyle = window.getComputedStyle(namePopup);
                 console.log('Popup computed styles:', {
@@ -629,7 +645,9 @@ function handleUserNamePopup() {
                     width: computedStyle.width,
                     height: computedStyle.height,
                     zIndex: computedStyle.zIndex,
-                    background: computedStyle.background
+                    background: computedStyle.background,
+                    justifyContent: computedStyle.justifyContent,
+                    alignItems: computedStyle.alignItems
                 });
                 // Check if the popup is visible in the viewport
                 const rect = namePopup.getBoundingClientRect();
