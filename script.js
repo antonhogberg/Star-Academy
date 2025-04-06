@@ -603,6 +603,11 @@ function handleUserNamePopup() {
         if (!studentsData.currentStudent) {
             console.log('No current student, showing popup');
             namePopup.style.display = 'flex';
+            // Force a repaint to ensure the popup is rendered
+            namePopup.style.opacity = '0';
+            setTimeout(() => {
+                namePopup.style.opacity = '1';
+            }, 0);
         } else if (userNameDisplay) {
             console.log('Current student exists, setting userNameDisplay:', studentsData.currentStudent);
             userNameDisplay.textContent = studentsData.currentStudent;
