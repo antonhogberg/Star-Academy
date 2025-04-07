@@ -3,7 +3,7 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta charset="UTF-8">
-    <title>Stjärnakademien - Star Map</title>
+    <title>Stjärnakademien - Star Academy</title>
     <link rel="stylesheet" href="styles.css">
     <script>
         function setViewportHeight() {
@@ -17,7 +17,11 @@
 </head>
 <body>
     <nav id="menu-placeholder"></nav>
-    <h1 class="chapter-title">Star Map</h1>
+    <div class="title-container">
+        <img src="six-stars.png" alt="Stars" class="title-star">
+        <h1 data-translate="menuStarMap">Stjärnkarta</h1>
+        <img src="six-stars.png" alt="Stars" class="title-star">
+    </div>
     <div id="namePopup" class="popup" style="display: none;">
         <div class="popup-content">
             <h2 id="popupWelcome"></h2>
@@ -43,5 +47,6 @@
     </div>
     <script src="script.js"></script>
     <script src="starmap.js"></script>
+    <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'92cbd3f5dc6a31d2',t:'MTc0NDA1MzA1Ny4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
 </body>
 </html>
