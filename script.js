@@ -566,7 +566,24 @@ function initializeFAQ() {
     faqQuestions.forEach(question => {
         question.addEventListener('click', () => {
             const faqItem = question.parentElement;
-            faqItem.classList.toggle('active');
+            const faqAnswer = faqItem.querySelector('.faq-answer');
+            const isActive = faqItem.classList.contains('active');
+
+            if (isActive) {
+                faqAnswer.style.maxHeight = faqAnswer.scrollHeight + 'px'; // Set to current height before collapsing
+                requestAnimationFrame(() => {
+                    faqAnswer.style.maxHeight = '0'; // Slide up
+                    faqItem.classList.remove('active');
+                });
+            } else {
+                faqItem.classList.add('active');
+                faqAnswer.style.maxHeight = faqAnswer.scrollHeight + 'px'; // Slide down to content height
+                // Reset max-height after animation to allow content resizing
+                faqAnswer.addEventListener('transitionend', function resetHeight() {
+                    faqAnswer.style.maxHeight = '200px'; // Match CSS value
+                    faqAnswer.removeEventListener('transitionend', resetHeight);
+                });
+            }
         });
     });
 }
