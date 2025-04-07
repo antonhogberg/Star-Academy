@@ -4,10 +4,9 @@ const translations = {
         menuFrontPage: "Star Overview",
         menuChapter: "Chapter",
         menuStudents: "Manage Students",
-        menuInfo: "How to Use",
         menuStarMap: "Star Map",
         menuChapters: "Chapters",
-        menuFAQ: "FAQ", // Added for FAQ page
+        menuFAQ: "FAQ",
         popupWelcome: "Welcome to the Star Map!",
         popupIntro: "Click to reveal your Star Academy stars! Earn six stars in exercises to rise in rank—track your progress under Star Overview.",
         popupTeacherNote: "Teacher? Add and switch students under Manage Students. Note: Data is saved locally on this device—clear the cache, and it’s gone.",
@@ -48,28 +47,18 @@ const translations = {
         notesLabel: "Notes:",
         notesPlaceholder: "Add notes about planned homework, progress, or other details here—they’re saved automatically.",
         saveNotesButton: "Save notes",
-        infoTitle: "How to Use Star Academy",
-        gettingStartedTitle: "Getting Started",
-        gettingStartedText: "When you first visit Star Academy, you’ll be asked to enter your name. This creates your profile, where your progress will be saved. You’ll start as an Explorer, ready to begin your piano journey!",
-        understandingProgressTitle: "Understanding Your Progress",
-        understandingProgressText: "The homepage shows your progress with stars and chevrons. The 16 bottom stars track your first steps—complete 16 exercises to become a Star Cadet! The chevrons above represent the four parts across seven chapters. Fill each chevron’s stars by completing exercises to advance your rank, from Explorer to Star Admiral.",
-        navigatingSiteTitle: "Navigating the Site",
-        navigatingSiteText: "Use the menu (☰) in the top-left corner to access the homepage, chapters, student management, and this info page. Each chapter has four parts with four exercises each. Complete exercises to earn stars and progress through the ranks!",
-        managingUsersTitle: "Managing Users",
-        managingUsersText: "If you’re a teacher or have multiple users, visit the 'Manage Students' page to add students, switch between them, and add notes about their progress. Each student’s progress is saved separately.",
         congratsMessage: "Congratulations! You’ve completed the Star Map! 🌟",
-        faqTitle: "Frequently Asked Questions", // Added for FAQ page
-        faqQ1: "How do I save my progress?", // Sample Q&A
-        faqA1: "Your progress is automatically saved in your browser’s local storage when you earn stars or switch students. Just don’t clear your browser data!" // Sample Q&A
+        faqTitle: "Frequently Asked Questions",
+        faqQ1: "How do I save my progress?",
+        faqA1: "Your progress is automatically saved in your browser’s local storage when you earn stars or switch students. Just don’t clear your browser data!"
     },
     sv: {
         menuFrontPage: "Stjärnöversikt",
         menuChapter: "Kapitel",
         menuStudents: "Hantera elever",
-        menuInfo: "Så här använder du",
         menuStarMap: "Stjärnkarta",
         menuChapters: "Kapitel",
-        menuFAQ: "Vanliga frågor", // Added for FAQ page
+        menuFAQ: "Vanliga frågor",
         popupWelcome: "Välkommen till Stjärnkartan!",
         popupIntro: "Klicka fram dina Stjärnakademien-stjärnor här! Samla sex stjärnor i övningarna för att klättra i rang – kolla dina framsteg under Stjärnöversikt.",
         popupTeacherNote: "Lärare? Lägg till och växla mellan elever under Hantera elever. Obs! Allt sparas lokalt på denna enhet – rensas cachen försvinner dina framsteg.",
@@ -110,19 +99,10 @@ const translations = {
         notesLabel: "Anteckningar:",
         notesPlaceholder: "Skriv dina anteckningar om läxor m.m. här. (De sparas automatiskt)",
         saveNotesButton: "Spara anteckningar",
-        infoTitle: "Så här använder du Stjärnakademien",
-        gettingStartedTitle: "Kom igång",
-        gettingStartedText: "När du först besöker Stjärnakademien blir du ombedd att ange ditt namn. Detta skapar din profil där dina framsteg sparas. Du börjar som en Utforskare, redo att påbörja din pianoresa!",
-        understandingProgressTitle: "Förstå dina framsteg",
-        understandingProgressText: "Hemsidan visar dina framsteg med stjärnor och chevroner. De 16 stjärnorna längst ner följer dina första steg – klara 16 övningar för att bli Stjärnkadett! Chevronerna ovan representerar de fyra delarna i sju kapitel. Fyll varje chevrons stjärnor genom att slutföra övningar för att avancera din rang, från Utforskare till Stjärnamiral.",
-        navigatingSiteTitle: "Navigera på webbplatsen",
-        navigatingSiteText: "Använd menyn (☰) i det övre vänstra hörnet för att komma åt hemsidan, kapitlen, elevhantering och denna infosida. Varje kapitel har fyra delar med fyra övningar vardera. Slutför övningar för att tjäna stjärnor och avancera genom rankerna!",
-        managingUsersTitle: "Hantera användare",
-        managingUsersText: "Om du är lärare eller har flera användare, besök sidan 'Hantera elever' för att lägga till elever, växla mellan dem och lägga till anteckningar om deras framsteg. Varje elevs framsteg sparas separat.",
         congratsMessage: "Grattis! Du har slutfört Stjärnkartan! 🌟",
-        faqTitle: "Vanliga frågor", // Added for FAQ page
-        faqQ1: "Hur sparar jag mina framsteg?", // Sample Q&A
-        faqA1: "Dina framsteg sparas automatiskt i webbläsarens lokala lagring när du tjänar stjärnor eller byter elev. Rensa bara inte webbläsardatan!" // Sample Q&A
+        faqTitle: "Vanliga frågor",
+        faqQ1: "Hur sparar jag mina framsteg?",
+        faqA1: "Dina framsteg sparas automatiskt i webbläsarens lokala lagring när du tjänar stjärnor eller byter elev. Rensa bara inte webbläsardatan!"
     }
 };
 
@@ -135,7 +115,7 @@ const menuHtml = `
             <a href="index.html" class="menu-link"></a>
             <a href="starmap.html" class="menu-link"></a>
             <div class="menu-item">
-                <span class="chapters-toggle"></span>
+                <span class="chapters-toggle"><span class="chapter-arrow">▼</span></span>
                 <ul class="submenu" style="display: none;">
                     <li><a href="chapter1.html" class="menu-link"><span></span></a></li>
                     <li><a href="chapter2.html" class="menu-link"><span></span></a></li>
@@ -147,8 +127,7 @@ const menuHtml = `
                 </ul>
             </div>
             <a href="students.html" class="menu-link"></a>
-            <a href="faq.html" class="menu-link"></a> <!-- Added FAQ link -->
-            <a href="info.html" class="menu-link"></a>
+            <a href="faq.html" class="menu-link"></a>
             <div class="language-switcher">
                 <span class="flag" onclick="switchLanguage('en')">🇬🇧</span>
                 <span class="flag" onclick="switchLanguage('sv')">🇸🇪</span>
@@ -230,6 +209,7 @@ function injectMenu() {
             e.stopPropagation();
             const isSubmenuVisible = submenu.style.display === 'block';
             submenu.style.display = isSubmenuVisible ? 'none' : 'block';
+            chaptersToggle.parentElement.classList.toggle('active'); // Toggle active class for arrow rotation
             console.log('Chapters toggle clicked, submenu display:', submenu.style.display);
         });
 
@@ -275,7 +255,7 @@ function updateStarStates() {
                 bottomStar.setAttribute("fill", "#ffd700");
                 bottomStar.setAttribute("stroke", "#000000");
                 bottomStar.setAttribute("stroke-width", "1");
-                console.log(` digestion_star${i} turned gold`);
+                console.log(`bottom_star${i} turned gold`);
             } else {
                 bottomStar.setAttribute("fill", "#000000");
                 bottomStar.removeAttribute("stroke");
@@ -302,7 +282,7 @@ function updateStarStates() {
         'chevron2_star4': ['exercise4:2:1', 'exercise4:2:2', 'exercise4:2:3', 'exercise4:2:4'],
         'chevron2_star5': ['exercise5:2:1', 'exercise5:2:2', 'exercise5:2:3', 'exercise5:2:4'],
         'chevron2_star6': ['exercise6:2:1', 'exercise6:2:2', 'exercise6:2:3', 'exercise6:2:4'],
-        'chevron2_star7': ['exercise7:2:1', 'exercise7:2:2', 'exercise7:2:3', 'exercise7:2:4'],
+        'chevron2_star7': ['exercise7_transitions:2:1', 'exercise7:2:2', 'exercise7:2:3', 'exercise7:2:4'],
         'chevron3_star1': ['exercise1:3:1', 'exercise1:3:2', 'exercise1:3:3', 'exercise1:3:4'],
         'chevron3_star2': ['exercise2:3:1', 'exercise2:3:2', 'exercise2:3:3', 'exercise2:3:4'],
         'chevron3_star3': ['exercise3:3:1', 'exercise3:3:2', 'exercise3:3:3', 'exercise3:3:4'],
@@ -451,10 +431,8 @@ function switchLanguage(lang) {
             link.textContent = translations[lang].menuStudents;
         } else if (href === 'starmap.html') {
             link.textContent = translations[lang].menuStarMap;
-        } else if (href === 'faq.html') { // Added for FAQ page
+        } else if (href === 'faq.html') {
             link.textContent = translations[lang].menuFAQ;
-        } else if (href === 'info.html') {
-            link.textContent = translations[lang].menuInfo;
         } else {
             const chapterNum = href?.match(/chapter(\d+)\.html/)?.[1];
             if (chapterNum) {
@@ -471,7 +449,7 @@ function switchLanguage(lang) {
 
     const chaptersToggle = document.querySelector('.chapters-toggle');
     if (chaptersToggle) {
-        chaptersToggle.textContent = translations[lang].menuChapters || 'Chapters'; // Fallback
+        chaptersToggle.childNodes[0].textContent = translations[lang].menuChapters || 'Chapters'; // Update text, preserve arrow
         console.log('Set chaptersToggle text to:', chaptersToggle.textContent);
     } else {
         console.error('.chapters-toggle not found');
@@ -536,29 +514,6 @@ function switchLanguage(lang) {
             saveNotesButton.textContent = translations[lang].saveNotesButton;
         }
         console.log(`Updated students.html title, label, placeholder, button to ${lang}`);
-    }
-
-    // Update info.html specific elements
-    const infoTitle = document.getElementById('infoTitle');
-    const gettingStartedTitle = document.getElementById('gettingStartedTitle');
-    const gettingStartedText = document.getElementById('gettingStartedText');
-    const understandingProgressTitle = document.getElementById('understandingProgressTitle');
-    const understandingProgressText = document.getElementById('understandingProgressText');
-    const navigatingSiteTitle = document.getElementById('navigatingSiteTitle');
-    const navigatingSiteText = document.getElementById('navigatingSiteText');
-    const managingUsersTitle = document.getElementById('managingUsersTitle');
-    const managingUsersText = document.getElementById('managingUsersText');
-    if (infoTitle) {
-        infoTitle.textContent = translations[lang].infoTitle;
-        gettingStartedTitle.textContent = translations[lang].gettingStartedTitle;
-        gettingStartedText.textContent = translations[lang].gettingStartedText;
-        understandingProgressTitle.textContent = translations[lang].understandingProgressTitle;
-        understandingProgressText.textContent = translations[lang].understandingProgressText;
-        navigatingSiteTitle.textContent = translations[lang].navigatingSiteTitle;
-        navigatingSiteText.textContent = translations[lang].navigatingSiteText;
-        managingUsersTitle.textContent = translations[lang].managingUsersTitle;
-        managingUsersText.textContent = translations[lang].managingUsersText;
-        console.log(`Updated info.html content to ${lang}`);
     }
 
     // Update FAQ page specific elements
@@ -631,9 +586,7 @@ function handleUserNamePopup() {
         currentStudent: studentsData.currentStudent
     });
 
-    // Only proceed if namePopup and nameInput exist (userNameDisplay is optional)
     if (namePopup && nameInput) {
-        // Check if there's a current student, otherwise show the popup
         if (!studentsData.currentStudent) {
             console.log('No current student, showing popup');
             namePopup.style.display = 'flex';
@@ -673,7 +626,6 @@ function handleUserNamePopup() {
             userNameDisplay.textContent = studentsData.currentStudent;
         }
 
-        // Define saveName function for the popup
         window.saveName = function() {
             const name = nameInput?.value.trim();
             if (name) {
@@ -698,7 +650,6 @@ function handleUserNamePopup() {
                 namePopup.style.display = 'none';
                 console.log('User saved:', name);
 
-                // Re-initialize star map after saving user (for starmap.html)
                 if (window.location.pathname.toLowerCase().includes('starmap.html') && typeof window.initializeStarMap === 'function') {
                     console.log('Calling initializeStarMap after saving user');
                     window.initializeStarMap();
@@ -708,7 +659,6 @@ function handleUserNamePopup() {
             }
         };
 
-        // Add event listeners for the popup
         const submitBtn = document.querySelector('button[onclick="saveName()"]');
         if (submitBtn) {
             submitBtn.addEventListener('click', window.saveName);
@@ -766,12 +716,11 @@ function initializeFAQ() {
 
 waitForDOM().then(() => {
     console.log('script.js DOM fully loaded, running initial setup');
-    injectMenu(); // Inject the menu first
-    handleUserNamePopup(); // Handle username and popup logic
+    injectMenu();
+    handleUserNamePopup();
     setInitialLanguage();
     updateStarStates();
 
-    // Initial star map setup for starmap.html if user already exists
     if (window.location.pathname.toLowerCase().includes('starmap.html') && typeof window.initializeStarMap === 'function') {
         const studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
         if (studentsData.currentStudent) {
@@ -780,7 +729,6 @@ waitForDOM().then(() => {
         }
     }
 
-    // Initialize FAQ if on faq.html
     if (window.location.pathname.toLowerCase().includes('faq.html')) {
         initializeFAQ();
     }
