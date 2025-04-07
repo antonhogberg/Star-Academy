@@ -1587,6 +1587,7 @@ body {
         overflow-y: auto;
     }
 }
+
 .faq-container {
     max-width: 800px;
     margin: 20px auto;
@@ -1623,16 +1624,16 @@ body {
 .faq-answer {
     max-height: 0; /* Hidden by default */
     overflow: hidden; /* Prevents content spillover */
-    transition: max-height 0.3s ease-in-out; /* 300ms slide effect */
+    transition: max-height 0.3s ease-in-out, padding 0.3s ease-in-out; /* Animate both */
     border-top: 1px solid #ccc;
     background-color: #fff;
-    padding: 0 10px; /* Default padding, overridden when active */
+    padding: 0 10px; /* Start with horizontal padding only */
 }
 
 .faq-item.active .faq-answer {
     max-height: 200px; /* Adjust based on longest answer */
-    padding: 10px; /* Visible padding */
-    display: block; /* Ensure visibility when active */
+    padding: 10px; /* Full padding when active */
+    display: block; /* Ensure visibility */
 }
 
 .faq-item.active .faq-arrow {
