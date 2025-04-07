@@ -215,18 +215,20 @@ body {
 }
 
 .submenu {
+    display: none;
     background-color: #e5e5e5;
     list-style: none;
     margin: 0;
     padding: 0;
     width: 100%;
     overflow: hidden;
-    max-height: 0; /* Hidden by default */
-    transition: max-height 0.2s ease-in-out; /* Smooth transition */
+    max-height: 0;
+    transition: max-height 0.2s ease-in-out;
 }
 
 .submenu.open {
-    max-height: 500px; /* Expands to fit content */
+    display: block;
+    max-height: 500px; /* Adjust if submenu content exceeds this */
 }
 
 .submenu li {

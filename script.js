@@ -509,6 +509,22 @@ function handleUserNamePopup() {
                 localStorage.setItem('starAcademyStudents', JSON.stringify(studentsData));
                 if (userNameDisplay) userNameDisplay.textContent = name;
                 namePopup.style.display = 'none';
+
+                // Create and show success popup
+                const successPopup = document.createElement('div');
+                successPopup.className = 'popup success-popup';
+                successPopup.innerHTML = `
+                    <div class="popup-content">
+                        <p>${translations[localStorage.getItem('language') || 'sv'].addStudentSuccess}</p>
+                    </div>
+                `;
+                document.body.appendChild(successPopup);
+                successPopup.style.display = 'flex';
+                setTimeout(() => {
+                    successPopup.style.display = 'none';
+                    document.body.removeChild(successPopup);
+                }, 2000); // Hide after 2 seconds
+
                 updateStarStates();
                 if (window.location.pathname.toLowerCase().includes('starmap.html') && typeof window.initializeStarMap === 'function') {
                     window.initializeStarMap();
