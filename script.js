@@ -142,7 +142,6 @@ function injectMenu() {
     if (placeholder) {
         placeholder.innerHTML = menuHtml;
 
-        // Initialize menu functionality
         const hamburger = document.querySelector('.hamburger');
         const menu = document.querySelector('.menu');
         const closeBtn = document.querySelector('.close-btn');
@@ -171,8 +170,7 @@ function injectMenu() {
             } else {
                 menu.animate([{ left: '0' }, { left: '-250px' }], { duration: 300, easing: 'ease-in-out', fill: 'forwards' }).onfinish = () => {
                     menu.classList.remove('active');
-                    submenu.classList.remove('open'); // Ensure submenu closes with main menu
-                    submenu.classList.remove('closing');
+                    submenu.classList.remove('open');
                 };
             }
         });
@@ -181,8 +179,7 @@ function injectMenu() {
             hamburger.setAttribute('aria-expanded', 'false');
             menu.animate([{ left: '0' }, { left: '-250px' }], { duration: 300, easing: 'ease-in-out', fill: 'forwards' }).onfinish = () => {
                 menu.classList.remove('active');
-                submenu.classList.remove('open'); // Ensure submenu closes
-                submenu.classList.remove('closing');
+                submenu.classList.remove('open');
             };
         });
 
@@ -191,8 +188,7 @@ function injectMenu() {
                 hamburger.setAttribute('aria-expanded', 'false');
                 menu.animate([{ left: '0' }, { left: '-250px' }], { duration: 300, easing: 'ease-in-out', fill: 'forwards' }).onfinish = () => {
                     menu.classList.remove('active');
-                    submenu.classList.remove('open'); // Ensure submenu closes
-                    submenu.classList.remove('closing');
+                    submenu.classList.remove('open');
                 };
             });
         });
@@ -202,8 +198,7 @@ function injectMenu() {
                 hamburger.setAttribute('aria-expanded', 'false');
                 menu.animate([{ left: '0' }, { left: '-250px' }], { duration: 300, easing: 'ease-in-out', fill: 'forwards' }).onfinish = () => {
                     menu.classList.remove('active');
-                    submenu.classList.remove('open'); // Ensure submenu closes
-                    submenu.classList.remove('closing');
+                    submenu.classList.remove('open');
                 };
             }
         });
@@ -212,21 +207,15 @@ function injectMenu() {
             e.stopPropagation();
             const isSubmenuOpen = submenu.classList.contains('open');
             if (isSubmenuOpen) {
-                submenu.classList.replace('open', 'closing');
-                submenu.addEventListener('animationend', () => {
-                    submenu.classList.remove('closing');
-                    submenu.style.display = 'none'; // Hide after animation
-                }, { once: true });
+                submenu.classList.remove('open');
             } else {
-                submenu.style.display = 'block'; // Show before animation
-                submenu.classList.remove('closing');
+                submenu.style.display = 'block'; // Ensure it’s visible before transition
                 submenu.classList.add('open');
             }
-            chaptersToggle.parentElement.classList.toggle('active'); // Toggle arrow rotation
+            chaptersToggle.parentElement.classList.toggle('active'); // For arrow rotation
             console.log('Chapters toggle clicked, submenu state:', submenu.classList);
         });
 
-        // Apply language and active page detection after injecting the menu
         const lang = localStorage.getItem('language') || 'sv';
         switchLanguage(lang);
         setActivePage();
