@@ -194,8 +194,12 @@ body {
     position: absolute;
     right: 15px; /* Align with the right edge of the 80% width */
     top: 50%;
-    transform: translateY(-50%);
-    margin-left: 0; /* Remove previous margin */
+    transform: translateY(-50%); /* Initial position */
+    transition: transform 0.3s ease; /* Add transition for smooth rotation */
+}
+
+.menu-item.active .chapters-toggle::after {
+    transform: translateY(-50%) rotate(180deg); /* Rotate arrow upward when active */
 }
 
 .submenu {
@@ -1603,4 +1607,12 @@ body {
 
 .faq-item.active .faq-arrow {
     transform: rotate(180deg); /* Arrow points up when open */
+}
+
+.chapter-arrow {
+    transition: transform 0.3s ease; /* Matches FAQ arrow animation */
+}
+
+.menu-item.active .chapter-arrow {
+    transform: rotate(180deg); /* Rotates arrow upward when submenu is open */
 }
