@@ -570,15 +570,16 @@ function initializeFAQ() {
             const isActive = faqItem.classList.contains('active');
 
             if (isActive) {
-                faqAnswer.style.maxHeight = faqAnswer.scrollHeight + 'px'; // Set current height
+                faqAnswer.style.maxHeight = faqAnswer.scrollHeight + 'px'; // Current height with padding
                 requestAnimationFrame(() => {
                     faqAnswer.style.maxHeight = '0'; // Slide up
                     faqItem.classList.remove('active');
                 });
             } else {
-                faqAnswer.style.display = 'block'; // Ensure visibility before animation
+                faqAnswer.style.display = 'block'; // Ensure visibility
+                const fullHeight = faqAnswer.scrollHeight + 20; // Add padding (10px top + 10px bottom)
                 faqItem.classList.add('active');
-                faqAnswer.style.maxHeight = faqAnswer.scrollHeight + 'px'; // Slide down
+                faqAnswer.style.maxHeight = fullHeight + 'px'; // Slide to full height including padding
                 faqAnswer.addEventListener('transitionend', function resetHeight() {
                     faqAnswer.style.maxHeight = '200px'; // Reset to CSS value
                     faqAnswer.removeEventListener('transitionend', resetHeight);
