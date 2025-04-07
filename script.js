@@ -570,19 +570,19 @@ function initializeFAQ() {
             const isActive = faqItem.classList.contains('active');
 
             if (isActive) {
-                faqAnswer.style.maxHeight = faqAnswer.scrollHeight + 'px'; // Set to current height before collapsing
+                faqAnswer.style.maxHeight = faqAnswer.scrollHeight + 'px'; // Set current height
                 requestAnimationFrame(() => {
                     faqAnswer.style.maxHeight = '0'; // Slide up
                     faqItem.classList.remove('active');
                 });
             } else {
+                faqAnswer.style.display = 'block'; // Ensure visibility before animation
                 faqItem.classList.add('active');
-                faqAnswer.style.maxHeight = faqAnswer.scrollHeight + 'px'; // Slide down to content height
-                // Reset max-height after animation to allow content resizing
+                faqAnswer.style.maxHeight = faqAnswer.scrollHeight + 'px'; // Slide down
                 faqAnswer.addEventListener('transitionend', function resetHeight() {
-                    faqAnswer.style.maxHeight = '200px'; // Match CSS value
+                    faqAnswer.style.maxHeight = '200px'; // Reset to CSS value
                     faqAnswer.removeEventListener('transitionend', resetHeight);
-                });
+                }, { once: true });
             }
         });
     });

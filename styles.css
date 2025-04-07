@@ -1587,7 +1587,6 @@ body {
         overflow-y: auto;
     }
 }
-
 .faq-container {
     max-width: 800px;
     margin: 20px auto;
@@ -1596,8 +1595,8 @@ body {
 
 @media (max-width: 768px) {
     .faq-container {
-        width: 70vw; /* 70% of viewport width on mobile */
-        max-width: none; /* Overrides 800px on smaller screens */
+        width: 70vw;
+        max-width: none;
     }
 }
 
@@ -1622,32 +1621,30 @@ body {
 }
 
 .faq-answer {
-    display: none; /* Hidden by default */
-    padding: 0 10px; /* Padding when visible */
+    max-height: 0; /* Hidden by default */
+    overflow: hidden; /* Prevents content spillover */
+    transition: max-height 0.3s ease-in-out; /* 300ms slide effect */
     border-top: 1px solid #ccc;
     background-color: #fff;
-    max-height: 0; /* Hidden by default */
-    overflow: hidden; /* Prevents content spillover during animation */
-    transition: max-height 0.3s ease-in-out; /* 300ms slide effect */
+    padding: 0 10px; /* Default padding, overridden when active */
 }
 
 .faq-item.active .faq-answer {
-    max-height: 200px; /* Adjust this value based on your longest answer */
+    max-height: 200px; /* Adjust based on longest answer */
     padding: 10px; /* Visible padding */
+    display: block; /* Ensure visibility when active */
 }
 
-/* Optional: Rotate arrow when active */
 .faq-item.active .faq-arrow {
     transform: rotate(180deg);
 }
 
-/* Responsive adjustments */
 @media (max-width: 767px) {
     .faq-answer {
         font-size: 14px;
     }
     .faq-item.active .faq-answer {
-        max-height: 300px; /* Larger for mobile if content wraps */
+        max-height: 300px;
     }
 }
 
