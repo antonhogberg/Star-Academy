@@ -135,9 +135,7 @@ const translations = {
 // Menu HTML template as a string
 const menuHtml = `
     <nav class="hamburger-nav">
-        <div class="hamburger" aria-expanded="false" aria-controls="main-menu">☰</div>
         <div class="menu" id="main-menu">
-            <span class="close-btn" aria-label="Close menu">✖</span>
             <a href="index.html" class="menu-link"></a>
             <a href="starmap.html" class="menu-link"></a>
             <div class="menu-item">
@@ -168,20 +166,11 @@ function injectMenu() {
     if (placeholder) {
         placeholder.innerHTML = menuHtml;
 
-        const hamburger = document.querySelector('.hamburger');
+        const hamburger = document.getElementById('menuButton'); // Now the piano-menu
         const menu = document.querySelector('.menu');
-        const closeBtn = document.querySelector('.close-btn');
-        const chaptersToggle = document.querySelector('.chapters-toggle');
-        const submenu = document.querySelector('.submenu');
 
-        if (!hamburger || !menu || !closeBtn || !chaptersToggle || !submenu) {
-            console.error('Menu elements missing:', {
-                hamburger: !!hamburger,
-                menu: !!menu,
-                closeBtn: !!closeBtn,
-                chaptersToggle: !!chaptersToggle,
-                submenu: !!submenu
-            });
+        if (!hamburger || !menu) {
+            console.error('Menu elements missing:', { hamburger: !!hamburger, menu: !!menu });
             return;
         }
 
@@ -190,31 +179,23 @@ function injectMenu() {
         hamburger.addEventListener('click', () => {
             const isExpanded = hamburger.getAttribute('aria-expanded') === 'true';
             hamburger.setAttribute('aria-expanded', !isExpanded);
+            hamburger.classList.toggle('active'); // Toggle piano animation
             if (!isExpanded) {
                 menu.classList.add('active');
                 menu.animate([{ left: '-250px' }, { left: '0' }], { duration: 300, easing: 'ease-in-out', fill: 'forwards' });
             } else {
                 menu.animate([{ left: '0' }, { left: '-250px' }], { duration: 300, easing: 'ease-in-out', fill: 'forwards' }).onfinish = () => {
                     menu.classList.remove('active');
-                    submenu.classList.remove('open');
                 };
             }
-        });
-
-        closeBtn.addEventListener('click', () => {
-            hamburger.setAttribute('aria-expanded', 'false');
-            menu.animate([{ left: '0' }, { left: '-250px' }], { duration: 300, easing: 'ease-in-out', fill: 'forwards' }).onfinish = () => {
-                menu.classList.remove('active');
-                submenu.classList.remove('open');
-            };
         });
 
         document.querySelectorAll('.menu-link').forEach(link => {
             link.addEventListener('click', () => {
                 hamburger.setAttribute('aria-expanded', 'false');
+                hamburger.classList.remove('active'); // Reset piano animation
                 menu.animate([{ left: '0' }, { left: '-250px' }], { duration: 300, easing: 'ease-in-out', fill: 'forwards' }).onfinish = () => {
                     menu.classList.remove('active');
-                    submenu.classList.remove('open');
                 };
             });
         });
@@ -222,26 +203,29 @@ function injectMenu() {
         document.addEventListener('click', (e) => {
             if (!hamburger.contains(e.target) && !menu.contains(e.target)) {
                 hamburger.setAttribute('aria-expanded', 'false');
+                hamburger.classList.remove('active'); // Reset piano animation
                 menu.animate([{ left: '0' }, { left: '-250px' }], { duration: 300, easing: 'ease-in-out', fill: 'forwards' }).onfinish = () => {
                     menu.classList.remove('active');
-                    submenu.classList.remove('open');
                 };
             }
         });
 
-        chaptersToggle.addEventListener('click', (e) => {
-            e.stopPropagation();
-            const isSubmenuOpen = submenu.classList.contains('open');
-            if (isSubmenuOpen) {
-                submenu.classList.remove('open');
-            } else {
-                submenu.style.display = 'block';
-                submenu.offsetHeight; // Force reflow for animation
-                submenu.classList.add('open');
-            }
-            chaptersToggle.parentElement.classList.toggle('active');
-            console.log('Chapters toggle clicked, submenu state:', submenu.classList);
-        });
+        const chaptersToggle = document.querySelector('.chapters-toggle');
+        const submenu = document.querySelector('.submenu');
+        if (chaptersToggle && submenu) {
+            chaptersToggle.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const isSubmenuOpen = submenu.classList.contains('open');
+                if (isSubmenuOpen) {
+                    submenu.classList.remove('open');
+                } else {
+                    submenu.style.display = 'block';
+                    submenu.offsetHeight; // Force reflow
+                    submenu.classList.add('open');
+                }
+                chaptersToggle.parentElement.classList.toggle('active');
+            });
+        }
 
         const lang = localStorage.getItem('language') || 'sv';
         switchLanguage(lang);

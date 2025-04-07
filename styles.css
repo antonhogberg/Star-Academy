@@ -1703,3 +1703,70 @@ body {
         padding-top: 15px;
     }
 }
+
+.piano-menu {
+    width: 30px; /* Compact size */
+    height: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: flex-start;
+    cursor: pointer;
+    position: fixed; /* Stays in place */
+    top: 10px; /* Matches current hamburger positioning */
+    left: 10px;
+    z-index: 1200; /* Above menu (z-index 1000) */
+    background: transparent; /* No background interference */
+}
+
+.white-key, .black-key {
+    height: 12%;
+    border-radius: 2px;
+    transition: all 0.4s cubic-bezier(0.68, -0.6, 0.32, 1.6);
+    transform-origin: center;
+}
+
+.white-key {
+    width: 75%;
+    background-color: #fff; /* White keys */
+    position: relative;
+}
+
+.black-key {
+    width: 0;
+    background-color: #000; /* Black keys */
+    position: absolute;
+    left: 0;
+    transform-origin: bottom;
+}
+
+.black-key.top {
+    top: 29%;
+}
+
+.black-key.bottom {
+    top: 57%;
+}
+
+.piano-menu.active .black-key {
+    width: 50%;
+    height: 16%;
+}
+
+.piano-menu.active .black-key.top {
+    top: 27%;
+}
+
+.piano-menu.active .white-key:nth-child(1) {
+    height: 24%;
+    transform: translateY(6%);
+}
+
+.piano-menu.active .white-key:nth-child(2) {
+    height: 24%;
+}
+
+.piano-menu.active .white-key:nth-child(3) {
+    height: 24%;
+    transform: translateY(-6%);
+}
