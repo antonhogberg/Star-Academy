@@ -50,7 +50,7 @@ const translations = {
         congratsMessage: "Congratulations! You’ve completed the Star Map! 🌟",
         faqTitle: "Frequently Asked Questions",
         faqQ1: "How do I save my progress?",
-        faqA1: "Your progress is automatically saved in your browser’s local storage when you earn stars or switch students. Just don’t clear your browser data!"
+        faqA1: "Your progress is automatically saved in your browser’s local storage when you click on the stars or switch students. Just don’t clear your browser data!"
     },
     sv: {
         menuFrontPage: "Stjärnöversikt",
@@ -102,7 +102,7 @@ const translations = {
         congratsMessage: "Grattis! Du har slutfört Stjärnkartan! 🌟",
         faqTitle: "Vanliga frågor",
         faqQ1: "Hur sparar jag mina framsteg?",
-        faqA1: "Dina framsteg sparas automatiskt i webbläsarens lokala lagring när du tjänar stjärnor eller byter elev. Rensa bara inte webbläsardatan!"
+        faqA1: "Dina framsteg sparas automatiskt i webbläsarens lokala lagring när du klickar fram stjärnor eller byter elev. Rensa bara inte cachen!"
     }
 };
 
@@ -161,7 +161,6 @@ function injectMenu() {
         }
 
         menu.style.left = '-250px';
-        submenu.style.display = 'none';
 
         hamburger.addEventListener('click', () => {
             const isExpanded = hamburger.getAttribute('aria-expanded') === 'true';
@@ -172,7 +171,8 @@ function injectMenu() {
             } else {
                 menu.animate([{ left: '0' }, { left: '-250px' }], { duration: 300, easing: 'ease-in-out', fill: 'forwards' }).onfinish = () => {
                     menu.classList.remove('active');
-                    submenu.style.display = 'none';
+                    submenu.classList.remove('open'); // Ensure submenu closes with main menu
+                    submenu.classList.remove('closing');
                 };
             }
         });
@@ -181,7 +181,8 @@ function injectMenu() {
             hamburger.setAttribute('aria-expanded', 'false');
             menu.animate([{ left: '0' }, { left: '-250px' }], { duration: 300, easing: 'ease-in-out', fill: 'forwards' }).onfinish = () => {
                 menu.classList.remove('active');
-                submenu.style.display = 'none';
+                submenu.classList.remove('open'); // Ensure submenu closes
+                submenu.classList.remove('closing');
             };
         });
 
@@ -190,7 +191,8 @@ function injectMenu() {
                 hamburger.setAttribute('aria-expanded', 'false');
                 menu.animate([{ left: '0' }, { left: '-250px' }], { duration: 300, easing: 'ease-in-out', fill: 'forwards' }).onfinish = () => {
                     menu.classList.remove('active');
-                    submenu.style.display = 'none';
+                    submenu.classList.remove('open'); // Ensure submenu closes
+                    submenu.classList.remove('closing');
                 };
             });
         });
@@ -200,17 +202,28 @@ function injectMenu() {
                 hamburger.setAttribute('aria-expanded', 'false');
                 menu.animate([{ left: '0' }, { left: '-250px' }], { duration: 300, easing: 'ease-in-out', fill: 'forwards' }).onfinish = () => {
                     menu.classList.remove('active');
-                    submenu.style.display = 'none';
+                    submenu.classList.remove('open'); // Ensure submenu closes
+                    submenu.classList.remove('closing');
                 };
             }
         });
 
         chaptersToggle.addEventListener('click', (e) => {
             e.stopPropagation();
-            const isSubmenuVisible = submenu.style.display === 'block';
-            submenu.style.display = isSubmenuVisible ? 'none' : 'block';
-            chaptersToggle.parentElement.classList.toggle('active'); // Toggle active class for arrow rotation
-            console.log('Chapters toggle clicked, submenu display:', submenu.style.display);
+            const isSubmenuOpen = submenu.classList.contains('open');
+            if (isSubmenuOpen) {
+                submenu.classList.replace('open', 'closing');
+                submenu.addEventListener('animationend', () => {
+                    submenu.classList.remove('closing');
+                    submenu.style.display = 'none'; // Hide after animation
+                }, { once: true });
+            } else {
+                submenu.style.display = 'block'; // Show before animation
+                submenu.classList.remove('closing');
+                submenu.classList.add('open');
+            }
+            chaptersToggle.parentElement.classList.toggle('active'); // Toggle arrow rotation
+            console.log('Chapters toggle clicked, submenu state:', submenu.classList);
         });
 
         // Apply language and active page detection after injecting the menu
