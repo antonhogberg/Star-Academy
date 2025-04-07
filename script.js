@@ -7,6 +7,7 @@ const translations = {
         menuInfo: "How to Use",
         menuStarMap: "Star Map",
         menuChapters: "Chapters",
+        menuFAQ: "FAQ", // Added for FAQ page
         popupWelcome: "Welcome to the Star Map!",
         popupIntro: "Click to reveal your Star Academy stars! Earn six stars in exercises to rise in rank—track your progress under Star Overview.",
         popupTeacherNote: "Teacher? Add and switch students under Manage Students. Note: Data is saved locally on this device—clear the cache, and it’s gone.",
@@ -49,14 +50,17 @@ const translations = {
         saveNotesButton: "Save notes",
         infoTitle: "How to Use Star Academy",
         gettingStartedTitle: "Getting Started",
-        gettingStartedText: "When you first visit Star Academy, you’ll be asked to enter your name. This creates your profile, where your progress will be saved. You’ll start as an Explorer, ready to beginあなたのピアノの旅を始めましょう！",
+        gettingStartedText: "When you first visit Star Academy, you’ll be asked to enter your name. This creates your profile, where your progress will be saved. You’ll start as an Explorer, ready to begin your piano journey!",
         understandingProgressTitle: "Understanding Your Progress",
         understandingProgressText: "The homepage shows your progress with stars and chevrons. The 16 bottom stars track your first steps—complete 16 exercises to become a Star Cadet! The chevrons above represent the four parts across seven chapters. Fill each chevron’s stars by completing exercises to advance your rank, from Explorer to Star Admiral.",
         navigatingSiteTitle: "Navigating the Site",
         navigatingSiteText: "Use the menu (☰) in the top-left corner to access the homepage, chapters, student management, and this info page. Each chapter has four parts with four exercises each. Complete exercises to earn stars and progress through the ranks!",
         managingUsersTitle: "Managing Users",
         managingUsersText: "If you’re a teacher or have multiple users, visit the 'Manage Students' page to add students, switch between them, and add notes about their progress. Each student’s progress is saved separately.",
-        congratsMessage: "Congratulations! You’ve completed the Star Map! 🌟"
+        congratsMessage: "Congratulations! You’ve completed the Star Map! 🌟",
+        faqTitle: "Frequently Asked Questions", // Added for FAQ page
+        faqQ1: "How do I save my progress?", // Sample Q&A
+        faqA1: "Your progress is automatically saved in your browser’s local storage when you earn stars or switch students. Just don’t clear your browser data!" // Sample Q&A
     },
     sv: {
         menuFrontPage: "Stjärnöversikt",
@@ -65,6 +69,7 @@ const translations = {
         menuInfo: "Så här använder du",
         menuStarMap: "Stjärnkarta",
         menuChapters: "Kapitel",
+        menuFAQ: "Vanliga frågor", // Added for FAQ page
         popupWelcome: "Välkommen till Stjärnkartan!",
         popupIntro: "Klicka fram dina Stjärnakademien-stjärnor här! Samla sex stjärnor i övningarna för att klättra i rang – kolla dina framsteg under Stjärnöversikt.",
         popupTeacherNote: "Lärare? Lägg till och växla mellan elever under Hantera elever. Obs! Allt sparas lokalt på denna enhet – rensas cachen försvinner dina framsteg.",
@@ -114,7 +119,10 @@ const translations = {
         navigatingSiteText: "Använd menyn (☰) i det övre vänstra hörnet för att komma åt hemsidan, kapitlen, elevhantering och denna infosida. Varje kapitel har fyra delar med fyra övningar vardera. Slutför övningar för att tjäna stjärnor och avancera genom rankerna!",
         managingUsersTitle: "Hantera användare",
         managingUsersText: "Om du är lärare eller har flera användare, besök sidan 'Hantera elever' för att lägga till elever, växla mellan dem och lägga till anteckningar om deras framsteg. Varje elevs framsteg sparas separat.",
-        congratsMessage: "Grattis! Du har slutfört Stjärnkartan! 🌟"
+        congratsMessage: "Grattis! Du har slutfört Stjärnkartan! 🌟",
+        faqTitle: "Vanliga frågor", // Added for FAQ page
+        faqQ1: "Hur sparar jag mina framsteg?", // Sample Q&A
+        faqA1: "Dina framsteg sparas automatiskt i webbläsarens lokala lagring när du tjänar stjärnor eller byter elev. Rensa bara inte webbläsardatan!" // Sample Q&A
     }
 };
 
@@ -139,6 +147,8 @@ const menuHtml = `
                 </ul>
             </div>
             <a href="students.html" class="menu-link"></a>
+            <a href="faq.html" class="menu-link"></a> <!-- Added FAQ link -->
+            <a href="info.html" class="menu-link"></a>
             <div class="language-switcher">
                 <span class="flag" onclick="switchLanguage('en')">🇬🇧</span>
                 <span class="flag" onclick="switchLanguage('sv')">🇸🇪</span>
@@ -265,7 +275,7 @@ function updateStarStates() {
                 bottomStar.setAttribute("fill", "#ffd700");
                 bottomStar.setAttribute("stroke", "#000000");
                 bottomStar.setAttribute("stroke-width", "1");
-                console.log(`bottom_star${i} turned gold`);
+                console.log(` digestion_star${i} turned gold`);
             } else {
                 bottomStar.setAttribute("fill", "#000000");
                 bottomStar.removeAttribute("stroke");
@@ -441,6 +451,10 @@ function switchLanguage(lang) {
             link.textContent = translations[lang].menuStudents;
         } else if (href === 'starmap.html') {
             link.textContent = translations[lang].menuStarMap;
+        } else if (href === 'faq.html') { // Added for FAQ page
+            link.textContent = translations[lang].menuFAQ;
+        } else if (href === 'info.html') {
+            link.textContent = translations[lang].menuInfo;
         } else {
             const chapterNum = href?.match(/chapter(\d+)\.html/)?.[1];
             if (chapterNum) {
@@ -546,6 +560,26 @@ function switchLanguage(lang) {
         managingUsersText.textContent = translations[lang].managingUsersText;
         console.log(`Updated info.html content to ${lang}`);
     }
+
+    // Update FAQ page specific elements
+    const faqTitle = document.querySelector('h1[data-translate="faqTitle"]');
+    const faqQuestions = document.querySelectorAll('.faq-question[data-translate]');
+    const faqAnswers = document.querySelectorAll('.faq-answer[data-translate]');
+    if (faqTitle) {
+        faqTitle.textContent = translations[lang].faqTitle;
+    }
+    faqQuestions.forEach(question => {
+        const key = question.getAttribute('data-translate');
+        if (translations[lang][key]) {
+            question.childNodes[0].textContent = translations[lang][key]; // Preserve arrow
+        }
+    });
+    faqAnswers.forEach(answer => {
+        const key = answer.getAttribute('data-translate');
+        if (translations[lang][key]) {
+            answer.textContent = translations[lang][key];
+        }
+    });
 }
 
 function setInitialLanguage() {
@@ -580,30 +614,8 @@ function setActivePage() {
 // Handle username and popup logic
 function handleUserNamePopup() {
     console.log('handleUserNamePopup called, document.readyState:', document.readyState);
-    console.log('Current page:', window.location.pathname);
-
-    // Skip popup logic on index.html
-    const currentPath = window.location.pathname.toLowerCase();
-    if (currentPath.endsWith('index.html') || currentPath === '/') {
-        console.log('Skipping popup logic on index.html');
-        const userNameDisplay = document.getElementById('userNameDisplay');
-        const studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || {
-            students: {},
-            currentStudent: localStorage.getItem('userName') || ''
-        };
-        if (userNameDisplay && studentsData.currentStudent) {
-            userNameDisplay.textContent = studentsData.currentStudent;
-        }
-        return;
-    }
-
-    // Only proceed on starmap.html or chapter pages
-    if (!currentPath.includes('starmap.html') && !currentPath.match(/chapter\d+\.html/)) {
-        console.log('Skipping popup logic on non-starmap and non-chapter pages');
-        return;
-    }
-
     console.log('Checking for popup elements...');
+
     let studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || {
         students: {},
         currentStudent: localStorage.getItem('userName') || ''
@@ -624,16 +636,19 @@ function handleUserNamePopup() {
         // Check if there's a current student, otherwise show the popup
         if (!studentsData.currentStudent) {
             console.log('No current student, showing popup');
-            // Set display to flex and ensure centering
             namePopup.style.display = 'flex';
-            // Force a repaint to ensure the popup is rendered
+            namePopup.style.position = 'fixed';
+            namePopup.style.top = '0';
+            namePopup.style.left = '0';
+            namePopup.style.width = '100%';
+            namePopup.style.height = '100%';
+            namePopup.style.background = 'rgba(0, 0, 0, 0.5)';
+            namePopup.style.zIndex = '1000';
+            namePopup.style.justifyContent = 'center';
+            namePopup.style.alignItems = 'center';
             namePopup.style.opacity = '0';
             setTimeout(() => {
                 namePopup.style.opacity = '1';
-                // Reapply flexbox centering properties to ensure they take effect
-                namePopup.style.justifyContent = 'center';
-                namePopup.style.alignItems = 'center';
-                // Additional debugging: Check computed styles and visibility
                 const computedStyle = window.getComputedStyle(namePopup);
                 console.log('Popup computed styles:', {
                     display: computedStyle.display,
@@ -645,11 +660,8 @@ function handleUserNamePopup() {
                     width: computedStyle.width,
                     height: computedStyle.height,
                     zIndex: computedStyle.zIndex,
-                    background: computedStyle.background,
-                    justifyContent: computedStyle.justifyContent,
-                    alignItems: computedStyle.alignItems
+                    background: computedStyle.background
                 });
-                // Check if the popup is visible in the viewport
                 const rect = namePopup.getBoundingClientRect();
                 console.log('Popup bounding rect:', rect);
                 console.log('Is popup in viewport?', {
@@ -730,7 +742,6 @@ function waitForDOM() {
                 console.log('Load event fired, resolving');
                 setTimeout(resolve, 0);
             });
-            // Fallback: Also listen for DOMContentLoaded in case load event is delayed
             document.addEventListener('DOMContentLoaded', () => {
                 console.log('DOMContentLoaded event fired');
                 if (document.readyState === 'complete') {
@@ -739,6 +750,17 @@ function waitForDOM() {
                 }
             });
         }
+    });
+}
+
+// FAQ collapsibility logic
+function initializeFAQ() {
+    const faqQuestions = document.querySelectorAll('.faq-question');
+    faqQuestions.forEach(question => {
+        question.addEventListener('click', () => {
+            const faqItem = question.parentElement;
+            faqItem.classList.toggle('active');
+        });
     });
 }
 
@@ -756,5 +778,10 @@ waitForDOM().then(() => {
             console.log('User exists on starmap.html, initializing star map');
             window.initializeStarMap();
         }
+    }
+
+    // Initialize FAQ if on faq.html
+    if (window.location.pathname.toLowerCase().includes('faq.html')) {
+        initializeFAQ();
     }
 });
