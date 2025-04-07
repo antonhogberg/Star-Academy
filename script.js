@@ -115,8 +115,8 @@ const menuHtml = `
             <a href="index.html" class="menu-link"></a>
             <a href="starmap.html" class="menu-link"></a>
             <div class="menu-item">
-                <span class="chapters-toggle"><span class="chapter-arrow">▼</span></span>
-                <ul class="submenu" style="display: none;">
+                <span class="chapters-toggle"></span>
+                <ul class="submenu">
                     <li><a href="chapter1.html" class="menu-link"><span></span></a></li>
                     <li><a href="chapter2.html" class="menu-link"><span></span></a></li>
                     <li><a href="chapter3.html" class="menu-link"><span></span></a></li>
@@ -209,10 +209,11 @@ function injectMenu() {
             if (isSubmenuOpen) {
                 submenu.classList.remove('open');
             } else {
-                submenu.style.display = 'block'; // Ensure it’s visible before transition
+                submenu.style.display = 'block';
+                submenu.offsetHeight; // Force reflow for animation
                 submenu.classList.add('open');
             }
-            chaptersToggle.parentElement.classList.toggle('active'); // For arrow rotation
+            chaptersToggle.parentElement.classList.toggle('active');
             console.log('Chapters toggle clicked, submenu state:', submenu.classList);
         });
 
@@ -225,9 +226,6 @@ function injectMenu() {
 }
 
 function updateStarStates() {
-    console.log('Storage check initiated, checking localStorage');
-    console.log('All localStorage keys:', Object.keys(localStorage));
-
     const studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
     const progress = studentsData.students[studentsData.currentStudent]?.progress || {};
 
@@ -243,13 +241,9 @@ function updateStarStates() {
     let sixStarCount = 0;
     allExercises.forEach(exerciseKey => {
         const state = progress[exerciseKey] || "0";
-        console.log(`Checking ${exerciseKey} state:`, state);
         if (state === "6") sixStarCount++;
     });
 
-    console.log('Six-star count:', sixStarCount);
-
-    // Update bottom stars (on index.html)
     for (let i = 1; i <= 16; i++) {
         const bottomStar = document.getElementById(`bottom_star${i}`);
         if (bottomStar) {
@@ -257,19 +251,14 @@ function updateStarStates() {
                 bottomStar.setAttribute("fill", "#ffd700");
                 bottomStar.setAttribute("stroke", "#000000");
                 bottomStar.setAttribute("stroke-width", "1");
-                console.log(`bottom_star${i} turned gold`);
             } else {
                 bottomStar.setAttribute("fill", "#000000");
                 bottomStar.removeAttribute("stroke");
                 bottomStar.removeAttribute("stroke-width");
-                console.log(`bottom_star${i} turned black`);
             }
-        } else {
-            console.log(`bottom_star${i} not found in DOM (expected on chapter pages)`);
         }
     }
 
-    // Update chevrons (if present)
     const chevronMappings = {
         'chevron1_star1': ['exercise1:1:1', 'exercise1:1:2', 'exercise1:1:3', 'exercise1:1:4'],
         'chevron1_star2': ['exercise2:1:1', 'exercise2:1:2', 'exercise2:1:3', 'exercise2:1:4'],
@@ -284,7 +273,7 @@ function updateStarStates() {
         'chevron2_star4': ['exercise4:2:1', 'exercise4:2:2', 'exercise4:2:3', 'exercise4:2:4'],
         'chevron2_star5': ['exercise5:2:1', 'exercise5:2:2', 'exercise5:2:3', 'exercise5:2:4'],
         'chevron2_star6': ['exercise6:2:1', 'exercise6:2:2', 'exercise6:2:3', 'exercise6:2:4'],
-        'chevron2_star7': ['exercise7_transitions:2:1', 'exercise7:2:2', 'exercise7:2:3', 'exercise7:2:4'],
+        'chevron2_star7': ['exercise7:2:1', 'exercise7:2:2', 'exercise7:2:3', 'exercise7:2:4'],
         'chevron3_star1': ['exercise1:3:1', 'exercise1:3:2', 'exercise1:3:3', 'exercise1:3:4'],
         'chevron3_star2': ['exercise2:3:1', 'exercise2:3:2', 'exercise2:3:3', 'exercise2:3:4'],
         'chevron3_star3': ['exercise3:3:1', 'exercise3:3:2', 'exercise3:3:3', 'exercise3:3:4'],
@@ -304,28 +293,19 @@ function updateStarStates() {
     for (const [chevronStar, exercises] of Object.entries(chevronMappings)) {
         const star = document.getElementById(chevronStar);
         if (star) {
-            const allSix = exercises.every(exercise => {
-                const state = progress[exercise] || "0";
-                console.log(`Checking ${exercise} for chevron ${chevronStar}:`, state);
-                return state === "6";
-            });
+            const allSix = exercises.every(exercise => progress[exercise] === "6");
             if (allSix) {
                 star.setAttribute("fill", "#ffd700");
                 star.setAttribute("stroke", "#000000");
                 star.setAttribute("stroke-width", "1");
-                console.log(`${chevronStar} turned gold`);
             } else {
                 star.setAttribute("fill", "#000000");
                 star.removeAttribute("stroke");
                 star.removeAttribute("stroke-width");
-                console.log(`${chevronStar} turned black`);
             }
-        } else {
-            console.log(`${chevronStar} not found in DOM (expected on chapter pages)`);
         }
     }
 
-    // Update rank badge and text box (if present)
     const rankImage = document.getElementById('rankImage');
     const rankName = document.getElementById('rankName');
     const rankTitle = document.getElementById('rankTitle');
@@ -333,8 +313,6 @@ function updateStarStates() {
 
     if (rankImage && rankName && rankTitle && rankDescription) {
         const lang = localStorage.getItem('language') || 'sv';
-        console.log(`Updating rank elements with language: ${lang}`);
-
         const chevron1Complete = [1, 2, 3, 4, 5, 6, 7].every(chapter => 
             chevronMappings[`chevron1_star${chapter}`].every(exercise => progress[exercise] === "6")
         );
@@ -354,76 +332,43 @@ function updateStarStates() {
             newRank = translations[lang].rankStarAdmiral;
             rankTitle.textContent = newRank;
             rankDescription.textContent = translations[lang].textboxStarAdmiral;
-            console.log(`Set rank to Star Admiral (${newRank})`);
         } else if (chevron3Complete) {
             rankImage.src = 'rank3.png';
             newRank = translations[lang].rankStarCommander;
             rankTitle.textContent = newRank;
             rankDescription.textContent = translations[lang].textboxStarCommander;
-            console.log(`Set rank to Star Commander (${newRank})`);
         } else if (chevron2Complete) {
             rankImage.src = 'rank2.png';
             newRank = translations[lang].rankStarCaptain;
             rankTitle.textContent = newRank;
             rankDescription.textContent = translations[lang].textboxStarCaptain;
-            console.log(`Set rank to Star Captain (${newRank})`);
         } else if (chevron1Complete) {
             rankImage.src = 'rank1.png';
             newRank = translations[lang].rankStarOfficer;
             rankTitle.textContent = newRank;
             rankDescription.textContent = translations[lang].textboxStarOfficer;
-            console.log(`Set rank to Star Officer (${newRank})`);
         } else if (sixStarCount >= 16) {
             rankImage.src = 'rank0.png';
             newRank = translations[lang].rankStarCadet;
             rankTitle.textContent = newRank;
             rankDescription.textContent = translations[lang].textboxStarCadet;
-            console.log(`Set rank to Star Cadet (${newRank})`);
         } else {
             rankImage.src = 'rank-start.png';
             newRank = translations[lang].rankExplorer;
             rankTitle.textContent = newRank;
             rankDescription.textContent = translations[lang].textboxExplorer;
-            console.log(`Set rank to Explorer (${newRank})`);
         }
 
         rankName.textContent = newRank;
-        studentsData.students[studentsData.currentStudent].rank = newRank;
-        localStorage.setItem('starAcademyStudents', JSON.stringify(studentsData));
-
-        const allChaptersComplete = [1, 2, 3, 4, 5, 6, 7].every(chapter => {
-            const chapterExercises = Array.from({ length: 16 }, (_, i) =>
-                `exercise${chapter}:${Math.ceil((i + 1) / 4)}:${(i % 4) + 1}`
-            );
-            return chapterExercises.every(exercise => {
-                const state = progress[exercise] || "0";
-                console.log(`Checking rank badge ${exercise} state:`, state);
-                return state === "6";
-            });
-        });
-        if (allChaptersComplete) {
-            rankImage.src = 'rank4.png';
-            newRank = translations[lang].rankStarAdmiral;
-            rankName.textContent = newRank;
-            rankTitle.textContent = newRank;
-            rankDescription.textContent = translations[lang].textboxStarAdmiral;
+        if (studentsData.currentStudent) {
             studentsData.students[studentsData.currentStudent].rank = newRank;
             localStorage.setItem('starAcademyStudents', JSON.stringify(studentsData));
-            console.log(`Set rank to Star Admiral (all chapters complete) (${newRank})`);
         }
-    } else {
-        console.log('Rank elements not found:', {
-            rankImage: !!rankImage,
-            rankName: !!rankName,
-            rankTitle: !!rankTitle,
-            rankDescription: !!rankDescription
-        });
     }
 }
 
 function switchLanguage(lang) {
     localStorage.setItem('language', lang);
-    console.log(`Switching language to: ${lang}`);
 
     document.querySelectorAll('.menu-link').forEach(link => {
         const href = link.getAttribute('href')?.toLowerCase();
@@ -439,25 +384,15 @@ function switchLanguage(lang) {
             const chapterNum = href?.match(/chapter(\d+)\.html/)?.[1];
             if (chapterNum) {
                 const span = link.querySelector('span');
-                if (span) {
-                    span.textContent = `${translations[lang].menuChapter} ${chapterNum}`;
-                } else {
-                    console.warn(`No <span> found inside chapter link: ${href}`);
-                    link.textContent = `${translations[lang].menuChapter} ${chapterNum}`; // Fallback
-                }
+                if (span) span.textContent = `${translations[lang].menuChapter} ${chapterNum}`;
+                else link.textContent = `${translations[lang].menuChapter} ${chapterNum}`;
             }
         }
     });
 
     const chaptersToggle = document.querySelector('.chapters-toggle');
-    if (chaptersToggle) {
-        chaptersToggle.childNodes[0].textContent = translations[lang].menuChapters || 'Chapters'; // Update text, preserve arrow
-        console.log('Set chaptersToggle text to:', chaptersToggle.textContent);
-    } else {
-        console.error('.chapters-toggle not found');
-    }
+    if (chaptersToggle) chaptersToggle.textContent = translations[lang].menuChapters;
 
-    // Update popup text (shared across pages)
     const popupWelcome = document.querySelector('#popupWelcome');
     const popupIntro = document.querySelector('#popupIntro');
     const popupTeacherNote = document.querySelector('#popupTeacherNote');
@@ -469,11 +404,9 @@ function switchLanguage(lang) {
     if (popupEnterName) popupEnterName.textContent = translations[lang].popupEnterName;
     if (submitNameButton) submitNameButton.textContent = translations[lang].addButton;
 
-    // Update congrats message (Star Map specific)
     const congratsMessage = document.getElementById('congratsMessage');
     if (congratsMessage) congratsMessage.textContent = translations[lang].congratsMessage;
 
-    // Update chapter title (if present)
     const chapterNumber = document.querySelector('.chapter-number');
     const chapterName = document.querySelector('.chapter-name');
     if (chapterNumber && chapterName) {
@@ -481,21 +414,14 @@ function switchLanguage(lang) {
         if (chapterNum) {
             chapterNumber.textContent = translations[lang][`chapter${chapterNum}`];
             chapterName.textContent = translations[lang][`chapterName${chapterNum}`];
-        } else {
-            console.warn('No chapter number found in URL:', window.location.pathname);
         }
     }
 
-    // Update rank badge and textbox (if present)
     const rankName = document.getElementById('rankName');
     const rankTitle = document.getElementById('rankTitle');
     const rankDescription = document.getElementById('rankDescription');
-    if (rankName && rankTitle && rankDescription) {
-        console.log('Found rank elements, updating with updateStarStates()');
-        updateStarStates();
-    }
+    if (rankName && rankTitle && rankDescription) updateStarStates();
 
-    // Update students.html specific elements
     const chapterTitle = document.getElementById('chapterTitle');
     const studentsLabel = document.getElementById('studentsLabel');
     const newStudentInput = document.getElementById('newStudentName');
@@ -512,124 +438,59 @@ function switchLanguage(lang) {
         addStudentLabel.textContent = translations[lang].addNewStudent;
         notesLabel.textContent = translations[lang].notesLabel;
         studentNotes.placeholder = translations[lang].notesPlaceholder;
-        if (saveNotesButton) {
-            saveNotesButton.textContent = translations[lang].saveNotesButton;
-        }
-        console.log(`Updated students.html title, label, placeholder, button to ${lang}`);
+        if (saveNotesButton) saveNotesButton.textContent = translations[lang].saveNotesButton;
     }
 
-    // Update FAQ page specific elements
-    const faqTitle = document.querySelector('h1[data-translate="faqTitle"]');
+    const faqTitle = document.querySelector('h1[data-translate="menuFAQ"]');
     const faqQuestions = document.querySelectorAll('.faq-question[data-translate]');
     const faqAnswers = document.querySelectorAll('.faq-answer[data-translate]');
-    if (faqTitle) {
-        faqTitle.textContent = translations[lang].faqTitle;
-    }
+    if (faqTitle) faqTitle.textContent = translations[lang].menuFAQ;
     faqQuestions.forEach(question => {
         const key = question.getAttribute('data-translate');
-        if (translations[lang][key]) {
-            question.childNodes[0].textContent = translations[lang][key]; // Preserve arrow
-        }
+        if (translations[lang][key]) question.childNodes[0].textContent = translations[lang][key];
     });
     faqAnswers.forEach(answer => {
         const key = answer.getAttribute('data-translate');
-        if (translations[lang][key]) {
-            answer.textContent = translations[lang][key];
-        }
+        if (translations[lang][key]) answer.textContent = translations[lang][key];
     });
 }
 
 function setInitialLanguage() {
     const hash = window.location.hash.replace('#', '').toLowerCase();
     let lang = hash === 'swedish' ? 'sv' : hash === 'english' ? 'en' : null;
-    if (!lang) {
-        lang = localStorage.getItem('language') || 'sv';
-    }
+    if (!lang) lang = localStorage.getItem('language') || 'sv';
     switchLanguage(lang);
 }
 
 function setActivePage() {
-    console.log('Running active page detection script');
     const currentPath = window.location.pathname.toLowerCase();
     const links = document.querySelectorAll('.menu-link');
-    console.log(`Found ${links.length} menu links`);
     links.forEach(link => {
         const href = link.getAttribute('href')?.toLowerCase();
-        if (href) {
-            if (currentPath.endsWith(href) || (currentPath === '/' && href === 'index.html')) {
-                link.classList.add('active-page');
-                console.log(`Added .active-page to link: ${href} (matches ${currentPath})`);
-            } else {
-                console.log(`No match: currentPath=${currentPath}, href=${href}`);
-            }
-        } else {
-            console.error('Link missing href attribute:', link);
+        if (href && (currentPath.endsWith(href) || (currentPath === '/' && href === 'index.html'))) {
+            link.classList.add('active-page');
         }
     });
 }
 
-// Handle username and popup logic
 function handleUserNamePopup() {
-    console.log('handleUserNamePopup called, document.readyState:', document.readyState);
-    console.log('Checking for popup elements...');
-
     let studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || {
         students: {},
-        currentStudent: localStorage.getItem('userName') || ''
+        currentStudent: ''
     };
     const userNameDisplay = document.getElementById('userNameDisplay');
     const namePopup = document.getElementById('namePopup');
     const nameInput = document.getElementById('nameInput');
 
-    console.log('Popup elements found:', {
-        userNameDisplay: !!userNameDisplay,
-        namePopup: !!namePopup,
-        nameInput: !!nameInput,
-        currentStudent: studentsData.currentStudent
-    });
-
     if (namePopup && nameInput) {
         if (!studentsData.currentStudent) {
-            console.log('No current student, showing popup');
-            namePopup.style.display = 'flex';
-            namePopup.style.position = 'fixed';
-            namePopup.style.top = '0';
-            namePopup.style.left = '0';
-            namePopup.style.width = '100%';
-            namePopup.style.height = '100%';
-            namePopup.style.background = 'rgba(0, 0, 0, 0.5)';
-            namePopup.style.zIndex = '1000';
-            namePopup.style.justifyContent = 'center';
-            namePopup.style.alignItems = 'center';
-            namePopup.style.opacity = '0';
-            setTimeout(() => {
-                namePopup.style.opacity = '1';
-                const computedStyle = window.getComputedStyle(namePopup);
-                console.log('Popup computed styles:', {
-                    display: computedStyle.display,
-                    visibility: computedStyle.visibility,
-                    opacity: computedStyle.opacity,
-                    position: computedStyle.position,
-                    top: computedStyle.top,
-                    left: computedStyle.left,
-                    width: computedStyle.width,
-                    height: computedStyle.height,
-                    zIndex: computedStyle.zIndex,
-                    background: computedStyle.background
-                });
-                const rect = namePopup.getBoundingClientRect();
-                console.log('Popup bounding rect:', rect);
-                console.log('Is popup in viewport?', {
-                    isVisible: rect.top >= 0 && rect.left >= 0 && rect.bottom <= window.innerHeight && rect.right <= window.innerWidth
-                });
-            }, 0);
+            namePopup.style.display = 'flex'; // Rely on CSS for centering
         } else if (userNameDisplay) {
-            console.log('Current student exists, setting userNameDisplay:', studentsData.currentStudent);
             userNameDisplay.textContent = studentsData.currentStudent;
         }
 
         window.saveName = function() {
-            const name = nameInput?.value.trim();
+            const name = nameInput.value.trim();
             if (name) {
                 studentsData.students[name] = {
                     name: name,
@@ -640,9 +501,7 @@ function handleUserNamePopup() {
                     for (let part = 1; part <= 4; part++) {
                         for (let exercise = 1; exercise <= 4; exercise++) {
                             const key = `exercise${chapter}:${part}:${exercise}`;
-                            studentsData.students[name].progress[key] = 
-                                localStorage.getItem(key) || "0";
-                            localStorage.removeItem(key);
+                            studentsData.students[name].progress[key] = "0";
                         }
                     }
                 }
@@ -650,62 +509,35 @@ function handleUserNamePopup() {
                 localStorage.setItem('starAcademyStudents', JSON.stringify(studentsData));
                 if (userNameDisplay) userNameDisplay.textContent = name;
                 namePopup.style.display = 'none';
-                console.log('User saved:', name);
-
+                updateStarStates();
                 if (window.location.pathname.toLowerCase().includes('starmap.html') && typeof window.initializeStarMap === 'function') {
-                    console.log('Calling initializeStarMap after saving user');
                     window.initializeStarMap();
                 }
             } else {
-                alert('Please enter a name!');
+                alert(translations[localStorage.getItem('language') || 'sv'].addStudentNoName);
             }
         };
 
         const submitBtn = document.querySelector('button[onclick="saveName()"]');
-        if (submitBtn) {
-            submitBtn.addEventListener('click', window.saveName);
-            console.log('Added click event listener to submit button');
-        } else {
-            console.error('Submit button not found');
-        }
-        if (nameInput) {
-            nameInput.addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') window.saveName();
-            });
-            console.log('Added keypress event listener to name input');
-        }
-    } else {
-        console.error('Required popup elements not found:', {
-            namePopup: !!namePopup,
-            nameInput: !!nameInput
+        if (submitBtn) submitBtn.addEventListener('click', window.saveName);
+        if (nameInput) nameInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') window.saveName();
         });
     }
 }
 
-// Ensure script.js runs after DOM and inline script
 function waitForDOM() {
     return new Promise(resolve => {
-        console.log('waitForDOM started, document.readyState:', document.readyState);
-        if (document.readyState === 'complete') {
-            console.log('Document already complete, resolving immediately');
-            resolve();
-        } else {
-            window.addEventListener('load', () => {
-                console.log('Load event fired, resolving');
-                setTimeout(resolve, 0);
-            });
+        if (document.readyState === 'complete') resolve();
+        else {
+            window.addEventListener('load', () => setTimeout(resolve, 0));
             document.addEventListener('DOMContentLoaded', () => {
-                console.log('DOMContentLoaded event fired');
-                if (document.readyState === 'complete') {
-                    console.log('Document complete after DOMContentLoaded, resolving');
-                    resolve();
-                }
+                if (document.readyState === 'complete') resolve();
             });
         }
     });
 }
 
-// FAQ collapsibility logic
 function initializeFAQ() {
     const faqQuestions = document.querySelectorAll('.faq-question');
     faqQuestions.forEach(question => {
@@ -717,21 +549,20 @@ function initializeFAQ() {
 }
 
 waitForDOM().then(() => {
-    console.log('script.js DOM fully loaded, running initial setup');
     injectMenu();
     handleUserNamePopup();
     setInitialLanguage();
     updateStarStates();
 
-    if (window.location.pathname.toLowerCase().includes('starmap.html') && typeof window.initializeStarMap === 'function') {
-        const studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
-        if (studentsData.currentStudent) {
-            console.log('User exists on starmap.html, initializing star map');
-            window.initializeStarMap();
-        }
+    const studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
+    const userNameDisplay = document.getElementById('userNameDisplay');
+    if (userNameDisplay && studentsData.currentStudent) {
+        userNameDisplay.textContent = studentsData.currentStudent;
     }
 
-    if (window.location.pathname.toLowerCase().includes('faq.html')) {
-        initializeFAQ();
+    if (window.location.pathname.toLowerCase().includes('starmap.html') && typeof window.initializeStarMap === 'function') {
+        if (studentsData.currentStudent) window.initializeStarMap();
     }
+
+    if (window.location.pathname.toLowerCase().includes('faq.html')) initializeFAQ();
 });
