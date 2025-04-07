@@ -205,7 +205,13 @@ function injectMenu() {
 
         chaptersToggle.addEventListener('click', (e) => {
             e.stopPropagation();
-            submenu.classList.toggle('open');
+            const isSubmenuOpen = submenu.classList.contains('open');
+            if (isSubmenuOpen) {
+                submenu.classList.remove('open');
+            } else {
+                submenu.style.display = 'block'; // Ensure it’s visible before transition
+                submenu.classList.add('open');
+            }
             chaptersToggle.parentElement.classList.toggle('active'); // For arrow rotation
             console.log('Chapters toggle clicked, submenu state:', submenu.classList);
         });
