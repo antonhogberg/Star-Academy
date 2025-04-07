@@ -1296,6 +1296,7 @@ body {
     body {
         height: auto; /* Allow natural height for scrolling */
         overflow-y: auto; /* Enable scrolling */
+        overflow-x: hidden; /* Prevents horizontal scrolling */
     }
     .progress-container {
         width: 100%;
