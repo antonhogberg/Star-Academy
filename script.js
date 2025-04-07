@@ -102,7 +102,7 @@ const translations = {
         congratsMessage: "Grattis! Du har slutfört Stjärnkartan! 🌟",
         faqTitle: "Vanliga frågor",
         faqQ1: "Hur sparar jag mina framsteg?",
-        faqA1: "Dina framsteg sparas automatiskt i webbläsarens lokala lagring när du klickar fram stjärnor eller byter elev. Rensa bara inte cachen!"
+        faqA1: "Dina framsteg sparas automatiskt i webbläsarens lokala lagring när du klickar fram stjärnor eller byter elev. Rensa bara inte din historik!"
     }
 };
 
@@ -205,13 +205,7 @@ function injectMenu() {
 
         chaptersToggle.addEventListener('click', (e) => {
             e.stopPropagation();
-            const isSubmenuOpen = submenu.classList.contains('open');
-            if (isSubmenuOpen) {
-                submenu.classList.remove('open');
-            } else {
-                submenu.style.display = 'block'; // Ensure it’s visible before transition
-                submenu.classList.add('open');
-            }
+            submenu.classList.toggle('open');
             chaptersToggle.parentElement.classList.toggle('active'); // For arrow rotation
             console.log('Chapters toggle clicked, submenu state:', submenu.classList);
         });
