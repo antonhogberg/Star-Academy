@@ -484,7 +484,7 @@ function handleUserNamePopup() {
 
     if (namePopup && nameInput) {
         if (!studentsData.currentStudent) {
-            namePopup.style.display = 'flex'; // Rely on CSS for centering
+            namePopup.style.display = 'flex';
         } else if (userNameDisplay) {
             userNameDisplay.textContent = studentsData.currentStudent;
         }
@@ -510,20 +510,27 @@ function handleUserNamePopup() {
                 if (userNameDisplay) userNameDisplay.textContent = name;
                 namePopup.style.display = 'none';
 
-                // Create and show success popup
+                // Create and show success popup matching students.html
                 const successPopup = document.createElement('div');
-                successPopup.className = 'popup success-popup';
+                successPopup.id = 'studentPopup';
+                successPopup.className = 'student-popup';
+                const starSVG = '<svg class="popup-star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>';
                 successPopup.innerHTML = `
-                    <div class="popup-content">
-                        <p>${translations[localStorage.getItem('language') || 'sv'].addStudentSuccess}</p>
+                    <div class="student-popup-content">
+                        <p>${starSVG} ${translations[localStorage.getItem('language') || 'sv'].addStudentSuccess} ${starSVG}</p>
                     </div>
                 `;
                 document.body.appendChild(successPopup);
                 successPopup.style.display = 'flex';
+                successPopup.style.opacity = '1';
                 setTimeout(() => {
-                    successPopup.style.display = 'none';
-                    document.body.removeChild(successPopup);
-                }, 2000); // Hide after 2 seconds
+                    successPopup.style.transition = 'opacity 1s ease';
+                    successPopup.style.opacity = '0';
+                    setTimeout(() => {
+                        successPopup.style.display = 'none';
+                        document.body.removeChild(successPopup);
+                    }, 1000);
+                }, 2000); // 2s visible + 1s fade
 
                 updateStarStates();
                 if (window.location.pathname.toLowerCase().includes('starmap.html') && typeof window.initializeStarMap === 'function') {
