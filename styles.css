@@ -120,6 +120,18 @@ body {
     background-color: #d5d5d5; /* Slightly darker gray on hover */
 }
 
+.menu-link,
+.chapters-toggle {
+    -webkit-tap-highlight-color: transparent; /* Removes tap highlight on mobile */
+    -webkit-user-select: none; /* Prevents text selection on tap */
+    user-select: none; /* Standard property */
+}
+
+.menu-link:active,
+.chapters-toggle:active {
+    background-color: transparent; /* Ensures no background change on click */
+}
+
 .language-switcher {
     display: flex;
     align-items: center;
@@ -1572,6 +1584,13 @@ body {
     max-width: 800px;
     margin: 20px auto;
     padding: 0 10px;
+}
+
+@media (max-width: 768px) {
+    .faq-container {
+        width: 70vw; /* 70% of viewport width on mobile */
+        max-width: none; /* Overrides 800px on smaller screens */
+    }
 }
 
 .faq-item {
