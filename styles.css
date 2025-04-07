@@ -223,7 +223,7 @@ body {
     width: 100%;
     overflow: hidden;
     max-height: 0;
-    transition: max-height 0.2s ease-in-out;
+    transition: max-height 0.3s ease-in-out;
 }
 
 .submenu.open {
@@ -1655,4 +1655,51 @@ body {
 
 .menu-item.active .chapter-arrow {
     transform: rotate(180deg); /* Rotates arrow upward when submenu is open */
+}
+
+.title-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px; /* Space between stars and title */
+    padding: 20px 0; /* Vertical spacing from top and content */
+}
+
+.title-container h1 {
+    font-family: Cochin, Georgia, Arial, sans-serif;
+    font-size: 30px;
+    margin: 0;
+    text-align: center;
+    color: #ffffff; /* White to match FAQ title */
+}
+
+.title-star {
+    width: 50px; /* Adjust size as needed */
+    height: auto;
+}
+
+@media (max-width: 767px) {
+    .title-container h1 {
+        font-size: 24px;
+    }
+    .title-star {
+        width: 40px;
+    }
+}
+
+.content h1 {
+    font-family: Cochin, Georgia, Arial, sans-serif;
+    font-size: 30px;
+    color: #ffffff; /* White text */
+    text-align: center; /* Centered */
+    margin: 20px 0; /* Spacing from top and FAQ boxes */
+    padding-top: 20px; /* Extra space from menu */
+}
+
+@media (max-width: 767px) {
+    .content h1 {
+        font-size: 24px;
+        margin: 15px 0;
+        padding-top: 15px;
+    }
 }
