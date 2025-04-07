@@ -1,6 +1,7 @@
 // Language translations
 const translations = {
     en: {
+        // Existing translations unchanged up to faqTitle
         menuFrontPage: "Star Overview",
         menuChapter: "Chapter",
         menuStudents: "Manage Students",
@@ -49,10 +50,23 @@ const translations = {
         saveNotesButton: "Save notes",
         congratsMessage: "Congratulations! You’ve completed the Star Map! 🌟",
         faqTitle: "Frequently Asked Questions",
-        faqQ1: "How do I save my progress?",
-        faqA1: "Your progress is automatically saved in your browser’s local storage when you click on the stars or switch students. Just don’t clear your browser data!"
+        faqQ1: "How do I use the Star Map?",
+        faqA1: "Open Star Academy Piano School, start with Exercise 1:1:1. Practice, earn stars, click them on the Star Map. Move to 2:1:1, do the same there. Keep 3-5 exercises active, aim for 6 stars before adding more.",
+        faqQ2: "How do I earn stars?",
+        faqA2: "Practice an exercise in the Piano School to at least the first level, click stars on the Star Map or chapter pages—aim for six per exercise!",
+        faqQ3: "What’s the highest rank?",
+        faqA3: "Star Admiral—earn six stars on every exercise in every chapter!",
+        faqQ4: "Can I add more students?",
+        faqA4: "Yes, in Manage Students: type the student’s name, press Add, switch between students anytime—data saves locally, automatically.",
+        faqQ5: "How many students can I add?",
+        faqA5: "As many as you want!",
+        faqQ6: "Why did my progress reset?",
+        faqA6: "Clearing your browser’s cache/history deletes local data—keep it to save progress.",
+        faqQ7: "Can I send suggestions or questions?",
+        faqA7: "Yes, feel free to email: staracademypianoschool@gmail.com"
     },
     sv: {
+        // Existing translations unchanged up to faqTitle
         menuFrontPage: "Stjärnöversikt",
         menuChapter: "Kapitel",
         menuStudents: "Hantera elever",
@@ -101,8 +115,20 @@ const translations = {
         saveNotesButton: "Spara anteckningar",
         congratsMessage: "Grattis! Du har slutfört Stjärnkartan! 🌟",
         faqTitle: "Vanliga frågor",
-        faqQ1: "Hur sparar jag mina framsteg?",
-        faqA1: "Dina framsteg sparas automatiskt i webbläsarens lokala lagring när du klickar fram stjärnor eller byter elev. Rensa bara inte din historik!"
+        faqQ1: "Hur använder jag Stjärnkartan?",
+        faqA1: "Öppna Stjärnakademiens Pianoskola, börja med Övning 1:1:1. Öva, förtjäna stjärnor, klicka in dem på Stjärnkartan. Gå till 2:1:1, gör samma sak där. Håll 3-5 övningar igång samtidigt, sikta på 6 stjärnor innan du lägger till fler.",
+        faqQ2: "Hur får jag stjärnor?",
+        faqA2: "Öva på en övning i Pianoskolan till minst första nivån, klicka in stjärnor på Stjärnkartan eller kapitel-sidorna—satsa på sex per övning!",
+        faqQ3: "Vilken är högsta rangen?",
+        faqA3: "Stjärnamiral—få sex stjärnor på alla övningar i alla kapitel!",
+        faqQ4: "Kan jag lägga till fler elever?",
+        faqA4: "Ja, i Hantera elever: skriv elevens namn, tryck Lägg till, skifta mellan elever när du vill—data sparas lokalt och automatiskt.",
+        faqQ5: "Hur många elever kan jag lägga till?",
+        faqA5: "Hur många som helst!",
+        faqQ6: "Varför nollställdes mina framsteg?",
+        faqA6: "Rensa webbläsarens cache/historik tar bort lokal data—behåll den för att spara framsteg.",
+        faqQ7: "Kan jag skicka förslag och frågor?",
+        faqA7: "Ja, maila gärna: stjarnakademien@gmail.com"
     }
 };
 
