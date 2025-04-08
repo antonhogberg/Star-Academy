@@ -1205,22 +1205,22 @@ body {
         background-size: 24px;
     }
     .star-map-container {
-        position: fixed; /* Span the entire viewport */
+        position: fixed;
         top: 0;
         left: 0;
-        width: 100%;
+        width: 2800px; /* Match SVG width to prevent scaling */
         height: 100vh; /* Full viewport height */
         z-index: 900; /* Below header (1100) and menu (1000) */
         overflow-x: auto;
         overflow-y: hidden;
         display: flex;
-        justify-content: flex-start; /* Allow horizontal scrolling */
+        justify-content: flex-start;
         align-items: center; /* Center SVG vertically */
-        margin-top: 0; /* Remove margin-top since it's now fixed */
+        margin-top: 0;
     }
     .star-map-container object {
         width: 2800px;
-        height: 600px; /* Keep SVG at intended size */
+        height: 600px;
         display: block;
     }
 }
