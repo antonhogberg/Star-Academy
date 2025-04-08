@@ -1331,9 +1331,18 @@ body {
         line-height: 24px;
     }
     body {
-        height: auto; /* Allow natural height for scrolling */
-        overflow-y: auto; /* Enable scrolling */
-        overflow-x: hidden; /* Prevents horizontal scrolling */
+        height: 100vh;
+        min-height: -webkit-fill-available; /* Fix for iOS Safari */
+        overflow-y: auto; /* Allow scrolling by default */
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    /* Apply no-scroll behavior only to pages with the no-scroll class */
+    body.no-scroll {
+        overflow-y: hidden !important;
+        justify-content: center; /* Ensure centering for starmap.html */
     }
     .progress-container {
         width: 100%;
@@ -1603,9 +1612,14 @@ body {
 
 @media (max-width: 767px) and (orientation: portrait) {
     .star-map-container {
-        height: auto;
-        top: 60px;
-        overflow-y: auto;
+        height: calc(100vh - 110px); /* Adjust for header (~70px) + margin-top (40px) */
+        max-height: 600px; /* Cap the height */
+        top: 50%;
+        transform: translateY(-50%);
+        margin-top: 40px; /* Space below header */
+        overflow-y: hidden !important; /* Prevent vertical scrolling within the container */
+        width: 100%;
+        border: 5px solid green; /* Debug border */
     }
 }
 
