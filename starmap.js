@@ -51,7 +51,7 @@ function initializeStarMap() {
 
     let svgDoc = null;
     let loadAttempts = 0;
-    const maxAttempts = 50; // 5 seconds (50 * 100ms)
+    const maxAttempts = 50;
 
     const checkSvgDoc = setInterval(() => {
         loadAttempts++;
@@ -60,6 +60,9 @@ function initializeStarMap() {
         if (svgDoc) {
             clearInterval(checkSvgDoc);
             initializeSvg(svgDoc);
+            // Log header visibility after SVG initialization
+            const header = document.querySelector('.title-container');
+            console.log('Header visibility after SVG init:', header ? window.getComputedStyle(header).display : 'Header not found');
         } else if (loadAttempts >= maxAttempts) {
             clearInterval(checkSvgDoc);
             console.error('Failed to load SVG contentDocument after 5 seconds');
@@ -68,13 +71,15 @@ function initializeStarMap() {
         }
     }, 100);
 
-    // Fallback: Try to initialize after window load event
     window.addEventListener('load', () => {
         if (!svgDoc) {
             svgDoc = objectElement.contentDocument;
             if (svgDoc) {
                 clearInterval(checkSvgDoc);
                 initializeSvg(svgDoc);
+                // Log header visibility after SVG initialization
+                const header = document.querySelector('.title-container');
+                console.log('Header visibility after SVG init (window load):', header ? window.getComputedStyle(header).display : 'Header not found');
             } else {
                 console.error('SVG contentDocument still not available after window load');
             }
