@@ -27,9 +27,6 @@ body {
     background-size: 100% auto;
     background-repeat: repeat-y;
     background-position: center top;
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
 }
 
 .hamburger-nav {
@@ -1207,11 +1204,6 @@ body {
         background-position: right 10px center;
         background-size: 24px;
     }
-    .star-map-container {
-        margin-top: 70px; /* Match base rule, remove top */
-        height: calc(100vh - 70px); /* Match base rule */
-        max-height: calc(100vh - 70px);
-    }
 }
 
 /* Responsive adjustments for iPad */
@@ -1308,16 +1300,6 @@ body {
 
 /* iPhone (portrait screens, target phones only) */
 @media (max-width: 767px) and (orientation: portrait) {
-    body {
-        height: calc(var(--vh, 1vh) * 100); /* Override to prevent scrolling */
-        overflow-y: hidden; /* Prevent vertical scrolling */
-    }
-    .star-map-container {
-        margin-top: 70px; /* Match base rule, remove top */
-        height: calc(100vh - 70px); /* Match base rule */
-        max-height: calc(100vh - 70px);
-        overflow-y: hidden; /* Prevent vertical scrolling */
-    }
     .popup-content {
         width: 90vw !important; /* Existing mobile width */
         max-width: 90vw;
@@ -1549,59 +1531,12 @@ body {
     overflow-x: auto;
     overflow-y: hidden;
     width: 100%;
-    height: calc(100vh - 70px); /* Viewport height minus header (~70px) */
-    max-height: calc(100vh - 70px); /* Ensure it fits */
-    display: flex;
-    justify-content: flex-start; /* Start from left for scrolling */
-    align-items: center; /* Center vertically */
-    white-space: nowrap;
-    box-sizing: border-box;
-    flex: 1; /* Take remaining space */
-    margin-top: 70px; /* Offset for fixed header */
+    height: 600px;
 }
 
 .star-map-container object {
-    width: 2800px; /* Scrollable horizontally */
-    height: auto; /* Scale proportionally */
-    max-height: 100%; /* Fit within container */
-}
-
-/* Desktop: Reduce gap between header and SVG */
-@media (min-width: 1024px) {
-    .title-container {
-        padding: 10px 0; /* Reduce padding */
-    }
-
-    .star-map-container {
-        margin-top: 50px; /* Reduced from 70px to minimize gap */
-        height: calc(100vh - 50px); /* Adjust for smaller padding */
-        max-height: calc(100vh - 50px);
-    }
-}
-
-/* iPad and smaller screens: Ensure header visibility */
-@media (max-width: 1023px) {
-    .title-container {
-        padding: 20px 0;
-    }
-
-    .star-map-container {
-        margin-top: 70px; /* Match header height */
-    }
-}
-
-/* Account for safe area insets on iPhone */
-@supports (padding-top: env(safe-area-inset-top)) {
-    .title-container {
-        padding-top: calc(20px + env(safe-area-inset-top));
-        padding-bottom: 20px;
-    }
-
-    .star-map-container {
-        margin-top: calc(70px + env(safe-area-inset-top));
-        height: calc(100vh - 70px - env(safe-area-inset-top));
-        max-height: calc(100vh - 70px - env(safe-area-inset-top));
-    }
+    width: 2800px;
+    height: 600px;
 }
 
 .congratulations-overlay {
@@ -1727,14 +1662,8 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 10px;
-    padding: 20px 0;
-    width: 100%;
-    box-sizing: border-box;
-    position: fixed;
-    top: 0;
-    z-index: 1100; /* Above SVG, below hamburger (1200) */
-    background: #000; /* Match page background */
+    gap: 10px; /* Space between stars and title */
+    padding: 20px 0; /* Vertical spacing from top and content */
 }
 
 .title-container h1 {
@@ -1742,11 +1671,11 @@ body {
     font-size: 30px;
     margin: 0;
     text-align: center;
-    color: #ffffff;
+    color: #ffffff; /* White to match FAQ title */
 }
 
 .title-star {
-    width: 50px;
+    width: 50px; /* Adjust size as needed */
     height: auto;
 }
 
