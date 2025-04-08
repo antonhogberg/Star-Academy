@@ -658,14 +658,17 @@ waitForDOM().then(() => {
         const starMapContainer = document.querySelector('.star-map-container');
         const titleContainer = document.querySelector('.title-container');
         if (starMapContainer && titleContainer) {
-            const viewportHeight = window.innerHeight;
+            // Use the initial viewport height to avoid changes when keyboard appears
+            const initialViewportHeight = document.documentElement.clientHeight || window.innerHeight;
             const titleHeight = titleContainer.getBoundingClientRect().height;
-            const marginTop = parseFloat(getComputedStyle(starMapContainer).marginTop); // Get the margin-top (30px)
-            const availableHeight = viewportHeight - titleHeight - marginTop;
+            const marginTop = parseFloat(getComputedStyle(starMapContainer).marginTop); // 30px
+            const borderWidth = parseFloat(getComputedStyle(starMapContainer).borderWidth) || 0; // Account for debug borders (5px)
+            const totalBorderHeight = borderWidth * 2; // Top and bottom borders
+            const availableHeight = initialViewportHeight - titleHeight - marginTop - totalBorderHeight;
             const maxHeight = 600; // Max height from CSS
             const newHeight = Math.min(availableHeight, maxHeight);
             starMapContainer.style.height = `${newHeight}px`;
-            console.log('Star Map Height:', newHeight, 'px'); // Debug log
+            console.log('Star Map Height:', newHeight, 'px', 'Initial Viewport Height:', initialViewportHeight, 'px');
         }
     };
 
