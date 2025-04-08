@@ -1,46 +1,59 @@
 <!DOCTYPE html>
-<html lang="sv">
+<html lang="en">
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Stjärnkarta - Star Academy</title>
+    <title>Stjärnakademien - Star Academy</title>
     <link rel="stylesheet" href="styles.css">
-    <script src="script.js" defer></script>
-    <script src="starmap.js" defer></script>
+    <script>
+        function setViewportHeight() {
+            let vh = window.innerHeight * 0.01;
+            document.documentElement.style.setProperty('--vh', `${vh}px`);
+        }
+        window.addEventListener('resize', setViewportHeight);
+        window.addEventListener('orientationchange', setViewportHeight);
+        setViewportHeight();
+    </script>
 </head>
 <body>
-    <div id="menu-placeholder"></div>
-    <div class="piano-menu" id="menuButton" aria-expanded="false">
+    <div class="piano-menu" id="menuButton" aria-expanded="false" aria-controls="main-menu">
         <div class="white-key"></div>
         <div class="white-key"></div>
         <div class="white-key"></div>
         <div class="black-key top"></div>
         <div class="black-key bottom"></div>
     </div>
+    <nav id="menu-placeholder"></nav>
     <div class="title-container">
-        <img src="star.png" alt="Star" class="title-star">
+        <img src="six-stars.png" alt="Stars" class="title-star">
         <h1 data-translate="menuStarMap">Stjärnkarta</h1>
-        <img src="star.png" alt="Star" class="title-star">
+        <img src="six-stars.png" alt="Stars" class="title-star">
     </div>
-    <div class="star-map-container">
-        <div class="star-map-wrapper">
-            <object id="starMap" type="image/svg+xml" data="starmap.svg"></object>
-        </div>
-    </div>
-    <div id="namePopup" class="popup">
+    <div id="namePopup" class="popup" style="display: none;">
         <div class="popup-content">
-            <h2 id="popupWelcome">Välkommen till Stjärnkartan!</h2>
-            <p id="popupIntro">Klicka fram dina Stjärnakademien-stjärnor här! Samla sex stjärnor i övningarna för att klättra i rang – kolla dina framsteg under Stjärnöversikt.</p>
-            <p id="popupTeacherNote">Lärare? Lägg till och växla mellan elever under Hantera elever. Obs! Allt sparas lokalt på denna enhet – rensas cachen försvinner dina framsteg.</p>
-            <p id="popupEnterName">Ange ditt namn nedan och tryck Lägg till för att börja!</p>
+            <h2 id="popupWelcome"></h2>
+            <p id="popupIntro"></p>
+            <p id="popupTeacherNote"></p>
+            <p id="popupEnterName"></p>
             <div class="input-group">
-                <input type="text" id="nameInput" placeholder="Skriv elevens namn">
-                <button id="submitNameButton" onclick="saveName()">Lägg till</button>
+                <input type="text" id="nameInput">
+                <button id="submitNameButton" onclick="saveName()"></button>
             </div>
         </div>
     </div>
-    <div id="congratulationsOverlay" class="congratulations-overlay">
-        <div class="congratulations-message" id="congratsMessage">Grattis! Du har slutfört Stjärnkartan! 🌟</div>
+    <div class="star-map-container">
+        <object id="starMap" type="image/svg+xml" data="star-map.svg"></object>
     </div>
+    <div class="congratulations-overlay" id="congratulationsOverlay">
+        <div class="congratulations-message">
+            <span id="congratsMessage"></span>
+        </div>
+    </div>
+    <div class="user-name-display">
+        <span id="userNameDisplay"></span>
+    </div>
+    <script src="script.js"></script>
+    <script src="starmap.js"></script>
+    <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'92cbd3f5dc6a31d2',t:'MTc0NDA1MzA1Ny4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
 </body>
 </html>
