@@ -669,12 +669,12 @@ waitForDOM().then(() => {
             const borderWidth = parseFloat(getComputedStyle(starMapContainer).borderWidth) || 0; // Account for debug borders (5px)
             const totalBorderHeight = borderWidth * 2; // Top and bottom borders
             const availableHeight = viewportHeight - titleHeight - marginTop - totalBorderHeight;
-            const maxHeight = Math.min(600, availableHeight - 20); // Cap height with extra buffer to prevent overflow
-            starMapContainer.style.height = `${maxHeight}px`;
-            // Set top and bottom to fix position
+            const maxHeight = Math.min(600, availableHeight - 40); // Increased buffer to 40px to prevent overflow
+            starMapContainer.style.position = 'fixed'; // Use fixed positioning
             starMapContainer.style.top = `${titleHeight + marginTop}px`;
-            starMapContainer.style.bottom = '0';
+            starMapContainer.style.bottom = 'auto'; // Remove bottom constraint
             starMapContainer.style.transform = 'none'; // Remove transform
+            starMapContainer.style.height = `${maxHeight}px`;
             console.log('Star Map Height:', maxHeight, 'px', 'Initial Viewport Height:', viewportHeight, 'px', 'Title Height:', titleHeight, 'px');
         }
     };
