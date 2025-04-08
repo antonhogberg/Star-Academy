@@ -1548,14 +1548,14 @@ body {
 
 /* Star Map Styles */
 .star-map-container {
-    position: absolute; /* Change to absolute for more control */
-    top: 50%; /* Center vertically relative to the body */
-    transform: translateY(-50%); /* Adjust for its own height */
-    margin-top: 40px; /* Add space below the fixed header (adjust as needed) */
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    margin-top: 30px; /* Reduced from 40px to 30px to give more room at the bottom */
     overflow-x: auto;
     overflow-y: hidden;
     width: 100%;
-    height: 600px;
+    height: 600px; /* Fallback height */
     flex-shrink: 0;
     margin-bottom: 0;
     border: 5px solid green; /* Debug border */
@@ -1612,12 +1612,12 @@ body {
 
 @media (max-width: 767px) and (orientation: portrait) {
     .star-map-container {
-        height: calc(100vh - 110px); /* Adjust for header (~70px) + margin-top (40px) */
-        max-height: 600px; /* Cap the height */
+        height: auto; /* Let JavaScript set the height dynamically */
+        max-height: 600px;
         top: 50%;
         transform: translateY(-50%);
-        margin-top: 40px; /* Space below header */
-        overflow-y: hidden !important; /* Prevent vertical scrolling within the container */
+        margin-top: 30px;
+        overflow-y: hidden !important;
         width: 100%;
         border: 5px solid green; /* Debug border */
     }
