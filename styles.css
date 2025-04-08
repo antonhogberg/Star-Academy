@@ -1531,7 +1531,36 @@ body {
     overflow-x: auto;
     overflow-y: hidden;
     width: 100%;
-    height: 600px;
+    height: calc(80vh - 50px); /* Match iPad height, adjust for header */
+}
+
+/* Desktop screens (min-width: 1024px) */
+@media (min-width: 1024px) {
+    .star-map-container {
+        display: flex;
+        justify-content: center;
+        align-items: center; /* Center vertically */
+        height: calc(100vh - 100px); /* Full viewport height minus header */
+        max-height: calc(100vh - 100px); /* Ensure it fits */
+    }
+
+    .star-map-container object {
+        width: 2800px;
+        height: auto; /* Let height scale with width */
+        max-height: 100%; /* Fit within container */
+    }
+}
+
+/* iPad and smaller screens (max-width: 1023px) */
+@media (max-width: 1023px) {
+    .star-map-container {
+        height: calc(80vh - 50px); /* Keep iPad behavior */
+    }
+
+    .star-map-container object {
+        width: 100%; /* Fit viewport width */
+        height: 100%; /* Fit container height */
+    }
 }
 
 .star-map-container object {
