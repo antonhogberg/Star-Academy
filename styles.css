@@ -268,10 +268,11 @@ body {
     background-color: #d5d5d5;
 }
 
-/* Fix chapter-title positioning */
+/* Adjust chapter-title margin */
 .chapter-title {
     text-align: center;
-    margin: 20px 0 10px 0; /* Reduced from 50px to 20px */
+    margin: 10px 0 10px 0; /* Reduced to 10px */
+    margin-top: -20px; /* Pull the title closer to the header */
     font-family: Cochin, Georgia, Arial, sans-serif;
     color: #ffffff !important;
     font-size: 24px;
@@ -776,7 +777,7 @@ body {
 
 /* Adjust student-manager padding */
 .student-manager {
-    padding: 20px 10px 20px 10px; /* Reduced from 50px to 20px */
+    padding: 10px 10px 20px 10px; /* Reduced to 10px */
     text-align: center;
     width: 100%;
     height: auto;
@@ -1443,7 +1444,7 @@ body {
         object-fit: contain;
     }
     .student-manager {
-        padding: 20px 10px 20px 10px; /* Reduced from 50px to 20px */
+        padding: 10px 10px 20px 10px; /* Reduced to 10px */
         overflow-y: visible;
         height: auto;
     }
@@ -1613,7 +1614,7 @@ body {
     }
 
     .student-manager {
-        padding: 70px 10px 10px 10px;
+        padding: 10px 10px 10px 10px; /* Reduced to 10px */
         overflow-y: visible;
         height: auto;
         display: flex;
