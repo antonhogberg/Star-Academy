@@ -65,7 +65,7 @@ body {
     left: -250px;
     width: 200px;
     height: calc(var(--vh, 1vh) * 100);
-    background: #cccccc; /* Light gray, matching screenshot */
+    background: #e5e5e5; /* Light gray, matching screenshot */
     padding: 20px 10px;
     border-radius: 0 5px 5px 0;
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
@@ -77,7 +77,6 @@ body {
     gap: 0;
     visibility: hidden;
     opacity: 0;
-    z-index: 1000; /* Below piano hamburger */
     transition: left 0.6s ease-in-out, opacity 0.3s ease-in-out, visibility 0s linear 0.3s;
     display: flex;
 }
@@ -119,18 +118,6 @@ body {
 
 .menu-link:hover {
     background-color: #d5d5d5; /* Slightly darker gray on hover */
-}
-
-.menu-link,
-.chapters-toggle {
-    -webkit-tap-highlight-color: transparent; /* Removes tap highlight on mobile */
-    -webkit-user-select: none; /* Prevents text selection on tap */
-    user-select: none; /* Standard property */
-}
-
-.menu-link:active,
-.chapters-toggle:active {
-    background-color: transparent; /* Ensures no background change on click */
 }
 
 .language-switcher {
@@ -217,19 +204,11 @@ body {
 
 .submenu {
     display: none;
-    background-color: #cccccc;
+    background-color: #e5e5e5;
     list-style: none;
     margin: 0;
     padding: 0;
     width: 100%;
-    overflow: hidden;
-    max-height: 0;
-    transition: max-height 0.3s ease-in-out;
-}
-
-.submenu.open {
-    display: block;
-    max-height: 500px; /* Adjust if submenu content exceeds this */
 }
 
 .submenu li {
@@ -248,16 +227,16 @@ body {
     text-align: left;
     border-bottom: 1px solid #444;
     width: 80%;
-    margin: 0 auto;
+    margin: 0 auto; /* Aligns border-bottom with main menu */
 }
 
 .submenu li a span {
     display: inline-block;
-    margin-left: 20px;
+    margin-left: 20px; /* Indents the text 20px further right */
 }
 
 .submenu li a:hover {
-    background-color: #d5d5d5;
+    background-color: #d5d5d5; /* Match hover effect */
 }
 
 /* Adjust chapter-title to minimize top gap */
@@ -1595,13 +1574,6 @@ body {
     padding: 0 10px;
 }
 
-@media (max-width: 768px) {
-    .faq-container {
-        width: 70vw;
-        max-width: none;
-    }
-}
-
 .faq-item {
     border: 1px solid #ccc;
     margin-bottom: 10px;
@@ -1623,31 +1595,18 @@ body {
 }
 
 .faq-answer {
-    max-height: 0; /* Hidden by default */
-    overflow: hidden; /* Prevents content spillover */
-    transition: max-height 0.3s ease-in-out, padding 0.3s ease-in-out; /* Animate both */
+    display: none; /* Hidden by default */
+    padding: 15px;
     border-top: 1px solid #ccc;
     background-color: #fff;
-    padding: 0 10px; /* Start with horizontal padding only */
 }
 
 .faq-item.active .faq-answer {
-    max-height: 200px; /* Adjust based on longest answer */
-    padding: 10px; /* Full padding when active */
-    display: block; /* Ensure visibility */
+    display: block; /* Shown when active */
 }
 
 .faq-item.active .faq-arrow {
-    transform: rotate(180deg);
-}
-
-@media (max-width: 767px) {
-    .faq-answer {
-        font-size: 14px;
-    }
-    .faq-item.active .faq-answer {
-        max-height: 300px;
-    }
+    transform: rotate(180deg); /* Arrow points up when open */
 }
 
 .chapter-arrow {
@@ -1656,118 +1615,4 @@ body {
 
 .menu-item.active .chapter-arrow {
     transform: rotate(180deg); /* Rotates arrow upward when submenu is open */
-}
-
-.title-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 10px; /* Space between stars and title */
-    padding: 20px 0; /* Vertical spacing from top and content */
-}
-
-.title-container h1 {
-    font-family: Cochin, Georgia, Arial, sans-serif;
-    font-size: 30px;
-    margin: 0;
-    text-align: center;
-    color: #ffffff; /* White to match FAQ title */
-}
-
-.title-star {
-    width: 50px; /* Adjust size as needed */
-    height: auto;
-}
-
-@media (max-width: 767px) {
-    .title-container h1 {
-        font-size: 24px;
-    }
-    .title-star {
-        width: 40px;
-    }
-}
-
-.content h1 {
-    font-family: Cochin, Georgia, Arial, sans-serif;
-    font-size: 30px;
-    color: #ffffff; /* White text */
-    text-align: center; /* Centered */
-    margin: 20px 0; /* Spacing from top and FAQ boxes */
-    padding-top: 20px; /* Extra space from menu */
-}
-
-@media (max-width: 767px) {
-    .content h1 {
-        font-size: 24px;
-        margin: 15px 0;
-        padding-top: 15px;
-    }
-}
-
-.piano-menu {
-    width: 40px; /* Increased from 30px, ~33% bigger */
-    height: 40px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
-    align-items: flex-start;
-    cursor: pointer;
-    position: fixed;
-    top: 15px; /* Moved down from 10px */
-    left: 15px; /* Moved right from 10px */
-    z-index: 1200; /* Still above menu */
-    background: transparent;
-}
-
-.white-key, .black-key {
-    height: 12%;
-    border-radius: 2px;
-    transition: all 0.4s cubic-bezier(0.68, -0.6, 0.32, 1.6);
-    transform-origin: center;
-}
-
-.white-key {
-    width: 75%;
-    background-color: #fff;
-    position: relative;
-}
-
-.black-key {
-    width: 0;
-    background-color: #000;
-    position: absolute;
-    left: 0;
-    transform-origin: bottom;
-}
-
-.black-key.top {
-    top: 29%;
-}
-
-.black-key.bottom {
-    top: 57%;
-}
-
-.piano-menu.active .black-key {
-    width: 50%;
-    height: 16%;
-}
-
-.piano-menu.active .black-key.top {
-    top: 27%;
-}
-
-.piano-menu.active .white-key:nth-child(1) {
-    height: 24%;
-    transform: translateY(6%);
-}
-
-.piano-menu.active .white-key:nth-child(2) {
-    height: 24%;
-}
-
-.piano-menu.active .white-key:nth-child(3) {
-    height: 24%;
-    transform: translateY(-6%);
 }
