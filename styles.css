@@ -1,11 +1,19 @@
 /* styles.css */
 
-/* Root Variables */
 :root {
     --vh: 1vh; /* Fallback for older browsers */
 }
 
-/* General Styles */
+.field-label {
+    margin: 30px 0 10px 0 !important;
+    padding: 0 !important;
+    display: block;
+}
+
+.field-group {
+    margin-top: 30px;
+}
+
 body {
     font-family: Arial, sans-serif;
     padding: 0;
@@ -19,12 +27,8 @@ body {
     background-size: 100% auto;
     background-repeat: repeat-y;
     background-position: center top;
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
 }
 
-/* Hamburger Navigation */
 .hamburger-nav {
     position: fixed;
     top: 0;
@@ -55,14 +59,13 @@ body {
     transform: scale(1.1);
 }
 
-/* Menu Styles */
 .menu {
     position: fixed;
     top: 0;
     left: -250px;
     width: 200px;
     height: calc(var(--vh, 1vh) * 100);
-    background: #cccccc;
+    background: #cccccc; /* Light gray, matching screenshot */
     padding: 20px 10px;
     border-radius: 0 5px 5px 0;
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
@@ -74,15 +77,14 @@ body {
     gap: 0;
     visibility: hidden;
     opacity: 0;
-    z-index: 1150; /* Above title-container (1100), below piano-menu (1200) */
+    z-index: 1000; /* Below piano hamburger */
     transition: left 0.6s ease-in-out, opacity 0.3s ease-in-out, visibility 0s linear 0.3s;
     display: flex;
-    margin-top: 70px; /* Push menu content below the header */
 }
 
 .menu::before {
     content: '';
-    height: 0; /* Remove extra space since margin-top handles it */
+    height: 60px;
     display: block;
     width: 100%;
 }
@@ -176,7 +178,7 @@ body {
     opacity: 1;
 }
 
-/* Submenu Styles */
+/* Submenu styles */
 .menu-item {
     position: relative;
     width: 100%;
@@ -258,7 +260,7 @@ body {
     background-color: #d5d5d5;
 }
 
-/* Chapter Title */
+/* Adjust chapter-title to minimize top gap */
 .chapter-title {
     text-align: center;
     margin: 10px 0;
@@ -288,7 +290,6 @@ body {
     font-size: 20px;
 }
 
-/* Layout Container */
 .layout-container {
     position: relative;
     width: 100%;
@@ -301,7 +302,6 @@ body {
     -webkit-overflow-scrolling: touch;
 }
 
-/* Progress Container */
 .progress-container {
     width: 100%;
     max-width: 1366px;
@@ -324,7 +324,6 @@ body {
     display: block;
 }
 
-/* Parts */
 .parts {
     width: auto;
     max-width: 90vw;
@@ -335,14 +334,14 @@ body {
     flex-direction: column;
     align-items: center;
     position: relative;
-    height: calc(var(--vh, 1vh) * 100 - 50px);
-    top: 50px;
+    height: calc(var(--vh, 1vh) * 100 - 50px); /* Reduced from 70px */
+    top: 50px; /* Reduced from 70px */
     overflow-y: hidden;
-    justify-content: center;
+    justify-content: center; /* Center stars vertically */
     flex-grow: 1;
 }
 
-/* Rank Badge */
+/* Ensure rank-badge stays below popup */
 .rank-badge {
     position: absolute;
     left: 75%;
@@ -399,7 +398,6 @@ body {
     max-width: 100%;
 }
 
-/* Exercises */
 .exercises {
     display: flex;
     justify-content: center;
@@ -433,22 +431,15 @@ body {
 }
 
 .field-label {
-    margin: 30px 0 10px 0 !important;
-    padding: 0 !important;
     display: block;
-    margin-bottom: 10px; /* Avstånd till field */
-    margin-top: 30px; /* Avstånd till föregående field */
+    margin-bottom: 10px;  /* Avstånd till field */
+    margin-top: 30px;     /* Avstånd till föregående field */
     font-family: Cochin, Georgia, Arial, sans-serif;
     font-size: 22px;
     color: #ffffff;
     text-align: center;
 }
 
-.field-group {
-    margin-top: 30px;
-}
-
-/* Text Box */
 .text-box {
     position: absolute;
     left: 12.5%;
@@ -486,7 +477,6 @@ body {
     padding-bottom: 5px;
 }
 
-/* Star Container */
 .star-container {
     display: flex;
     flex-direction: column;
@@ -519,7 +509,6 @@ body {
     text-align: center;
 }
 
-/* Chapter List */
 .chapter-list {
     display: flex;
     flex-wrap: wrap;
@@ -553,21 +542,22 @@ body {
     opacity: 0.8;
 }
 
-/* Popup Styles */
+/* Base popup styling (full width by default for mobile) */
 .popup {
     position: fixed;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
-    width: 100%;
-    height: auto;
-    background: rgba(0, 0, 0, 0.5);
-    z-index: 1000;
-    display: none;
+    transform: translate(-50%, -50%); /* Center it */
+    width: 100%; /* Full width base for mobile */
+    height: auto; /* Adjust to content */
+    background: rgba(0, 0, 0, 0.5); /* Semi-transparent backdrop */
+    z-index: 1000; /* Higher than rank-badge to overlay it */
+    display: none; /* Default hidden, matches JS toggle */
     justify-content: center;
     align-items: center;
 }
 
+/* Popup content styling */
 .popup-content {
     background-color: #000000;
     background-image: url('background.jpg');
@@ -584,10 +574,11 @@ body {
     align-items: center;
     gap: 10px;
     box-sizing: border-box;
-    width: 100%;
-    max-width: 100%;
+    width: 100%; /* Fill the popup container */
+    max-width: 100%; /* Respect the parent .popup max-width */
 }
 
+/* Override padding for .input-group in the popup */
 .popup-content .input-group {
     display: flex;
     align-items: center;
@@ -597,12 +588,13 @@ body {
     border-radius: 5px;
     background: #4a4a4a;
     box-sizing: border-box;
-    padding-top: 0;
-    padding-bottom: 0;
-    padding-left: 0;
-    padding-right: 0;
+    padding-top: 0; /* Remove top padding */
+    padding-bottom: 0; /* Remove bottom padding */
+    padding-left: 0; /* Ensure no left padding */
+    padding-right: 0; /* Ensure no right padding */
 }
 
+/* Make text white to be readable on the dark background */
 .popup-content h2,
 .popup-content p {
     color: #ffffff;
@@ -611,13 +603,15 @@ body {
 .popup-content p {
     font-size: 16px;
     line-height: 1.5;
-    margin-bottom: 10px;
+    margin-bottom: 10px; /* Add spacing between paragraphs */
 }
 
+/* Remove the old margin for #nameInput since it's now in .input-group */
 .popup-content #nameInput {
-    margin: 0;
+    margin: 0; /* Remove the old margin */
 }
 
+/* Style the input field in the popup to match #newStudentName */
 .popup-content input#nameInput {
     flex: 1;
     padding: 8px 10px;
@@ -654,11 +648,32 @@ body {
     margin-top: 5px;
 }
 
+.student-manager button {
+    font-family: Cochin, Georgia, Arial, sans-serif;
+    padding: 6px 12px;
+    background: #4a4a4a;
+    border: 1px solid #ffd700;
+    border-radius: 5px;
+    color: #ffd700;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    box-sizing: border-box;
+    font-size: 16px;
+    line-height: 19.2px;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
 .popup-content button:hover,
 .student-manager button:hover {
     transform: scale(1.05);
 }
 
+/* Style the button in the popup to match #addStudentButton */
 .popup-content button#submitNameButton {
     padding: 0 10px;
     background: none;
@@ -690,66 +705,18 @@ body {
     background-color: #ff8c00;
 }
 
-/* Student Manager */
-.student-manager {
-    padding: 50px 10px 20px 10px;
-    text-align: center;
-    width: 100%;
-    height: calc(var(--vh, 1vh) * 100);
-    overflow-y: hidden;
-    box-sizing: border-box;
-}
-
-.student-manager h1 {
-    font-family: Cochin, Georgia, Arial, sans-serif;
-    font-size: 30px;
-    margin-bottom: 40px;
-    margin-top: 20px;
-}
-
-.student-manager input {
-    padding: 8px 10px;
-    margin: 0;
-    font-size: 16px;
-    line-height: 24px;
-    width: 320px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    box-sizing: border-box;
-}
-
-.student-manager div {
-    font-family: Cochin, Georgia, Arial, sans-serif;
-    color: #ffffff;
-    font-size: 22px;
-    line-height: 1.2;
-    margin: 0;
-    padding: 0;
-}
-
-.student-manager #studentsLabel {
-    color: #ffffff;
-    font-family: Cochin, Georgia, Arial, sans-serif;
-}
-
-.student-manager button {
-    font-family: Cochin, Georgia, Arial, sans-serif;
-    padding: 6px 12px;
-    background: #4a4a4a;
-    border: 1px solid #ffd700;
-    border-radius: 5px;
-    color: #ffd700;
-    cursor: pointer;
-    transition: transform 0.3s ease;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    box-sizing: border-box;
-    font-size: 16px;
-    line-height: 19.2px;
-    margin: 0;
+/* Revert .input-group to its original state */
+.input-group {
     display: flex;
-    justify-content: center;
     align-items: center;
-    text-align: center;
+    margin-bottom: 10px;
+    width: 320px;
+    border: 1px solid #ff8c00;
+    border-radius: 5px;
+    background: #4a4a4a;
+    box-sizing: border-box;
+    padding-top: 10px;
+    padding-bottom: 30px;
 }
 
 .student-manager input#newStudentName {
@@ -800,6 +767,47 @@ body {
     bottom: 0;
     width: 2px;
     background-color: #ff8c00;
+}
+
+.student-manager {
+    padding: 50px 10px 20px 10px; /* Added padding-top to avoid title overlap */
+    text-align: center;
+    width: 100%;
+    height: calc(var(--vh, 1vh) * 100);
+    overflow-y: hidden; /* Default for larger screens */
+    box-sizing: border-box;
+}
+
+.student-manager h1 {
+    font-family: Cochin, Georgia, Arial, sans-serif;
+    font-size: 30px;
+    margin-bottom: 40px;
+    margin-top: 20px;
+}
+
+.student-manager input {
+    padding: 8px 10px;
+    margin: 0;
+    font-size: 16px;
+    line-height: 24px;
+    width: 320px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+.student-manager div {
+    font-family: Cochin, Georgia, Arial, sans-serif;
+    color: #ffffff;
+    font-size: 22px;
+    line-height: 1.2;
+    margin: 0;
+    padding: 0;
+}
+
+.student-manager #studentsLabel {
+    color: #ffffff;
+    font-family: Cochin, Georgia, Arial, sans-serif;
 }
 
 .student-manager select {
@@ -866,19 +874,6 @@ body {
     box-shadow: 0 0 5px rgba(255, 140, 0, 0.5);
 }
 
-.input-group {
-    display: flex;
-    align-items: center;
-    margin-bottom: 10px;
-    width: 320px;
-    border: 1px solid #ff8c00;
-    border-radius: 5px;
-    background: #4a4a4a;
-    box-sizing: border-box;
-    padding-top: 10px;
-    padding-bottom: 30px;
-}
-
 .input-button-container {
     display: inline-flex;
     align-items: center;
@@ -939,7 +934,7 @@ body {
     margin: 0px auto;
 }
 
-/* Student Popup Overlay */
+/* Student Popup Overlay (used in both chapter1.html and students.html) */
 .student-popup {
     position: fixed;
     top: 50%;
@@ -955,6 +950,7 @@ body {
     align-items: center;
 }
 
+/* Popup Content */
 .student-popup-content {
     background-color: #000000;
     background-image: url('background.jpg');
@@ -976,14 +972,16 @@ body {
     max-width: 100%;
 }
 
+/* Popup Message Text */
 .student-popup-content p {
     color: #ffffff;
     font-family: Cochin, Georgia, Arial, sans-serif;
-    font-size: 20px;
+    font-size: 20px; /* Increased from 16px */
     line-height: 1.5;
     margin: 0;
 }
 
+/* Gold Stars in Popup */
 .student-popup-content .popup-star {
     width: 20px;
     height: 20px;
@@ -992,227 +990,38 @@ body {
     stroke-width: 1;
 }
 
-/* Star Map Styles */
-.star-map-container {
-    position: relative;
-    overflow-x: auto;
-    overflow-y: hidden;
-    width: 100%;
-    height: calc(100vh - 70px);
-    max-height: calc(100vh - 70px);
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    white-space: nowrap;
-    box-sizing: border-box;
-    flex: 1;
-    margin-top: 70px;
-    overflow: hidden;
+/* Responsive Adjustments */
+@media (max-width: 767px) and (orientation: portrait) {
+    .student-popup {
+        max-width: 80%;
+    }
+    .student-popup-content {
+        width: 90vw;
+        max-width: 90vw;
+        padding: 15px 20px;
+    }
+    .student-popup-content p {
+        font-size: 18px; /* Increased from 14px */
+    }
+    .student-popup-content .popup-star {
+        width: 16px;
+        height: 16px;
+    }
 }
 
-.star-map-container object {
-    width: 2800px;
-    height: auto;
-    max-height: 100%;
-    display: block;
+/* iPad Landscape */
+@media (min-width: 768px) and (max-width: 1400px) and (orientation: landscape) {
+    .student-popup {
+        max-width: 40%;
+    }
 }
 
-/* Congratulations Overlay */
-.congratulations-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.8);
-    display: none;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-    animation: fadeIn 1s ease-in-out;
-}
+/* Media Queries - Consolidated */
 
-.congratulations-message {
-    background: #000000;
-    border: 2px solid #ffd700;
-    border-radius: 10px;
-    padding: 20px;
-    text-align: center;
-    color: #ffd700;
-    font-family: Cochin, Georgia, Arial, sans-serif;
-    font-size: 24px;
-    box-shadow: 0 0 20px rgba(255, 215, 0, 0.7);
-    animation: pulse 2s infinite;
-}
-
-/* FAQ Styles */
-.faq-container {
-    max-width: 800px;
-    margin: 20px auto;
-    padding: 0 10px;
-}
-
-.faq-item {
-    border: 1px solid #ccc;
-    margin-bottom: 10px;
-    border-radius: 5px;
-    background-color: #f9f9f9;
-}
-
-.faq-question {
-    padding: 15px;
-    cursor: pointer;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-weight: bold;
-}
-
-.faq-arrow {
-    transition: transform 0.3s ease;
-}
-
-.faq-answer {
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.3s ease-in-out, padding 0.3s ease-in-out;
-    border-top: 1px solid #ccc;
-    background-color: #fff;
-    padding: 0 10px;
-}
-
-.faq-item.active .faq-answer {
-    max-height: 200px;
-    padding: 10px;
-    display: block;
-}
-
-.faq-item.active .faq-arrow {
-    transform: rotate(180deg);
-}
-
-/* Chapter Arrow */
-.chapter-arrow {
-    transition: transform 0.3s ease;
-}
-
-.menu-item.active .chapter-arrow {
-    transform: rotate(180deg);
-}
-
-/* Title Container */
-.title-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-    padding: 20px 0;
-    width: 100%;
-    box-sizing: border-box;
-    position: fixed;
-    top: 0;
-    z-index: 1100;
-    background: #000;
-    visibility: visible !important;
-}
-
-.title-container h1 {
-    font-family: Cochin, Georgia, Arial, sans-serif;
-    font-size: 30px;
-    margin: 0;
-    text-align: center;
-    color: #ffffff;
-}
-
-.title-star {
-    width: 50px;
-    height: auto;
-}
-
-/* Content */
-.content h1 {
-    font-family: Cochin, Georgia, Arial, sans-serif;
-    font-size: 30px;
-    color: #ffffff;
-    text-align: center;
-    margin: 20px 0;
-    padding-top: 20px;
-}
-
-/* Piano Menu */
-.piano-menu {
-    width: 40px;
-    height: 40px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
-    align-items: flex-start;
-    cursor: pointer;
-    position: fixed;
-    top: 15px;
-    left: 15px;
-    z-index: 1200;
-    background: transparent;
-}
-
-.white-key, .black-key {
-    height: 12%;
-    border-radius: 2px;
-    transition: all 0.4s cubic-bezier(0.68, -0.6, 0.32, 1.6);
-    transform-origin: center;
-}
-
-.white-key {
-    width: 75%;
-    background-color: #fff;
-    position: relative;
-}
-
-.black-key {
-    width: 0;
-    background-color: #000;
-    position: absolute;
-    left: 0;
-    transform-origin: bottom;
-}
-
-.black-key.top {
-    top: 29%;
-}
-
-.black-key.bottom {
-    top: 57%;
-}
-
-.piano-menu.active .black-key {
-    width: 50%;
-    height: 16%;
-}
-
-.piano-menu.active .black-key.top {
-    top: 27%;
-}
-
-.piano-menu.active .white-key:nth-child(1) {
-    height: 24%;
-    transform: translateY(6%);
-}
-
-.piano-menu.active .white-key:nth-child(2) {
-    height: 24%;
-}
-
-.piano-menu.active .white-key:nth-child(3) {
-    height: 24%;
-    transform: translateY(-6%);
-}
-
-/* Media Queries */
-
-/* Desktop (min-width: 1024px and above) */
+/* Desktop (min-width: 1401px to exclude iPads, with hover and aspect ratio for better desktop targeting) */
 @media (min-width: 1401px) and (orientation: landscape) and (hover: hover) and (min-aspect-ratio: 16/10) {
     .popup {
-        max-width: 40%;
+        max-width: 40%; /* 40% width for desktop */
     }
     .chapter-title {
         display: block;
@@ -1228,90 +1037,58 @@ body {
         max-width: 1024px;
         min-width: 580px;
         margin: 0 auto;
-        justify-content: flex-start;
-        height: calc(var(--vh, 1vh) * 100 - 100px);
-        top: 100px;
-        overflow-y: auto;
+        justify-content: flex-start; /* Align stars at the top */
+        height: calc(var(--vh, 1vh) * 100 - 100px); /* Adjusted for larger title and extra 20px gap */
+        top: 100px; /* Increased from 80px to bring stars down by 20px */
+        overflow-y: auto; /* Allow scrolling if stars overflow */
         padding: 10px 0;
     }
     .exercises {
-        gap: 20px;
-        max-width: 800px;
+        gap: 20px; /* Reduced from 30px to fit stars */
+        max-width: 800px; /* Reduced to fit stars */
         justify-content: center;
         margin: 0 auto;
     }
     .star {
-        width: 120px;
+        width: 120px; /* Increased by 10% from 100px */
         min-width: 120px;
         max-width: 120px;
         height: auto;
         object-fit: contain;
     }
-    .star-map-container {
-        margin-top: 50px;
-        height: calc(100vh - 50px);
-        max-height: calc(100vh - 50px);
+}
+
+@media (min-width: 1001px) {
+    .text-box #rankTitle {
+        font-size: clamp(24px, 2vw, 28px);
     }
 }
 
-@media (min-width: 1024px) {
-    .title-container {
-        padding: 10px 0;
-    }
-    .star-map-container {
-        margin-top: 50px;
-        height: calc(100vh - 50px);
-        max-height: calc(100vh - 50px);
-    }
-    .menu {
-        margin-top: 50px;
-    }
-    .content h1 {
-        font-size: 30px;
-        margin: 20px 0;
-        padding-top: 20px;
-    }
-}
-
-/* iPad (min-width: 768px and max-width: 1400px) */
+/* iPad (landscape screens ≥ 768px and ≤ 1400px) */
 @media (min-width: 768px) and (max-width: 1400px) and (orientation: landscape) {
     .popup {
-        max-width: 40%;
-    }
-    .popup-content {
-        padding: 20px 40px 45px 40px;
-    }
-    .popup-content input#nameInput {
-        font-size: 18px !important;
-        padding: 8px 10px;
-        line-height: 24px;
+        max-width: 40%; /* 40% width for iPad landscape */
     }
     body {
-        overflow: hidden !important;
+        overflow: hidden !important; /* Reinforced */
         width: 100%;
         height: calc(var(--vh, 1vh) * 100);
         -webkit-overflow-scrolling: none;
     }
-    body:not(.is-mobile) {
-        overflow-y: hidden !important;
-    }
     .student-manager {
-        overflow: hidden !important;
+        overflow: hidden !important; /* Reinforced */
         width: 100%;
         max-width: 100vw;
         height: calc(var(--vh, 1vh) * 100);
         box-sizing: border-box;
-        padding: 50px 10px 10px 10px;
+        padding: 50px 10px 10px 10px; /* Adjusted for iPad */
         display: flex;
         flex-direction: column;
         align-items: center;
     }
     .layout-container {
-        overflow-y: hidden !important;
+        overflow-y: hidden !important; /* Reinforced */
         height: calc(var(--vh, 1vh) * 100);
-    }
-    .layout-container:not(.is-mobile) {
-        overflow-y: hidden !important;
     }
     .progress-container {
         width: 100%;
@@ -1322,7 +1099,7 @@ body {
         justify-content: center;
         align-items: center;
         height: calc(var(--vh, 1vh) * 100);
-        overflow-y: hidden !important;
+        overflow-y: hidden !important; /* Reinforced */
     }
     .progress-svg {
         width: 85%;
@@ -1346,7 +1123,7 @@ body {
         background: transparent;
         border: none;
         padding-top: 35px;
-        z-index: 10;
+        z-index: 10; /* Ensure below popup */
     }
     .logo-badge {
         position: absolute;
@@ -1367,10 +1144,16 @@ body {
     .chapter-name {
         font-size: 28px;
     }
+    body:not(.is-mobile) {
+        overflow-y: hidden !important; /* Reinforced */
+    }
+    .layout-container:not(.is-mobile) {
+        overflow-y: hidden !important; /* Reinforced */
+    }
     .parts {
-        height: calc(var(--vh, 1vh) * 100 - 50px);
-        top: 50px;
-        overflow-y: hidden !important;
+        height: calc(var(--vh, 1vh) * 100 - 50px); /* Reduced from 70px */
+        top: 50px; /* Reduced from 70px */
+        overflow-y: hidden !important; /* Reinforced */
         padding: 10px 0;
         justify-content: center;
     }
@@ -1400,7 +1183,7 @@ body {
     }
     #studentNotes {
         width: 320px;
-        height: 360px;
+        height: 360px; /* Already set to 360px from previous change */
         padding: 10px;
         border: 1px solid #ff8c00;
         border-radius: 5px;
@@ -1421,13 +1204,17 @@ body {
         background-position: right 10px center;
         background-size: 24px;
     }
-    .star-map-container {
-        margin-top: 70px;
-        height: calc(100vh - 70px);
-        max-height: calc(100vh - 70px);
+}
+
+/* Responsive adjustments for iPad */
+@media (min-width: 768px) and (max-width: 1400px) and (orientation: landscape) {
+    .popup-content {
+        padding: 20px 40px 45px 40px; /* Reduce padding-bottom to 45px */
     }
-    .menu {
-        margin-top: 70px;
+    .popup-content input#nameInput {
+        font-size: 18px !important;
+        padding: 8px 10px;
+        line-height: 24px;
     }
 }
 
@@ -1514,13 +1301,13 @@ body {
 /* iPhone (portrait screens, target phones only) */
 @media (max-width: 767px) and (orientation: portrait) {
     .popup-content {
-        width: 90vw !important;
+        width: 90vw !important; /* Existing mobile width */
         max-width: 90vw;
         padding: 20px 20px 35px 20px;
         box-sizing: border-box;
     }
     .popup-content p {
-        font-size: 14px;
+        font-size: 14px; /* Slightly smaller font size on mobile */
     }
     .popup-content .input-group {
         width: 72vw;
@@ -1531,25 +1318,10 @@ body {
         padding: 8px 10px;
         line-height: 24px;
     }
-    .student-popup {
-        max-width: 80%;
-    }
-    .student-popup-content {
-        width: 90vw;
-        max-width: 90vw;
-        padding: 15px 20px;
-    }
-    .student-popup-content p {
-        font-size: 18px;
-    }
-    .student-popup-content .popup-star {
-        width: 16px;
-        height: 16px;
-    }
     body {
-        height: calc(var(--vh, 1vh) * 100);
-        overflow-y: hidden;
-        overflow-x: hidden;
+        height: auto; /* Allow natural height for scrolling */
+        overflow-y: auto; /* Enable scrolling */
+        overflow-x: hidden; /* Prevents horizontal scrolling */
     }
     .progress-container {
         width: 100%;
@@ -1562,7 +1334,7 @@ body {
         width: 200%;
         max-width: none;
         height: auto;
-        max-height: none;
+        max-height: none; /* Remove cap to match previous behavior */
         margin: 10px auto;
         position: relative;
         left: 50%;
@@ -1579,7 +1351,7 @@ body {
         margin: 10px auto;
         padding-top: 35px;
         display: block;
-        z-index: 10;
+        z-index: 10; /* Still below popup */
     }
     .logo-badge {
         position: static;
@@ -1600,11 +1372,11 @@ body {
         min-width: 0;
         margin: 0 auto;
         justify-content: center;
-        padding-top: 30px;
+        padding-top: 30px; /* Increased to ensure gap */
         padding-bottom: 20px;
-        height: calc(100vh - 70px);
-        margin-top: 70px;
-        overflow-y: hidden;
+        height: auto;
+        top: 60px; /* Increased from 40px to account for title height */
+        overflow-y: auto;
         box-sizing: border-box;
         display: flex;
         flex-direction: column;
@@ -1625,11 +1397,11 @@ body {
         margin-bottom: 50px;
     }
     .text-box {
-        position: static;
+        position: static; /* Already static on iPhone */
         transform: none;
         width: 80%;
         max-width: 300px;
-        margin: 10px auto 20px auto;
+        margin: 10px auto 20px auto; /* Reduced top margin */
         display: block;
     }
     .text-box #rankTitle {
@@ -1659,9 +1431,9 @@ body {
     }
     .student-manager {
         overflow-x: hidden;
-        overflow-y: auto;
-        height: auto;
-        padding: 40px 10px 20px 10px;
+        overflow-y: auto; /* Enable scrolling */
+        height: auto; /* Allow content to dictate height */
+        padding: 40px 10px 20px 10px; /* Adjusted for iPhone */
     }
     .chapter-title {
         display: block;
@@ -1723,36 +1495,6 @@ body {
         background-position: right 10px center;
         background-size: 24px;
     }
-    .star-map-container {
-        margin-top: 70px;
-        height: calc(100vh - 70px);
-        max-height: calc(100vh - 70px);
-        overflow-y: hidden;
-    }
-    .menu {
-        margin-top: 70px;
-    }
-    .title-container h1 {
-        font-size: 24px;
-    }
-    .title-star {
-        width: 40px;
-    }
-    .content h1 {
-        font-size: 24px;
-        margin: 15px 0;
-        padding-top: 15px;
-    }
-    .faq-container {
-        width: 70vw;
-        max-width: none;
-    }
-    .faq-answer {
-        font-size: 14px;
-    }
-    .faq-item.active .faq-answer {
-        max-height: 300px;
-    }
 }
 
 @media (max-width: 744px) and (orientation: portrait) {
@@ -1761,13 +1503,13 @@ body {
     }
 }
 
-/* iPhone landscape */
+/* iPhone landscape (allow scrolling) */
 @media (orientation: landscape) and (max-width: 767px),
        (orientation: landscape) and (hover: none) and (pointer: coarse) {
     body.is-mobile,
     body {
         display: block;
-        overflow-y: hidden !important;
+        overflow-y: hidden !important; /* Keep unscrollable */
         -webkit-overflow-scrolling: none;
         height: calc(var(--vh, 1vh) * 100);
     }
@@ -1783,11 +1525,74 @@ body {
     }
 }
 
-/* Other Media Queries */
-@media (min-width: 1001px) {
-    .text-box #rankTitle {
-        font-size: clamp(24px, 2vw, 28px);
+/* Star Map Styles */
+.star-map-container {
+    position: relative;
+    overflow-x: auto;
+    overflow-y: hidden;
+    width: 100%;
+    height: 600px;
+}
+
+.star-map-container object {
+    width: 2800px;
+    height: 600px;
+}
+
+.congratulations-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    animation: fadeIn 1s ease-in-out;
+}
+
+.congratulations-message {
+    background: #000000;
+    border: 2px solid #ffd700;
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    color: #ffd700;
+    font-family: Cochin, Georgia, Arial, sans-serif;
+    font-size: 24px;
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.7);
+    animation: pulse 2s infinite;
+}
+
+/* Responsive Adjustments */
+@media (min-width: 1401px) and (orientation: landscape) and (hover: hover) and (min-aspect-ratio: 16/10) {
+    .star-map-container {
+        height: calc(var(--vh, 1vh) * 100 - 100px);
+        top: 100px;
     }
+}
+
+@media (min-width: 768px) and (max-width: 1400px) and (orientation: landscape) {
+    .star-map-container {
+        height: calc(var(--vh, 1vh) * 100 - 50px);
+        top: 50px;
+    }
+}
+
+@media (max-width: 767px) and (orientation: portrait) {
+    .star-map-container {
+        height: auto;
+        top: 60px;
+        overflow-y: auto;
+    }
+}
+
+.faq-container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 0 10px;
 }
 
 @media (max-width: 768px) {
@@ -1797,18 +1602,172 @@ body {
     }
 }
 
-/* Safe Area Insets */
-@supports (padding-top: env(safe-area-inset-top)) {
-    .title-container {
-        padding-top: calc(20px + env(safe-area-inset-top));
-        padding-bottom: 20px;
+.faq-item {
+    border: 1px solid #ccc;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+.faq-question {
+    padding: 15px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: bold;
+}
+
+.faq-arrow {
+    transition: transform 0.3s ease;
+}
+
+.faq-answer {
+    max-height: 0; /* Hidden by default */
+    overflow: hidden; /* Prevents content spillover */
+    transition: max-height 0.3s ease-in-out, padding 0.3s ease-in-out; /* Animate both */
+    border-top: 1px solid #ccc;
+    background-color: #fff;
+    padding: 0 10px; /* Start with horizontal padding only */
+}
+
+.faq-item.active .faq-answer {
+    max-height: 200px; /* Adjust based on longest answer */
+    padding: 10px; /* Full padding when active */
+    display: block; /* Ensure visibility */
+}
+
+.faq-item.active .faq-arrow {
+    transform: rotate(180deg);
+}
+
+@media (max-width: 767px) {
+    .faq-answer {
+        font-size: 14px;
     }
-    .star-map-container {
-        margin-top: calc(70px + env(safe-area-inset-top));
-        height: calc(100vh - 70px - env(safe-area-inset-top));
-        max-height: calc(100vh - 70px - env(safe-area-inset-top));
+    .faq-item.active .faq-answer {
+        max-height: 300px;
     }
-    .menu {
-        margin-top: calc(70px + env(safe-area-inset-top));
+}
+
+.chapter-arrow {
+    transition: transform 0.3s ease; /* Matches FAQ arrow animation */
+}
+
+.menu-item.active .chapter-arrow {
+    transform: rotate(180deg); /* Rotates arrow upward when submenu is open */
+}
+
+.title-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px; /* Space between stars and title */
+    padding: 20px 0; /* Vertical spacing from top and content */
+}
+
+.title-container h1 {
+    font-family: Cochin, Georgia, Arial, sans-serif;
+    font-size: 30px;
+    margin: 0;
+    text-align: center;
+    color: #ffffff; /* White to match FAQ title */
+}
+
+.title-star {
+    width: 50px; /* Adjust size as needed */
+    height: auto;
+}
+
+@media (max-width: 767px) {
+    .title-container h1 {
+        font-size: 24px;
     }
+    .title-star {
+        width: 40px;
+    }
+}
+
+.content h1 {
+    font-family: Cochin, Georgia, Arial, sans-serif;
+    font-size: 30px;
+    color: #ffffff; /* White text */
+    text-align: center; /* Centered */
+    margin: 20px 0; /* Spacing from top and FAQ boxes */
+    padding-top: 20px; /* Extra space from menu */
+}
+
+@media (max-width: 767px) {
+    .content h1 {
+        font-size: 24px;
+        margin: 15px 0;
+        padding-top: 15px;
+    }
+}
+
+.piano-menu {
+    width: 40px; /* Increased from 30px, ~33% bigger */
+    height: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: flex-start;
+    cursor: pointer;
+    position: fixed;
+    top: 15px; /* Moved down from 10px */
+    left: 15px; /* Moved right from 10px */
+    z-index: 1200; /* Still above menu */
+    background: transparent;
+}
+
+.white-key, .black-key {
+    height: 12%;
+    border-radius: 2px;
+    transition: all 0.4s cubic-bezier(0.68, -0.6, 0.32, 1.6);
+    transform-origin: center;
+}
+
+.white-key {
+    width: 75%;
+    background-color: #fff;
+    position: relative;
+}
+
+.black-key {
+    width: 0;
+    background-color: #000;
+    position: absolute;
+    left: 0;
+    transform-origin: bottom;
+}
+
+.black-key.top {
+    top: 29%;
+}
+
+.black-key.bottom {
+    top: 57%;
+}
+
+.piano-menu.active .black-key {
+    width: 50%;
+    height: 16%;
+}
+
+.piano-menu.active .black-key.top {
+    top: 27%;
+}
+
+.piano-menu.active .white-key:nth-child(1) {
+    height: 24%;
+    transform: translateY(6%);
+}
+
+.piano-menu.active .white-key:nth-child(2) {
+    height: 24%;
+}
+
+.piano-menu.active .white-key:nth-child(3) {
+    height: 24%;
+    transform: translateY(-6%);
 }
