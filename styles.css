@@ -271,7 +271,7 @@ body {
 /* Fix chapter-title positioning */
 .chapter-title {
     text-align: center;
-    margin: 70px 0 10px 0; /* Add margin to account for fixed header */
+    margin: 50px 0 10px 0; /* Reduced from 70px to 50px */
     font-family: Cochin, Georgia, Arial, sans-serif;
     color: #ffffff !important;
     font-size: 24px;
@@ -774,12 +774,13 @@ body {
     background-color: #ff8c00;
 }
 
+/* Adjust student-manager padding */
 .student-manager {
-    padding: 70px 10px 20px 10px; /* Adjust padding to account for header */
+    padding: 50px 10px 20px 10px; /* Reduced from 70px to 50px */
     text-align: center;
     width: 100%;
-    height: auto; /* Remove fixed height */
-    overflow-y: visible; /* Remove nested scrolling */
+    height: auto;
+    overflow-y: visible;
     box-sizing: border-box;
 }
 
@@ -1086,7 +1087,7 @@ body {
         max-width: 100vw;
         height: calc(var(--vh, 1vh) * 100);
         box-sizing: border-box;
-        padding: 50px 10px 10px 10px; /* Adjusted for iPad */
+        padding: 20px 10px 10px 10px; /* Adjusted for iPad */
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -1446,9 +1447,9 @@ body {
     }
     .student-manager {
         overflow-x: hidden;
-        overflow-y: auto; /* Enable scrolling */
+        overflow-y: visible; /* Enable scrolling */
         height: auto; /* Allow content to dictate height */
-        padding: 40px 10px 20px 10px; /* Adjusted for iPhone */
+        padding: 10px 10px 20px 10px; /* Adjusted for iPhone */
     }
     .chapter-title {
         display: block;
