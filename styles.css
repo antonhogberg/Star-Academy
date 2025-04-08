@@ -33,6 +33,8 @@ body {
     align-items: center;
     position: relative; /* Add this to ensure proper stacking context */
     min-height: 100vh; /* Fallback for older browsers */
+    border: 5px solid red; /* Debug border */
+    box-sizing: border-box; /* Ensure border doesn't affect layout */
 }
 
 
@@ -1542,6 +1544,8 @@ body {
     margin-top: 0;
     flex-shrink: 0;
     margin-bottom: 0; /* Ensure no extra margin at the bottom */
+    border: 5px solid green; /* Debug border */
+    box-sizing: border-box; /* Ensure border doesn't affect layout */
 }
 
 .star-map-container object {
@@ -1587,9 +1591,11 @@ body {
 
 @media (min-width: 768px) and (max-width: 1400px) and (orientation: landscape) {
     .star-map-container {
-        height: calc(var(--vh, 1vh) * 100 - 120px); /* Adjust for title-container height more precisely */
+        height: calc(var(--vh, 1vh) * 100 - 120px);
         top: 0;
-        max-height: 600px; /* Cap the height to prevent overflow */
+        max-height: 600px;
+        border: 5px solid green; /* Debug border */
+        box-sizing: border-box;
     }
 }
 
@@ -1683,6 +1689,7 @@ body {
     z-index: 1100;
     visibility: visible !important; /* Force visibility */
     will-change: transform; /* Hint to browser to optimize rendering */
+    border: 5px solid yellow; /* Debug border */
 }
 
 .title-container h1 {
