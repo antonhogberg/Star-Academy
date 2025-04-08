@@ -519,8 +519,8 @@ function handleUserNamePopup() {
                 localStorage.setItem('starAcademyStudents', JSON.stringify(studentsData));
                 if (userNameDisplay) userNameDisplay.textContent = name;
                 namePopup.style.display = 'none';
-        
-                // Create and show success popup
+
+                // Create and show success popup matching students.html
                 const successPopup = document.createElement('div');
                 successPopup.id = 'studentPopup';
                 successPopup.className = 'student-popup';
@@ -539,17 +539,9 @@ function handleUserNamePopup() {
                     setTimeout(() => {
                         successPopup.style.display = 'none';
                         document.body.removeChild(successPopup);
-        
-                        // Force repaint of the header to fix rendering issue
-                        const header = document.querySelector('.title-container');
-                        if (header) {
-                            header.style.display = 'none';
-                            header.offsetHeight; // Trigger reflow
-                            header.style.display = 'flex';
-                        }
                     }, 1000);
-                }, 2000);
-        
+                }, 2000); // 2s visible + 1s fade
+
                 updateStarStates();
                 if (window.location.pathname.toLowerCase().includes('starmap.html') && typeof window.initializeStarMap === 'function') {
                     window.initializeStarMap();
