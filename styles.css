@@ -1688,6 +1688,40 @@ body {
     }
 }
 
+/* Media query for desktop screens (min-width: 1024px) */
+@media (min-width: 1024px) {
+    .title-container {
+        padding: 10px 0; /* Reduce padding to bring SVG closer */
+    }
+
+    .star-map-container {
+        margin-top: -20px; /* Pull SVG up closer to header */
+        max-height: calc(100vh - 150px); /* Limit height to viewport minus header space */
+        overflow: hidden; /* Prevent overflow */
+    }
+
+    #starMap {
+        width: 90%; /* Slightly reduce width to fit better */
+        height: auto;
+        max-height: 100%; /* Ensure it fits within container */
+    }
+}
+
+@media (max-width: 1023px) {
+    .title-container {
+        padding: 20px 0; /* Keep original spacing for iPad/mobile */
+    }
+
+    .star-map-container {
+        margin-top: 0; /* Default spacing for smaller screens */
+    }
+
+    #starMap {
+        width: 100%; /* Full width on iPad/mobile */
+        height: auto;
+    }
+}
+
 .content h1 {
     font-family: Cochin, Georgia, Arial, sans-serif;
     font-size: 30px;
