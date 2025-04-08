@@ -1531,18 +1531,12 @@ body {
     overflow-x: auto;
     overflow-y: hidden;
     width: 100%;
-    height: calc(100vh - 100px); /* Viewport height minus header */
-    max-height: calc(100vh - 100px); /* Ensure it fits */
-    display: flex;
-    justify-content: flex-start; /* Start from left for scrolling */
-    align-items: center; /* Center vertically */
-    white-space: nowrap;
+    height: 600px;
 }
 
 .star-map-container object {
-    width: 2800px; /* Scrollable horizontally */
-    height: auto; /* Scale proportionally */
-    max-height: 100%; /* Fit within container */
+    width: 2800px;
+    height: 600px;
 }
 
 .congratulations-overlay {
