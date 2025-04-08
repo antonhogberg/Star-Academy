@@ -1067,27 +1067,27 @@ body {
 /* iPad (landscape screens ≥ 768px and ≤ 1400px) */
 @media (min-width: 768px) and (max-width: 1400px) and (orientation: landscape) {
     .popup {
-        max-width: 40%; /* 40% width for iPad landscape */
+        max-width: 40%;
     }
     body {
-        overflow: hidden !important; /* Reinforced */
+        overflow: hidden !important;
         width: 100%;
         height: calc(var(--vh, 1vh) * 100);
         -webkit-overflow-scrolling: none;
     }
     .student-manager {
-        overflow: hidden !important; /* Reinforced */
+        overflow: hidden !important;
         width: 100%;
         max-width: 100vw;
         height: calc(var(--vh, 1vh) * 100);
         box-sizing: border-box;
-        padding: 50px 10px 10px 10px; /* Adjusted for iPad */
+        padding: 50px 10px 10px 10px;
         display: flex;
         flex-direction: column;
         align-items: center;
     }
     .layout-container {
-        overflow-y: hidden !important; /* Reinforced */
+        overflow-y: hidden !important;
         height: calc(var(--vh, 1vh) * 100);
     }
     .progress-container {
@@ -1099,7 +1099,7 @@ body {
         justify-content: center;
         align-items: center;
         height: calc(var(--vh, 1vh) * 100);
-        overflow-y: hidden !important; /* Reinforced */
+        overflow-y: hidden !important;
     }
     .progress-svg {
         width: 85%;
@@ -1123,7 +1123,7 @@ body {
         background: transparent;
         border: none;
         padding-top: 35px;
-        z-index: 10; /* Ensure below popup */
+        z-index: 10;
     }
     .logo-badge {
         position: absolute;
@@ -1145,15 +1145,15 @@ body {
         font-size: 28px;
     }
     body:not(.is-mobile) {
-        overflow-y: hidden !important; /* Reinforced */
+        overflow-y: hidden !important;
     }
     .layout-container:not(.is-mobile) {
-        overflow-y: hidden !important; /* Reinforced */
+        overflow-y: hidden !important;
     }
     .parts {
-        height: calc(var(--vh, 1vh) * 100 - 50px); /* Reduced from 70px */
-        top: 50px; /* Reduced from 70px */
-        overflow-y: hidden !important; /* Reinforced */
+        height: calc(var(--vh, 1vh) * 100 - 50px);
+        top: 50px;
+        overflow-y: hidden !important;
         padding: 10px 0;
         justify-content: center;
     }
@@ -1183,7 +1183,7 @@ body {
     }
     #studentNotes {
         width: 320px;
-        height: 360px; /* Already set to 360px from previous change */
+        height: 360px;
         padding: 10px;
         border: 1px solid #ff8c00;
         border-radius: 5px;
@@ -1203,6 +1203,13 @@ body {
         line-height: 24px;
         background-position: right 10px center;
         background-size: 24px;
+    }
+    .star-map-container {
+        margin-top: 90px;
+        height: calc(100vh - 90px); /* Match base rule */
+        display: flex; /* Use flexbox to center content */
+        justify-content: flex-start;
+        align-items: center;
     }
 }
 
@@ -1531,12 +1538,17 @@ body {
     overflow-x: auto;
     overflow-y: hidden;
     width: 100%;
-    height: 600px;
+    height: calc(100vh - 90px); /* Fill remaining viewport height after header */
+    margin-top: 90px; /* Offset for fixed header (~70px) */
+    display: flex; /* Use flexbox to center content */
+    justify-content: flex-start; /* Allow horizontal scrolling */
+    align-items: center; /* Center SVG vertically */
 }
 
 .star-map-container object {
     width: 2800px;
     height: 600px;
+    display: block;
 }
 
 .congratulations-overlay {
