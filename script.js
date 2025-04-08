@@ -658,24 +658,25 @@ waitForDOM().then(() => {
         const starMapContainer = document.querySelector('.star-map-container');
         const titleContainer = document.querySelector('.title-container');
         if (starMapContainer && titleContainer) {
-            // Store initial values on page load
-            if (!window.initialViewportHeight) {
-                window.initialViewportHeight = window.innerHeight;
+            // Store initial title height on page load
+            if (!window.initialTitleHeight) {
                 window.initialTitleHeight = titleContainer.getBoundingClientRect().height;
             }
-            const viewportHeight = window.initialViewportHeight;
             const titleHeight = window.initialTitleHeight;
             const marginTop = parseFloat(getComputedStyle(starMapContainer).marginTop); // 30px
             const borderWidth = parseFloat(getComputedStyle(starMapContainer).borderWidth) || 0; // Account for debug borders (5px)
             const totalBorderHeight = borderWidth * 2; // Top and bottom borders
-            const availableHeight = viewportHeight - titleHeight - marginTop - totalBorderHeight;
-            const maxHeight = Math.min(600, availableHeight - 40); // Increased buffer to 40px to prevent overflow
-            starMapContainer.style.position = 'fixed'; // Use fixed positioning
-            starMapContainer.style.top = `${titleHeight + marginTop}px`;
-            starMapContainer.style.bottom = 'auto'; // Remove bottom constraint
-            starMapContainer.style.transform = 'none'; // Remove transform
+            // Use current viewport height to account for browser UI changes
+            const viewportHeight = window.innerHeight;
+            const topPosition = titleHeight + marginTop; // Distance from top of viewport
+            const availableHeight = viewportHeight - topPosition - totalBorderHeight - 60; // Increased buffer to 60px
+            const maxHeight = Math.min(600, availableHeight); // Cap height
+            starMapContainer.style.position = 'fixed';
+            starMapContainer.style.top = `${topPosition}px`;
+            starMapContainer.style.bottom = 'auto';
+            starMapContainer.style.transform = 'none';
             starMapContainer.style.height = `${maxHeight}px`;
-            console.log('Star Map Height:', maxHeight, 'px', 'Initial Viewport Height:', viewportHeight, 'px', 'Title Height:', titleHeight, 'px');
+            console.log('Star Map Height:', maxHeight, 'px', 'Viewport Height:', viewportHeight, 'px', 'Title Height:', titleHeight, 'px', 'Top Position:', topPosition, 'px');
         }
     };
 
