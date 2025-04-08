@@ -1662,8 +1662,15 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 10px; /* Space between stars and title */
-    padding: 20px 0; /* Vertical spacing from top and content */
+    gap: 10px;
+    padding: 20px 0;
+    width: 100%;
+    box-sizing: border-box;
+    position: fixed;
+    top: 0;
+    z-index: 1100;
+    visibility: visible !important; /* Force visibility */
+    will-change: transform; /* Hint to browser to optimize rendering */
 }
 
 .title-container h1 {

@@ -616,4 +616,40 @@ waitForDOM().then(() => {
     }
 
     if (window.location.pathname.toLowerCase().includes('faq.html')) initializeFAQ();
+
+    // Fix header disappearance on iPad when keyboard appears
+    const header = document.querySelector('.title-container');
+    if (header) {
+        let initialViewportHeight = window.innerHeight;
+        let reRenderInterval = null;
+
+        const forceHeaderRender = () => {
+            header.style.opacity = '0.99'; // Small change to trigger re-render
+            header.offsetHeight; // Force reflow
+            header.style.opacity = '1';
+        };
+
+        const checkKeyboardState = () => {
+            const currentViewportHeight = window.innerHeight;
+            if (currentViewportHeight < initialViewportHeight * 0.9) { // Keyboard likely present
+                if (!reRenderInterval) {
+                    // Start re-rendering every 100ms while keyboard is visible
+                    reRenderInterval = setInterval(forceHeaderRender, 100);
+                }
+            } else { // Keyboard likely dismissed
+                if (reRenderInterval) {
+                    clearInterval(reRenderInterval);
+                    reRenderInterval = null;
+                    forceHeaderRender(); // One final render to ensure header is visible
+                }
+            }
+        };
+
+        // Monitor viewport changes
+        window.addEventListener('resize', checkKeyboardState);
+        window.addEventListener('orientationchange', checkKeyboardState);
+
+        // Initial render after a small delay
+        setTimeout(forceHeaderRender, 100);
+    }
 });
