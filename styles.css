@@ -1531,12 +1531,47 @@ body {
     overflow-x: auto;
     overflow-y: hidden;
     width: 100%;
-    height: 600px;
+    height: calc(80vh - 50px); /* Fallback for iPad */
 }
 
-.star-map-container object {
-    width: 2800px;
-    height: 600px;
+/* Desktop screens (min-width: 1024px) */
+@media (min-width: 1024px) {
+    .title-container {
+        padding: 10px 0;
+    }
+
+    .star-map-container {
+        margin-top: -40px; /* Raise SVG higher to fit */
+        max-height: calc(100vh - 80px); /* Fit viewport minus header */
+        overflow-x: auto;
+        overflow-y: hidden;
+        white-space: nowrap;
+    }
+
+    .star-map-container object {
+        width: 2800px; /* Scrollable horizontally */
+        height: auto; /* Scale proportionally */
+        max-height: 100%; /* Fit within container */
+    }
+}
+
+/* iPad and smaller screens (max-width: 1023px) */
+@media (max-width: 1023px) {
+    .title-container {
+        padding: 20px 0;
+    }
+
+    .star-map-container {
+        margin-top: 0;
+        height: calc(80vh - 50px); /* Keep iPad behavior */
+        overflow-x: hidden;
+        overflow-y: hidden;
+    }
+
+    .star-map-container object {
+        width: 100%;
+        height: 100%;
+    }
 }
 
 .congratulations-overlay {
