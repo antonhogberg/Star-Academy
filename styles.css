@@ -1544,8 +1544,8 @@ body {
 /* Star Map Styles */
 .star-map-container {
     position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
+    top: 50%; /* Fallback for initial load */
+    transform: translateY(-50%); /* Fallback for initial load */
     margin-top: 30px;
     overflow-x: auto;
     overflow-y: hidden;
@@ -1630,8 +1630,8 @@ body {
     .star-map-container {
         height: auto;
         max-height: 600px;
-        top: 50%;
-        transform: translateY(-50%);
+        top: 50%; /* Fallback */
+        transform: translateY(-50%); /* Fallback */
         margin-top: 30px;
         overflow-y: hidden !important;
         width: 100%;
