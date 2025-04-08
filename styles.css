@@ -1578,8 +1578,17 @@ body {
 
 @media (min-width: 768px) and (max-width: 1400px) and (orientation: landscape) {
     .star-map-container {
-        height: calc(var(--vh, 1vh) * 100 - 50px);
-        top: 50px;
+        margin-top: 90px;
+        min-height: 600px; /* Ensure container is at least tall enough for the SVG */
+        height: calc(100vh - 90px); /* Fill remaining viewport height */
+        display: flex;
+        justify-content: flex-start;
+        align-items: center; /* Center SVG vertically */
+    }
+    .star-map-container object {
+        width: 2800px;
+        height: 600px; /* Keep SVG at intended size */
+        display: block;
     }
 }
 
