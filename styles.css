@@ -268,18 +268,15 @@ body {
     background-color: #d5d5d5;
 }
 
-/* Adjust chapter-title to minimize top gap */
+/* Fix chapter-title positioning */
 .chapter-title {
     text-align: center;
-    margin: 10px 0;
+    margin: 70px 0 10px 0; /* Add margin to account for fixed header */
     font-family: Cochin, Georgia, Arial, sans-serif;
     color: #ffffff !important;
     font-size: 24px;
     display: block;
-    position: relative; /* Change from absolute to relative */
-    top: auto; /* Remove absolute positioning */
-    left: auto;
-    transform: none; /* Remove transform */
+    position: relative;
     width: 100%;
 }
 
@@ -298,15 +295,14 @@ body {
     font-size: 20px;
 }
 
+/* Remove nested scrolling on layout-container */
 .layout-container {
     position: relative;
     width: 100%;
-    height: calc(var(--vh, 1vh) * 100);
-    overflow-y: hidden; /* Default for larger screens */
+    height: auto; /* Remove fixed height */
+    overflow-y: visible; /* Remove nested scrolling */
     overflow-x: hidden;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    display: block; /* Remove flex */
     -webkit-overflow-scrolling: touch;
 }
 
@@ -332,6 +328,7 @@ body {
     display: block;
 }
 
+/* Fix parts positioning */
 .parts {
     width: auto;
     max-width: 90vw;
@@ -342,10 +339,10 @@ body {
     flex-direction: column;
     align-items: center;
     position: relative;
-    height: calc(var(--vh, 1vh) * 100 - 50px); /* Reduced from 70px */
-    top: 50px; /* Reduced from 70px */
-    overflow-y: hidden;
-    justify-content: center; /* Center stars vertically */
+    height: auto; /* Remove fixed height */
+    top: 0; /* Remove offset */
+    overflow-y: visible; /* Remove nested scrolling */
+    justify-content: flex-start; /* Start at top */
     flex-grow: 1;
 }
 
@@ -778,11 +775,11 @@ body {
 }
 
 .student-manager {
-    padding: 50px 10px 20px 10px; /* Added padding-top to avoid title overlap */
+    padding: 70px 10px 20px 10px; /* Adjust padding to account for header */
     text-align: center;
     width: 100%;
-    height: calc(var(--vh, 1vh) * 100);
-    overflow-y: hidden; /* Default for larger screens */
+    height: auto; /* Remove fixed height */
+    overflow-y: visible; /* Remove nested scrolling */
     box-sizing: border-box;
 }
 
@@ -1327,15 +1324,16 @@ body {
         line-height: 24px;
     }
     body {
-        height: 100vh;
-        min-height: -webkit-fill-available;
+        height: auto; /* Allow natural height for scrolling */
+        min-height: 100vh;
         overflow-y: auto;
-        display: block; /* Ensure block display */
+        display: block;
     }
 
     body.no-scroll {
+        height: 100vh;
         overflow-y: hidden !important;
-        display: flex; /* Only use flex for no-scroll pages */
+        display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
@@ -1600,9 +1598,30 @@ body {
 
 @media (min-width: 768px) and (max-width: 1400px) and (orientation: landscape) {
     .star-map-container {
-        height: calc(100vh - 190px); /* Adjust for header (~70px) + extra margin (40px) + borders */
-        max-height: 600px;
-        border: 5px solid green; /* Debug border */
+        height: calc(100vh - 120px);
+        top: 50%;
+        transform: translateY(-50%);
+        margin-top: 30px;
+    }
+
+    .parts {
+        max-width: 1024px;
+        min-width: 580px;
+        margin: 0 auto;
+        justify-content: flex-start;
+        height: auto;
+        top: 0;
+        overflow-y: visible;
+        padding: 10px 0;
+    }
+
+    .student-manager {
+        padding: 70px 10px 10px 10px;
+        overflow-y: visible;
+        height: auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
     }
 }
 
@@ -1616,6 +1635,33 @@ body {
         overflow-y: hidden !important;
         width: 100%;
         border: 5px solid green; /* Debug border */
+    }
+
+    .layout-container {
+        height: auto;
+        overflow-y: visible;
+    }
+
+    .parts {
+        max-width: 744px;
+        min-width: 0;
+        margin: 0 auto;
+        padding-top: 10px; /* Reduced padding */
+        padding-bottom: 20px;
+        height: auto;
+        top: 0;
+        overflow-y: visible;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        flex-grow: 1;
+    }
+
+    .student-manager {
+        padding: 70px 10px 20px 10px;
+        overflow-y: visible;
+        height: auto;
     }
 }
 

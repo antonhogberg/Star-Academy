@@ -658,8 +658,8 @@ waitForDOM().then(() => {
         const starMapContainer = document.querySelector('.star-map-container');
         const titleContainer = document.querySelector('.title-container');
         if (starMapContainer && titleContainer) {
-            // Use the initial viewport height to avoid changes when keyboard appears
-            const initialViewportHeight = document.documentElement.clientHeight || window.innerHeight;
+            // Store the initial viewport height on page load
+            const initialViewportHeight = window.initialViewportHeight || (window.initialViewportHeight = window.innerHeight);
             const titleHeight = titleContainer.getBoundingClientRect().height;
             const marginTop = parseFloat(getComputedStyle(starMapContainer).marginTop); // 30px
             const borderWidth = parseFloat(getComputedStyle(starMapContainer).borderWidth) || 0; // Account for debug borders (5px)
