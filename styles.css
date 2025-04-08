@@ -14,12 +14,16 @@
     margin-top: 30px;
 }
 
+* {
+    box-sizing: border-box; /* Ensure borders and padding are included in dimensions */
+}
+
 body {
     font-family: Arial, sans-serif;
     padding: 0;
     margin: 0;
     overflow-x: hidden;
-    height: calc(var(--vh, 1vh) * 100);
+    height: 100vh; /* Change to 100vh directly */
     width: 100vw;
     overflow-y: hidden;
     background-color: #000000;
@@ -31,10 +35,9 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    position: relative; /* Add this to ensure proper stacking context */
-    min-height: 100vh; /* Fallback for older browsers */
+    position: relative;
+    min-height: 100vh;
     border: 5px solid red; /* Debug border */
-    box-sizing: border-box; /* Ensure border doesn't affect layout */
 }
 
 
@@ -1536,16 +1539,17 @@ body {
 
 /* Star Map Styles */
 .star-map-container {
-    position: relative;
+    position: absolute; /* Change to absolute for more control */
+    top: 50%; /* Center vertically relative to the body */
+    transform: translateY(-50%); /* Adjust for its own height */
+    margin-top: 40px; /* Add space below the fixed header (adjust as needed) */
     overflow-x: auto;
     overflow-y: hidden;
     width: 100%;
     height: 600px;
-    margin-top: 0;
     flex-shrink: 0;
-    margin-bottom: 0; /* Ensure no extra margin at the bottom */
+    margin-bottom: 0;
     border: 5px solid green; /* Debug border */
-    box-sizing: border-box; /* Ensure border doesn't affect layout */
 }
 
 .star-map-container object {
@@ -1591,11 +1595,9 @@ body {
 
 @media (min-width: 768px) and (max-width: 1400px) and (orientation: landscape) {
     .star-map-container {
-        height: calc(var(--vh, 1vh) * 100 - 120px);
-        top: 0;
+        height: calc(100vh - 190px); /* Adjust for header (~70px) + extra margin (40px) + borders */
         max-height: 600px;
         border: 5px solid green; /* Debug border */
-        box-sizing: border-box;
     }
 }
 
