@@ -657,7 +657,8 @@ waitForDOM().then(() => {
     const setStarMapHeight = () => {
         const starMapContainer = document.querySelector('.star-map-container');
         const titleContainer = document.querySelector('.title-container');
-        if (starMapContainer && titleContainer) {
+        const body = document.querySelector('body');
+        if (starMapContainer && titleContainer && body) {
             // Store initial title height on page load
             if (!window.initialTitleHeight) {
                 window.initialTitleHeight = titleContainer.getBoundingClientRect().height;
@@ -665,18 +666,20 @@ waitForDOM().then(() => {
             const titleHeight = window.initialTitleHeight;
             const marginTop = parseFloat(getComputedStyle(starMapContainer).marginTop); // 30px
             const borderWidth = parseFloat(getComputedStyle(starMapContainer).borderWidth) || 0; // Account for debug borders (5px)
-            const totalBorderHeight = borderWidth * 2; // Top and bottom borders
+            const bodyBorderWidth = parseFloat(getComputedStyle(body).borderWidth) || 0; // Account for body border (5px)
+            const totalBorderHeight = borderWidth * 2; // Top and bottom borders of star-map-container
+            const totalBodyBorderHeight = bodyBorderWidth * 2; // Top and bottom borders of body
             // Use current viewport height to account for browser UI changes
             const viewportHeight = window.innerHeight;
             const topPosition = titleHeight + marginTop; // Distance from top of viewport
-            const availableHeight = viewportHeight - topPosition - totalBorderHeight - 60; // Increased buffer to 60px
+            const availableHeight = viewportHeight - topPosition - totalBorderHeight - totalBodyBorderHeight - 10; // Buffer for bottom edge
             const maxHeight = Math.min(600, availableHeight); // Cap height
             starMapContainer.style.position = 'fixed';
             starMapContainer.style.top = `${topPosition}px`;
-            starMapContainer.style.bottom = 'auto';
+            starMapContainer.style.bottom = `${bodyBorderWidth}px`; // Align with bottom of body (red border)
             starMapContainer.style.transform = 'none';
             starMapContainer.style.height = `${maxHeight}px`;
-            console.log('Star Map Height:', maxHeight, 'px', 'Viewport Height:', viewportHeight, 'px', 'Title Height:', titleHeight, 'px', 'Top Position:', topPosition, 'px');
+            console.log('Star Map Height:', maxHeight, 'px', 'Viewport Height:', viewportHeight, 'px', 'Title Height:', titleHeight, 'px', 'Top Position:', topPosition, 'px', 'Body Border Width:', bodyBorderWidth, 'px');
         }
     };
 
