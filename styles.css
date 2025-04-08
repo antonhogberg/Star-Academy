@@ -271,7 +271,7 @@ body {
 /* Fix chapter-title positioning */
 .chapter-title {
     text-align: center;
-    margin: 50px 0 10px 0; /* Reduced from 70px to 50px */
+    margin: 20px 0 10px 0; /* Reduced from 50px to 20px */
     font-family: Cochin, Georgia, Arial, sans-serif;
     color: #ffffff !important;
     font-size: 24px;
@@ -776,7 +776,7 @@ body {
 
 /* Adjust student-manager padding */
 .student-manager {
-    padding: 50px 10px 20px 10px; /* Reduced from 70px to 50px */
+    padding: 20px 10px 20px 10px; /* Reduced from 50px to 20px */
     text-align: center;
     width: 100%;
     height: auto;
@@ -1082,12 +1082,9 @@ body {
         -webkit-overflow-scrolling: none;
     }
     .student-manager {
-        overflow: hidden !important; /* Reinforced */
-        width: 100%;
-        max-width: 100vw;
-        height: calc(var(--vh, 1vh) * 100);
-        box-sizing: border-box;
-        padding: 20px 10px 10px 10px; /* Adjusted for iPad */
+        padding: 20px 10px 10px 10px; /* Reduced from 50px to 20px */
+        overflow-y: visible;
+        height: auto;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -1446,10 +1443,9 @@ body {
         object-fit: contain;
     }
     .student-manager {
-        overflow-x: hidden;
-        overflow-y: visible; /* Enable scrolling */
-        height: auto; /* Allow content to dictate height */
-        padding: 10px 10px 20px 10px; /* Adjusted for iPhone */
+        padding: 20px 10px 20px 10px; /* Reduced from 50px to 20px */
+        overflow-y: visible;
+        height: auto;
     }
     .chapter-title {
         display: block;
@@ -1543,7 +1539,7 @@ body {
 
 /* Star Map Styles */
 .star-map-container {
-    position: absolute;
+    position: fixed; /* Changed to fixed */
     top: 50%; /* Fallback for initial load */
     transform: translateY(-50%); /* Fallback for initial load */
     margin-top: 30px;
@@ -1600,10 +1596,10 @@ body {
 @media (min-width: 768px) and (max-width: 1400px) and (orientation: landscape) {
     .star-map-container {
         height: calc(100vh - 120px);
-        top: 50%;
-        transform: translateY(-50%);
+        top: 50%; /* Fallback */
+        transform: translateY(-50%); /* Fallback */
         margin-top: 30px;
-    }
+    }   
 
     .parts {
         max-width: 1024px;
