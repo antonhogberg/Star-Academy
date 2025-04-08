@@ -652,4 +652,25 @@ waitForDOM().then(() => {
         // Initial render after a small delay
         setTimeout(forceHeaderRender, 100);
     }
+
+    // Dynamically set the star-map-container height to fit the viewport
+    const setStarMapHeight = () => {
+        const starMapContainer = document.querySelector('.star-map-container');
+        const titleContainer = document.querySelector('.title-container');
+        if (starMapContainer && titleContainer) {
+            const viewportHeight = window.innerHeight;
+            const titleHeight = titleContainer.getBoundingClientRect().height;
+            const marginTop = parseFloat(getComputedStyle(starMapContainer).marginTop); // Get the margin-top (30px)
+            const availableHeight = viewportHeight - titleHeight - marginTop;
+            const maxHeight = 600; // Max height from CSS
+            const newHeight = Math.min(availableHeight, maxHeight);
+            starMapContainer.style.height = `${newHeight}px`;
+            console.log('Star Map Height:', newHeight, 'px'); // Debug log
+        }
+    };
+
+    // Run on load and on resize
+    setStarMapHeight();
+    window.addEventListener('resize', setStarMapHeight);
+    window.addEventListener('orientationchange', setStarMapHeight);
 });
