@@ -1552,6 +1552,8 @@ body {
     flex-shrink: 0;
     margin-bottom: 0;
     border: 5px solid green; /* Debug border */
+    display: flex; /* Add flexbox to center SVG */
+    align-items: center; /* Center SVG vertically */
 }
 
 .star-map-container object {
