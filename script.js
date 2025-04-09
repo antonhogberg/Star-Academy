@@ -664,7 +664,7 @@ waitForDOM().then(() => {
                 window.initialTitleHeight = titleContainer.getBoundingClientRect().height;
             }
             const titleHeight = window.initialTitleHeight;
-            const marginTop = parseFloat(getComputedStyle(starMapContainer).marginTop); // 30px
+            const marginTop = 10; // Reduced from 30px to 10px
             const borderWidth = parseFloat(getComputedStyle(starMapContainer).borderWidth) || 0; // Account for debug borders (5px)
             const bodyBorderWidth = parseFloat(getComputedStyle(body).borderWidth) || 0; // Account for body border (5px)
             const totalBorderHeight = borderWidth * 2; // Top and bottom borders of star-map-container
@@ -676,7 +676,7 @@ waitForDOM().then(() => {
             const maxHeight = Math.min(600, availableHeight); // Cap height
             starMapContainer.style.position = 'fixed';
             starMapContainer.style.top = `${topPosition}px`;
-            starMapContainer.style.bottom = `${bodyBorderWidth}px`; // Align with bottom of body (red border)
+            starMapContainer.style.bottom = `${bodyBorderWidth}px`;
             starMapContainer.style.transform = 'none';
             starMapContainer.style.height = `${maxHeight}px`;
             console.log('Star Map Height:', maxHeight, 'px', 'Viewport Height:', viewportHeight, 'px', 'Title Height:', titleHeight, 'px', 'Top Position:', topPosition, 'px', 'Body Border Width:', bodyBorderWidth, 'px');
