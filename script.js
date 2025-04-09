@@ -664,7 +664,7 @@ waitForDOM().then(() => {
                 window.initialTitleHeight = titleContainer.getBoundingClientRect().height;
             }
             const titleHeight = window.initialTitleHeight;
-            const marginTop = 10; // Reduced from 30px to 10px
+            const marginTop = 10;
             const borderWidth = parseFloat(getComputedStyle(starMapContainer).borderWidth) || 0; // Account for debug borders (5px)
             const bodyBorderWidth = parseFloat(getComputedStyle(body).borderWidth) || 0; // Account for body border (5px)
             const totalBorderHeight = borderWidth * 2; // Top and bottom borders of star-map-container
@@ -676,10 +676,27 @@ waitForDOM().then(() => {
             const maxHeight = Math.min(600, availableHeight); // Cap height
             starMapContainer.style.position = 'fixed';
             starMapContainer.style.top = `${topPosition}px`;
-            starMapContainer.style.bottom = `${bodyBorderWidth}px`;
+            starMapContainer.style.bottom = 'auto';
             starMapContainer.style.transform = 'none';
             starMapContainer.style.height = `${maxHeight}px`;
-            console.log('Star Map Height:', maxHeight, 'px', 'Viewport Height:', viewportHeight, 'px', 'Title Height:', titleHeight, 'px', 'Top Position:', topPosition, 'px', 'Body Border Width:', bodyBorderWidth, 'px');
+
+            // Detect if on iPhone/mobile (max-width: 767px, portrait)
+            const isMobile = window.matchMedia("(max-width: 767px) and (orientation: portrait)").matches;
+            const starMapSvg = starMapContainer.querySelector('object');
+            if (starMapSvg) {
+                if (isMobile) {
+                    // On iPhone/mobile, scale the SVG to fit the container
+                    starMapSvg.style.height = '100%';
+                    starMapSvg.style.width = 'auto'; // Maintain aspect ratio
+                    starMapSvg.style.objectFit = 'contain'; // Ensure the SVG scales proportionally
+                } else {
+                    // On larger devices, use the SVG's natural size
+                    starMapSvg.style.height = '600px';
+                    starMapSvg.style.width = '2800px';
+                }
+            }
+
+            console.log('Star Map Height:', maxHeight, 'px', 'Viewport Height:', viewportHeight, 'px', 'Title Height:', titleHeight, 'px', 'Top Position:', topPosition, 'px', 'Body Border Width:', bodyBorderWidth, 'px', 'Is Mobile:', isMobile);
         }
     };
 
