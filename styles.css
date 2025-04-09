@@ -1544,7 +1544,7 @@ body {
     position: fixed;
     top: 50%; /* Fallback for initial load */
     transform: translateY(-50%); /* Fallback for initial load */
-    margin-top: 10px; /* Reduced from 30px to 10px */
+    margin-top: 10px;
     overflow-x: auto;
     overflow-y: hidden;
     width: 100%;
@@ -1597,10 +1597,9 @@ body {
 
 @media (min-width: 768px) and (max-width: 1400px) and (orientation: landscape) {
     .star-map-container {
-        height: calc(100vh - 120px);
         top: 50%; /* Fallback */
         transform: translateY(-50%); /* Fallback */
-        margin-top: 10px; /* Reduced from 30px to 10px */
+        margin-top: 10px;
     }
 
     .parts {
@@ -1630,7 +1629,7 @@ body {
         max-height: 600px;
         top: 50%; /* Fallback */
         transform: translateY(-50%); /* Fallback */
-        margin-top: 10px; /* Reduced from 30px to 10px */
+        margin-top: 10px;
         overflow-y: hidden !important;
         width: 100%;
         border: 5px solid green; /* Debug border */
