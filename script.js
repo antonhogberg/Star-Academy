@@ -671,7 +671,7 @@ waitForDOM().then(() => {
                 window.initialTitleHeight = titleContainer.getBoundingClientRect().height;
             }
             const titleHeight = window.initialTitleHeight;
-            const marginTop = 10; // Reduced from 30px to 10px
+            const marginTop = 10;
             const borderWidth = parseFloat(getComputedStyle(starMapContainer).borderWidth) || 0; // Account for debug borders (5px)
             const bodyBorderWidth = parseFloat(getComputedStyle(body).borderWidth) || 0; // Account for body border (5px)
             const totalBorderHeight = borderWidth * 2; // Top and bottom borders of star-map-container
@@ -681,12 +681,45 @@ waitForDOM().then(() => {
             const topPosition = titleHeight + marginTop; // Distance from top of viewport
             const availableHeight = viewportHeight - topPosition - totalBorderHeight - totalBodyBorderHeight - 10; // Buffer for bottom edge
             const maxHeight = Math.min(600, availableHeight); // Cap height
+            // Detect if on iPhone/mobile (max-width: 767px, portrait)
+            const isMobile = window.matchMedia("(max-width: 767px) and (orientation: portrait)").matches;
+            // Center the green box with equal gaps on iPad
+            const isIPad = window.matchMedia("(min-width: 768px) and (max-width: 1400px) and (orientation: landscape)").matches;
+            if (isIPad) {
+                const gap = 20; // Desired gap above and below (15-20px)
+                const adjustedHeight = viewportHeight - totalBodyBorderHeight - (gap * 2); // Height with equal gaps
+                starMapContainer.style.height = `${adjustedHeight}px`;
+                starMapContainer.style.top = `${gap + bodyBorderWidth}px`;
+                starMapContainer.style.bottom = `${gap + bodyBorderWidth}px`;
+            } else if (isMobile) {
+                starMapContainer.style.height = `${maxHeight}px`;
+                starMapContainer.style.top = `${topPosition}px`;
+                starMapContainer.style.bottom = 'auto';
+            } else {
+                starMapContainer.style.height = `${maxHeight}px`;
+                starMapContainer.style.top = `${topPosition}px`;
+                starMapContainer.style.bottom = 'auto';
+            }
             starMapContainer.style.position = 'fixed';
-            starMapContainer.style.top = `${topPosition}px`;
-            starMapContainer.style.bottom = `${bodyBorderWidth}px`;
             starMapContainer.style.transform = 'none';
-            starMapContainer.style.height = `${maxHeight}px`;
-            console.log('Star Map Height:', maxHeight, 'px', 'Viewport Height:', viewportHeight, 'px', 'Title Height:', titleHeight, 'px', 'Top Position:', topPosition, 'px', 'Body Border Width:', bodyBorderWidth, 'px');
+
+            // Scale the SVG on iPhone/mobile
+            const starMapSvg = starMapContainer.querySelector('object');
+            if (starMapSvg) {
+                if (isMobile) {
+                    // On iPhone/mobile, scale the SVG to fit the container
+                    starMapSvg.style.height = '100%';
+                    starMapSvg.style.width = 'auto';
+                    starMapSvg.style.objectFit = 'contain';
+                } else {
+                    // On larger devices, use the SVG's natural size
+                    starMapSvg.style.height = '600px';
+                    starMapContainer.style.overflowX = 'auto';
+                    starMapSvg.style.width = '2800px';
+                }
+            }
+
+            console.log('Star Map Height:', starMapContainer.style.height, 'Viewport Height:', viewportHeight, 'px', 'Title Height:', titleHeight, 'px', 'Top Position:', topPosition, 'px', 'Body Border Width:', bodyBorderWidth, 'px', 'Is Mobile:', isMobile, 'Is iPad:', isIPad);
         }
     };
 
