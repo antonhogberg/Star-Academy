@@ -41,8 +41,9 @@ body {
     position: fixed;
     top: 0;
     left: 0;
-    z-index: 1000;
+    z-index: 1200; /* Increased from 1000 to 1200 to be above title-container (1100) */
     padding: 20px;
+    margin: 0;
 }
 
 .hamburger {
