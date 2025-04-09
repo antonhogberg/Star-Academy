@@ -687,9 +687,10 @@ waitForDOM().then(() => {
             const isIPad = window.matchMedia("(min-width: 768px) and (max-width: 1400px) and (orientation: landscape)").matches;
             if (isIPad) {
                 const gap = 20; // Desired gap above and below (15-20px)
-                const adjustedHeight = viewportHeight - totalBodyBorderHeight - (gap * 2); // Height with equal gaps
+                const adjustedTop = titleHeight + gap; // Start below the title-container
+                const adjustedHeight = viewportHeight - adjustedTop - gap - totalBodyBorderHeight; // Height with equal gaps
                 starMapContainer.style.height = `${adjustedHeight}px`;
-                starMapContainer.style.top = `${gap + bodyBorderWidth}px`;
+                starMapContainer.style.top = `${adjustedTop}px`;
                 starMapContainer.style.bottom = `${gap + bodyBorderWidth}px`;
             } else if (isMobile) {
                 starMapContainer.style.height = `${maxHeight}px`;
@@ -714,7 +715,6 @@ waitForDOM().then(() => {
                 } else {
                     // On larger devices, use the SVG's natural size
                     starMapSvg.style.height = '600px';
-                    starMapContainer.style.overflowX = 'auto';
                     starMapSvg.style.width = '2800px';
                 }
             }
