@@ -1552,14 +1552,21 @@ body {
     flex-shrink: 0;
     margin-bottom: 0;
     border: 5px solid green; /* Debug border */
-    display: flex; /* Add flexbox to center SVG */
-    align-items: center; /* Center SVG vertically */
+    position: relative; /* Add relative positioning for absolute child */
 }
 
 .star-map-container object {
     width: 2800px;
     height: 600px;
     display: block;
+}
+
+.star-map-container object#starMap {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 0;
+    /* Width and height will be set by JavaScript */
 }
 
 .congratulations-overlay {
