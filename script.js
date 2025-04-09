@@ -463,6 +463,13 @@ function switchLanguage(lang) {
         const key = answer.getAttribute('data-translate');
         if (translations[lang][key]) answer.textContent = translations[lang][key];
     });
+    
+    // Add translation for title-container h1
+    const titleContainerH1 = document.querySelector('.title-container h1[data-translate]');
+    if (titleContainerH1) {
+        const key = titleContainerH1.getAttribute('data-translate');
+        if (translations[lang][key]) titleContainerH1.textContent = translations[lang][key];
+    }
 }
 
 function setInitialLanguage() {
