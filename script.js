@@ -713,9 +713,10 @@ waitForDOM().then(() => {
                     starMapSvg.style.width = 'auto';
                     starMapSvg.style.objectFit = 'contain';
                 } else {
-                    // On larger devices, use the SVG's natural size
-                    starMapSvg.style.height = '600px';
-                    starMapSvg.style.width = '2800px';
+                    // On larger devices, set the SVG's height to match the container's height
+                    starMapSvg.style.height = `${starMapContainer.clientHeight - totalBorderHeight}px`; // Subtract borders
+                    starMapSvg.style.width = '2800px'; // Full width, allowing horizontal scrolling
+                    starMapSvg.style.objectFit = 'none'; // Prevent scaling to fit viewport width
                 }
             }
 
