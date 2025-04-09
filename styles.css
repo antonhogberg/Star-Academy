@@ -272,8 +272,7 @@ body {
 /* Adjust chapter-title margin */
 .chapter-title {
     text-align: center;
-    margin: 10px 0 10px 0; /* Reduced to 10px */
-    margin-top: -20px; /* Pull the title closer to the header */
+    margin: 10px 0 10px 0; /* Remove negative margin */
     font-family: Cochin, Georgia, Arial, sans-serif;
     color: #ffffff !important;
     font-size: 24px;
@@ -778,7 +777,7 @@ body {
 
 /* Adjust student-manager padding */
 .student-manager {
-    padding: 10px 10px 20px 10px; /* Reduced to 10px */
+    padding: 20px 10px 20px 10px; /* Adjusted to 20px for consistent spacing */
     text-align: center;
     width: 100%;
     height: auto;
@@ -1445,13 +1444,13 @@ body {
         object-fit: contain;
     }
     .student-manager {
-        padding: 10px 10px 20px 10px; /* Reduced to 10px */
+        padding: 20px 10px 20px 10px; /* Consistent on iPhone */
         overflow-y: visible;
         height: auto;
     }
+
     .chapter-title {
-        display: block;
-        margin: 5px 0;
+        margin-top: 0; /* Ensure no negative margin on iPhone */
     }
     .input-button-container {
         display: inline-flex;
@@ -1623,7 +1622,7 @@ body {
     }
 
     .student-manager {
-        padding: 10px 10px 10px 10px; /* Reduced to 10px */
+        padding: 20px 10px 10px 10px; /* Consistent on iPad */
         overflow-y: visible;
         height: auto;
         display: flex;
