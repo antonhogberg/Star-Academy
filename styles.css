@@ -272,7 +272,19 @@ body {
 /* Adjust chapter-title margin */
 .chapter-title {
     text-align: center;
-    margin: 10px 0 10px 0; /* Remove negative margin */
+    margin: 10px 0;
+    font-family: Cochin, Georgia, Arial, sans-serif;
+    color: #ffffff !important;
+    font-size: 24px;
+    display: block;
+    position: relative;
+    width: 100%;
+}
+
+/* Styles for students-title */
+.students-title {
+    text-align: center;
+    margin: 10px 0; /* Consistent margin, no negative values */
     font-family: Cochin, Georgia, Arial, sans-serif;
     color: #ffffff !important;
     font-size: 24px;
@@ -777,7 +789,7 @@ body {
 
 /* Adjust student-manager padding */
 .student-manager {
-    padding: 20px 10px 20px 10px; /* Adjusted to 20px for consistent spacing */
+    padding: 20px 10px 20px 10px; /* Top padding sets the initial gap */
     text-align: center;
     width: 100%;
     height: auto;
@@ -1444,9 +1456,13 @@ body {
         object-fit: contain;
     }
     .student-manager {
-        padding: 20px 10px 20px 10px; /* Consistent on iPhone */
+        padding: 20px 10px 20px 10px;
         overflow-y: visible;
         height: auto;
+    }
+
+    .students-title {
+        margin-top: 0; /* Prevent any extra space above the title */
     }
 
     .chapter-title {
