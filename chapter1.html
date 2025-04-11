@@ -94,9 +94,15 @@
     
                 // Reset scroll position to top after popup closes
                 setTimeout(() => {
-                    window.scrollTo(0, 0);
-                    setViewportHeight(); // <-- Lägg till detta!
-                }, 0);
+                window.scrollTo(0, 0);
+                setViewportHeight();
+
+                // Tvinga omritning
+                document.body.style.transform = 'scale(1.001)';
+                setTimeout(() => {
+                    document.body.style.transform = '';
+                }, 50);
+            }, 0);
                 
             } else {
                 showStudentPopup(translations[lang].addStudentNoName, 3000);
