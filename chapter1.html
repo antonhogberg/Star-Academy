@@ -95,7 +95,9 @@
                 // Reset scroll position to top after popup closes
                 setTimeout(() => {
                     window.scrollTo(0, 0);
+                    setViewportHeight(); // <-- Lägg till detta!
                 }, 0);
+                
             } else {
                 showStudentPopup(translations[lang].addStudentNoName, 3000);
             }
