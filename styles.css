@@ -1829,8 +1829,8 @@ body.chapters {
     }
 
     .star-map-container {
-        top: 50%; /* Fallback */
-        transform: translateY(-50%); /* Fallback */
+        top: 40%; /* Fallback */
+        transform: translateY(-40%); /* Fallback */
         margin-top: 10px;
     }
 
