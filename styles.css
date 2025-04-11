@@ -1732,7 +1732,6 @@ body {
         overflow-y: hidden !important; /* Reinforced */
         padding: 10px 0;
         justify-content: center;
-        margin-top: 80px; /* Add space below the fixed chapter-title */
     }
 
     .exercises {
