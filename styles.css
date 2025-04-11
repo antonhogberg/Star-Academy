@@ -24,8 +24,6 @@ body {
     font-family: Arial, sans-serif;
     padding: 0;
     margin: 0;
-    overflow: hidden; /* Prevent scrolling */
-    height: calc(var(--vh, 1vh) * 100); /* Fit viewport */
     width: 100vw;
     background-color: #000000;
     background-image: url('background.jpg');
@@ -36,7 +34,6 @@ body {
     border: 5px solid red; /* Debug border */
     display: flex;
     flex-direction: column;
-    justify-content: space-between; /* Distribute space */
 }
 
 /* Menu Styles */
@@ -360,8 +357,7 @@ body {
     position: relative;
     height: auto;
     overflow-y: visible;
-    justify-content: center; /* Center vertically */
-    flex-grow: 1; /* Take available space */
+    justify-content: flex-start; /* Default for mobile */
 }
 
 /* Ensure rank-badge stays below popup */
@@ -1230,13 +1226,14 @@ body {
 }
 
 /* Responsive Adjustments */
+
+/* iPhone (portrait screens, target phones only) */
 @media (max-width: 767px) and (orientation: portrait) {
     body {
-        height: calc(var(--vh, 1vh) * 100);
-        overflow: hidden;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
+        height: auto; /* Allow natural height for scrolling */
+        min-height: 100vh;
+        overflow-y: auto; /* Allow scrolling */
+        display: block; /* Normal flow for scrolling */
     }
 
     body.no-scroll {
@@ -1317,15 +1314,14 @@ body {
         min-width: 0;
         margin: 0 auto;
         padding-top: 10px;
-        padding-bottom: 10px;
+        padding-bottom: 20px;
         height: auto;
         overflow-y: visible;
         box-sizing: border-box;
         display: flex;
         flex-direction: column;
         align-items: center;
-        justify-content: center;
-        flex-grow: 1;
+        justify-content: flex-start; /* Normal flow for scrolling */
     }
 
     .exercises {
@@ -1800,6 +1796,14 @@ body {
 
 /* Desktop (min-width: 1401px to exclude iPads, with hover and aspect ratio for better desktop targeting) */
 @media (min-width: 1401px) and (orientation: landscape) and (hover: hover) and (min-aspect-ratio: 16/10) {
+    body {
+        overflow: hidden !important;
+        height: calc(var(--vh, 1vh) * 100);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
     .popup {
         max-width: 40%;
     }
