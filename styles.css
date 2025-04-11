@@ -1030,11 +1030,9 @@ body.chapters {
     stroke-width: 1;
 }
 
-/* Star Map Styles */
+/* Star Map Styles - default for desktop */
 .star-map-container {
-    position: fixed;
-    top: 50%; /* Fallback for initial load */
-    transform: translateY(-50%); /* Fallback for initial load */
+    position: relative;
     margin-top: 10px;
     overflow-x: auto;
     overflow-y: hidden;
@@ -1042,7 +1040,6 @@ body.chapters {
     height: 600px;
     flex-shrink: 0;
     margin-bottom: 0;
-    position: relative; /* Add relative positioning for absolute child */
 }
 
 .star-map-container object {
@@ -1056,8 +1053,8 @@ body.chapters {
     top: 50%;
     transform: translateY(-50%);
     left: 0;
-    /* Width and height will be set by JavaScript */
 }
+
 
 .congratulations-overlay {
     position: fixed;
@@ -1829,9 +1826,22 @@ body.chapters {
     }
 
     .star-map-container {
-        top: 50%; /* Fallback */
-        transform: translateY(-50%); /* Fallback */
-        margin-top: 10px;
+        position: relative;
+        margin-top: 20px; /* mindre mellanrum från header */
+        height: auto; /* låt SVG höjdanpassa */
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+    }
+
+    .star-map-container object#starMap {
+        position: relative;
+        top: auto;
+        left: auto;
+        transform: none;
+        max-width: 100%;
+        height: auto;
     }
 
     .popup {
