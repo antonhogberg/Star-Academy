@@ -790,7 +790,7 @@ body {
 
 /* Adjust student-manager padding */
 .student-manager {
-    padding: 0px 10px 20px 10px; /* Top padding sets the initial gap */
+    padding: 0px 10px 20px 10px; 
     text-align: center;
     width: 100%;
     height: auto;
@@ -1308,7 +1308,7 @@ body {
         padding-top: 10px; /* Reduced padding */
         padding-bottom: 20px;
         height: auto;
-        top: 0;
+        top: 10px;
         overflow-y: visible;
         box-sizing: border-box;
         display: flex;
@@ -1548,7 +1548,7 @@ body {
         margin: 0 auto;
         justify-content: center;
         height: calc(var(--vh, 1vh) * 100 - 50px);
-        top: 50px;
+        top: 10px;
         overflow-y: hidden;
         padding-bottom: 30px;
     }
@@ -1577,7 +1577,7 @@ body {
         margin: 0 auto;
         justify-content: center;
         height: calc(var(--vh, 1vh) * 100 - 50px);
-        top: 50px;
+        top: 10px;
         overflow-y: hidden;
     }
 
@@ -1605,7 +1605,7 @@ body {
         margin: 0 auto;
         justify-content: center;
         height: calc(var(--vh, 1vh) * 100 - 50px);
-        top: 50px;
+        top: 10px;
         overflow-y: hidden;
         padding: 10px 0;
     }
@@ -1844,7 +1844,7 @@ body {
         margin: 0 auto;
         justify-content: flex-start; /* Align stars at the top */
         height: calc(var(--vh, 1vh) * 100 - 100px); /* Adjusted for larger title and extra 20px gap */
-        top: 100px; /* Increased from 80px to bring stars down by 20px */
+        top: 10px; /* Increased from 80px to bring stars down by 20px */
         overflow-y: auto; /* Allow scrolling if stars overflow */
         padding: 10px 0;
     }
