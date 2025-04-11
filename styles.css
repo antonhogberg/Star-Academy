@@ -43,6 +43,18 @@ body.chapters {
     height: 100vh;
 }
 
+.chapter-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    height: 100vh;
+    overflow: hidden;
+    width: 100%;
+    box-sizing: border-box;
+    padding-top: 20px; /* Om du vill ha lite space ovanför rubriken */
+}
+
 .hamburger-nav {
     position: fixed;
     top: 0;
@@ -1653,7 +1665,7 @@ body.chapters {
         overflow: hidden !important;
         height: 100vh;
     }
-    
+
     .layout-container {
         overflow-y: auto !important; /* Allow scrolling */
         height: auto; /* Allow natural height */
