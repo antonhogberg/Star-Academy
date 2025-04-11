@@ -1829,9 +1829,21 @@ body.chapters {
     }
 
     .star-map-container {
-        top: 50%; /* Fallback */
-        transform: translateY(-50%); /* Fallback */
-        margin-top: 10px;
+        position: relative;
+        margin-top: 20px; /* flyttar SVG närmare headern */
+        height: 600px; /* Behåll 600px höjd */
+        overflow-x: auto;
+        overflow-y: hidden;
+        display: block; /* återgå till normal block-layout */
+    }
+
+    .star-map-container object#starMap {
+        position: absolute;
+        top: 20px; /* Flytta SVG lite nedanför toppen */
+        left: 0;
+        transform: none; /* INGEN centrerande på iPad */
+        width: 2800px; /* Behåll bred SVG */
+        height: 600px; /* Behåll höjd */
     }
 
     .popup {
