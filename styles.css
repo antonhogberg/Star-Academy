@@ -1649,6 +1649,11 @@ body.chapters {
         overflow-y: auto !important; /* Allow scrolling */
     }
 
+    body.chapters {
+        overflow: hidden !important;
+        height: 100vh;
+    }
+    
     .layout-container {
         overflow-y: auto !important; /* Allow scrolling */
         height: auto; /* Allow natural height */
