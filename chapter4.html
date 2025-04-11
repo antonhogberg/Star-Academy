@@ -3,7 +3,7 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta charset="UTF-8">
-    <title>Kapitel 4 / Chapter 4</title>
+    <title>Kapitel 4</title>
     <link rel="stylesheet" href="styles.css">
     <script>
         function setViewportHeight() {
@@ -25,7 +25,7 @@
         detectMobile();
     </script>
 </head>
-<body>
+<body class="chapters">
     <div class="piano-menu" id="menuButton" aria-expanded="false" aria-controls="main-menu">
         <div class="white-key"></div>
         <div class="white-key"></div>
@@ -34,10 +34,13 @@
         <div class="black-key bottom"></div>
     </div>
     <nav id="menu-placeholder"></nav>
-    <h1 class="chapter-title">
-        <span class="chapter-number"></span>
-        <span class="chapter-name"></span>
-    </h1>
+    <div class="chapter-container" id="chapterContainer">
+            <h1 class="chapter-title">
+            <span class="chapter-number"></span>
+            <span class="chapter-name"></span>
+        </h1>
+        <div class="parts"></div>
+    </div>
     <div id="namePopup" class="popup">
         <div class="popup-content">
             <h2 id="popupWelcome"></h2>
@@ -55,13 +58,13 @@
             <p id="studentPopupMessage"></p>
         </div>
     </div>
-    <div class="parts"></div>
     <script src="chapter.js"></script>
     <script src="script.js"></script>
     <script>
         function saveName() {
             const nameInput = document.getElementById('nameInput');
             const namePopup = document.getElementById('namePopup');
+            const chapterContainer = document.getElementById('chapterContainer');
             let studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
             const name = nameInput?.value.trim();
             const lang = localStorage.getItem('language') || 'sv';
@@ -91,27 +94,39 @@
 
                 const starSVG = '<svg class="popup-star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>';
                 showStudentPopup(`${starSVG} ${translations[lang].addStudentSuccess} ${starSVG}`, 3000);
+
+                // Reset scroll position and adjust container height
+                setTimeout(() => {
+                    window.scrollTo(0, 0);
+                    setViewportHeight();
+
+                    // Om vi är på mobil (<768px), sätt container till auto
+                    if (window.innerWidth < 768 && chapterContainer) {
+                        chapterContainer.style.height = 'auto';
+                    }
+                }, 0);
             } else {
                 showStudentPopup(translations[lang].addStudentNoName, 3000);
             }
         }
 
+    
         function showStudentPopup(message, duration) {
             const popup = document.getElementById('studentPopup');
             const popupMessage = document.getElementById('studentPopupMessage');
             const nameInput = document.getElementById('nameInput');
-
+    
             if (!popup || !popupMessage) {
                 console.error('Student popup elements not found in DOM');
                 alert(message);
                 return;
             }
-
+    
             if (nameInput) nameInput.blur();
             popupMessage.innerHTML = message;
             popup.style.display = 'flex';
             popup.style.opacity = '1';
-
+    
             setTimeout(() => {
                 popup.style.transition = 'opacity 1s ease';
                 popup.style.opacity = '0';
@@ -119,19 +134,21 @@
                     popup.style.display = 'none';
                     popup.style.opacity = '1';
                     popup.style.transition = '';
+                    // Ensure scroll position is at the top after success popup closes
+                    window.scrollTo(0, 0);
                 }, 1000);
             }, duration - 1000);
         }
-
+    
         document.addEventListener('DOMContentLoaded', () => {
             document.body.style.touchAction = 'manipulation';
             let studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
             const namePopup = document.getElementById('namePopup');
-
+    
             if (!studentsData.currentStudent) {
                 namePopup.style.display = 'flex';
             }
-
+    
             const initialLang = localStorage.getItem('language') || 'sv';
             switchLanguage(initialLang);
         });
