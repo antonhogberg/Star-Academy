@@ -1677,12 +1677,6 @@ body {
         align-items: center;
         flex-grow: 1;
     }
-
-    .student-manager {
-        padding: 70px 10px 20px 10px;
-        overflow-y: visible;
-        height: auto;
-    }
 }
 
 .faq-container {
