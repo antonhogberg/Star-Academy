@@ -1573,7 +1573,7 @@ body.chapters {
         min-width: 550px;
         margin: 0 auto;
         justify-content: center;
-        height: calc(var(--vh, 1vh) * 100 - 50px);
+        height: calc(var(--vh, 1vh) * 80); /* Adjusted for larger title and extra 20px gap */
         top: 10px;
         overflow-y: hidden;
         padding-bottom: 30px;
@@ -1602,7 +1602,7 @@ body.chapters {
         min-width: 580px;
         margin: 0 auto;
         justify-content: center;
-        height: calc(var(--vh, 1vh) * 100 - 50px);
+        height: calc(var(--vh, 1vh) * 80); /* Adjusted for larger title and extra 20px gap */
         top: 10px;
         overflow-y: hidden;
     }
@@ -1630,7 +1630,7 @@ body.chapters {
         min-width: 580px;
         margin: 0 auto;
         justify-content: center;
-        height: calc(var(--vh, 1vh) * 100 - 50px);
+        height: calc(var(--vh, 1vh) * 80); /* Adjusted for larger title and extra 20px gap */
         top: 10px;
         overflow-y: hidden;
         padding: 10px 0;
@@ -1758,7 +1758,7 @@ body.chapters {
         min-width: 580px;
         margin: 0 auto;
         justify-content: flex-start;
-        height: calc(var(--vh, 1vh) * 100 - 50px); /* Reduced from 70px */
+        height: calc(var(--vh, 1vh) * 80); /* Adjusted for larger title and extra 20px gap */
         top: 10px;
         overflow-y: hidden !important; /* Reinforced */
         padding: 10px 0;
@@ -1879,7 +1879,7 @@ body.chapters {
         min-width: 580px;
         margin: 0 auto;
         justify-content: flex-start; /* Align stars at the top */
-        height: calc(var(--vh, 1vh) * 100 - 100px); /* Adjusted for larger title and extra 20px gap */
+        height: calc(var(--vh, 1vh) * 80); /* Adjusted for larger title and extra 20px gap */
         top: 10px; /* Increased from 80px to bring stars down by 20px */
         overflow-y: auto; /* Allow scrolling if stars overflow */
         padding: 10px 0;
