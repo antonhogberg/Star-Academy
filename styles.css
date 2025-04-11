@@ -38,6 +38,11 @@ body {
     display: block; /* Default to block, not flex */
 }
 
+body.chapters {
+    overflow: hidden;
+    height: 100vh;
+}
+
 .hamburger-nav {
     position: fixed;
     top: 0;
@@ -1243,6 +1248,11 @@ body {
         flex-direction: column;
         justify-content: center;
         align-items: center;
+    }
+
+    body.chapters {
+        overflow: auto;
+        height: auto;
     }
 
     .layout-container {
