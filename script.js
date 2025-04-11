@@ -432,7 +432,8 @@ function switchLanguage(lang) {
     const rankDescription = document.getElementById('rankDescription');
     if (rankName && rankTitle && rankDescription) updateStarStates();
 
-    const chapterTitle = document.getElementById('chapterTitle');
+    // Update the title for students.html with the new ID
+    const studentsPageTitle = document.getElementById('studentsPageTitle');
     const studentsLabel = document.getElementById('studentsLabel');
     const newStudentInput = document.getElementById('newStudentName');
     const addButton = document.getElementById('addStudentButton');
@@ -440,8 +441,8 @@ function switchLanguage(lang) {
     const notesLabel = document.getElementById('notesLabel');
     const studentNotes = document.getElementById('studentNotes');
     const saveNotesButton = document.getElementById('saveNotesButton');
-    if (chapterTitle && studentsLabel) {
-        chapterTitle.textContent = translations[lang].menuStudents;
+    if (studentsPageTitle && studentsLabel) {
+        studentsPageTitle.textContent = translations[lang].menuStudents;
         studentsLabel.textContent = translations[lang].studentsLabel;
         newStudentInput.placeholder = translations[lang].studentNamePlaceholder;
         addButton.textContent = translations[lang].addButton;
