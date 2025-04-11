@@ -1655,19 +1655,15 @@ body.chapters {
 /* iPad (landscape screens ≥ 768px and ≤ 1400px) */
 @media (min-width: 768px) and (max-width: 1400px) and (orientation: landscape) {
     body {
-        overflow: auto !important; /* Allow scrolling */
-        width: 100%;
-        height: calc(var(--vh, 1vh) * 100);
-        -webkit-overflow-scrolling: touch; /* Enable smooth scrolling */
-    }
-
-    body:not(.is-mobile) {
-        overflow-y: auto !important; /* Allow scrolling */
+        overflow: hidden !important;
+        height: 100vh;
+        overscroll-behavior: none;
     }
 
     body.chapters {
         overflow: hidden !important;
         height: 100vh;
+        overscroll-behavior: none; /* <- extra tydlighet */
     }
 
     .layout-container {
