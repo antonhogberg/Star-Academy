@@ -163,7 +163,7 @@ body.chapters {
     align-items: center;
     padding: 10px 0;
     margin-top: 10px;
-    justify-content: center; /* <-- ändrat från flex-start till center */
+    justify-content: flex-start;
 }
 
 .language-switcher .flag {
