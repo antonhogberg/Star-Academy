@@ -203,8 +203,9 @@ function checkCompletion(studentsData) {
 // Expose initializeStarMap globally
 window.initializeStarMap = initializeStarMap;
 
-// --- TILLÄGG: Återställ StarMap-position efter tangentbord stängs ---
-function resetStarMapPositionAfterKeyboard() {
+// --- Fix för layout efter tangentbord och popup --- 
+
+function fixStarMapLayout() {
     const container = document.querySelector('.star-map-container');
     const starMap = document.getElementById('starMap');
     if (container && starMap) {
@@ -222,15 +223,36 @@ function resetStarMapPositionAfterKeyboard() {
     }
 }
 
-let lastWindowHeight = window.innerHeight;
+// När användaren lämnar popup → scrolla till toppen och fixa layout
+function saveName() {
+    const nameInput = document.getElementById('nameInput');
+    const name = nameInput.value.trim();
+    if (!name) return;
 
+    if (!studentsData.students[name]) {
+        studentsData.students[name] = { name: name, progress: {}, rank: "Explorer" };
+    }
+    studentsData.currentStudent = name;
+    localStorage.setItem('starAcademyStudents', JSON.stringify(studentsData));
+
+    namePopup.style.display = 'none';
+
+    window.scrollTo(0, 0);
+    setTimeout(() => {
+        fixStarMapLayout();
+    }, 50);
+
+    updateUserNameDisplay();
+}
+
+// Återställ också layout när skärmstorlek förändras mycket (keyboard stänger)
+let lastWindowHeight = window.innerHeight;
 window.addEventListener('resize', () => {
     const currentHeight = window.innerHeight;
     if (Math.abs(currentHeight - lastWindowHeight) > 100) {
         setTimeout(() => {
-            resetStarMapPositionAfterKeyboard();
+            fixStarMapLayout();
         }, 200);
     }
     lastWindowHeight = currentHeight;
 });
-
