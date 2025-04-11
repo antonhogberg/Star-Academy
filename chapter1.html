@@ -100,9 +100,9 @@
                     window.scrollTo(0, 0);
                     setViewportHeight();
 
-                    // Om vi är på mobil (<768px), sätt container till auto
                     if (window.innerWidth < 768 && chapterContainer) {
                         chapterContainer.style.height = 'auto';
+                        chapterContainer.style.overflow = 'visible'; // <-- Viktigt!
                     }
                 }, 0);
             } else {
