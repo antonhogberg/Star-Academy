@@ -173,6 +173,10 @@ body.chapters {
     margin-right: 25px;
 }
 
+.language-switcher .flag:last-child {
+    margin-right: 0;
+}
+
 .flag {
     cursor: pointer;
     font-size: 24px;
