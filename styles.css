@@ -1267,6 +1267,11 @@ body.chapters {
         height: auto;
     }
 
+    .chapter-container {
+        height: auto;
+        overflow: visible;
+    }
+
     .layout-container {
         height: auto;
         overflow-y: visible;
