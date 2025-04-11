@@ -1723,7 +1723,7 @@ body {
 
     .parts {
         height: calc(var(--vh, 1vh) * 100 - 50px); /* Reduced from 70px */
-        top: 50px; /* Reduced from 70px */
+        top: 10px;
         overflow-y: hidden !important; /* Reinforced */
         padding: 10px 0;
         justify-content: center;
