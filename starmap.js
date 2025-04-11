@@ -1,4 +1,4 @@
-// --- StarMap.js komplett med layoutfix och full funktionalitet ---
+// --- StarMap.js komplett med riktig visualViewport-fix ---
 
 const starImages = [
     'white-star.png',
@@ -184,10 +184,29 @@ function fixStarMapLayout() {
     }
 }
 
-// Expose globally
 window.initializeStarMap = initializeStarMap;
 
-// NYTT: vid load tvinga viewport aktivering på iOS
+// --- NY FÖRBÄTTRAD VISUAL VIEWPORT FIX ---
+
+if (window.visualViewport) {
+    visualViewport.addEventListener('resize', fixAfterKeyboard);
+    visualViewport.addEventListener('scroll', fixAfterKeyboard);
+}
+
+function fixAfterKeyboard() {
+    const container = document.querySelector('.star-map-container');
+    if (container) {
+        if (window.innerHeight === visualViewport.height) {
+            container.style.position = 'relative';
+            container.style.top = '0';
+            container.style.marginTop = '100px';
+        } else {
+            container.style.position = 'fixed';
+        }
+    }
+}
+
+// --- Dessutom tvinga aktivering av scroll på DOMContentLoaded ---
 
 document.addEventListener('DOMContentLoaded', function() {
     const namePopup = document.getElementById('namePopup');
