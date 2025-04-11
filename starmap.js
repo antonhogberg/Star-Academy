@@ -1,5 +1,3 @@
-// --- StarMap.js komplett med riktig visualViewport-fix ---
-
 const starImages = [
     'white-star.png',
     'one-star.png',
@@ -43,40 +41,70 @@ const progressionPath = [
     { star: '2:1:4', nextStar: null, lines: [] }
 ];
 
-let studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
-
 function initializeStarMap() {
+    console.log('initializeStarMap called');
     const objectElement = document.getElementById('starMap');
-    if (!objectElement) return;
+    if (!objectElement) {
+        console.error('Star Map object element not found');
+        return;
+    }
 
     let svgDoc = null;
+    let loadAttempts = 0;
+    const maxAttempts = 50; // 5 seconds (50 * 100ms)
+
     const checkSvgDoc = setInterval(() => {
+        loadAttempts++;
         svgDoc = objectElement.contentDocument;
+
         if (svgDoc) {
             clearInterval(checkSvgDoc);
             initializeSvg(svgDoc);
+        } else if (loadAttempts >= maxAttempts) {
+            clearInterval(checkSvgDoc);
+            console.error('Failed to load SVG contentDocument after 5 seconds');
+        } else {
+            console.log(`Attempt ${loadAttempts}: SVG contentDocument not yet available`);
         }
     }, 100);
 
+    // Fallback: Try to initialize after window load event
     window.addEventListener('load', () => {
         if (!svgDoc) {
             svgDoc = objectElement.contentDocument;
-            if (svgDoc) initializeSvg(svgDoc);
+            if (svgDoc) {
+                clearInterval(checkSvgDoc);
+                initializeSvg(svgDoc);
+            } else {
+                console.error('SVG contentDocument still not available after window load');
+            }
         }
     });
 }
 
 function initializeSvg(svgDoc) {
-    if (!studentsData.currentStudent) return;
+    console.log('initializeSvg called');
+    const studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
+    if (!studentsData.currentStudent) {
+        console.warn('No current student set; star map initialization aborted');
+        return;
+    }
 
     const styleElement = svgDoc.createElementNS('http://www.w3.org/2000/svg', 'style');
-    styleElement.textContent = `image { pointer-events: all; transition: opacity 0.3s ease-in-out; } path { transition: stroke 0.3s ease-in-out !important; }`;
+    styleElement.textContent = `
+        image { pointer-events: all; transition: opacity 0.3s ease-in-out; }
+        path { transition: stroke 0.3s ease-in-out !important; }
+    `;
     svgDoc.querySelector('svg').appendChild(styleElement);
 
     progressionPath.forEach(({ star, lines }) => {
         const starElement = svgDoc.getElementById(`star-${star.replace(/:/g, '-')}`);
         const lineElements = lines.map(line => svgDoc.getElementById(line)).filter(line => line);
-        if (!starElement) return;
+
+        if (!starElement) {
+            console.error(`Star-${star} not found in SVG`);
+            return;
+        }
 
         const progress = studentsData.students[studentsData.currentStudent]?.progress || {};
         const exerciseKey = `exercise${star}`;
@@ -88,12 +116,17 @@ function initializeSvg(svgDoc) {
             const newStyle = currentStyle.replace(/stroke\s*:\s*[^;]+;?/, '').trim();
             lineElement.setAttribute('style', newStyle);
             lineElement.style.stroke = level === 6 ? '#FFD700' : '#FFFFFF';
-            if (level === 6) lineElement.setAttribute('filter', 'url(#golden-glow)');
-            else lineElement.removeAttribute('filter');
+            if (level === 6) {
+                lineElement.setAttribute('filter', 'url(#golden-glow)');
+            } else {
+                lineElement.removeAttribute('filter');
+            }
         });
 
         starElement.style.cursor = 'pointer';
         starElement.addEventListener('click', () => {
+            console.log(`Star ${star} clicked`);
+            const studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
             const progress = studentsData.students[studentsData.currentStudent]?.progress || {};
             let level = progress[exerciseKey] ? parseInt(progress[exerciseKey]) : 0;
             level = (level + 1) % 7;
@@ -119,6 +152,34 @@ function initializeSvg(svgDoc) {
 
             checkCompletion(studentsData);
         });
+
+        window.addEventListener('storage', (event) => {
+            if (event.key === 'starAcademyStudents') {
+                const updatedStudentsData = JSON.parse(event.newValue) || { students: {}, currentStudent: '' };
+                const updatedProgress = updatedStudentsData.students[updatedStudentsData.currentStudent]?.progress || {};
+                const updatedLevel = updatedProgress[exerciseKey] ? parseInt(updatedProgress[exerciseKey]) : 0;
+                if (updatedLevel !== level) {
+                    level = updatedLevel;
+                    starElement.style.opacity = '0';
+                    setTimeout(() => {
+                        starElement.setAttributeNS('http://www.w3.org/1999/xlink', 'href', starImages[level]);
+                        starElement.style.opacity = '1';
+                    }, 300);
+
+                    lineElements.forEach(lineElement => {
+                        if (level === 6) {
+                            lineElement.setAttribute('filter', 'url(#golden-glow)');
+                            lineElement.style.stroke = '#FFD700';
+                        } else {
+                            lineElement.removeAttribute('filter');
+                            lineElement.style.stroke = '#FFFFFF';
+                        }
+                    });
+
+                    checkCompletion(updatedStudentsData);
+                }
+            }
+        });
     });
 
     checkCompletion(studentsData);
@@ -139,79 +200,5 @@ function checkCompletion(studentsData) {
     }
 }
 
-function updateUserNameDisplay() {
-    const display = document.getElementById('userNameDisplay');
-    if (studentsData.currentStudent && display) {
-        display.textContent = studentsData.currentStudent;
-    }
-}
-
-function saveName() {
-    const nameInput = document.getElementById('nameInput');
-    const name = nameInput.value.trim();
-    if (!name) return;
-
-    if (!studentsData.students[name]) {
-        studentsData.students[name] = { name: name, progress: {}, rank: "Explorer" };
-    }
-    studentsData.currentStudent = name;
-    localStorage.setItem('starAcademyStudents', JSON.stringify(studentsData));
-
-    const namePopup = document.getElementById('namePopup');
-    namePopup.style.display = 'none';
-
-    window.scrollTo(0, 0);
-    setTimeout(() => fixStarMapLayout(), 50);
-
-    updateUserNameDisplay();
-}
-
-function fixStarMapLayout() {
-    const container = document.querySelector('.star-map-container');
-    const starMap = document.getElementById('starMap');
-    if (container && starMap) {
-        container.style.top = 'auto';
-        container.style.marginTop = '100px';
-        container.style.height = '600px';
-        container.style.position = 'relative';
-        container.style.transform = 'none';
-
-        starMap.style.top = '50px';
-        starMap.style.left = '0';
-        starMap.style.width = '2800px';
-        starMap.style.height = '600px';
-        starMap.style.transform = 'none';
-    }
-}
-
+// Expose initializeStarMap globally
 window.initializeStarMap = initializeStarMap;
-
-// --- NY FÖRBÄTTRAD VISUAL VIEWPORT FIX ---
-
-if (window.visualViewport) {
-    visualViewport.addEventListener('resize', fixAfterKeyboard);
-    visualViewport.addEventListener('scroll', fixAfterKeyboard);
-}
-
-function fixAfterKeyboard() {
-    const container = document.querySelector('.star-map-container');
-    if (container) {
-        if (window.innerHeight === visualViewport.height) {
-            container.style.position = 'relative';
-            container.style.top = '0';
-            container.style.marginTop = '100px';
-        } else {
-            container.style.position = 'fixed';
-        }
-    }
-}
-
-// --- Dessutom tvinga aktivering av scroll på DOMContentLoaded ---
-
-document.addEventListener('DOMContentLoaded', function() {
-    const namePopup = document.getElementById('namePopup');
-    if (namePopup && getComputedStyle(namePopup).display === 'block') {
-        window.scrollTo(0, 1);
-        setTimeout(() => window.scrollTo(0, 0), 10);
-    }
-});
