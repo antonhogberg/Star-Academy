@@ -161,9 +161,10 @@ body.chapters {
 .language-switcher {
     display: flex;
     align-items: center;
+    justify-content: center;
+    width: 100%; /* <-- Lägg till denna! */
     padding: 10px 0;
     margin-top: 10px;
-    justify-content: flex-start;
 }
 
 .language-switcher .flag {
