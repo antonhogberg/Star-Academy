@@ -222,6 +222,15 @@ function resetStarMapPositionAfterKeyboard() {
     }
 }
 
-window.addEventListener('focusout', () => {
-    setTimeout(resetStarMapPositionAfterKeyboard, 100);
+let lastWindowHeight = window.innerHeight;
+
+window.addEventListener('resize', () => {
+    const currentHeight = window.innerHeight;
+    if (Math.abs(currentHeight - lastWindowHeight) > 100) {
+        setTimeout(() => {
+            resetStarMapPositionAfterKeyboard();
+        }, 200);
+    }
+    lastWindowHeight = currentHeight;
 });
+
