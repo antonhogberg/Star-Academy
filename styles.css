@@ -34,7 +34,6 @@ body {
     background-position: center top;
     position: relative;
     min-height: 100vh;
-    border: 5px solid red; /* Debug border */
     display: block; /* Default to block, not flex */
 }
 
@@ -1038,7 +1037,6 @@ body.chapters {
     height: 600px;
     flex-shrink: 0;
     margin-bottom: 0;
-    border: 5px solid green; /* Debug border */
     position: relative; /* Add relative positioning for absolute child */
 }
 
@@ -1149,7 +1147,6 @@ body.chapters {
     z-index: 1100;
     visibility: visible !important; /* Force visibility */
     will-change: transform; /* Hint to browser to optimize rendering */
-    border: 5px solid yellow; /* Debug border */
 }
 
 .title-container h1 {
