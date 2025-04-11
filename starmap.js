@@ -202,3 +202,26 @@ function checkCompletion(studentsData) {
 
 // Expose initializeStarMap globally
 window.initializeStarMap = initializeStarMap;
+
+// --- TILLÄGG: Återställ StarMap-position efter tangentbord stängs ---
+function resetStarMapPositionAfterKeyboard() {
+    const container = document.querySelector('.star-map-container');
+    const starMap = document.getElementById('starMap');
+    if (container && starMap) {
+        container.style.top = 'auto';
+        container.style.marginTop = '100px';
+        container.style.height = '600px';
+        container.style.position = 'relative';
+        container.style.transform = 'none';
+
+        starMap.style.top = '50px';
+        starMap.style.left = '0';
+        starMap.style.width = '2800px';
+        starMap.style.height = '600px';
+        starMap.style.transform = 'none';
+    }
+}
+
+window.addEventListener('focusout', () => {
+    setTimeout(resetStarMapPositionAfterKeyboard, 100);
+});
