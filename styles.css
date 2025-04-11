@@ -52,7 +52,6 @@ body.chapters {
     overflow: hidden;
     width: 100%;
     box-sizing: border-box;
-    padding-top: 20px; /* Om du vill ha lite space ovanför rubriken */
 }
 
 .hamburger-nav {
