@@ -1596,6 +1596,14 @@ body.chapters {
     }
 }
 
+@media (max-height: 834px) and (min-width: 1000px) and (orientation: landscape) {
+    .parts {
+        height: calc(var(--vh, 1vh) * 65);
+        padding-top: 60px;
+    }
+}
+
+
 /* iPad Pro 11” */
 @media (min-width: 821px) and (max-width: 834px) {
     .parts {
