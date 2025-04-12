@@ -1596,10 +1596,17 @@ body.chapters {
     }
 }
 
-@media (max-height: 834px) and (min-width: 1000px) and (orientation: landscape) {
+@media (min-width: 768px) and (max-width: 820px) and (orientation: landscape) {
     .parts {
-        height: calc(var(--vh, 1vh) * 65);
-        padding-top: 60px;
+        height: calc(var(--vh, 1vh) * 65) !important; /* Lägre än 70 och 80 */
+        padding-top: 70px;
+    }
+}
+
+@media (min-width: 821px) and (max-width: 834px) and (orientation: landscape) {
+    .parts {
+        height: calc(var(--vh, 1vh) * 65) !important;
+        padding-top: 70px;
     }
 }
 
