@@ -528,6 +528,12 @@ function handleUserNamePopup() {
                 if (userNameDisplay) userNameDisplay.textContent = name;
                 namePopup.style.display = 'none';
 
+                document.body.style.overflow = 'hidden';
+                document.documentElement.style.overflow = 'hidden';
+                document.body.style.overscrollBehavior = 'none';
+                document.documentElement.style.overscrollBehavior = 'none';
+                window.scrollTo(0, 0);
+
                 // Create and show success popup matching students.html
                 const successPopup = document.createElement('div');
                 successPopup.id = 'studentPopup';
