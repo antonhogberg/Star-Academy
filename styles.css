@@ -1172,7 +1172,7 @@ body.chapters {
     font-size: 30px;
     color: #ffffff; /* White text */
     text-align: center; /* Centered */
-    margin: 20px 0; /* Spacing from top and FAQ boxes */
+    margin: 20px 0 40px 0;
 }
 
 .piano-menu {
