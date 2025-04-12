@@ -1818,7 +1818,6 @@ body.chapters {
     }
 
     .student-manager {
-        padding: 0px 10px 10px 10px; /* Updated top padding to 0px */
         overflow-y: visible;
         height: auto;
         display: flex;
