@@ -527,20 +527,25 @@ function handleUserNamePopup() {
                 localStorage.setItem('starAcademyStudents', JSON.stringify(studentsData));
                 if (userNameDisplay) userNameDisplay.textContent = name;
                 namePopup.style.display = 'none';
-
-                document.body.style.overflow = 'hidden';
-                document.documentElement.style.overflow = 'hidden';
-                document.body.style.overscrollBehavior = 'none';
-                document.documentElement.style.overscrollBehavior = 'none';
-                window.scrollTo(0, 0);
-
-                // Create and show success popup matching students.html
+        
+                // Skrolla till toppen och fixa höjd om det är iPhone
+                setTimeout(() => {
+                    window.scrollTo(0, 0);
+                    setViewportHeight();
+        
+                    const chapterContainer = document.getElementById('chapterContainer');
+                    if (chapterContainer && window.innerWidth < 768) {
+                        chapterContainer.style.height = 'auto'; // Släpp scroll-lås på iPhone
+                    }
+                }, 0);
+        
+                // Skapa och visa \"student tillagd\"-popup
                 const successPopup = document.createElement('div');
                 successPopup.id = 'studentPopup';
                 successPopup.className = 'student-popup';
-                const starSVG = '<svg class="popup-star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>';
+                const starSVG = '<svg class=\"popup-star\" viewBox=\"0 0 24 24\"><path d=\"M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z\"/></svg>';
                 successPopup.innerHTML = `
-                    <div class="student-popup-content">
+                    <div class=\"student-popup-content\">
                         <p>${starSVG} ${translations[localStorage.getItem('language') || 'sv'].addStudentSuccess} ${starSVG}</p>
                     </div>
                 `;
@@ -554,8 +559,8 @@ function handleUserNamePopup() {
                         successPopup.style.display = 'none';
                         document.body.removeChild(successPopup);
                     }, 1000);
-                }, 2000); // 2s visible + 1s fade
-
+                }, 2000);
+        
                 updateStarStates();
                 if (window.location.pathname.toLowerCase().includes('starmap.html') && typeof window.initializeStarMap === 'function') {
                     window.initializeStarMap();
@@ -563,7 +568,7 @@ function handleUserNamePopup() {
             } else {
                 alert(translations[localStorage.getItem('language') || 'sv'].addStudentNoName);
             }
-        };
+        };        
 
         const submitBtn = document.querySelector('button[onclick="saveName()"]');
         if (submitBtn) submitBtn.addEventListener('click', window.saveName);
