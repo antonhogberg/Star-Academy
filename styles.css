@@ -1569,14 +1569,15 @@ body.chapters {
 /* iPad-specific scaling (landscape) - iPad Mini and Air */
 @media (min-width: 768px) and (max-width: 820px) {
     .parts {
-        max-width: 820px;
+        max-width: 800px;
         min-width: 550px;
         margin: 0 auto;
-        justify-content: center;
-        height: calc(var(--vh, 1vh) * 50);
-        top: 10px;
-        overflow-y: hidden;
+        padding-top: 80px; /* Extra plats under header */
         padding-bottom: 30px;
+        justify-content: flex-start;
+        height: calc(var(--vh, 1vh) * 70);
+        overflow-y: hidden;
+        box-sizing: border-box;
     }
 
     .exercises {
