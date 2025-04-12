@@ -1829,8 +1829,8 @@ body.chapters {
     }
 
     .star-map-container {
-        top: 30%; /* Mindre än 50% */
-        transform: translateY(-30%); /* Matchar nya top */
+        top: 10%; /* Mindre än 50% */
+        transform: translateY(-10%); /* Matchar nya top */
         margin-top: 10px;
     }
 
