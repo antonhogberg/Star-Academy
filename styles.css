@@ -1573,7 +1573,7 @@ body.chapters {
         min-width: 550px;
         margin: 0 auto;
         justify-content: center;
-        height: calc(var(--vh, 1vh) * 80); /* Adjusted for larger title and extra 20px gap */
+        height: calc(var(--vh, 1vh) * 70); /* Adjusted for larger title and extra 20px gap */
         top: 10px;
         overflow-y: hidden;
         padding-bottom: 30px;
@@ -1602,7 +1602,7 @@ body.chapters {
         min-width: 580px;
         margin: 0 auto;
         justify-content: center;
-        height: calc(var(--vh, 1vh) * 80); /* Adjusted for larger title and extra 20px gap */
+        height: calc(var(--vh, 1vh) * 70);
         top: 10px;
         overflow-y: hidden;
     }
