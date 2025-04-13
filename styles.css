@@ -1616,6 +1616,15 @@ body.chapters {
         object-fit: contain;
     }
 
+    /* Specifik justering för iPad Pro 13-inch (12.9-tum, 1366px bredd) */
+    @media (width: 1366px) {
+        .star {
+            width: 150px; /* Större stjärnor för iPad Pro 13-inch */
+            min-width: 150px;
+            max-width: 150px;
+        }
+    }
+    
     .layout-container {
         overflow-y: auto !important;
         height: auto;
