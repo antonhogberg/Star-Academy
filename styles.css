@@ -1534,7 +1534,33 @@ body.chapters {
         height: calc(var(--vh, 1vh) * 100);
     }
 }
-
+/* === Fix för iPad Mini och iPad 9.7" (744px–768px) === */
+@media (min-width: 744px) and (max-width: 768px) {
+    body.chapters .parts {
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: center;
+      padding-top: 100px; /* Kompensera för chapter title */
+      overflow-y: hidden;
+    }
+  
+    body.chapters .exercises {
+      flex-direction: row;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+    }
+  
+    body.chapters .star {
+      width: 90px;
+      height: 90px;
+    }
+  
+    body.chapters .part {
+      margin-bottom: 20px;
+    }
+  }
+  
 /* iPad Mini and iPad (landscape) - width: 1024px */
 @media (min-width: 1024px) and (max-width: 1024px) and (orientation: landscape) {
     body.chapters {
@@ -1691,6 +1717,14 @@ body.chapters {
         flex-direction: column;
     }
 
+    body.chapters .parts {
+        padding-top: 100px; /* Kompensera för kapitelrubrik */
+        height: calc(var(--vh, 1vh) * 80);
+        overflow-y: hidden;
+        justify-content: center;
+        box-sizing: border-box;
+      }
+      
     .chapter-container {
         height: calc(var(--vh, 1vh) * 100);
         overflow: hidden;
