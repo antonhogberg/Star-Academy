@@ -503,6 +503,7 @@ function handleUserNamePopup() {
     if (namePopup && nameInput) {
         if (!studentsData.currentStudent) {
             namePopup.style.display = 'flex';
+            document.body.classList.add('popup-open'); // Add popup-open class to body
         } else if (userNameDisplay) {
             userNameDisplay.textContent = studentsData.currentStudent;
         }
@@ -527,18 +528,19 @@ function handleUserNamePopup() {
                 localStorage.setItem('starAcademyStudents', JSON.stringify(studentsData));
                 if (userNameDisplay) userNameDisplay.textContent = name;
                 namePopup.style.display = 'none';
-        
+                document.body.classList.remove('popup-open'); // Remove popup-open class from body
+
                 // Skrolla till toppen och fixa höjd om det är iPhone
                 setTimeout(() => {
                     window.scrollTo(0, 0);
                     setViewportHeight();
-        
+
                     const chapterContainer = document.getElementById('chapterContainer');
                     if (chapterContainer && window.innerWidth < 768) {
                         chapterContainer.style.height = 'auto'; // Släpp scroll-lås på iPhone
                     }
                 }, 0);
-        
+
                 // Skapa och visa \"student tillagd\"-popup
                 const successPopup = document.createElement('div');
                 successPopup.id = 'studentPopup';
@@ -552,15 +554,17 @@ function handleUserNamePopup() {
                 document.body.appendChild(successPopup);
                 successPopup.style.display = 'flex';
                 successPopup.style.opacity = '1';
+                document.body.classList.add('popup-open'); // Add popup-open class for success popup
                 setTimeout(() => {
                     successPopup.style.transition = 'opacity 1s ease';
                     successPopup.style.opacity = '0';
                     setTimeout(() => {
                         successPopup.style.display = 'none';
                         document.body.removeChild(successPopup);
+                        document.body.classList.remove('popup-open'); // Remove popup-open class after success popup closes
                     }, 1000);
                 }, 2000);
-        
+
                 updateStarStates();
                 if (window.location.pathname.toLowerCase().includes('starmap.html') && typeof window.initializeStarMap === 'function') {
                     window.initializeStarMap();
@@ -568,7 +572,7 @@ function handleUserNamePopup() {
             } else {
                 alert(translations[localStorage.getItem('language') || 'sv'].addStudentNoName);
             }
-        };        
+        };
 
         const submitBtn = document.querySelector('button[onclick="saveName()"]');
         if (submitBtn) submitBtn.addEventListener('click', window.saveName);
