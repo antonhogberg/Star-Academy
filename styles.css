@@ -30,6 +30,8 @@ body {
 body.chapters {
     overflow: hidden;
     height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
 .chapter-container {
@@ -41,6 +43,7 @@ body.chapters {
     overflow: hidden;
     width: 100%;
     box-sizing: border-box;
+    flex-grow: 1;
 }
 
 .field-label {
@@ -364,13 +367,19 @@ body.chapters {
 /* Content Styles */
 .chapter-title {
     text-align: center;
-    margin: 10px 0;
+    margin: 0; /* Remove margin to avoid extra space */
+    padding: 10px 0; /* Consistent padding */
     font-family: Cochin, Georgia, Arial, sans-serif;
     color: #ffffff !important;
     font-size: 24px;
     display: block;
-    position: relative;
     width: 100%;
+    background: #000000; /* Match body background */
+    background-image: url('background.jpg');
+    background-size: 100% auto;
+    background-repeat: repeat-y;
+    background-position: center top;
+    z-index: 1100; /* Ensure it appears above other content */
 }
 
 .students-title {
@@ -392,7 +401,7 @@ body.chapters {
 
 .chapter-number {
     font-size: 24px;
-    margin-top: 20px;
+    margin-top: 0; /* Remove margin to avoid extra space */
 }
 
 .chapter-name {
@@ -440,12 +449,10 @@ body.chapters {
     display: flex;
     flex-direction: column;
     align-items: center;
-    position: relative;
     height: auto;
-    top: 0;
     overflow-y: visible;
     justify-content: flex-start;
-    flex-grow: 1;
+    flex-grow: 1; /* Take remaining space */
 }
 
 .rank-badge {
@@ -1297,6 +1304,14 @@ body.chapters {
         margin-top: 0;
     }
 
+    .chapter-number {
+        font-size: 24px;
+    }
+
+    .chapter-name {
+        font-size: 20px;
+    }
+
     .parts {
         max-width: 744px;
         min-width: 0;
@@ -1304,7 +1319,6 @@ body.chapters {
         padding-top: 10px;
         padding-bottom: 20px;
         height: auto;
-        top: 10px;
         overflow-y: visible;
         box-sizing: border-box;
         display: flex;
@@ -1551,17 +1565,6 @@ body.chapters {
     }
 
     .chapter-title {
-        display: block;
-        margin: 5px 0;
-        position: fixed;
-        top: 0;
-        left: 0;
-        z-index: 1100;
-        background: #000000;
-        background-image: url('background.jpg');
-        background-size: 100% auto;
-        background-repeat: repeat-y;
-        background-position: center top;
         padding: 10px 0;
     }
 
@@ -1578,11 +1581,9 @@ body.chapters {
         max-width: 1024px;
         min-width: 580px;
         margin: 0 auto;
-        margin-top: 100px; /* Offset to clear chapter-title + 20px gap */
-        padding-top: 0;
+        padding-top: 0; /* No extra padding since chapter-title takes space */
         padding-bottom: 10px;
-        height: calc(var(--vh, 1vh) * 100 - 100px);
-        top: 0;
+        height: auto;
         overflow-y: hidden !important;
         box-sizing: border-box;
         justify-content: flex-start;
@@ -1625,17 +1626,6 @@ body.chapters {
     }
 
     .chapter-title {
-        display: block;
-        margin: 5px 0;
-        position: fixed;
-        top: 0;
-        left: 0;
-        z-index: 1100;
-        background: #000000;
-        background-image: url('background.jpg');
-        background-size: 100% auto;
-        background-repeat: repeat-y;
-        background-position: center top;
         padding: 10px 0;
     }
 
@@ -1652,11 +1642,9 @@ body.chapters {
         max-width: 1024px;
         min-width: 580px;
         margin: 0 auto;
-        margin-top: 100px; /* Offset to clear chapter-title + 20px gap */
         padding-top: 0;
         padding-bottom: 10px;
-        height: calc(var(--vh, 1vh) * 100 - 100px);
-        top: 0;
+        height: auto;
         overflow-y: hidden !important;
         box-sizing: border-box;
         justify-content: flex-start;
@@ -1699,17 +1687,6 @@ body.chapters {
     }
 
     .chapter-title {
-        display: block;
-        margin: 5px 0;
-        position: fixed;
-        top: 0;
-        left: 0;
-        z-index: 1100;
-        background: #000000;
-        background-image: url('background.jpg');
-        background-size: 100% auto;
-        background-repeat: repeat-y;
-        background-position: center top;
         padding: 10px 0;
     }
 
@@ -1726,11 +1703,9 @@ body.chapters {
         max-width: 1024px;
         min-width: 580px;
         margin: 0 auto;
-        margin-top: 100px; /* Offset to clear chapter-title + 20px gap */
         padding-top: 0;
         padding-bottom: 10px;
-        height: calc(var(--vh, 1vh) * 100 - 100px);
-        top: 0;
+        height: auto;
         overflow-y: hidden;
         box-sizing: border-box;
         justify-content: flex-start;
@@ -1929,17 +1904,6 @@ body.chapters {
     }
 
     .chapter-title {
-        display: block;
-        margin: 5px 0;
-        position: fixed;
-        top: 0;
-        left: 0;
-        z-index: 1100;
-        background: #000000;
-        background-image: url('background.jpg');
-        background-size: 100% auto;
-        background-repeat: repeat-y;
-        background-position: center top;
         padding: 10px 0;
     }
 
@@ -1955,11 +1919,9 @@ body.chapters {
         max-width: 1024px;
         min-width: 580px;
         margin: 0 auto;
-        margin-top: 100px; /* Offset to clear chapter-title + 20px gap */
         padding-top: 0;
         padding-bottom: 10px;
-        height: calc(var(--vh, 1vh) * 100 - 100px);
-        top: 0;
+        height: auto;
         overflow-y: auto;
         box-sizing: border-box;
         justify-content: flex-start;
