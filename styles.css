@@ -39,8 +39,6 @@ body.chapters {
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
-    height: 100vh;
-    overflow: hidden;
     width: 100%;
     box-sizing: border-box;
     flex-grow: 1;
@@ -1566,6 +1564,7 @@ body.chapters {
 
     .chapter-title {
         padding: 10px 0;
+        flex-shrink: 0; /* Prevent shrinking */
     }
 
     .chapter-number {
@@ -1581,13 +1580,13 @@ body.chapters {
         max-width: 1024px;
         min-width: 580px;
         margin: 0 auto;
-        padding-top: 0; /* No extra padding since chapter-title takes space */
+        padding-top: 0;
         padding-bottom: 10px;
         height: auto;
-        overflow-y: hidden !important;
+        overflow-y: auto; /* Allow scrolling within .parts if content overflows */
         box-sizing: border-box;
         justify-content: flex-start;
-        flex-grow: 1;
+        flex-grow: 1; /* Take remaining space */
     }
 
     .exercises {
@@ -1627,6 +1626,7 @@ body.chapters {
 
     .chapter-title {
         padding: 10px 0;
+        flex-shrink: 0;
     }
 
     .chapter-number {
@@ -1645,7 +1645,7 @@ body.chapters {
         padding-top: 0;
         padding-bottom: 10px;
         height: auto;
-        overflow-y: hidden !important;
+        overflow-y: auto;
         box-sizing: border-box;
         justify-content: flex-start;
         flex-grow: 1;
@@ -1688,6 +1688,7 @@ body.chapters {
 
     .chapter-title {
         padding: 10px 0;
+        flex-shrink: 0;
     }
 
     .chapter-number {
@@ -1706,7 +1707,7 @@ body.chapters {
         padding-top: 0;
         padding-bottom: 10px;
         height: auto;
-        overflow-y: hidden;
+        overflow-y: auto;
         box-sizing: border-box;
         justify-content: flex-start;
         flex-grow: 1;
@@ -1905,6 +1906,7 @@ body.chapters {
 
     .chapter-title {
         padding: 10px 0;
+        flex-shrink: 0;
     }
 
     .chapter-number {
