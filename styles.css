@@ -1534,33 +1534,7 @@ body.chapters {
         height: calc(var(--vh, 1vh) * 100);
     }
 }
-/* === Fix för iPad Mini och iPad 9.7" (744px–768px) === */
-@media (min-width: 744px) and (max-width: 768px) {
-    body.chapters .parts {
-      flex-direction: row;
-      flex-wrap: wrap;
-      justify-content: center;
-      padding-top: 100px; /* Kompensera för chapter title */
-      overflow-y: hidden;
-    }
-  
-    body.chapters .exercises {
-      flex-direction: row;
-      flex-wrap: wrap;
-      gap: 20px;
-      justify-content: center;
-    }
-  
-    body.chapters .star {
-      width: 90px;
-      height: 90px;
-    }
-  
-    body.chapters .part {
-      margin-bottom: 20px;
-    }
-  }
-  
+
 /* iPad Mini and iPad (landscape) - width: 1024px */
 @media (min-width: 1024px) and (max-width: 1024px) and (orientation: landscape) {
     body.chapters {
@@ -1588,7 +1562,7 @@ body.chapters {
         background-size: 100% auto;
         background-repeat: repeat-y;
         background-position: center top;
-        padding: 10px 0; /* Reduced padding to minimize gap */
+        padding: 10px 0;
     }
 
     .chapter-number {
@@ -1604,13 +1578,14 @@ body.chapters {
         max-width: 1024px;
         min-width: 580px;
         margin: 0 auto;
-        padding-top: 10px; /* Reduced to achieve ~20px total gap */
+        margin-top: 100px; /* Offset to clear chapter-title + 20px gap */
+        padding-top: 0;
         padding-bottom: 10px;
-        height: calc(var(--vh, 1vh) * 100 - 100px); /* Adjusted for chapter-title height */
+        height: calc(var(--vh, 1vh) * 100 - 100px);
         top: 0;
         overflow-y: hidden !important;
         box-sizing: border-box;
-        justify-content: flex-start; /* Align stars at the top */
+        justify-content: flex-start;
         flex-grow: 1;
     }
 
@@ -1621,8 +1596,8 @@ body.chapters {
         justify-content: center;
     }
 
-    .part {
-        margin-bottom: 20px;
+    .star-container {
+        width: auto; /* Override mobile layout */
     }
 
     .star {
@@ -1661,7 +1636,7 @@ body.chapters {
         background-size: 100% auto;
         background-repeat: repeat-y;
         background-position: center top;
-        padding: 10px 0; /* Reduced padding to minimize gap */
+        padding: 10px 0;
     }
 
     .chapter-number {
@@ -1677,13 +1652,14 @@ body.chapters {
         max-width: 1024px;
         min-width: 580px;
         margin: 0 auto;
-        padding-top: 10px; /* Reduced to achieve ~20px total gap */
+        margin-top: 100px; /* Offset to clear chapter-title + 20px gap */
+        padding-top: 0;
         padding-bottom: 10px;
-        height: calc(var(--vh, 1vh) * 100 - 100px); /* Adjusted for chapter-title height */
+        height: calc(var(--vh, 1vh) * 100 - 100px);
         top: 0;
         overflow-y: hidden !important;
         box-sizing: border-box;
-        justify-content: flex-start; /* Align stars at the top */
+        justify-content: flex-start;
         flex-grow: 1;
     }
 
@@ -1694,8 +1670,8 @@ body.chapters {
         justify-content: center;
     }
 
-    .part {
-        margin-bottom: 20px;
+    .star-container {
+        width: auto; /* Override mobile layout */
     }
 
     .star {
@@ -1717,14 +1693,6 @@ body.chapters {
         flex-direction: column;
     }
 
-    body.chapters .parts {
-        padding-top: 100px; /* Kompensera för kapitelrubrik */
-        height: calc(var(--vh, 1vh) * 80);
-        overflow-y: hidden;
-        justify-content: center;
-        box-sizing: border-box;
-      }
-      
     .chapter-container {
         height: calc(var(--vh, 1vh) * 100);
         overflow: hidden;
@@ -1758,7 +1726,8 @@ body.chapters {
         max-width: 1024px;
         min-width: 580px;
         margin: 0 auto;
-        padding-top: 10px;
+        margin-top: 100px; /* Offset to clear chapter-title + 20px gap */
+        padding-top: 0;
         padding-bottom: 10px;
         height: calc(var(--vh, 1vh) * 100 - 100px);
         top: 0;
@@ -1773,6 +1742,10 @@ body.chapters {
         max-width: 1200px;
         justify-content: center;
         margin: 0 auto;
+    }
+
+    .star-container {
+        width: auto; /* Ensure desktop layout */
     }
 
     .star {
@@ -1982,7 +1955,8 @@ body.chapters {
         max-width: 1024px;
         min-width: 580px;
         margin: 0 auto;
-        padding-top: 10px;
+        margin-top: 100px; /* Offset to clear chapter-title + 20px gap */
+        padding-top: 0;
         padding-bottom: 10px;
         height: calc(var(--vh, 1vh) * 100 - 100px);
         top: 0;
@@ -1997,6 +1971,10 @@ body.chapters {
         max-width: 800px;
         justify-content: center;
         margin: 0 auto;
+    }
+
+    .star-container {
+        width: auto; /* Ensure desktop layout */
     }
 
     .star {
