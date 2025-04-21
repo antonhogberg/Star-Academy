@@ -43,46 +43,17 @@ const progressionPath = [
 
 function initializeStarMap() {
     console.log('initializeStarMap called');
-    const objectElement = document.getElementById('starMap');
-    if (!objectElement) {
-        console.error('Star Map object element not found');
+    const svgElement = document.getElementById('starMap');
+    if (!svgElement) {
+        console.error('Star Map SVG element not found');
         return;
     }
 
-    let svgDoc = null;
-    let loadAttempts = 0;
-    const maxAttempts = 50; // 5 seconds (50 * 100ms)
-
-    const checkSvgDoc = setInterval(() => {
-        loadAttempts++;
-        svgDoc = objectElement.contentDocument;
-
-        if (svgDoc) {
-            clearInterval(checkSvgDoc);
-            initializeSvg(svgDoc);
-        } else if (loadAttempts >= maxAttempts) {
-            clearInterval(checkSvgDoc);
-            console.error('Failed to load SVG contentDocument after 5 seconds');
-        } else {
-            console.log(`Attempt ${loadAttempts}: SVG contentDocument not yet available`);
-        }
-    }, 100);
-
-    // Fallback: Try to initialize after window load event
-    window.addEventListener('load', () => {
-        if (!svgDoc) {
-            svgDoc = objectElement.contentDocument;
-            if (svgDoc) {
-                clearInterval(checkSvgDoc);
-                initializeSvg(svgDoc);
-            } else {
-                console.error('SVG contentDocument still not available after window load');
-            }
-        }
-    });
+    // Since the SVG is inline, we can directly pass the document context
+    initializeSvg(document);
 }
 
-function initializeSvg(svgDoc) {
+function initializeSvg(doc) {
     console.log('initializeSvg called');
     const studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
     if (!studentsData.currentStudent) {
@@ -90,16 +61,17 @@ function initializeSvg(svgDoc) {
         return;
     }
 
-    const styleElement = svgDoc.createElementNS('http://www.w3.org/2000/svg', 'style');
+    // Add styles directly to the SVG
+    const styleElement = doc.createElementNS('http://www.w3.org/2000/svg', 'style');
     styleElement.textContent = `
         image { pointer-events: all; transition: opacity 0.3s ease-in-out; }
         path { transition: stroke 0.3s ease-in-out !important; }
     `;
-    svgDoc.querySelector('svg').appendChild(styleElement);
+    doc.getElementById('starMap').appendChild(styleElement);
 
     progressionPath.forEach(({ star, lines }) => {
-        const starElement = svgDoc.getElementById(`star-${star.replace(/:/g, '-')}`);
-        const lineElements = lines.map(line => svgDoc.getElementById(line)).filter(line => line);
+        const starElement = doc.getElementById(`star-${star.replace(/:/g, '-')}`);
+        const lineElements = lines.map(line => doc.getElementById(line)).filter(line => line);
 
         if (!starElement) {
             console.error(`Star-${star} not found in SVG`);
