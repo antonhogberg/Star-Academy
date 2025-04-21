@@ -1,7 +1,6 @@
 // Language translations
 const translations = {
     en: {
-        // Existing translations unchanged up to faqTitle
         menuFrontPage: "Star Overview",
         menuChapter: "Chapter",
         menuStudents: "For Teachers",
@@ -66,7 +65,6 @@ const translations = {
         faqA7: "Yes, feel free to email: staracademypianoschool@gmail.com"
     },
     sv: {
-        // Existing translations unchanged up to faqTitle
         menuFrontPage: "Stjärnöversikt",
         menuChapter: "Kapitel",
         menuStudents: "För lärare",
@@ -432,7 +430,6 @@ function switchLanguage(lang) {
     const rankDescription = document.getElementById('rankDescription');
     if (rankName && rankTitle && rankDescription) updateStarStates();
 
-    // Update the title for students.html with the new ID
     const studentsPageTitle = document.getElementById('studentsPageTitle');
     const studentsLabel = document.getElementById('studentsLabel');
     const newStudentInput = document.getElementById('newStudentName');
@@ -465,7 +462,6 @@ function switchLanguage(lang) {
         if (translations[lang][key]) answer.textContent = translations[lang][key];
     });
 
-    // Add translation for title-container h1
     const titleContainerH1 = document.querySelector('.title-container h1[data-translate]');
     if (titleContainerH1) {
         const key = titleContainerH1.getAttribute('data-translate');
@@ -499,11 +495,24 @@ function handleUserNamePopup() {
     const userNameDisplay = document.getElementById('userNameDisplay');
     const namePopup = document.getElementById('namePopup');
     const nameInput = document.getElementById('nameInput');
+    const menu = document.querySelector('.menu');
 
     if (namePopup && nameInput) {
+        // Function to update menu height dynamically
+        const updateMenuHeight = () => {
+            if (menu) {
+                menu.style.height = `${window.innerHeight}px`; // Adjust height based on current viewport
+            }
+        };
+
+        // Add resize listener to handle keyboard opening/closing
+        window.addEventListener('resize', updateMenuHeight);
+        window.addEventListener('orientationchange', updateMenuHeight);
+
         if (!studentsData.currentStudent) {
             namePopup.style.display = 'flex';
-            document.body.classList.add('popup-open'); // Add popup-open class to body
+            document.body.classList.add('popup-open');
+            updateMenuHeight(); // Set initial menu height
         } else if (userNameDisplay) {
             userNameDisplay.textContent = studentsData.currentStudent;
         }
@@ -528,26 +537,16 @@ function handleUserNamePopup() {
                 localStorage.setItem('starAcademyStudents', JSON.stringify(studentsData));
                 if (userNameDisplay) userNameDisplay.textContent = name;
                 namePopup.style.display = 'none';
-                document.body.classList.remove('popup-open'); // Remove popup-open class from body
+                document.body.classList.remove('popup-open');
+                updateMenuHeight(); // Reset menu height after closing popup
 
-                // Skrolla till toppen och fixa höjd om det är iPhone
-                setTimeout(() => {
-                    window.scrollTo(0, 0);
-                    setViewportHeight();
-
-                    const chapterContainer = document.getElementById('chapterContainer');
-                    if (chapterContainer && window.innerWidth < 768) {
-                        chapterContainer.style.height = 'auto'; // Släpp scroll-lås på iPhone
-                    }
-                }, 0);
-
-                // Skapa och visa \"student tillagd\"-popup
+                // Skapa och visa "student tillagd"-popup
                 const successPopup = document.createElement('div');
                 successPopup.id = 'studentPopup';
                 successPopup.className = 'student-popup';
-                const starSVG = '<svg class=\"popup-star\" viewBox=\"0 0 24 24\"><path d=\"M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z\"/></svg>';
+                const starSVG = '<svg class="popup-star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>';
                 successPopup.innerHTML = `
-                    <div class=\"student-popup-content\">
+                    <div class="student-popup-content">
                         <p>${starSVG} ${translations[localStorage.getItem('language') || 'sv'].addStudentSuccess} ${starSVG}</p>
                     </div>
                 `;
@@ -555,18 +554,21 @@ function handleUserNamePopup() {
                 successPopup.style.display = 'flex';
                 successPopup.style.opacity = '1';
                 document.body.classList.add('popup-open'); // Add popup-open class for success popup
+                updateMenuHeight(); // Update menu height for success popup
                 setTimeout(() => {
                     successPopup.style.transition = 'opacity 1s ease';
                     successPopup.style.opacity = '0';
                     setTimeout(() => {
                         successPopup.style.display = 'none';
                         document.body.removeChild(successPopup);
-                        document.body.classList.remove('popup-open'); // Remove popup-open class after success popup closes
+                        document.body.classList.remove('popup-open');
+                        updateMenuHeight(); // Reset menu height after closing success popup
                     }, 1000);
                 }, 2000);
 
                 updateStarStates();
                 if (window.location.pathname.toLowerCase().includes('starmap.html') && typeof window.initializeStarMap === 'function') {
+                    console.log('Calling initializeStarMap after saving name');
                     window.initializeStarMap();
                 }
             } else {
@@ -634,8 +636,30 @@ waitForDOM().then(() => {
         userNameDisplay.textContent = studentsData.currentStudent;
     }
 
+    // Handle starmap.html with inline SVG
     if (window.location.pathname.toLowerCase().includes('starmap.html') && typeof window.initializeStarMap === 'function') {
-        if (studentsData.currentStudent) window.initializeStarMap();
+        console.log('Navigating to starmap.html');
+        const starMapSvg = document.getElementById('starMap');
+        if (starMapSvg) {
+            console.log('Star Map SVG found (inline)');
+            if (studentsData.currentStudent) {
+                console.log('Initializing Star Map');
+                window.initializeStarMap();
+                updateStarStates(); // Ensure stars are updated immediately
+            } else {
+                console.log('No current student, skipping Star Map initialization');
+            }
+        } else {
+            console.error('Star Map SVG not found');
+        }
+
+        // Force reload if loaded from Back/Forward Cache (BFCache)
+        window.addEventListener('pageshow', (event) => {
+            if (event.persisted) {
+                console.log('Page loaded from BFCache, forcing reload...');
+                window.location.reload(); // Force reload to avoid caching issues
+            }
+        });
     }
 
     if (window.location.pathname.toLowerCase().includes('faq.html')) initializeFAQ();
@@ -656,23 +680,19 @@ waitForDOM().then(() => {
             const currentViewportHeight = window.innerHeight;
             if (currentViewportHeight < initialViewportHeight * 0.9) { // Keyboard likely present
                 if (!reRenderInterval) {
-                    // Start re-rendering every 100ms while keyboard is visible
                     reRenderInterval = setInterval(forceHeaderRender, 100);
                 }
             } else { // Keyboard likely dismissed
                 if (reRenderInterval) {
                     clearInterval(reRenderInterval);
                     reRenderInterval = null;
-                    forceHeaderRender(); // One final render to ensure header is visible
+                    forceHeaderRender();
                 }
             }
         };
 
-        // Monitor viewport changes
         window.addEventListener('resize', checkKeyboardState);
         window.addEventListener('orientationchange', checkKeyboardState);
-
-        // Initial render after a small delay
         setTimeout(forceHeaderRender, 100);
     }
 
@@ -682,29 +702,25 @@ waitForDOM().then(() => {
         const titleContainer = document.querySelector('.title-container');
         const body = document.querySelector('body');
         if (starMapContainer && titleContainer && body) {
-            // Store initial title height on page load
             if (!window.initialTitleHeight) {
                 window.initialTitleHeight = titleContainer.getBoundingClientRect().height;
             }
             const titleHeight = window.initialTitleHeight;
             const marginTop = 10;
-            const borderWidth = parseFloat(getComputedStyle(starMapContainer).borderWidth) || 0; // Account for debug borders (5px)
-            const bodyBorderWidth = parseFloat(getComputedStyle(body).borderWidth) || 0; // Account for body border (5px)
-            const totalBorderHeight = borderWidth * 2; // Top and bottom borders of star-map-container
-            const totalBodyBorderHeight = bodyBorderWidth * 2; // Top and bottom borders of body
-            // Use current viewport height to account for browser UI changes
+            const borderWidth = parseFloat(getComputedStyle(starMapContainer).borderWidth) || 0;
+            const bodyBorderWidth = parseFloat(getComputedStyle(body).borderWidth) || 0;
+            const totalBorderHeight = borderWidth * 2;
+            const totalBodyBorderHeight = bodyBorderWidth * 2;
             const viewportHeight = window.innerHeight;
-            const topPosition = titleHeight + marginTop; // Distance from top of viewport
-            const availableHeight = viewportHeight - topPosition - totalBorderHeight - totalBodyBorderHeight - 10; // Buffer for bottom edge
-            const maxHeight = Math.min(600, availableHeight); // Cap height
-            // Detect if on iPhone/mobile (max-width: 767px, portrait)
+            const topPosition = titleHeight + marginTop;
+            const availableHeight = viewportHeight - topPosition - totalBorderHeight - totalBodyBorderHeight - 10;
+            const maxHeight = Math.min(600, availableHeight);
             const isMobile = window.matchMedia("(max-width: 767px) and (orientation: portrait)").matches;
-            // Center the green box with equal gaps on iPad
             const isIPad = window.matchMedia("(min-width: 768px) and (max-width: 1400px) and (orientation: landscape)").matches;
             if (isIPad) {
-                const gap = 20; // Desired gap above and below (15-20px)
-                const adjustedTop = titleHeight + gap; // Start below the title-container
-                const adjustedHeight = viewportHeight - adjustedTop - gap - totalBodyBorderHeight; // Height with equal gaps
+                const gap = 20;
+                const adjustedTop = titleHeight + gap;
+                const adjustedHeight = viewportHeight - adjustedTop - gap - totalBodyBorderHeight;
                 starMapContainer.style.height = `${adjustedHeight}px`;
                 starMapContainer.style.top = `${adjustedTop}px`;
                 starMapContainer.style.bottom = `${gap + bodyBorderWidth}px`;
@@ -720,19 +736,14 @@ waitForDOM().then(() => {
             starMapContainer.style.position = 'fixed';
             starMapContainer.style.transform = 'none';
 
-            // Scale the SVG on iPhone/mobile
-            const starMapSvg = starMapContainer.querySelector('object');
+            const starMapSvg = starMapContainer.querySelector('svg');
             if (starMapSvg) {
                 if (isMobile) {
-                    // On iPhone/mobile, scale the SVG to fit the container
                     starMapSvg.style.height = '100%';
                     starMapSvg.style.width = 'auto';
-                    starMapSvg.style.objectFit = 'contain';
                 } else {
-                    // On larger devices, set the SVG's height to match the container's height
-                    starMapSvg.style.height = `${starMapContainer.clientHeight - totalBorderHeight}px`; // Subtract borders
-                    starMapSvg.style.width = '2800px'; // Full width, allowing horizontal scrolling
-                    starMapSvg.style.objectFit = 'none'; // Prevent scaling to fit viewport width
+                    starMapSvg.style.height = `${starMapContainer.clientHeight - totalBorderHeight}px`;
+                    starMapSvg.style.width = '2800px';
                 }
             }
 
@@ -740,7 +751,6 @@ waitForDOM().then(() => {
         }
     };
 
-    // Run on load and on resize
     setStarMapHeight();
     window.addEventListener('resize', setStarMapHeight);
     window.addEventListener('orientationchange', setStarMapHeight);
