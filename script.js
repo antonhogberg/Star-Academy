@@ -252,9 +252,12 @@ function updateStarStates() {
         if (state === "6") sixStarCount++;
     });
 
+    console.log('Updating star states, sixStarCount:', sixStarCount);
+
     for (let i = 1; i <= 16; i++) {
         const bottomStar = document.getElementById(`bottom_star${i}`);
         if (bottomStar) {
+            console.log(`Found bottom_star${i}`);
             if (i <= sixStarCount) {
                 bottomStar.setAttribute("fill", "#ffd700");
                 bottomStar.setAttribute("stroke", "#000000");
@@ -264,6 +267,8 @@ function updateStarStates() {
                 bottomStar.removeAttribute("stroke");
                 bottomStar.removeAttribute("stroke-width");
             }
+        } else {
+            console.warn(`bottom_star${i} not found`);
         }
     }
 
@@ -301,6 +306,7 @@ function updateStarStates() {
     for (const [chevronStar, exercises] of Object.entries(chevronMappings)) {
         const star = document.getElementById(chevronStar);
         if (star) {
+            console.log(`Found ${chevronStar}`);
             const allSix = exercises.every(exercise => progress[exercise] === "6");
             if (allSix) {
                 star.setAttribute("fill", "#ffd700");
@@ -311,6 +317,8 @@ function updateStarStates() {
                 star.removeAttribute("stroke");
                 star.removeAttribute("stroke-width");
             }
+        } else {
+            console.warn(`${chevronStar} not found`);
         }
     }
 
@@ -498,21 +506,19 @@ function handleUserNamePopup() {
     const menu = document.querySelector('.menu');
 
     if (namePopup && nameInput) {
-        // Function to update menu height dynamically
         const updateMenuHeight = () => {
             if (menu) {
-                menu.style.height = `${window.innerHeight}px`; // Adjust height based on current viewport
+                menu.style.height = `${window.innerHeight}px`;
             }
         };
 
-        // Add resize listener to handle keyboard opening/closing
         window.addEventListener('resize', updateMenuHeight);
         window.addEventListener('orientationchange', updateMenuHeight);
 
         if (!studentsData.currentStudent) {
             namePopup.style.display = 'flex';
             document.body.classList.add('popup-open');
-            updateMenuHeight(); // Set initial menu height
+            updateMenuHeight();
         } else if (userNameDisplay) {
             userNameDisplay.textContent = studentsData.currentStudent;
         }
@@ -538,9 +544,8 @@ function handleUserNamePopup() {
                 if (userNameDisplay) userNameDisplay.textContent = name;
                 namePopup.style.display = 'none';
                 document.body.classList.remove('popup-open');
-                updateMenuHeight(); // Reset menu height after closing popup
+                updateMenuHeight();
 
-                // Skapa och visa "student tillagd"-popup
                 const successPopup = document.createElement('div');
                 successPopup.id = 'studentPopup';
                 successPopup.className = 'student-popup';
@@ -553,8 +558,8 @@ function handleUserNamePopup() {
                 document.body.appendChild(successPopup);
                 successPopup.style.display = 'flex';
                 successPopup.style.opacity = '1';
-                document.body.classList.add('popup-open'); // Add popup-open class for success popup
-                updateMenuHeight(); // Update menu height for success popup
+                document.body.classList.add('popup-open');
+                updateMenuHeight();
                 setTimeout(() => {
                     successPopup.style.transition = 'opacity 1s ease';
                     successPopup.style.opacity = '0';
@@ -562,7 +567,7 @@ function handleUserNamePopup() {
                         successPopup.style.display = 'none';
                         document.body.removeChild(successPopup);
                         document.body.classList.remove('popup-open');
-                        updateMenuHeight(); // Reset menu height after closing success popup
+                        updateMenuHeight();
                     }, 1000);
                 }, 2000);
 
@@ -605,18 +610,18 @@ function initializeFAQ() {
             const isActive = faqItem.classList.contains('active');
 
             if (isActive) {
-                faqAnswer.style.maxHeight = faqAnswer.scrollHeight + 'px'; // Current height with padding
+                faqAnswer.style.maxHeight = faqAnswer.scrollHeight + 'px';
                 requestAnimationFrame(() => {
-                    faqAnswer.style.maxHeight = '0'; // Slide up
+                    faqAnswer.style.maxHeight = '0';
                     faqItem.classList.remove('active');
                 });
             } else {
-                faqAnswer.style.display = 'block'; // Ensure visibility
-                const fullHeight = faqAnswer.scrollHeight + 20; // Add padding (10px top + 10px bottom)
+                faqAnswer.style.display = 'block';
+                const fullHeight = faqAnswer.scrollHeight + 20;
                 faqItem.classList.add('active');
-                faqAnswer.style.maxHeight = fullHeight + 'px'; // Slide to full height including padding
+                faqAnswer.style.maxHeight = fullHeight + 'px';
                 faqAnswer.addEventListener('transitionend', function resetHeight() {
-                    faqAnswer.style.maxHeight = '200px'; // Reset to CSS value
+                    faqAnswer.style.maxHeight = '200px';
                     faqAnswer.removeEventListener('transitionend', resetHeight);
                 }, { once: true });
             }
@@ -644,8 +649,11 @@ waitForDOM().then(() => {
             console.log('Star Map SVG found (inline)');
             if (studentsData.currentStudent) {
                 console.log('Initializing Star Map');
-                window.initializeStarMap();
-                updateStarStates(); // Ensure stars are updated immediately
+                // Delay initialization to ensure SVG is fully parsed
+                setTimeout(() => {
+                    window.initializeStarMap();
+                    updateStarStates();
+                }, 100);
             } else {
                 console.log('No current student, skipping Star Map initialization');
             }
@@ -657,7 +665,7 @@ waitForDOM().then(() => {
         window.addEventListener('pageshow', (event) => {
             if (event.persisted) {
                 console.log('Page loaded from BFCache, forcing reload...');
-                window.location.reload(); // Force reload to avoid caching issues
+                window.location.reload();
             }
         });
     }
@@ -671,18 +679,18 @@ waitForDOM().then(() => {
         let reRenderInterval = null;
 
         const forceHeaderRender = () => {
-            header.style.opacity = '0.99'; // Small change to trigger re-render
-            header.offsetHeight; // Force reflow
+            header.style.opacity = '0.99';
+            header.offsetHeight;
             header.style.opacity = '1';
         };
 
         const checkKeyboardState = () => {
             const currentViewportHeight = window.innerHeight;
-            if (currentViewportHeight < initialViewportHeight * 0.9) { // Keyboard likely present
+            if (currentViewportHeight < initialViewportHeight * 0.9) {
                 if (!reRenderInterval) {
                     reRenderInterval = setInterval(forceHeaderRender, 100);
                 }
-            } else { // Keyboard likely dismissed
+            } else {
                 if (reRenderInterval) {
                     clearInterval(reRenderInterval);
                     reRenderInterval = null;
