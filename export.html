@@ -58,7 +58,14 @@
       }
 
       const student = data.students[data.currentStudent];
-      const jsonStr = JSON.stringify(student);
+
+      // Exportera endast progress
+      const minimalExport = {
+        name: student.name,
+        progress: student.progress
+      };
+
+      const jsonStr = JSON.stringify(minimalExport);
       const base64 = btoa(unescape(encodeURIComponent(jsonStr)));
 
       document.getElementById("exportBox").value = base64;
@@ -79,7 +86,12 @@
         const data = JSON.parse(localStorage.getItem("starAcademyStudents")) || { students: {}, currentStudent: "" };
         const name = student.name || "ImporteradElev";
 
-        data.students[name] = student;
+        // Lägg till default rank om den saknas
+        data.students[name] = {
+          name: name,
+          rank: "Utforskare",
+          progress: student.progress || {}
+        };
         data.currentStudent = name;
 
         localStorage.setItem("starAcademyStudents", JSON.stringify(data));
