@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Exportera & Importera Elev</title>
+  <script src="https://cdn.jsdelivr.net/npm/qrious@4.0.2/dist/qrious.min.js"></script>
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 2rem;
+      max-width: 600px;
+      margin: auto;
+    }
+    textarea {
+      width: 100%;
+      font-family: monospace;
+    }
+    button {
+      margin-top: 0.5rem;
+      padding: 0.5rem 1rem;
+      font-size: 1rem;
+    }
+    canvas {
+      margin-top: 1rem;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+    }
+  </style>
+</head>
+<body>
+  <h2>Exportera aktuell elev</h2>
+  <textarea id="exportBox" readonly rows="4"></textarea>
+  <canvas id="qrCanvas"></canvas>
+  <button onclick="exportCurrentStudent()">Skapa exportkod</button>
+
+  <hr />
+
+  <h2>Importera elev</h2>
+  <textarea id="importBox" rows="4"></textarea>
+  <button onclick="importStudent()">Importera kod</button>
+
+  <script>
+    function exportCurrentStudent() {
+      const data = JSON.parse(localStorage.getItem("starAcademyStudents"));
+      if (!data || !data.currentStudent || !data.students[data.currentStudent]) {
+        alert("Ingen aktuell elev hittades.");
+        return;
+      }
+
+      const student = data.students[data.currentStudent];
+      const jsonStr = JSON.stringify(student);
+      const base64 = btoa(unescape(encodeURIComponent(jsonStr)));
+
+      document.getElementById("exportBox").value = base64;
+
+      const qr = new QRious({
+        element: document.getElementById("qrCanvas"),
+        value: base64,
+        size: 200
+      });
+    }
+
+    function importStudent() {
+      const input = document.getElementById("importBox").value;
+      try {
+        const jsonStr = decodeURIComponent(escape(atob(input)));
+        const student = JSON.parse(jsonStr);
+
+        const data = JSON.parse(localStorage.getItem("starAcademyStudents")) || { students: {}, currentStudent: "" };
+        const name = student.name || "ImporteradElev";
+
+        data.students[name] = student;
+        data.currentStudent = name;
+
+        localStorage.setItem("starAcademyStudents", JSON.stringify(data));
+        alert("Import klar! Ladda om sidan.");
+        location.reload();
+      } catch (e) {
+        alert("Misslyckades importera. Ogiltig kod?");
+        console.error(e);
+      }
+    }
+  </script>
+</body>
+</html>
