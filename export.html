@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Exportera & Importera Elev</title>
   <script src="https://cdn.jsdelivr.net/npm/qrious@4.0.2/dist/qrious.min.js"></script>
+  <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
   <style>
     body {
       font-family: sans-serif;
@@ -27,6 +28,11 @@
       margin-left: auto;
       margin-right: auto;
     }
+    #qr-reader {
+      width: 100%;
+      margin-top: 1rem;
+      display: none;
+    }
   </style>
 </head>
 <body>
@@ -40,6 +46,8 @@
   <h2>Importera elev</h2>
   <textarea id="importBox" rows="4"></textarea>
   <button onclick="importStudent()">Importera kod</button>
+  <button onclick="startQrScan()">Skanna QR-kod</button>
+  <div id="qr-reader"></div>
 
   <script>
     function exportCurrentStudent() {
@@ -81,6 +89,32 @@
         alert("Misslyckades importera. Ogiltig kod?");
         console.error(e);
       }
+    }
+
+    function startQrScan() {
+      const reader = document.getElementById("qr-reader");
+      reader.style.display = "block";
+      const html5QrCode = new Html5Qrcode("qr-reader");
+
+      html5QrCode.start(
+        { facingMode: "environment" },
+        {
+          fps: 10,
+          qrbox: { width: 250, height: 250 }
+        },
+        (decodedText, decodedResult) => {
+          html5QrCode.stop().then(() => {
+            document.getElementById("importBox").value = decodedText;
+            reader.style.display = "none";
+            importStudent();
+          });
+        },
+        (errorMessage) => {
+          // ignore read errors
+        }
+      ).catch((err) => {
+        alert("Kunde inte starta kameran: " + err);
+      });
     }
   </script>
 </body>
