@@ -40,6 +40,7 @@
   <textarea id="exportBox" readonly rows="4"></textarea>
   <canvas id="qrCanvas"></canvas>
   <button onclick="exportCurrentStudent()">Skapa exportkod</button>
+  <button onclick="shareExport()">Dela via AirDrop / Meddelande</button>
 
   <hr />
 
@@ -74,6 +75,20 @@
         element: document.getElementById("qrCanvas"),
         value: base64,
         size: 800 // Högre upplösning för bättre läsbarhet
+      });
+    }
+
+    function shareExport() {
+      const base64 = document.getElementById("exportBox").value;
+      if (!navigator.share) {
+        alert("Delning stöds inte i den här webbläsaren.");
+        return;
+      }
+      navigator.share({
+        title: "Stjärnakademien Elevdata",
+        text: base64
+      }).catch((err) => {
+        console.error("Delning avbröts eller misslyckades:", err);
       });
     }
 
