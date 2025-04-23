@@ -12,11 +12,11 @@
       align-items: center;
       gap: 10px;
       margin-top: 10px;
+      flex-wrap: wrap;
     }
     #importBox {
       padding: 0.5rem;
       font-size: 1rem;
-      flex: 1;
       max-width: 300px;
     }
     .student-manager button {
@@ -48,7 +48,9 @@
     <h1 class="students-title">Export & Import</h1>
 
     <div class="field-label">Dela nuvarande elev</div>
-    <button onclick="shareExport()">Dela via AirDrop / Meddelande</button>
+    <div style="display: flex; justify-content: center;">
+      <button onclick="shareExport()">Dela via AirDrop / Meddelande</button>
+    </div>
 
     <hr />
 
@@ -77,6 +79,13 @@
       };
       const jsonStr = JSON.stringify(minimalExport);
       exportData = btoa(unescape(encodeURIComponent(jsonStr)));
+
+      // Kontrollera om ?code= finns i URL och fyll i automatiskt
+      const urlParams = new URLSearchParams(window.location.search);
+      const codeParam = urlParams.get("code");
+      if (codeParam) {
+        document.getElementById("importBox").value = codeParam;
+      }
     }
 
     function shareExport() {
@@ -84,9 +93,11 @@
         alert("Delning stöds inte i den här webbläsaren.");
         return;
       }
+      const shareUrl = `${window.location.origin}${window.location.pathname}?code=${encodeURIComponent(exportData)}`;
       navigator.share({
         title: "Stjärnakademien Elevdata",
-        text: exportData
+        text: "Tryck på Importera på sidan som öppnas",
+        url: shareUrl
       }).catch((err) => {
         console.error("Delning avbröts eller misslyckades:", err);
       });
