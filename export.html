@@ -24,8 +24,6 @@
 </head>
 <body>
   <h2>Exportera aktuell elev</h2>
-  <textarea id="exportBox" readonly rows="4"></textarea>
-  <button onclick="exportCurrentStudent()">Skapa exportkod</button>
   <button onclick="shareExport()">Dela via AirDrop / Meddelande</button>
 
   <hr />
@@ -35,7 +33,9 @@
   <button onclick="importStudent()">Importera kod</button>
 
   <script>
-    function exportCurrentStudent() {
+    let currentExportCode = "";
+
+    function generateExportCode() {
       const data = JSON.parse(localStorage.getItem("starAcademyStudents"));
       if (!data || !data.currentStudent || !data.students[data.currentStudent]) {
         alert("Ingen aktuell elev hittades.");
@@ -51,20 +51,17 @@
       };
 
       const jsonStr = JSON.stringify(minimalExport);
-      const base64 = btoa(unescape(encodeURIComponent(jsonStr)));
-
-      document.getElementById("exportBox").value = base64;
+      currentExportCode = btoa(unescape(encodeURIComponent(jsonStr)));
     }
 
     function shareExport() {
-      const base64 = document.getElementById("exportBox").value;
       if (!navigator.share) {
         alert("Delning stöds inte i den här webbläsaren.");
         return;
       }
       navigator.share({
         title: "Stjärnakademien Elevdata",
-        text: base64
+        text: currentExportCode
       }).catch((err) => {
         console.error("Delning avbröts eller misslyckades:", err);
       });
@@ -95,6 +92,9 @@
         console.error(e);
       }
     }
+
+    // Skapa exportkod direkt vid sidladdning
+    window.addEventListener("DOMContentLoaded", generateExportCode);
   </script>
 </body>
 </html>
