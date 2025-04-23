@@ -6,22 +6,16 @@
   <title>Exportera & Importera Elev</title>
   <link rel="stylesheet" href="styles.css">
   <style>
-    .import-container {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 10px;
-      margin-top: 10px;
-      flex-wrap: wrap;
-    }
-    #importBox {
-      padding: 0.5rem;
-      font-size: 1rem;
-      max-width: 300px;
-    }
     .student-manager button {
       margin: 0.5rem auto;
       display: inline-block;
+    }
+    .info-text {
+      max-width: 600px;
+      margin: 0 auto;
+      font-size: 1rem;
+      padding: 0 1rem 1rem;
+      line-height: 1.4;
     }
   </style>
   <script>
@@ -48,16 +42,10 @@
     <h1 class="students-title">Export & Import</h1>
 
     <div class="field-label">Dela nuvarande elev</div>
+    <p class="info-text">Genom att trycka på knappen nedan kan du dela den aktuella eleven till en annan enhet. Mottagaren behöver bara öppna länken – eleven läggs automatiskt till!</p>
+
     <div style="display: flex; justify-content: center;">
       <button onclick="shareExport()">Dela via AirDrop / Meddelande</button>
-    </div>
-
-    <hr />
-
-    <div class="field-label">Importera elev</div>
-    <div class="import-container">
-      <input type="text" id="importBox" placeholder="Klistra in kod här...">
-      <button onclick="importStudent()">Importera</button>
     </div>
   </div>
 
@@ -80,11 +68,11 @@
       const jsonStr = JSON.stringify(minimalExport);
       exportData = btoa(unescape(encodeURIComponent(jsonStr)));
 
-      // Kontrollera om ?code= finns i URL och fyll i automatiskt
       const urlParams = new URLSearchParams(window.location.search);
       const codeParam = urlParams.get("code");
       if (codeParam) {
         document.getElementById("importBox").value = codeParam;
+        importStudent(codeParam); // Trigga import automatiskt
       }
     }
 
@@ -96,20 +84,27 @@
       const shareUrl = `${window.location.origin}${window.location.pathname}?code=${encodeURIComponent(exportData)}`;
       navigator.share({
         title: "Stjärnakademien Elevdata",
-        text: "Tryck på Importera på sidan som öppnas",
+        text: "Öppna länken så läggs eleven automatiskt till",
         url: shareUrl
       }).catch((err) => {
         console.error("Delning avbröts eller misslyckades:", err);
       });
     }
 
-    function importStudent() {
-      const input = document.getElementById("importBox").value;
+    function importStudent(encodedData) {
       try {
-        const jsonStr = decodeURIComponent(escape(atob(input)));
+        const jsonStr = decodeURIComponent(escape(atob(encodedData)));
         const student = JSON.parse(jsonStr);
-        const data = JSON.parse(localStorage.getItem("starAcademyStudents")) || { students: {}, currentStudent: "" };
+
+        let data = localStorage.getItem("starAcademyStudents");
+        if (!data) {
+          data = { students: {}, currentStudent: "" };
+        } else {
+          data = JSON.parse(data);
+        }
+
         const name = student.name || "ImporteradElev";
+        if (!data.students) data.students = {};
         data.students[name] = {
           name: name,
           rank: student.rank || "Utforskare",
@@ -118,8 +113,8 @@
         };
         data.currentStudent = name;
         localStorage.setItem("starAcademyStudents", JSON.stringify(data));
-        alert("Import klar! Ladda om sidan.");
-        location.reload();
+        alert("Import klar! Eleven är nu tillagd.");
+        location.href = "students.html"; // Gå direkt till översiktssidan
       } catch (e) {
         alert("Misslyckades importera. Ogiltig kod?");
         console.error(e);
