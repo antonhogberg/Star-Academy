@@ -17,6 +17,9 @@
       padding: 0 1rem 1rem;
       line-height: 1.4;
     }
+    #importBox {
+      display: none;
+    }
   </style>
   <script>
     function setViewportHeight() {
@@ -47,6 +50,8 @@
     <div style="display: flex; justify-content: center;">
       <button onclick="shareExport()">Dela via AirDrop / Meddelande</button>
     </div>
+
+    <input type="hidden" id="importBox">
   </div>
 
   <script>
@@ -54,25 +59,22 @@
 
     function generateExport() {
       const data = JSON.parse(localStorage.getItem("starAcademyStudents"));
-      if (!data || !data.currentStudent || !data.students[data.currentStudent]) {
-        alert("Ingen aktuell elev hittades.");
-        return;
+      if (data && data.currentStudent && data.students[data.currentStudent]) {
+        const student = data.students[data.currentStudent];
+        const minimalExport = {
+          name: student.name,
+          rank: student.rank || "Utforskare",
+          progress: student.progress || {},
+          notes: student.notes || ""
+        };
+        const jsonStr = JSON.stringify(minimalExport);
+        exportData = btoa(unescape(encodeURIComponent(jsonStr)));
       }
-      const student = data.students[data.currentStudent];
-      const minimalExport = {
-        name: student.name,
-        rank: student.rank || "Utforskare",
-        progress: student.progress || {},
-        notes: student.notes || ""
-      };
-      const jsonStr = JSON.stringify(minimalExport);
-      exportData = btoa(unescape(encodeURIComponent(jsonStr)));
 
       const urlParams = new URLSearchParams(window.location.search);
       const codeParam = urlParams.get("code");
       if (codeParam) {
-        document.getElementById("importBox").value = codeParam;
-        importStudent(codeParam); // Trigga import automatiskt
+        importStudent(codeParam);
       }
     }
 
@@ -114,7 +116,7 @@
         data.currentStudent = name;
         localStorage.setItem("starAcademyStudents", JSON.stringify(data));
         alert("Import klar! Eleven är nu tillagd.");
-        location.href = "students.html"; // Gå direkt till översiktssidan
+        location.href = "students.html";
       } catch (e) {
         alert("Misslyckades importera. Ogiltig kod?");
         console.error(e);
