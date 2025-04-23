@@ -47,7 +47,7 @@
 
       try {
         const docRef = await addDoc(collection(db, "exports"), dataToExport);
-        const link = `${window.location.origin}/Star-Academy/students.html?code=${docRef.id}`;
+        const link = `${window.location.origin}/Star-Academy/index.html?code=${docRef.id}`;
         await navigator.share({ title: "Elevdata", url: link });
       } catch (error) {
         alert("Det gick inte att skapa delningslänk");
