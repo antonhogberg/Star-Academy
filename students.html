@@ -1,239 +1,218 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="sv">
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <meta charset="UTF-8">
-    <title>Stjärnakademien - Star Academy</title>
-    <link rel="stylesheet" href="styles.css">
-    <script>
-        function setViewportHeight() {
-            let vh = window.innerHeight * 0.01;
-            document.documentElement.style.setProperty('--vh', `${vh}px`);
-        }
-        window.addEventListener('resize', setViewportHeight);
-        window.addEventListener('orientationchange', setViewportHeight);
-        setViewportHeight();
-    </script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <title>Stjärnakademiens elever</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script>
+    function setViewportHeight() {
+      let vh = window.innerHeight * 0.01;
+      document.documentElement.style.setProperty('--vh', `${vh}px`);
+    }
+    window.addEventListener('resize', setViewportHeight);
+    window.addEventListener('orientationchange', setViewportHeight);
+    setViewportHeight();
+  </script>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
+    import { getFirestore, collection, addDoc, getDoc, doc as firestoreDoc } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "REDACTED",
+      authDomain: "stjarnakademien-6b272.firebaseapp.com",
+      projectId: "stjarnakademien-6b272",
+      storageBucket: "stjarnakademien-6b272.appspot.com",
+      messagingSenderId: "773874793436",
+      appId: "1:773874793436:web:f7dc4307844e38709e2d19"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    window.shareExport = async function () {
+      const exportStatus = document.getElementById("exportStatus");
+      exportStatus.style.display = "block";
+      exportStatus.textContent = "Skapar länk, vänta…";
+
+      const studentsData = JSON.parse(localStorage.getItem("starAcademyStudents")) || { students: {}, currentStudent: "" };
+      const current = studentsData.currentStudent;
+      if (!current || !studentsData.students[current]) return;
+
+      const dataToExport = {
+        name: current,
+        data: studentsData.students[current]
+      };
+
+      try {
+        const docRef = await addDoc(collection(db, "exports"), dataToExport);
+        const link = `${window.location.origin}/Star-Academy/students.html?code=${docRef.id}`;
+        await navigator.share({ title: "Elevdata", url: link });
+      } catch (error) {
+        alert("Det gick inte att skapa delningslänk");
+      } finally {
+        exportStatus.style.display = "none";
+      }
+    };
+
+    window.addEventListener("DOMContentLoaded", async () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const code = urlParams.get("code");
+      if (!code) return;
+
+      try {
+        const docSnap = await getDoc(firestoreDoc(getFirestore(), "exports", code));
+        if (!docSnap.exists()) return;
+
+        const stored = JSON.parse(localStorage.getItem("starAcademyStudents")) || { students: {}, currentStudent: "" };
+        const { name, data } = docSnap.data();
+        stored.students[name] = data;
+        stored.currentStudent = name;
+        localStorage.setItem("starAcademyStudents", JSON.stringify(stored));
+        window.location.href = "students.html";
+      } catch (e) {
+        console.error("Import misslyckades:", e);
+      }
+    });
+  </script>
 </head>
 <body>
-    <div class="piano-menu" id="menuButton" aria-expanded="false" aria-controls="main-menu">
-        <div class="white-key"></div>
-        <div class="white-key"></div>
-        <div class="white-key"></div>
-        <div class="black-key top"></div>
-        <div class="black-key bottom"></div>
+  <div class="piano-menu" id="menuButton" aria-expanded="false" aria-controls="main-menu">
+    <div class="white-key"></div>
+    <div class="white-key"></div>
+    <div class="white-key"></div>
+    <div class="black-key top"></div>
+    <div class="black-key bottom"></div>
+  </div>
+  <nav id="menu-placeholder"></nav>
+  <div class="student-manager" style="text-align: center;">
+    <h1 id="studentsPageTitle" class="students-title" data-translate="studentManager"></h1>
+
+    <div id="addStudentLabel" class="field-label" data-translate="addStudentLabel"></div>
+    <div class="input-button-container">
+      <div class="input-group">
+        <input type="text" id="newStudentName">
+        <button id="addStudentButton" onclick="addStudent()" data-translate="addStudent"></button>
+      </div>
     </div>
-    <nav id="menu-placeholder"></nav>
-    <div class="student-manager" style="text-align: center;">
-        <h1 id="studentsPageTitle" class="students-title"></h1>
-        <div id="addStudentLabel" class="field-label"></div>
-        <div class="input-button-container">
-            <div class="input-group">
-                <input type="text" id="newStudentName">
-                <button id="addStudentButton" onclick="addStudent()"></button>
-            </div>
-        </div>
-        <div id="studentsLabel" class="field-label"></div>
-        <div class="dropdown-container">
-            <select id="studentSelect" onchange="switchStudent()" style="padding: 10px; font-size: 16px;">
-                <!-- Default option removed -->
-            </select>
-        </div>
-        <div class="notes-wrapper">
-            <div class="notes-container">
-                <div id="notesLabel" class="field-label"></div>
-                <div class="notes-button-container">
-                    <textarea id="studentNotes" rows="5"></textarea>
-                </div>
-            </div>
-        </div>
+
+    <div id="studentsLabel" class="field-label" data-translate="studentsLabel"></div>
+    <div class="dropdown-container">
+      <select id="studentSelect" onchange="switchStudent()" style="padding: 10px; font-size: 16px;"></select>
     </div>
-    <div id="studentPopup" class="student-popup">
-        <div class="student-popup-content">
-            <p id="studentPopupMessage"></p>
+
+    <div class="notes-wrapper">
+      <div class="notes-container">
+        <div id="notesLabel" class="field-label" data-translate="notes"></div>
+        <div class="notes-button-container">
+          <textarea id="studentNotes" rows="5"></textarea>
         </div>
+      </div>
     </div>
-    <script src="script.js"></script>
-    <script src="students.js"></script>
-    <script>
-        // Debounce function to limit how often we save to localStorage
-        function debounce(func, wait) {
-            let timeout;
-            return function (...args) {
-                clearTimeout(timeout);
-                timeout = setTimeout(() => func.apply(this, args), wait);
-            };
-        }
 
-        function saveNotes(silent = false) {
-            const studentNotes = document.getElementById('studentNotes');
-            // Use window.studentsData.currentStudent instead of select.value
-            const currentStudent = window.studentsData.currentStudent;
-        
-            if (!currentStudent) {
-                if (!silent) {
-                    alert('Please select a student before saving notes.');
-                }
-                return;
-            }
-        
-            if (!window.studentsData.students[currentStudent]) {
-                if (!silent) {
-                    alert('Selected student not found. Please add the student first.');
-                }
-                return;
-            }
-        
-            // Save the notes
-            window.studentsData.students[currentStudent].notes = studentNotes.value;
-            localStorage.setItem('starAcademyStudents', JSON.stringify(window.studentsData));
-            if (!silent) {
-                alert('Notes saved successfully!');
-            }
-        }
+    <div style="margin-top: 2rem;">
+      <h2 class="field-label" data-translate="exportTitle">Exportera elev</h2>
+      <p class="info-text" data-translate="exportInfo">
+        Genom att trycka på knappen nedan kan du dela den aktuella eleven till en annan enhet. Mottagaren behöver bara öppna länken – eleven läggs automatiskt till!
+      </p>
+      <div style="display: flex; flex-direction: column; align-items: center;">
+        <button onclick="shareExport()" data-translate="shareButton">Dela via AirDrop / Meddelande</button>
+        <p id="exportStatus" class="info-text" style="display: none;">Skapar länk, vänta…</p>
+      </div>
+    </div>
+  </div>
+  <div id="studentPopup" class="student-popup">
+    <div class="student-popup-content">
+      <p id="studentPopupMessage"></p>
+    </div>
+  </div>
 
-        // Debounced version of saveNotes
-        const debouncedSaveNotes = debounce(() => saveNotes(true), 500);
+  <script src="script.js"></script>
+  <script src="students.js"></script>
 
-        document.addEventListener('DOMContentLoaded', () => {
-        // Initial language setup (handled by script.js)
-        const initialLang = localStorage.getItem('language') || 'sv';
-        switchLanguage(initialLang);
+  <script>
+    // Funktion för att spara anteckningar (debounced)
+    function debounce(func, wait) {
+      let timeout;
+      return function (...args) {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => func.apply(this, args), wait);
+      };
+    }
 
-        // Add Enter key functionality to trigger Add button
-        const newStudentInput = document.getElementById('newStudentName');
-        if (newStudentInput) {
-            newStudentInput.addEventListener('keydown', (e) => {
-                if (e.key === 'Enter' && newStudentInput.value.trim()) {
-                    addStudent();
-                }
-            });
-            // Fallback for placeholder behavior
-            newStudentInput.addEventListener('focus', () => {
-                if (newStudentInput.value === '') {
-                    newStudentInput.placeholder = '';
-                }
-            });
-            newStudentInput.addEventListener('blur', () => {
-                if (newStudentInput.value === '') {
-                    const currentLang = localStorage.getItem('language') || 'sv';
-                    newStudentInput.placeholder = translations[currentLang].studentNamePlaceholder;
-                }
-            });
-        } else {
-            console.error('newStudentInput element not found');
-        }
+    function saveNotes(silent = false) {
+      const studentNotes = document.getElementById('studentNotes');
+      const currentStudent = window.studentsData.currentStudent;
 
-        // Load notes for the current student
-        loadNotes();
+      if (!currentStudent || !window.studentsData.students[currentStudent]) {
+        if (!silent) alert('Välj en elev först');
+        return;
+      }
 
-        // Add event listeners for auto-saving
-        const studentNotes = document.getElementById('studentNotes');
-        if (studentNotes) {
-            studentNotes.addEventListener('input', () => {
-                debouncedSaveNotes();
-            });
-            studentNotes.addEventListener('blur', () => {
-                saveNotes(true);
-            });
-            window.addEventListener('beforeunload', () => {
-                saveNotes(true);
-            });
-            // Fallback for placeholder behavior
-            studentNotes.addEventListener('focus', () => {
-                if (studentNotes.value === '') {
-                    studentNotes.placeholder = '';
-                }
-            });
-            studentNotes.addEventListener('blur', () => {
-                if (studentNotes.value === '') {
-                    const currentLang = localStorage.getItem('language') || 'sv';
-                    studentNotes.placeholder = translations[currentLang].notesPlaceholder;
-                }
-            });
-        } else {
-            console.error('studentNotes element not found');
-        }
+      window.studentsData.students[currentStudent].notes = studentNotes.value;
+      localStorage.setItem('starAcademyStudents', JSON.stringify(window.studentsData));
+      if (!silent) alert('Sparat!');
+    }
+
+    const debouncedSaveNotes = debounce(() => saveNotes(true), 500);
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const lang = localStorage.getItem('language') || 'sv';
+      switchLanguage(lang);
+
+      const newStudentInput = document.getElementById('newStudentName');
+      if (newStudentInput) {
+        newStudentInput.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' && newStudentInput.value.trim()) addStudent();
+        });
+      }
+
+      loadNotes();
+
+      const notes = document.getElementById('studentNotes');
+      if (notes) {
+        notes.addEventListener('input', () => debouncedSaveNotes());
+        notes.addEventListener('blur', () => saveNotes(true));
+      }
     });
 
-        // Function to load notes for the current student
-        function loadNotes() {
-            const select = document.getElementById('studentSelect');
-            const studentNotes = document.getElementById('studentNotes');
-            let studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
+    function loadNotes() {
+      const select = document.getElementById('studentSelect');
+      const notes = document.getElementById('studentNotes');
+      const data = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
 
-            // Populate the dropdown (this will handle clearing and adding options)
-            updateDropdown();
+      updateDropdown();
 
-            // Load notes for the current student
-            const currentStudent = studentsData.currentStudent;
-            if (currentStudent && studentsData.students[currentStudent] && studentsData.students[currentStudent].notes) {
-                studentNotes.value = studentsData.students[currentStudent].notes;
-            } else {
-                studentNotes.value = ''; // Let placeholder show
-            }
+      const current = data.currentStudent;
+      if (current && data.students[current] && data.students[current].notes) {
+        notes.value = data.students[current].notes;
+      } else {
+        notes.value = '';
+      }
 
-            // Ensure select.value matches window.studentsData.currentStudent
-            if (select && currentStudent) {
-                select.value = currentStudent;
-            }
-        }
+      if (select && current) select.value = current;
+    }
 
-        function switchStudent() {
-            const select = document.getElementById('studentSelect');
-            const studentNotes = document.getElementById('studentNotes');
-            let studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
+    function switchStudent() {
+      const select = document.getElementById('studentSelect');
+      const notes = document.getElementById('studentNotes');
+      let data = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
+      const selected = select.value;
 
-            const selectedStudent = select.value;
-            if (selectedStudent) {
-                studentsData.currentStudent = selectedStudent;
-                localStorage.setItem('starAcademyStudents', JSON.stringify(studentsData));
-                window.studentsData.currentStudent = selectedStudent; // Keep in sync
+      if (selected) {
+        data.currentStudent = selected;
+        localStorage.setItem('starAcademyStudents', JSON.stringify(data));
+        window.studentsData.currentStudent = selected;
 
-                if (studentsData.students[selectedStudent] && studentsData.students[selectedStudent].notes) {
-                    studentNotes.value = studentsData.students[selectedStudent].notes;
-                } else {
-                    studentNotes.value = '';
-                    const currentLang = localStorage.getItem('language') || 'sv';
-                    studentNotes.placeholder = translations[currentLang].notesPlaceholder;
-                    // Force a re-render by removing and re-adding the text area
-                    const parent = studentNotes.parentNode;
-                    const nextSibling = studentNotes.nextSibling;
-                    parent.removeChild(studentNotes);
-                    if (nextSibling) {
-                        parent.insertBefore(studentNotes, nextSibling);
-                    } else {
-                        parent.appendChild(studentNotes);
-                    }
-                }
-            } else {
-                studentsData.currentStudent = '';
-                localStorage.setItem('starAcademyStudents', JSON.stringify(studentsData));
-                window.studentsData.currentStudent = ''; // Keep in sync
-                studentNotes.value = '';
-                const currentLang = localStorage.getItem('language') || 'sv';
-                studentNotes.placeholder = translations[currentLang].notesPlaceholder;
-                // Force a re-render by removing and re-adding the text area
-                const parent = studentNotes.parentNode;
-                const nextSibling = studentNotes.nextSibling;
-                parent.removeChild(studentNotes);
-                if (nextSibling) {
-                    parent.insertBefore(studentNotes, nextSibling);
-                } else {
-                    parent.appendChild(studentNotes);
-                }
-            }
-        }
-    </script>
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // Reset viewport scale to 1.0 on page load
-            const metaViewport = document.querySelector('meta[name="viewport"]');
-            metaViewport.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover');
-        });
-    </script>
-    <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9226e69469696205',t:'MTc0MjMyMzY2OS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
-    <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'923e56ccff59b3d4',t:'MTc0MjU2OTQzOC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
-    <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'923fc9ba589512ed',t:'MTc0MjU4NDYzMS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
+        notes.value = data.students[selected]?.notes || '';
+      } else {
+        data.currentStudent = '';
+        localStorage.setItem('starAcademyStudents', JSON.stringify(data));
+        window.studentsData.currentStudent = '';
+        notes.value = '';
+      }
+    }
+  </script>
 </body>
 </html>

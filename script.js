@@ -62,7 +62,11 @@ const translations = {
         faqQ6: "Why did my progress reset?",
         faqA6: "Clearing your browser’s cache/history deletes local data—keep it to save progress.",
         faqQ7: "Can I send suggestions or questions?",
-        faqA7: "Yes, feel free to email: staracademypianoschool@gmail.com"
+        faqA7: "Yes, feel free to email: staracademypianoschool@gmail.com",
+        exportTitle: "Export Student Data",
+        exportInfo: "Tap the button below to share the current student to another device. The recipient just needs to open the link – the student will be added automatically!",
+        shareButton: "Share via AirDrop / Message",
+        creatingLink: "Generating link, please wait…"
     },
     sv: {
         menuFrontPage: "Stjärnöversikt",
@@ -126,7 +130,11 @@ const translations = {
         faqQ6: "Varför nollställdes mina framsteg?",
         faqA6: "Rensa webbläsarens cache/historik tar bort lokal data—behåll den för att spara framsteg.",
         faqQ7: "Kan jag skicka förslag och frågor?",
-        faqA7: "Ja, maila gärna: stjarnakademien@gmail.com"
+        faqA7: "Ja, maila gärna: stjarnakademien@gmail.com",
+        exportTitle: "Exportera elevdata",
+        exportInfo: "Genom att trycka på knappen nedan kan du dela den aktuella eleven till en annan enhet. Mottagaren behöver bara öppna länken – eleven läggs automatiskt till!",
+        shareButton: "Dela via AirDrop / Meddelande",
+        creatingLink: "Skapar länk, vänta…"
     }
 };
 
