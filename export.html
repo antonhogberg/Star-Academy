@@ -5,6 +5,25 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
   <title>Exportera & Importera Elev</title>
   <link rel="stylesheet" href="styles.css">
+  <style>
+    .import-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      margin-top: 10px;
+    }
+    #importBox {
+      padding: 0.5rem;
+      font-size: 1rem;
+      flex: 1;
+      max-width: 300px;
+    }
+    .student-manager button {
+      margin: 0.5rem auto;
+      display: inline-block;
+    }
+  </style>
   <script>
     function setViewportHeight() {
       let vh = window.innerHeight * 0.01;
@@ -34,11 +53,9 @@
     <hr />
 
     <div class="field-label">Importera elev</div>
-    <div class="input-button-container">
-      <div class="input-group">
-        <input type="text" id="importBox" placeholder="Klistra in kod här...">
-        <button onclick="importStudent()">Importera</button>
-      </div>
+    <div class="import-container">
+      <input type="text" id="importBox" placeholder="Klistra in kod här...">
+      <button onclick="importStudent()">Importera</button>
     </div>
   </div>
 
