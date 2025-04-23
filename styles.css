@@ -1123,6 +1123,11 @@ body.chapters {
     align-items: center;
 }
 
+.student-popup.show {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
 .student-popup-content {
     background-color: #000000;
     background-image: url('background.jpg');
