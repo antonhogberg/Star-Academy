@@ -42,8 +42,12 @@
     }
 
     window.shareExport = async function() {
+      const statusText = document.getElementById("exportStatus");
+      if (statusText) statusText.style.display = "block";
+
       if (!navigator.share) {
         alert("Delning stöds inte i den här webbläsaren.");
+        if (statusText) statusText.style.display = "none";
         return;
       }
 
@@ -53,7 +57,7 @@
           data: window.exportPayload
         });
         const shortUrl = `${window.location.origin}${window.location.pathname}?id=${docRef.id}`;
-        navigator.share({
+        await navigator.share({
           title: "Stjärnakademien Elevdata",
           text: "Öppna länken så läggs eleven automatiskt till",
           url: shortUrl
@@ -61,6 +65,8 @@
       } catch (error) {
         console.error("Kunde inte spara till Firestore:", error);
         alert("Något gick fel vid export. Försök igen.");
+      } finally {
+        if (statusText) statusText.style.display = "none";
       }
     }
 
@@ -115,6 +121,11 @@
     #importBox {
       display: none;
     }
+    #exportStatus {
+      font-style: italic;
+      color: #666;
+      font-size: 0.95rem;
+    }
   </style>
   <script>
     function setViewportHeight() {
@@ -142,8 +153,9 @@
     <div class="field-label">Dela nuvarande elev</div>
     <p class="info-text">Genom att trycka på knappen nedan kan du dela den aktuella eleven till en annan enhet. Mottagaren behöver bara öppna länken – eleven läggs automatiskt till!</p>
 
-    <div style="display: flex; justify-content: center;">
+    <div style="display: flex; flex-direction: column; align-items: center;">
       <button onclick="shareExport()">Dela via AirDrop / Meddelande</button>
+      <p id="exportStatus" class="info-text" style="display: none;">Skapar länk, vänta…</p>
     </div>
 
     <input type="hidden" id="importBox">
