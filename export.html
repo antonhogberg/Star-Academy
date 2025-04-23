@@ -2,56 +2,64 @@
 <html lang="sv">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
   <title>Exportera & Importera Elev</title>
-  <style>
-    body {
-      font-family: sans-serif;
-      padding: 2rem;
-      max-width: 600px;
-      margin: auto;
+  <link rel="stylesheet" href="styles.css">
+  <script>
+    function setViewportHeight() {
+      let vh = window.innerHeight * 0.01;
+      document.documentElement.style.setProperty('--vh', `${vh}px`);
     }
-    textarea {
-      width: 100%;
-      font-family: monospace;
-    }
-    button {
-      margin-top: 0.5rem;
-      padding: 0.5rem 1rem;
-      font-size: 1rem;
-    }
-  </style>
+    window.addEventListener('resize', setViewportHeight);
+    window.addEventListener('orientationchange', setViewportHeight);
+    setViewportHeight();
+  </script>
 </head>
 <body>
-  <h2>Exportera aktuell elev</h2>
-  <button onclick="shareExport()">Dela via AirDrop / Meddelande</button>
+  <div class="piano-menu" id="menuButton" aria-expanded="false" aria-controls="main-menu">
+    <div class="white-key"></div>
+    <div class="white-key"></div>
+    <div class="white-key"></div>
+    <div class="black-key top"></div>
+    <div class="black-key bottom"></div>
+  </div>
+  <nav id="menu-placeholder"></nav>
 
-  <hr />
+  <div class="student-manager" style="text-align: center;">
+    <h1 class="students-title">Export & Import</h1>
 
-  <h2>Importera elev</h2>
-  <textarea id="importBox" rows="4"></textarea>
-  <button onclick="importStudent()">Importera kod</button>
+    <div class="field-label">Dela nuvarande elev</div>
+    <button onclick="shareExport()">Dela via AirDrop / Meddelande</button>
+
+    <hr />
+
+    <div class="field-label">Importera elev</div>
+    <div class="input-button-container">
+      <div class="input-group">
+        <input type="text" id="importBox" placeholder="Klistra in kod här...">
+        <button onclick="importStudent()">Importera</button>
+      </div>
+    </div>
+  </div>
 
   <script>
-    let currentExportCode = "";
+    let exportData = "";
 
-    function generateExportCode() {
+    function generateExport() {
       const data = JSON.parse(localStorage.getItem("starAcademyStudents"));
       if (!data || !data.currentStudent || !data.students[data.currentStudent]) {
         alert("Ingen aktuell elev hittades.");
         return;
       }
-
       const student = data.students[data.currentStudent];
-
       const minimalExport = {
         name: student.name,
-        progress: student.progress,
+        rank: student.rank || "Utforskare",
+        progress: student.progress || {},
         notes: student.notes || ""
       };
-
       const jsonStr = JSON.stringify(minimalExport);
-      currentExportCode = btoa(unescape(encodeURIComponent(jsonStr)));
+      exportData = btoa(unescape(encodeURIComponent(jsonStr)));
     }
 
     function shareExport() {
@@ -61,7 +69,7 @@
       }
       navigator.share({
         title: "Stjärnakademien Elevdata",
-        text: currentExportCode
+        text: exportData
       }).catch((err) => {
         console.error("Delning avbröts eller misslyckades:", err);
       });
@@ -72,18 +80,15 @@
       try {
         const jsonStr = decodeURIComponent(escape(atob(input)));
         const student = JSON.parse(jsonStr);
-
         const data = JSON.parse(localStorage.getItem("starAcademyStudents")) || { students: {}, currentStudent: "" };
         const name = student.name || "ImporteradElev";
-
         data.students[name] = {
           name: name,
-          rank: "Utforskare",
+          rank: student.rank || "Utforskare",
           progress: student.progress || {},
           notes: student.notes || ""
         };
         data.currentStudent = name;
-
         localStorage.setItem("starAcademyStudents", JSON.stringify(data));
         alert("Import klar! Ladda om sidan.");
         location.reload();
@@ -93,8 +98,10 @@
       }
     }
 
-    // Skapa exportkod direkt vid sidladdning
-    window.addEventListener("DOMContentLoaded", generateExportCode);
+    document.addEventListener("DOMContentLoaded", () => {
+      generateExport();
+    });
   </script>
+  <script src="students.js"></script>
 </body>
 </html>
