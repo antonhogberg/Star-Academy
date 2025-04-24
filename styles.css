@@ -1193,6 +1193,7 @@ body.chapters {
     background-color: var(--orange);
 }
 
+/* Export Button */
 .student-manager button#shareButton {
     width: 320px;
     height: 42px;
@@ -1212,6 +1213,12 @@ body.chapters {
     justify-content: center;
     align-items: center;
     text-align: center;
+    -webkit-tap-highlight-color: transparent; /* Prevent mobile tap highlight */
+}
+
+.student-manager button#shareButton:hover,
+.student-manager button#shareButton:active {
+    transform: none !important; /* Explicitly prevent scaling */
 }
 
 /* Export Status Text */
