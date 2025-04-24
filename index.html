@@ -21,118 +21,118 @@
         <p style="font-size: 18px;">Laddar data…</p>
       </div>    
       <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
-        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore.js";
-      
-        const firebaseConfig = {
-          apiKey: "REDACTED",
-          authDomain: "stjarnakademien-6b272.firebaseapp.com",
-          projectId: "stjarnakademien-6b272",
-          storageBucket: "stjarnakademien-6b272.appspot.com",
-          messagingSenderId: "773874793436",
-          appId: "1:773874793436:web:f7dc4307844e38709e2d19"
-        };
-      
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-      
-        const urlParams = new URLSearchParams(window.location.search);
-        const code = urlParams.get("code");
-        const overlay = document.getElementById("importLoaderOverlay");
-        const mainContent = document.getElementById("mainContent");
-      
-        async function handleImportFromLink(code) {
-          try {
-            const docSnap = await getDoc(doc(db, "exports", code));
-            if (!docSnap.exists()) throw new Error("Document not found.");
-      
-            const stored = JSON.parse(localStorage.getItem("starAcademyStudents")) || { students: {}, currentStudent: "" };
-            const { name, data } = docSnap.data();
-            const isNew = !stored.students[name];
-      
-            stored.students[name] = data;
-            stored.currentStudent = name;
-            localStorage.setItem("starAcademyStudents", JSON.stringify(stored));
-      
-            // Clean URL
-            const cleanUrl = window.location.origin + window.location.pathname;
-            window.history.replaceState({}, document.title, cleanUrl);
-      
-            // Load script.js dynamically
-            const script = document.createElement("script");
-            script.src = "script.js";
-            script.onload = () => {
-              // Call initialization after script loads
-              window.initializeAppContent();
-              showStudentPopup(isNew, name);
-              mainContent.style.display = "block";
-              overlay.style.display = "none";
-            };
-            document.body.appendChild(script);
-          } catch (e) {
-            console.error("Import från kod misslyckades:", e);
-            showErrorPopup();
-            // Load script.js to initialize with existing data
-            const script = document.createElement("script");
-            script.src = "script.js";
-            script.onload = () => {
-              window.initializeAppContent();
-              mainContent.style.display = "block";
-              overlay.style.display = "none";
-            };
-            document.body.appendChild(script);
-          }
-        }
-      
-        function showStudentPopup(isNew, name) {
-          const popup = document.createElement("div");
-          popup.id = "studentPopup";
-          popup.className = "student-popup show";
-          popup.innerHTML = `
-            <div class="student-popup-content">
-              <p>${isNew ? `Hej ${name}! Din användare har nu skapats.` : `Hej ${name}! Din elevdata har uppdaterats!`}</p>
-            </div>
-          `;
-          document.body.appendChild(popup);
-      
-          setTimeout(() => {
-            popup.classList.remove("show");
-            setTimeout(() => popup.remove(), 500); // Wait for fade-out animation
-          }, 3000);
-        }
-      
-        function showErrorPopup() {
-          const popup = document.createElement("div");
-          popup.id = "errorPopup";
-          popup.className = "student-popup show";
-          popup.innerHTML = `
-            <div class="student-popup-content">
-              <p>Kunde inte importera elevdata. Visar befintlig data.</p>
-            </div>
-          `;
-          document.body.appendChild(popup);
-      
-          setTimeout(() => {
-            popup.classList.remove("show");
-            setTimeout(() => popup.remove(), 500); // Wait for fade-out animation
-          }, 3000);
-        }
-      
-        if (code) {
-          overlay.style.display = "flex";
-          mainContent.style.display = "none";
-          handleImportFromLink(code);
-        } else {
-          // No import, load script.js immediately
-          const script = document.createElement("script");
-          script.src = "script.js";
-          script.onload = () => {
-            window.initializeAppContent();
-            mainContent.style.display = "block";
-          };
-          document.body.appendChild(script);
-        }
-      </script>
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
+  import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "REDACTED",
+    authDomain: "stjarnakademien-6b272.firebaseapp.com",
+    projectId: "stjarnakademien-6b272",
+    storageBucket: "stjarnakademien-6b272.appspot.com",
+    messagingSenderId: "773874793436",
+    appId: "1:773874793436:web:f7dc4307844e38709e2d19"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  const urlParams = new URLSearchParams(window.location.search);
+  const code = urlParams.get("code");
+  const overlay = document.getElementById("importLoaderOverlay");
+  const mainContent = document.getElementById("mainContent");
+
+  async function handleImportFromLink(code) {
+    try {
+      const docSnap = await getDoc(doc(db, "exports", code));
+      if (!docSnap.exists()) throw new Error("Document not found.");
+
+      const stored = JSON.parse(localStorage.getItem("starAcademyStudents")) || { students: {}, currentStudent: "" };
+      const { name, data } = docSnap.data();
+      const isNew = !stored.students[name];
+
+      stored.students[name] = data;
+      stored.currentStudent = name;
+      localStorage.setItem("starAcademyStudents", JSON.stringify(stored));
+
+      // Clean URL
+      const cleanUrl = window.location.origin + window.location.pathname;
+      window.history.replaceState({}, document.title, cleanUrl);
+
+      // Load script.js dynamically
+      const script = document.createElement("script");
+      script.src = "script.js";
+      script.onload = () => {
+        // Call initialization after script loads
+        window.initializeAppContent();
+        showStudentPopup(isNew, name);
+        mainContent.style.display = "block";
+        overlay.style.display = "none";
+      };
+      document.body.appendChild(script);
+    } catch (e) {
+      console.error("Import från kod misslyckades:", e);
+      showErrorPopup();
+      // Load script.js to initialize with existing data
+      const script = document.createElement("script");
+      script.src = "script.js";
+      script.onload = () => {
+        window.initializeAppContent();
+        mainContent.style.display = "block";
+        overlay.style.display = "none";
+      };
+      document.body.appendChild(script);
+    }
+  }
+
+  function showStudentPopup(isNew, name) {
+    const popup = document.createElement("div");
+    popup.id = "studentPopup";
+    popup.className = "student-popup show";
+    popup.innerHTML = `
+      <div class="student-popup-content">
+        <p>${isNew ? `Hej ${name}! Din användare har nu skapats.` : `Hej ${name}! Din elevdata har uppdaterats!`}</p>
+      </div>
+    `;
+    document.body.appendChild(popup);
+
+    setTimeout(() => {
+      popup.classList.remove("show");
+      setTimeout(() => popup.remove(), 500); // Wait for fade-out animation
+    }, 3000);
+  }
+
+  function showErrorPopup() {
+    const popup = document.createElement("div");
+    popup.id = "errorPopup";
+    popup.className = "student-popup show";
+    popup.innerHTML = `
+      <div class="student-popup-content">
+        <p>Kunde inte importera elevdata. Visar befintlig data.</p>
+      </div>
+    `;
+    document.body.appendChild(popup);
+
+    setTimeout(() => {
+      popup.classList.remove("show");
+      setTimeout(() => popup.remove(), 500); // Wait for fade-out animation
+    }, 3000);
+  }
+
+  if (code) {
+    overlay.style.display = "flex";
+    mainContent.style.display = "none";
+    handleImportFromLink(code);
+  } else {
+    // No import, load script.js immediately
+    const script = document.createElement("script");
+    script.src = "script.js";
+    script.onload = () => {
+      window.initializeAppContent();
+      mainContent.style.display = "block";
+    };
+    document.body.appendChild(script);
+  }
+</script>
 <div id="mainContent" style="display: none;">
         <div class="piano-menu" id="menuButton" aria-expanded="false" aria-controls="main-menu">
             <div class="white-key"></div>
