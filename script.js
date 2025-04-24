@@ -783,3 +783,17 @@ waitForDOM().then(() => {
     window.addEventListener('resize', setStarMapHeight);
     window.addEventListener('orientationchange', setStarMapHeight);
 });
+
+document.addEventListener("DOMContentLoaded", () => {
+    window.initializeAppContent = function() {
+        updateStarStates(); // Uppdatera stjärnorna
+        const studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
+        const userName = document.getElementById("userName");
+        if(userName && studentsData.currentStudent){
+            userName.textContent = studentsData.currentStudent;
+        }
+    };
+
+    // Kör vid initial sidladdning
+    window.initializeAppContent();
+});
