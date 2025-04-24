@@ -16,8 +16,10 @@
     </script>
 </head>
 <body>
-    <div id="importLoaderOverlay" style="position: fixed; inset: 0; background: #fff; display: none; align-items: center; justify-content: center; z-index: 9999;">
-        <p style="font-size: 18px;">Laddar data…</p>
+    <div id="importLoaderOverlay" style="display: none;">
+        <div class="loader-content">
+            <p id="loaderText"></p>
+        </div>
     </div>
     <div id="mainContent" style="display: none;">
         <div class="piano-menu" id="menuButton" aria-expanded="false" aria-controls="main-menu">
@@ -219,24 +221,34 @@ const urlParams = new URLSearchParams(window.location.search);
 const code = urlParams.get("code");
 const overlay = document.getElementById("importLoaderOverlay");
 const mainContent = document.getElementById("mainContent");
+const loaderText = document.getElementById("loaderText");
 
 const translations = {
     sv: {
-        addStudentSuccess: "Din användare har nu skapats.",
-        updateStudentSuccess: "Din elevdata har uppdaterats!"
+        loading: "Laddar elevdata...",
+        success: "Dina framgångar är uppdaterade, välkommen",
+        error: "Import misslyckades. Försök igen."
     },
     en: {
-        addStudentSuccess: "Your user has now been created.",
-        updateStudentSuccess: "Your student data has been updated!"
+        loading: "Loading student data...",
+        success: "Your stars are updated, welcome",
+        error: "Import failed. Please try again."
     }
 };
 
 async function handleImportFromLink(code) {
     try {
-        window.isImporting = true; // Set import flag
+        window.isImporting = true;
         overlay.style.display = "flex";
         mainContent.style.display = "none";
+        const lang = localStorage.getItem('language') || 'sv';
+        loaderText.textContent = translations[lang].loading;
+        
+        // Ensure minimum display time of 1 second
+        const minDisplayTime = new Promise(resolve => setTimeout(resolve, 1000));
         const docSnap = await getDoc(doc(db, "exports", code));
+        await minDisplayTime;
+        
         if (!docSnap.exists()) throw new Error("Document not found.");
 
         const stored = JSON.parse(localStorage.getItem("starAcademyStudents")) || { students: {}, currentStudent: "" };
@@ -247,36 +259,39 @@ async function handleImportFromLink(code) {
         stored.currentStudent = name;
         localStorage.setItem("starAcademyStudents", JSON.stringify(stored));
 
-        // Initialize UI with new data
         if (typeof window.initializeAppContent === 'function') {
             window.initializeAppContent();
         } else {
             console.error('initializeAppContent not defined');
         }
 
-        showStudentPopup(isNew, name);
+        // Show popup with delay to ensure loading screen is gone
+        setTimeout(() => showStudentPopup(isNew, name), 100);
 
         // Clean URL
         const cleanUrl = window.location.origin + window.location.pathname;
         window.history.replaceState({}, document.title, cleanUrl);
     } catch (e) {
         console.error("Import från kod misslyckades:", e);
-        showStudentPopup(false, "Import failed. Please try again.");
+        setTimeout(() => showStudentPopup(false, e.message), 100);
     } finally {
         overlay.style.display = "none";
         mainContent.style.display = "block";
-        window.isImporting = false; // Clear import flag
+        window.isImporting = false;
     }
 }
 
 function showStudentPopup(isNew, name) {
+    console.log('showStudentPopup called:', { isNew, name });
     const popup = document.createElement("div");
     popup.id = "studentPopup";
     popup.className = "student-popup show";
     const lang = localStorage.getItem('language') || 'sv';
-    const message = isNew
-        ? `${translations[lang].addStudentSuccess} ${name}!`
-        : `Hej ${name}! ${translations[lang].updateStudentSuccess}`;
+    const message = name && isNew
+        ? `${translations[lang].success} ${name}!`
+        : name && !isNew
+        ? `${translations[lang].success} ${name}!`
+        : translations[lang].error;
     popup.innerHTML = `
         <div class="student-popup-content">
             <p>${message}</p>
@@ -289,7 +304,7 @@ function showStudentPopup(isNew, name) {
         setTimeout(() => {
             if (popup.parentNode) popup.parentNode.removeChild(popup);
         }, 500);
-    }, 3000);
+    }, 4000);
 }
 
 if (code) {

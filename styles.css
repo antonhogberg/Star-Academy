@@ -1,13 +1,15 @@
-/* styles.css */
-
 /* Root Variables */
 :root {
-    --vh: 1vh; /* Fallback for older browsers */
+    --vh: 1vh;
+    --gold: #ffd700; /* Added for consistent color usage */
+    --orange: #ff8c00;
+    --dark-bg: #000000;
+    --semi-dark: #4a4a4a;
 }
 
 /* Global Styles */
 * {
-    box-sizing: border-box; /* Ensure borders and padding are included in dimensions */
+    box-sizing: border-box;
 }
 
 body {
@@ -17,14 +19,14 @@ body {
     overflow-x: hidden;
     height: 100vh;
     width: 100vw;
-    background-color: #000000;
+    background-color: var(--dark-bg);
     background-image: url('background.jpg');
     background-size: 100% auto;
     background-repeat: repeat-y;
     background-position: center top;
     position: relative;
     min-height: 100vh;
-    display: block; /* Default to block, not flex */
+    display: block;
 }
 
 body.chapters {
@@ -63,14 +65,14 @@ body.chapters {
     position: fixed;
     top: 0;
     left: 0;
-    z-index: 1199; /* Above title-container (1100) */
+    z-index: 1199;
     padding: 20px;
     margin: 0;
 }
 
 .hamburger {
     font-size: 48px;
-    color: #ff8c00;
+    color: var(--orange);
     cursor: pointer;
     transition: transform 0.3s ease;
     font-family: Cochin, Georgia, Arial, sans-serif;
@@ -103,7 +105,7 @@ body.chapters {
     flex-direction: column;
     align-items: flex-start;
     overflow-y: auto;
-    border-right: 2px solid #ffd700;
+    border-right: 2px solid var(--gold);
     box-shadow: 2px 0 10px rgba(255, 215, 0, 0.2);
     gap: 0;
     visibility: hidden;
@@ -196,7 +198,7 @@ body.chapters {
 
 .menu .close-btn {
     font-size: 48px;
-    color: #ff8c00;
+    color: var(--orange);
     cursor: pointer;
     position: absolute;
     top: 20px;
@@ -362,22 +364,105 @@ body.chapters {
     transform: translateY(-6%);
 }
 
+/* Loading Screen */
+#importLoaderOverlay {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    max-width: 500px;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 10000;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+#importLoaderOverlay[style*="display: flex"] {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.loader-content {
+    background-color: var(--dark-bg);
+    background-image: url('background.jpg');
+    background-size: 100% auto;
+    background-repeat: repeat-y;
+    background-position: center top;
+    padding: 20px 40px;
+    border-radius: 5px;
+    border: 2px solid var(--gold);
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+    text-align: center;
+    color: #ffffff;
+    font-family: Cochin, Georgia, Arial, sans-serif;
+    font-size: 20px;
+}
+
+/* Success Popup */
+.student-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    max-width: 500px;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 10001; /* Above loading screen */
+    display: none;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.student-popup.show {
+    display: flex;
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.student-popup-content {
+    background-color: var(--dark-bg);
+    background-image: url('background.jpg');
+    background-size: 100% auto;
+    background-repeat: repeat-y;
+    background-position: center top;
+    padding: 20px 40px;
+    border-radius: 5px;
+    border: 2px solid var(--gold);
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+    text-align: center;
+    color: #ffffff;
+    font-family: Cochin, Georgia, Arial, sans-serif;
+    font-size: 20px;
+}
+
+.student-popup-content p {
+    margin: 0;
+}
+
 /* Content Styles */
 .chapter-title {
     text-align: center;
-    margin: 0; /* Remove margin to avoid extra space */
-    padding: 10px 0; /* Consistent padding */
+    margin: 0;
+    padding: 10px 0;
     font-family: Cochin, Georgia, Arial, sans-serif;
     color: #ffffff !important;
     font-size: 24px;
     display: block;
     width: 100%;
-    background: #000000; /* Match body background */
+    background: var(--dark-bg);
     background-image: url('background.jpg');
     background-size: 100% auto;
     background-repeat: repeat-y;
     background-position: center top;
-    z-index: 1100; /* Ensure it appears above other content */
+    z-index: 1100;
 }
 
 .students-title {
@@ -399,7 +484,7 @@ body.chapters {
 
 .chapter-number {
     font-size: 24px;
-    margin-top: 0; /* Remove margin to avoid extra space */
+    margin-top: 0;
 }
 
 .chapter-name {
@@ -450,7 +535,7 @@ body.chapters {
     height: auto;
     overflow-y: visible;
     justify-content: flex-start;
-    flex-grow: 1; /* Take remaining space */
+    flex-grow: 1;
 }
 
 .rank-badge {
@@ -497,7 +582,7 @@ body.chapters {
 }
 
 .gold-star {
-    fill: #ffd700;
+    fill: var(--gold);
     stroke: #000000;
     stroke-width: 1;
 }
@@ -556,7 +641,7 @@ body.chapters {
     align-items: center;
     padding: 10px;
     background: rgba(74, 74, 74, 0.8);
-    border: 1px solid #ff8c00;
+    border: 1px solid var(--orange);
     border-radius: 5px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
@@ -712,7 +797,7 @@ body.chapters {
 
 .student-manager select:focus {
     outline: none;
-    border-color: #ffd700;
+    border-color: var(--gold);
     box-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
 }
 
@@ -721,9 +806,9 @@ body.chapters {
     font-size: 16px;
     width: 320px;
     margin: 0;
-    border: 1px solid #ff8c00;
+    border: 1px solid var(--orange);
     border-radius: 5px;
-    background: #4a4a4a;
+    background: var(--semi-dark);
     color: #ffffff;
     font-family: Cochin, Georgia, Arial, sans-serif;
     appearance: none;
@@ -739,12 +824,12 @@ body.chapters {
 }
 
 .student-manager select#studentSelect:hover {
-    border-color: #ff8c00;
+    border-color: var(--orange);
 }
 
 .student-manager select#studentSelect:focus {
     outline: none;
-    border-color: #ff8c00;
+    border-color: var(--orange);
     box-shadow: 0 0 5px rgba(255, 140, 0, 0.5);
 }
 
@@ -790,9 +875,9 @@ body.chapters {
     padding: 10px;
     font-size: 16px;
     font-family: Cochin, Georgia, Arial, sans-serif;
-    border: 1px solid #ff8c00;
+    border: 1px solid var(--orange);
     border-radius: 5px;
-    background: #4a4a4a;
+    background: var(--semi-dark);
     color: #ffffff;
     resize: none;
     overflow-y: auto;
@@ -913,7 +998,7 @@ body.chapters {
 }
 
 .popup-content {
-    background-color: #000000;
+    background-color: var(--dark-bg);
     background-image: url('background.jpg');
     background-size: 100% auto;
     background-repeat: repeat-y;
@@ -921,7 +1006,7 @@ body.chapters {
     padding: 20px 40px 50px 40px;
     border-radius: 5px;
     text-align: center;
-    border: 2px solid #ffd700;
+    border: 2px solid var(--gold);
     box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
     display: flex;
     flex-direction: column;
@@ -937,9 +1022,9 @@ body.chapters {
     align-items: center;
     margin-bottom: 0;
     width: 320px;
-    border: 1px solid #ff8c00;
+    border: 1px solid var(--orange);
     border-radius: 5px;
-    background: #4a4a4a;
+    background: var(--semi-dark);
     box-sizing: border-box;
     padding-top: 0;
     padding-bottom: 0;
@@ -970,7 +1055,7 @@ body.chapters {
     line-height: 24px;
     border: none;
     border-radius: 5px 0 0 5px;
-    background: #4a4a4a;
+    background: var(--semi-dark);
     color: #ffffff;
     font-family: Cochin, Georgia, Arial, sans-serif;
     box-sizing: border-box;
@@ -985,10 +1070,10 @@ body.chapters {
 .student-manager button {
     font-family: Cochin, Georgia, Arial, sans-serif;
     padding: 6px 12px;
-    background: #4a4a4a;
-    border: 1px solid #ffd700;
+    background: var(--semi-dark);
+    border: 1px solid var(--gold);
     border-radius: 5px;
-    color: #ffd700;
+    color: var(--gold);
     cursor: pointer;
     transition: transform 0.3s ease;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
@@ -1019,7 +1104,7 @@ body.chapters {
     background: none;
     border: none;
     box-shadow: none;
-    color: #ffd700;
+    color: var(--gold);
     font-size: 16px;
     cursor: pointer;
     margin: 0;
@@ -1042,7 +1127,7 @@ body.chapters {
     top: 0;
     bottom: 0;
     width: 2px;
-    background-color: #ff8c00;
+    background-color: var(--orange);
 }
 
 .input-group {
@@ -1050,9 +1135,9 @@ body.chapters {
     align-items: center;
     margin-bottom: 10px;
     width: 320px;
-    border: 1px solid #ff8c00;
+    border: 1px solid var(--orange);
     border-radius: 5px;
-    background: #4a4a4a;
+    background: var(--semi-dark);
     box-sizing: border-box;
     padding-top: 10px;
     padding-bottom: 30px;
@@ -1066,7 +1151,7 @@ body.chapters {
     line-height: 24px;
     border: none;
     border-radius: 5px 0 0 5px;
-    background: #4a4a4a;
+    background: var(--semi-dark);
     color: #ffffff;
     font-family: Cochin, Georgia, Arial, sans-serif;
     box-sizing: border-box;
@@ -1082,7 +1167,7 @@ body.chapters {
     background: none;
     border: none;
     box-shadow: none;
-    color: #ffd700;
+    color: var(--gold);
     font-size: 16px;
     cursor: pointer;
     margin: 0;
@@ -1105,64 +1190,7 @@ body.chapters {
     top: 0;
     bottom: 0;
     width: 2px;
-    background-color: #ff8c00;
-}
-
-.student-popup {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 100%;
-    max-width: 40%;
-    height: auto;
-    background: rgba(0, 0, 0, 0.5);
-    z-index: 1000;
-    display: none;
-    justify-content: center;
-    align-items: center;
-}
-
-.student-popup.show {
-    opacity: 1;
-    pointer-events: auto;
-  }
-
-.student-popup-content {
-    background-color: #000000;
-    background-image: url('background.jpg');
-    background-size: 100% auto;
-    background-repeat: repeat-y;
-    background-position: center top;
-    padding: 20px 40px;
-    border-radius: 5px;
-    text-align: center;
-    border: 2px solid #ffd700;
-    box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    box-sizing: border-box;
-    width: 100%;
-    max-width: 100%;
-}
-
-.student-popup-content p {
-    color: #ffffff;
-    font-family: Cochin, Georgia, Arial, sans-serif;
-    font-size: 20px;
-    line-height: 1.5;
-    margin: 0;
-}
-
-.student-popup-content .popup-star {
-    width: 20px;
-    height: 20px;
-    fill: #ffd700;
-    stroke: #000000;
-    stroke-width: 1;
+    background-color: var(--orange);
 }
 
 /* Star Map Styles */
@@ -1191,7 +1219,6 @@ body.chapters {
     top: 50%;
     transform: translateY(-50%);
     left: 0;
-    /* Width and height will be set by JavaScript */
 }
 
 .congratulations-overlay {
@@ -1209,12 +1236,12 @@ body.chapters {
 }
 
 .congratulations-message {
-    background: #000000;
-    border: 2px solid #ffd700;
+    background: var(--dark-bg);
+    border: 2px solid var(--gold);
     border-radius: 10px;
     padding: 20px;
     text-align: center;
-    color: #ffd700;
+    color: var(--gold);
     font-family: Cochin, Georgia, Arial, sans-serif;
     font-size: 24px;
     box-shadow: 0 0 20px rgba(255, 215, 0, 0.7);
@@ -1432,9 +1459,9 @@ body.chapters {
     #studentNotes {
         width: 72vw;
         height: 360px;
-        border: 1px solid #ff8c00;
+        border: 1px solid var(--orange);
         border-radius: 5px;
-        background: #4a4a4a;
+        background: var(--semi-dark);
         color: #ffffff;
         font-family: Cochin, Georgia, Arial, sans-serif;
         font-size: 18px !important;
@@ -1492,11 +1519,6 @@ body.chapters {
         font-size: 18px;
     }
 
-    .student-popup-content .popup-star {
-        width: 16px;
-        height: 16px;
-    }
-
     .title-container h1 {
         font-size: 24px;
     }
@@ -1525,6 +1547,16 @@ body.chapters {
 
     #userNameDisplay {
         margin: 10px auto;
+    }
+
+    #importLoaderOverlay {
+        max-width: 80%;
+    }
+
+    .loader-content {
+        width: 90vw;
+        max-width: 90vw;
+        padding: 15px 20px;
     }
 }
 
@@ -1575,7 +1607,7 @@ body.chapters {
 
     .chapter-title {
         padding: 10px 0;
-        flex-shrink: 0; /* Förhindra att den krymper */
+        flex-shrink: 0;
     }
 
     .chapter-number {
@@ -1594,10 +1626,10 @@ body.chapters {
         padding-top: 0;
         padding-bottom: 10px;
         height: auto;
-        overflow-y: auto; /* Tillåt scrollning inom .parts om innehållet overflowar */
+        overflow-y: auto;
         box-sizing: border-box;
         justify-content: flex-start;
-        flex-grow: 1; /* Ta upp återstående utrymme */
+        flex-grow: 1;
     }
 
     body.chapters .exercises {
@@ -1605,11 +1637,11 @@ body.chapters {
         max-width: 80vw;
         flex-wrap: wrap;
         justify-content: center;
-        flex-direction: row; /* Säkerställ att layouten är korrekt */
+        flex-direction: row;
     }
 
     body.chapters .star-container {
-        width: auto !important; /* Tvinga desktop/iPad-layout */
+        width: auto !important;
         box-sizing: border-box;
     }
 
@@ -1621,10 +1653,9 @@ body.chapters {
         object-fit: contain;
     }
 
-    /* Specifik justering för iPad Pro 13-inch (12.9-tum, 1366px bredd) */
     @media (width: 1366px) {
         .star {
-            width: 150px; /* Större stjärnor för iPad Pro 13-inch */
+            width: 150px;
             min-width: 150px;
             max-width: 150px;
         }
@@ -1712,9 +1743,9 @@ body.chapters {
         width: 320px;
         height: 360px;
         padding: 10px;
-        border: 1px solid #ff8c00;
+        border: 1px solid var(--orange);
         border-radius: 5px;
-        background: #4a4a4a;
+        background: var(--semi-dark);
         color: #ffffff;
         font-family: Cochin, Georgia, Arial, sans-serif;
         font-size: 18px !important;
@@ -1821,7 +1852,7 @@ body.chapters {
     }
 
     .star-container {
-        width: auto !important; /* Ensure desktop layout */
+        width: auto !important;
     }
 
     .star {
