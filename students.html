@@ -55,26 +55,6 @@
         exportStatus.style.display = "none";
       }
     };
-
-    window.addEventListener("DOMContentLoaded", async () => {
-      const urlParams = new URLSearchParams(window.location.search);
-      const code = urlParams.get("code");
-      if (!code) return;
-
-      try {
-        const docSnap = await getDoc(firestoreDoc(getFirestore(), "exports", code));
-        if (!docSnap.exists()) return;
-
-        const stored = JSON.parse(localStorage.getItem("starAcademyStudents")) || { students: {}, currentStudent: "" };
-        const { name, data } = docSnap.data();
-        stored.students[name] = data;
-        stored.currentStudent = name;
-        localStorage.setItem("starAcademyStudents", JSON.stringify(stored));
-        window.location.href = "students.html";
-      } catch (e) {
-        console.error("Import misslyckades:", e);
-      }
-    });
   </script>
 </head>
 <body>
