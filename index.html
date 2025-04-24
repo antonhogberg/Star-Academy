@@ -23,7 +23,7 @@
       <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
         import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore.js";
-      
+    
         const firebaseConfig = {
           apiKey: "REDACTED",
           authDomain: "stjarnakademien-6b272.firebaseapp.com",
@@ -32,30 +32,38 @@
           messagingSenderId: "773874793436",
           appId: "1:773874793436:web:f7dc4307844e38709e2d19"
         };
-      
+    
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
-      
+    
         async function handleImportFromLink() {
           const urlParams = new URLSearchParams(window.location.search);
           const code = urlParams.get("code");
+          
           if (!code) {
-            revealContent();
+            loadMainScript();
             return;
           }
-      
+    
           try {
             const docSnap = await getDoc(doc(db, "exports", code));
-            if (!docSnap.exists()) return revealContent();
-      
+            if (!docSnap.exists()) {
+              loadMainScript();
+              return;
+            }
+    
             const stored = JSON.parse(localStorage.getItem("starAcademyStudents")) || { students: {}, currentStudent: "" };
             const { name, data } = docSnap.data();
             const isNew = !stored.students[name];
-      
+    
             stored.students[name] = data;
             stored.currentStudent = name;
             localStorage.setItem("starAcademyStudents", JSON.stringify(stored));
-      
+    
+            // Rensa kod från URL direkt för att undvika omladdning med samma kod
+            const cleanUrl = window.location.origin + window.location.pathname;
+            window.history.replaceState({}, document.title, cleanUrl);
+    
             showStudentPopup(isNew, name);
           } catch (e) {
             console.error("Import från kod misslyckades:", e);
@@ -63,7 +71,7 @@
             loadMainScript();
           }
         }
-      
+    
         function showStudentPopup(isNew, name) {
           const popup = document.createElement("div");
           popup.id = "studentPopup";
@@ -74,8 +82,13 @@
             </div>
           `;
           document.body.appendChild(popup);
+    
+          setTimeout(() => {
+            popup.classList.remove("show");
+            popup.remove();
+          }, 3000);
         }
-      
+    
         function loadMainScript() {
           const script = document.createElement("script");
           script.src = "script.js";
@@ -84,31 +97,27 @@
           };
           document.body.appendChild(script);
         }
-      
+    
         function revealContent() {
           const overlay = document.getElementById("importLoaderOverlay");
           const mainContent = document.getElementById("mainContent");
-      
-          if (overlay) {
-            overlay.style.opacity = 1;
-            overlay.style.transition = "opacity 0.5s";
-            overlay.style.opacity = 0;
+          
+          overlay.style.opacity = 1;
+          overlay.style.transition = "opacity 0.5s";
+          overlay.style.opacity = 0;
+          setTimeout(() => {
+            overlay.style.display = "none";
+            mainContent.style.display = "block";
+            mainContent.style.opacity = 0;
+            mainContent.style.transition = "opacity 0.5s";
             setTimeout(() => {
-              overlay.style.display = "none";
-              if (mainContent) {
-                mainContent.style.display = "block";
-                mainContent.style.opacity = 0;
-                mainContent.style.transition = "opacity 0.5s";
-                setTimeout(() => {
-                  mainContent.style.opacity = 1;
-                }, 10);
-              }
-            }, 500);
-          }
+              mainContent.style.opacity = 1;
+            }, 10);
+          }, 500);
         }
-      
+    
         handleImportFromLink();
-      </script>               
+    </script>               
 <div id="mainContent" style="display: none;">
         <div class="piano-menu" id="menuButton" aria-expanded="false" aria-controls="main-menu">
             <div class="white-key"></div>
