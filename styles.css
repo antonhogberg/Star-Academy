@@ -403,7 +403,7 @@ body.chapters {
     font-size: 20px;
 }
 
-/* Success Popup */
+/* Student Popup */
 .student-popup {
     position: fixed;
     top: 50%;
@@ -412,7 +412,7 @@ body.chapters {
     width: 100%;
     max-width: 500px;
     background: rgba(0, 0, 0, 0.5);
-    z-index: 10001; /* Above loading screen */
+    z-index: 10000;
     display: none;
     justify-content: center;
     align-items: center;
@@ -433,18 +433,39 @@ body.chapters {
     background-size: 100% auto;
     background-repeat: repeat-y;
     background-position: center top;
-    padding: 20px 40px;
+    padding: 10px 15px;
     border-radius: 5px;
-    border: 2px solid var(--gold);
+    border: 2px solid var(--orange);
     box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
     text-align: center;
-    color: #ffffff;
-    font-family: Cochin, Georgia, Arial, sans-serif;
-    font-size: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 500px;
+    min-height: 80px;
 }
 
 .student-popup-content p {
+    color: #ffffff;
+    font-family: Cochin, Georgia, Arial, sans-serif;
+    font-size: 18px;
+    line-height: 1.5;
     margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.student-popup-content .popup-star {
+    width: 20px;
+    height: 20px;
+    fill: var(--gold);
+    stroke: #000000;
+    stroke-width: 1;
 }
 
 /* Content Styles */
@@ -1213,12 +1234,12 @@ body.chapters {
     justify-content: center;
     align-items: center;
     text-align: center;
-    -webkit-tap-highlight-color: transparent; /* Prevent mobile tap highlight */
+    -webkit-tap-highlight-color: transparent;
 }
 
 .student-manager button#shareButton:hover,
 .student-manager button#shareButton:active {
-    transform: none !important; /* Explicitly prevent scaling */
+    transform: none !important;
 }
 
 /* Export Status Text */
@@ -1552,11 +1573,15 @@ body.chapters {
     .student-popup {
         max-width: 80%;
     }
-
     .student-popup-content {
         width: 90vw;
         max-width: 90vw;
-        padding: 15px 20px;
+        padding: 8px 12px;
+        font-size: 16px;
+    }
+    .student-popup-content .popup-star {
+        width: 16px;
+        height: 16px;
     }
 
     .student-popup-content p {
