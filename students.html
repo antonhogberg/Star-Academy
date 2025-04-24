@@ -15,42 +15,53 @@
     setViewportHeight();
   </script>
 
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
-    import { getFirestore, collection, addDoc, getDoc, doc as firestoreDoc } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore.js";
-
-    const firebaseConfig = {
-      apiKey: "REDACTED",
-      authDomain: "stjarnakademien-6b272.firebaseapp.com",
-      projectId: "stjarnakademien-6b272",
-      storageBucket: "stjarnakademien-6b272.appspot.com",
-      messagingSenderId: "773874793436",
-      appId: "1:773874793436:web:f7dc4307844e38709e2d19"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-
+  <script>
     window.shareExport = async function () {
+      console.log('shareExport called');
       const exportStatus = document.getElementById("exportStatus");
-      exportStatus.style.display = "block";
-      exportStatus.textContent = "Skapar länk, vänta…";
-
-      const studentsData = JSON.parse(localStorage.getItem("starAcademyStudents")) || { students: {}, currentStudent: "" };
-      const current = studentsData.currentStudent;
-      if (!current || !studentsData.students[current]) return;
-
-      const dataToExport = {
-        name: current,
-        data: studentsData.students[current]
-      };
-
+      const lang = localStorage.getItem('language') || 'sv';
       try {
-        const docRef = await addDoc(collection(db, "exports"), dataToExport);
-        const link = `${window.location.origin}/Star-Academy/index.html?code=${docRef.id}`;
+        exportStatus.style.display = "block";
+        exportStatus.textContent = window.translations && window.translations[lang] && window.translations[lang].creatingLink
+          ? window.translations[lang].creatingLink
+          : lang === 'en' ? "Generating link, please wait…" : "Skapar länk, vänta…";
+
+        const studentsData = JSON.parse(localStorage.getItem("starAcademyStudents")) || { students: {}, currentStudent: "" };
+        const current = studentsData.currentStudent;
+        if (!current || !studentsData.students[current]) {
+          console.warn('No current student selected');
+          return;
+        }
+
+        const dataToExport = {
+          name: current,
+          data: studentsData.students[current]
+        };
+
+        const response = await fetch('https://firestore.googleapis.com/v1/projects/stjarnakademien-6b272/databases/(default)/documents/exports', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            fields: {
+              name: { stringValue: dataToExport.name },
+              data: { stringValue: JSON.stringify(dataToExport.data) }
+            }
+          })
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to save to Firestore');
+        }
+
+        const docData = await response.json();
+        const docId = docData.name.split('/').pop();
+        const link = `${window.location.origin}/Star-Academy/index.html?code=${docId}`;
         await navigator.share({ title: "Elevdata", url: link });
       } catch (error) {
-        alert("Det gick inte att skapa delningslänk");
+        console.error('shareExport error:', error);
+        alert(window.translations && window.translations[lang] && window.translations[lang].error
+          ? window.translations[lang].error
+          : lang === 'en' ? "Failed to create sharing link" : "Det gick inte att skapa delningslänk");
       } finally {
         exportStatus.style.display = "none";
       }
@@ -191,5 +202,5 @@
       }
     }
   </script>
-</body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'93583dc64cc27221',t:'MTc0NTUyNTM5Ny4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
