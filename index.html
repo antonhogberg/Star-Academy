@@ -40,7 +40,7 @@
           const urlParams = new URLSearchParams(window.location.search);
           const code = urlParams.get("code");
           if (!code) {
-            document.getElementById("importLoaderOverlay").style.display = "none";
+            hideLoader();
             return;
           }
       
@@ -56,16 +56,26 @@
             stored.currentStudent = name;
             localStorage.setItem("starAcademyStudents", JSON.stringify(stored));
       
-            showStudentPopup(isNew, name);
+            // Uppdatera direkt före DOM byggs
+            window.nameOfImportedStudent = name;
+            window.isNewStudent = isNew;
       
           } catch (e) {
             console.error("Import från kod misslyckades:", e);
           } finally {
-            document.getElementById("importLoaderOverlay").style.display = "none";
-      
-            // Rensa kod från URL
+            // Rensa URL och ta bort loader
             const cleanUrl = window.location.origin + window.location.pathname;
             window.history.replaceState({}, document.title, cleanUrl);
+            hideLoader();
+          }
+        }
+      
+        function hideLoader() {
+          const overlay = document.getElementById("importLoaderOverlay");
+          if (overlay) overlay.style.display = "none";
+      
+          if (window.nameOfImportedStudent) {
+            showStudentPopup(window.isNewStudent, window.nameOfImportedStudent);
           }
         }
       
@@ -86,8 +96,8 @@
           }, 3000);
         }
       
-        window.addEventListener("DOMContentLoaded", handleImportFromLink);
-      </script>      
+        handleImportFromLink(); // Kör direkt utan att vänta på DOMContentLoaded
+      </script>            
     <div class="piano-menu" id="menuButton" aria-expanded="false" aria-controls="main-menu">
         <div class="white-key"></div>
         <div class="white-key"></div>
