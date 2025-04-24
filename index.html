@@ -17,39 +17,38 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
       
-        async function importAndContinue() {
+        window.addEventListener("load", async () => {
           const urlParams = new URLSearchParams(window.location.search);
           const code = urlParams.get("code");
-          let isNew = false;
-          let name = "";
-      
-          if (code) {
-            try {
-              const docSnap = await getDoc(doc(db, "exports", code));
-              if (docSnap.exists()) {
-                const stored = JSON.parse(localStorage.getItem("starAcademyStudents")) || { students: {}, currentStudent: "" };
-                const { name: importedName, data } = docSnap.data();
-                isNew = !stored.students[importedName];
-                name = importedName;
-      
-                stored.students[importedName] = data;
-                stored.currentStudent = importedName;
-                localStorage.setItem("starAcademyStudents", JSON.stringify(stored));
-      
-                // Rensa URL
-                const cleanUrl = window.location.origin + window.location.pathname;
-                window.history.replaceState({}, document.title, cleanUrl);
-              }
-            } catch (err) {
-              console.error("Import misslyckades:", err);
-            }
+          if (!code) {
+            hideLoader();
+            return;
           }
       
-          document.getElementById("importLoaderOverlay").style.display = "none";
-          document.getElementById("mainContent").style.display = "block";
+          try {
+            const docSnap = await getDoc(doc(db, "exports", code));
+            if (!docSnap.exists()) return;
       
-          if (name) showStudentPopup(isNew, name);
-        }
+            const stored = JSON.parse(localStorage.getItem("starAcademyStudents")) || { students: {}, currentStudent: "" };
+            const { name, data } = docSnap.data();
+            const isNew = !stored.students[name];
+      
+            stored.students[name] = data;
+            stored.currentStudent = name;
+            localStorage.setItem("starAcademyStudents", JSON.stringify(stored));
+      
+            showStudentPopup(isNew, name);
+            updateUserNameDisplay(); // uppdatera användarnamn direkt
+      
+            // Rensa kod från URL
+            const cleanUrl = window.location.origin + window.location.pathname;
+            window.history.replaceState({}, document.title, cleanUrl);
+          } catch (e) {
+            console.error("Import från kod misslyckades:", e);
+          } finally {
+            hideLoader();
+          }
+        });
       
         function showStudentPopup(isNew, name) {
           const popup = document.createElement("div");
@@ -68,7 +67,18 @@
           }, 3000);
         }
       
-        window.addEventListener("DOMContentLoaded", importAndContinue);
+        function hideLoader() {
+          const loader = document.getElementById("importLoaderOverlay");
+          if (loader) loader.remove();
+        }
+      
+        function updateUserNameDisplay() {
+          const display = document.getElementById("userNameDisplay");
+          const studentsData = JSON.parse(localStorage.getItem("starAcademyStudents"));
+          if (display && studentsData?.currentStudent) {
+            display.textContent = studentsData.currentStudent;
+          }
+        }
       </script>      
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta charset="UTF-8">
