@@ -1,7 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <script type="module">
+<head>      
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta charset="UTF-8">
+    <title>Stjärnakademien - Star Academy</title>
+    <link rel="stylesheet" href="styles.css">
+    <script>
+        // Dynamically set viewport height to account for navigation bar
+        function setViewportHeight() {
+            let vh = window.innerHeight * 0.01;
+            document.documentElement.style.setProperty('--vh', `${vh}px`);
+        }
+        window.addEventListener('resize', setViewportHeight);
+        window.addEventListener('orientationchange', setViewportHeight);
+        setViewportHeight();
+    </script>
+</head>
+<body>
+    <div id="importLoaderOverlay" style="position: fixed; inset: 0; background: #fff; display: flex; align-items: center; justify-content: center; z-index: 9999;">
+        <p style="font-size: 18px;">Laddar data…</p>
+      </div>
+      <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
         import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore.js";
       
@@ -79,26 +98,7 @@
             display.textContent = studentsData.currentStudent;
           }
         }
-      </script>      
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <meta charset="UTF-8">
-    <title>Stjärnakademien - Star Academy</title>
-    <link rel="stylesheet" href="styles.css">
-    <script>
-        // Dynamically set viewport height to account for navigation bar
-        function setViewportHeight() {
-            let vh = window.innerHeight * 0.01;
-            document.documentElement.style.setProperty('--vh', `${vh}px`);
-        }
-        window.addEventListener('resize', setViewportHeight);
-        window.addEventListener('orientationchange', setViewportHeight);
-        setViewportHeight();
-    </script>
-</head>
-<body>
-    <div id="importLoaderOverlay" style="position: fixed; inset: 0; background: #fff; display: flex; align-items: center; justify-content: center; z-index: 9999;">
-        <p style="font-size: 18px;">Laddar data…</p>
-      </div>
+      </script>
 <div id="mainContent" style="display: none;">
         <div class="piano-menu" id="menuButton" aria-expanded="false" aria-controls="main-menu">
             <div class="white-key"></div>
