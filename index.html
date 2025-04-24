@@ -6,7 +6,6 @@
     <title>Stjärnakademien - Star Academy</title>
     <link rel="stylesheet" href="styles.css">
     <script>
-        // Dynamically set viewport height to account for navigation bar
         function setViewportHeight() {
             let vh = window.innerHeight * 0.01;
             document.documentElement.style.setProperty('--vh', `${vh}px`);
@@ -19,84 +18,8 @@
 <body>
     <div id="importLoaderOverlay" style="position: fixed; inset: 0; background: #fff; display: none; align-items: center; justify-content: center; z-index: 9999;">
         <p style="font-size: 18px;">Laddar data…</p>
-      </div>
-      <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
-        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore.js";
-      
-        const firebaseConfig = {
-          apiKey: "REDACTED",
-          authDomain: "stjarnakademien-6b272.firebaseapp.com",
-          projectId: "stjarnakademien-6b272",
-          storageBucket: "stjarnakademien-6b272.appspot.com",
-          messagingSenderId: "773874793436",
-          appId: "1:773874793436:web:f7dc4307844e38709e2d19"
-        };
-      
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-      
-        const urlParams = new URLSearchParams(window.location.search);
-        const code = urlParams.get("code");
-        const overlay = document.getElementById("importLoaderOverlay");
-        const mainContent = document.getElementById("mainContent");
-      
-        async function handleImportFromLink(code) {
-          try {
-            const docSnap = await getDoc(doc(db, "exports", code));
-            if (!docSnap.exists()) throw new Error("Document not found.");
-      
-            const stored = JSON.parse(localStorage.getItem("starAcademyStudents")) || { students: {}, currentStudent: "" };
-            const { name, data } = docSnap.data();
-            const isNew = !stored.students[name];
-      
-            stored.students[name] = data;
-            stored.currentStudent = name;
-            localStorage.setItem("starAcademyStudents", JSON.stringify(stored));
-      
-            // Nu kör vi den globala funktionen som skapats i script.js
-            window.initializeAppContent();
-      
-            showStudentPopup(isNew, name);
-      
-            // Rensa URL-parametern
-            const cleanUrl = window.location.origin + window.location.pathname;
-            window.history.replaceState({}, document.title, cleanUrl);
-          } catch (e) {
-            console.error("Import från kod misslyckades:", e);
-          } finally {
-            overlay.style.display = "none";
-            mainContent.style.display = "block";
-          }
-        }
-      
-        function showStudentPopup(isNew, name) {
-          const popup = document.createElement("div");
-          popup.id = "studentPopup";
-          popup.className = "student-popup show";
-          popup.innerHTML = `
-            <div class="student-popup-content">
-              <p>${isNew ? `Hej ${name}! Din användare har nu skapats.` : `Hej ${name}! Din elevdata har uppdaterats!`}</p>
-            </div>
-          `;
-          document.body.appendChild(popup);
-      
-          setTimeout(() => {
-            popup.classList.remove("show");
-            if (popup.parentNode) popup.parentNode.removeChild(popup);
-          }, 3000);
-        }
-      
-        if (code) {
-          overlay.style.display = "flex";
-          mainContent.style.display = "none";
-          handleImportFromLink(code);
-        } else {
-          overlay.style.display = "none";
-          mainContent.style.display = "block";
-        }
-      </script>      
-<div id="mainContent" style="display: none;">
+    </div>
+    <div id="mainContent" style="display: none;">
         <div class="piano-menu" id="menuButton" aria-expanded="false" aria-controls="main-menu">
             <div class="white-key"></div>
             <div class="white-key"></div>
@@ -273,9 +196,113 @@
             <div id="userNameDisplay"></div>
         </div>
     </div>
-    </div>
 </div>
-    <script src="script.js"></script>
-    <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'92bbb6a45b62afb9',t:'MTc0Mzg4NDA4My4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
+</div>
+<script src="script.js"></script>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
+import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore.js";
+
+const firebaseConfig = {
+    apiKey: "REDACTED",
+    authDomain: "stjarnakademien-6b272.firebaseapp.com",
+    projectId: "stjarnakademien-6b272",
+    storageBucket: "stjarnakademien-6b272.appspot.com",
+    messagingSenderId: "773874793436",
+    appId: "1:773874793436:web:f7dc4307844e38709e2d19"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+const urlParams = new URLSearchParams(window.location.search);
+const code = urlParams.get("code");
+const overlay = document.getElementById("importLoaderOverlay");
+const mainContent = document.getElementById("mainContent");
+
+const translations = {
+    sv: {
+        addStudentSuccess: "Din användare har nu skapats.",
+        updateStudentSuccess: "Din elevdata har uppdaterats!"
+    },
+    en: {
+        addStudentSuccess: "Your user has now been created.",
+        updateStudentSuccess: "Your student data has been updated!"
+    }
+};
+
+async function handleImportFromLink(code) {
+    try {
+        window.isImporting = true; // Set import flag
+        overlay.style.display = "flex";
+        mainContent.style.display = "none";
+        const docSnap = await getDoc(doc(db, "exports", code));
+        if (!docSnap.exists()) throw new Error("Document not found.");
+
+        const stored = JSON.parse(localStorage.getItem("starAcademyStudents")) || { students: {}, currentStudent: "" };
+        const { name, data } = docSnap.data();
+        const isNew = !stored.students[name];
+
+        stored.students[name] = data;
+        stored.currentStudent = name;
+        localStorage.setItem("starAcademyStudents", JSON.stringify(stored));
+
+        // Initialize UI with new data
+        if (typeof window.initializeAppContent === 'function') {
+            window.initializeAppContent();
+        } else {
+            console.error('initializeAppContent not defined');
+        }
+
+        showStudentPopup(isNew, name);
+
+        // Clean URL
+        const cleanUrl = window.location.origin + window.location.pathname;
+        window.history.replaceState({}, document.title, cleanUrl);
+    } catch (e) {
+        console.error("Import från kod misslyckades:", e);
+        showStudentPopup(false, "Import failed. Please try again.");
+    } finally {
+        overlay.style.display = "none";
+        mainContent.style.display = "block";
+        window.isImporting = false; // Clear import flag
+    }
+}
+
+function showStudentPopup(isNew, name) {
+    const popup = document.createElement("div");
+    popup.id = "studentPopup";
+    popup.className = "student-popup show";
+    const lang = localStorage.getItem('language') || 'sv';
+    const message = isNew
+        ? `${translations[lang].addStudentSuccess} ${name}!`
+        : `Hej ${name}! ${translations[lang].updateStudentSuccess}`;
+    popup.innerHTML = `
+        <div class="student-popup-content">
+            <p>${message}</p>
+        </div>
+    `;
+    document.body.appendChild(popup);
+
+    setTimeout(() => {
+        popup.classList.remove("show");
+        setTimeout(() => {
+            if (popup.parentNode) popup.parentNode.removeChild(popup);
+        }, 500);
+    }, 3000);
+}
+
+if (code) {
+    handleImportFromLink(code);
+} else {
+    overlay.style.display = "none";
+    mainContent.style.display = "block";
+    if (typeof window.initializeAppContent === 'function') {
+        window.initializeAppContent();
+    }
+}
+</script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'92bbb6a45b62afb9',t:'MTc0Mzg4NDA4My4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'935543e18fdedd25',t:'MTc0NTQ5NDE5MC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
 </body>
 </html>

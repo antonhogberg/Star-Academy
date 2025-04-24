@@ -484,13 +484,11 @@ function switchLanguage(lang) {
         if (translations[lang][key]) titleContainerH1.textContent = translations[lang][key];
     }
 
-
-    // --- NYTT: Exportfält på students.html ---
+    // Export fields on students.html
     const exportTitle = document.getElementById('exportTitle');
     const exportInfo = document.getElementById('exportInfo');
     const shareButton = document.querySelector('[data-translate="shareButton"]');
     const exportStatus = document.getElementById('exportStatus');
-
     if (exportTitle) exportTitle.textContent = translations[lang].exportTitle;
     if (exportInfo) exportInfo.textContent = translations[lang].exportInfo;
     if (shareButton) shareButton.textContent = translations[lang].shareButton;
@@ -585,8 +583,8 @@ function handleUserNamePopup() {
                     successPopup.style.opacity = '0';
                     setTimeout(() => {
                         successPopup.style.display = 'none';
-                        document.body.removeChild(successPopup);
                         document.body.classList.remove('popup-open');
+                        document.body.removeChild(successPopup);
                         updateMenuHeight();
                     }, 1000);
                 }, 2000);
@@ -649,11 +647,28 @@ function initializeFAQ() {
     });
 }
 
+// Define initializeAppContent globally
+window.initializeAppContent = function() {
+    updateStarStates(); // Update stars
+    const studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
+    const userNameDisplay = document.getElementById("userNameDisplay");
+    if (userNameDisplay && studentsData.currentStudent) {
+        userNameDisplay.textContent = studentsData.currentStudent;
+    }
+    // Re-inject menu to ensure translations and active page are updated
+    injectMenu();
+};
+
+// Main initialization
 waitForDOM().then(() => {
     injectMenu();
     handleUserNamePopup();
     setInitialLanguage();
-    updateStarStates();
+    
+    // Only run initializeAppContent if not importing
+    if (!window.isImporting) {
+        window.initializeAppContent();
+    }
 
     const studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
     const userNameDisplay = document.getElementById('userNameDisplay');
@@ -782,18 +797,4 @@ waitForDOM().then(() => {
     setStarMapHeight();
     window.addEventListener('resize', setStarMapHeight);
     window.addEventListener('orientationchange', setStarMapHeight);
-});
-
-document.addEventListener("DOMContentLoaded", () => {
-    window.initializeAppContent = function() {
-        updateStarStates(); // Uppdatera stjärnorna
-        const studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
-        const userName = document.getElementById("userName");
-        if(userName && studentsData.currentStudent){
-            userName.textContent = studentsData.currentStudent;
-        }
-    };
-
-    // Kör vid initial sidladdning
-    window.initializeAppContent();
 });
