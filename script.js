@@ -168,77 +168,97 @@ const menuHtml = `
 
 // Function to inject the menu into the page
 function injectMenu() {
+    console.log('injectMenu called');
     const placeholder = document.getElementById('menu-placeholder');
-    if (placeholder) {
-        placeholder.innerHTML = menuHtml;
-
-        const hamburger = document.getElementById('menuButton'); // Now the piano-menu
-        const menu = document.querySelector('.menu');
-
-        if (!hamburger || !menu) {
-            console.error('Menu elements missing:', { hamburger: !!hamburger, menu: !!menu });
-            return;
-        }
-
-        menu.style.left = '-250px';
-
-        hamburger.addEventListener('click', () => {
-            const isExpanded = hamburger.getAttribute('aria-expanded') === 'true';
-            hamburger.setAttribute('aria-expanded', !isExpanded);
-            hamburger.classList.toggle('active'); // Toggle piano animation
-            if (!isExpanded) {
-                menu.classList.add('active');
-                menu.animate([{ left: '-250px' }, { left: '0' }], { duration: 300, easing: 'ease-in-out', fill: 'forwards' });
-            } else {
-                menu.animate([{ left: '0' }, { left: '-250px' }], { duration: 300, easing: 'ease-in-out', fill: 'forwards' }).onfinish = () => {
-                    menu.classList.remove('active');
-                };
-            }
-        });
-
-        document.querySelectorAll('.menu-link').forEach(link => {
-            link.addEventListener('click', () => {
-                hamburger.setAttribute('aria-expanded', 'false');
-                hamburger.classList.remove('active'); // Reset piano animation
-                menu.animate([{ left: '0' }, { left: '-250px' }], { duration: 300, easing: 'ease-in-out', fill: 'forwards' }).onfinish = () => {
-                    menu.classList.remove('active');
-                };
-            });
-        });
-
-        document.addEventListener('click', (e) => {
-            if (!hamburger.contains(e.target) && !menu.contains(e.target)) {
-                hamburger.setAttribute('aria-expanded', 'false');
-                hamburger.classList.remove('active'); // Reset piano animation
-                menu.animate([{ left: '0' }, { left: '-250px' }], { duration: 300, easing: 'ease-in-out', fill: 'forwards' }).onfinish = () => {
-                    menu.classList.remove('active');
-                };
-            }
-        });
-
-        const chaptersToggle = document.querySelector('.chapters-toggle');
-        const submenu = document.querySelector('.submenu');
-        if (chaptersToggle && submenu) {
-            chaptersToggle.addEventListener('click', (e) => {
-                e.stopPropagation();
-                const isSubmenuOpen = submenu.classList.contains('open');
-                if (isSubmenuOpen) {
-                    submenu.classList.remove('open');
-                } else {
-                    submenu.style.display = 'block';
-                    submenu.offsetHeight; // Force reflow
-                    submenu.classList.add('open');
-                }
-                chaptersToggle.parentElement.classList.toggle('active');
-            });
-        }
-
-        const lang = localStorage.getItem('language') || 'sv';
-        switchLanguage(lang);
-        setActivePage();
-    } else {
+    if (!placeholder) {
         console.error('Menu placeholder not found');
+        return;
     }
+
+    placeholder.innerHTML = menuHtml;
+    console.log('Menu HTML injected');
+
+    const hamburger = document.getElementById('menuButton');
+    const menu = document.querySelector('.menu');
+
+    if (!hamburger || !menu) {
+        console.error('Menu elements missing:', { hamburger: !!hamburger, menu: !!menu });
+        return;
+    }
+
+    menu.style.left = '-250px';
+    console.log('Menu initialized with left: -250px');
+
+    // Remove existing listeners to prevent duplicates
+    const newHamburger = hamburger.cloneNode(true);
+    hamburger.parentNode.replaceChild(newHamburger, hamburger);
+
+    newHamburger.addEventListener('click', () => {
+        console.log('Hamburger clicked');
+        const isExpanded = newHamburger.getAttribute('aria-expanded') === 'true';
+        newHamburger.setAttribute('aria-expanded', !isExpanded);
+        newHamburger.classList.toggle('active');
+        if (!isExpanded) {
+            menu.classList.add('active');
+            menu.animate([{ left: '-250px' }, { left: '0' }], { duration: 300, easing: 'ease-in-out', fill: 'forwards' });
+            console.log('Menu opened');
+        } else {
+            menu.animate([{ left: '0' }, { left: '-250px' }], { duration: 300, easing: 'ease-in-out', fill: 'forwards' }).onfinish = () => {
+                menu.classList.remove('active');
+                console.log('Menu closed');
+            };
+        }
+    });
+
+    document.querySelectorAll('.menu-link').forEach(link => {
+        link.addEventListener('click', () => {
+            console.log(`Menu link clicked: ${link.getAttribute('href')}`);
+            newHamburger.setAttribute('aria-expanded', 'false');
+            newHamburger.classList.remove('active');
+            menu.animate([{ left: '0' }, { left: '-250px' }], { duration: 300, easing: 'ease-in-out', fill: 'forwards' }).onfinish = () => {
+                menu.classList.remove('active');
+                console.log('Menu closed after link click');
+            };
+        });
+    });
+
+    document.addEventListener('click', (e) => {
+        if (!newHamburger.contains(e.target) && !menu.contains(e.target)) {
+            console.log('Clicked outside menu');
+            newHamburger.setAttribute('aria-expanded', 'false');
+            newHamburger.classList.remove('active');
+            menu.animate([{ left: '0' }, { left: '-250px' }], { duration: 300, easing: 'ease-in-out', fill: 'forwards' }).onfinish = () => {
+                menu.classList.remove('active');
+                console.log('Menu closed due to outside click');
+            };
+        }
+    });
+
+    const chaptersToggle = document.querySelector('.chapters-toggle');
+    const submenu = document.querySelector('.submenu');
+    if (chaptersToggle && submenu) {
+        chaptersToggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            console.log('Chapters toggle clicked');
+            const isSubmenuOpen = submenu.classList.contains('open');
+            if (isSubmenuOpen) {
+                submenu.classList.remove('open');
+                console.log('Submenu closed');
+            } else {
+                submenu.style.display = 'block';
+                submenu.offsetHeight; // Force reflow
+                submenu.classList.add('open');
+                console.log('Submenu opened');
+            }
+            chaptersToggle.parentElement.classList.toggle('active');
+        });
+    } else {
+        console.warn('Chapters toggle or submenu not found:', { chaptersToggle: !!chaptersToggle, submenu: !!submenu });
+    }
+
+    const lang = localStorage.getItem('language') || 'sv';
+    switchLanguage(lang);
+    setActivePage();
 }
 
 function updateStarStates() {
@@ -649,24 +669,25 @@ function initializeFAQ() {
 
 // Define initializeAppContent globally
 window.initializeAppContent = function() {
+    console.log('initializeAppContent called');
     updateStarStates(); // Update stars
     const studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
     const userNameDisplay = document.getElementById("userNameDisplay");
     if (userNameDisplay && studentsData.currentStudent) {
         userNameDisplay.textContent = studentsData.currentStudent;
     }
-    // Re-inject menu to ensure translations and active page are updated
-    injectMenu();
 };
 
 // Main initialization
 waitForDOM().then(() => {
+    console.log('waitForDOM resolved');
     injectMenu();
     handleUserNamePopup();
     setInitialLanguage();
     
     // Only run initializeAppContent if not importing
     if (!window.isImporting) {
+        console.log('Running initializeAppContent from waitForDOM');
         window.initializeAppContent();
     }
 
