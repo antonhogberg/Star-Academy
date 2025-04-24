@@ -36,17 +36,20 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
       
-        window.addEventListener("load", async () => {
+        async function handleImportFromLink() {
           const urlParams = new URLSearchParams(window.location.search);
           const code = urlParams.get("code");
           if (!code) {
-            hideLoader();
+            hideOverlay();
             return;
           }
       
           try {
             const docSnap = await getDoc(doc(db, "exports", code));
-            if (!docSnap.exists()) return;
+            if (!docSnap.exists()) {
+              hideOverlay();
+              return;
+            }
       
             const stored = JSON.parse(localStorage.getItem("starAcademyStudents")) || { students: {}, currentStudent: "" };
             const { name, data } = docSnap.data();
@@ -57,17 +60,11 @@
             localStorage.setItem("starAcademyStudents", JSON.stringify(stored));
       
             showStudentPopup(isNew, name);
-            updateUserNameDisplay(); // uppdatera användarnamn direkt
-      
-            // Rensa kod från URL
-            const cleanUrl = window.location.origin + window.location.pathname;
-            window.history.replaceState({}, document.title, cleanUrl);
           } catch (e) {
-            console.error("Import från kod misslyckades:", e);
-          } finally {
-            hideLoader();
+            console.error("Import misslyckades:", e);
+            hideOverlay();
           }
-        });
+        }
       
         function showStudentPopup(isNew, name) {
           const popup = document.createElement("div");
@@ -82,23 +79,21 @@
       
           setTimeout(() => {
             popup.classList.remove("show");
-            document.body.removeChild(popup);
+            popup.remove();
           }, 3000);
+      
+          setTimeout(() => {
+            hideOverlay(); // visa innehåll
+          }, 100); // visa sidan strax efter popup visats
         }
       
-        function hideLoader() {
-          const loader = document.getElementById("importLoaderOverlay");
-          if (loader) loader.remove();
+        function hideOverlay() {
+          const overlay = document.getElementById("importLoaderOverlay");
+          if (overlay) overlay.style.display = "none";
         }
       
-        function updateUserNameDisplay() {
-          const display = document.getElementById("userNameDisplay");
-          const studentsData = JSON.parse(localStorage.getItem("starAcademyStudents"));
-          if (display && studentsData?.currentStudent) {
-            display.textContent = studentsData.currentStudent;
-          }
-        }
-      </script>
+        handleImportFromLink();
+      </script>      
 <div id="mainContent" style="display: none;">
         <div class="piano-menu" id="menuButton" aria-expanded="false" aria-controls="main-menu">
             <div class="white-key"></div>
