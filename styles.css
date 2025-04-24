@@ -1193,7 +1193,6 @@ body.chapters {
     background-color: var(--orange);
 }
 
-/* Export Button */
 .student-manager button#shareButton {
     width: 320px;
     height: 42px;
@@ -1213,6 +1212,19 @@ body.chapters {
     display: flex;
     justify-content: center;
     align-items: center;
+    text-align: center;
+}
+
+.student-manager button#shareButton:hover {
+    transform: scale(1.05);
+}
+
+/* Export Status Text */
+.student-manager #exportStatus {
+    margin-bottom: 20px; /* Space below to ensure visibility */
+    color: #ffffff;
+    font-family: Cochin, Georgia, Arial, sans-serif;
+    font-size: 16px;
     text-align: center;
 }
 
@@ -1438,6 +1450,10 @@ body.chapters {
         padding: 0px 10px 20px 10px;
     }
 
+    .student-manager #exportStatus {
+        margin-bottom: 30px; /* Extra space on mobile */
+    }
+    
     .students-title {
         margin-top: 0;
     }
