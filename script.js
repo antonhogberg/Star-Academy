@@ -483,6 +483,18 @@ function switchLanguage(lang) {
         const key = titleContainerH1.getAttribute('data-translate');
         if (translations[lang][key]) titleContainerH1.textContent = translations[lang][key];
     }
+
+
+    // --- NYTT: Exportfält på students.html ---
+    const exportTitle = document.getElementById('exportTitle');
+    const exportInfo = document.getElementById('exportInfo');
+    const shareButton = document.querySelector('[data-translate="shareButton"]');
+    const exportStatus = document.getElementById('exportStatus');
+
+    if (exportTitle) exportTitle.textContent = translations[lang].exportTitle;
+    if (exportInfo) exportInfo.textContent = translations[lang].exportInfo;
+    if (shareButton) shareButton.textContent = translations[lang].shareButton;
+    if (exportStatus) exportStatus.textContent = translations[lang].creatingLink;
 }
 
 function setInitialLanguage() {
