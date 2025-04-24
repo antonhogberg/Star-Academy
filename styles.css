@@ -1216,10 +1216,6 @@ body.chapters {
     text-align: center;
 }
 
-.student-manager button#shareButton:hover {
-    transform: scale(1.05);
-}
-
 /* Star Map Styles */
 .star-map-container {
     position: fixed;
