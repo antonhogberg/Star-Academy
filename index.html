@@ -86,9 +86,12 @@
         }
       
         function hideOverlay() {
-          const overlay = document.getElementById("importLoaderOverlay");
-          if (overlay) overlay.style.display = "none";
-        }
+            const overlay = document.getElementById("importLoaderOverlay");
+            if (overlay) overlay.style.display = "none";
+
+            const mainContent = document.getElementById("mainContent");
+            if (mainContent) mainContent.style.display = "block";
+            }
       
         function loadMainScript() {
           const script = document.createElement("script");
