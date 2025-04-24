@@ -39,17 +39,11 @@
         async function handleImportFromLink() {
           const urlParams = new URLSearchParams(window.location.search);
           const code = urlParams.get("code");
-          if (!code) {
-            hideOverlay();
-            return;
-          }
+          if (!code) return finishWithoutImport();
       
           try {
             const docSnap = await getDoc(doc(db, "exports", code));
-            if (!docSnap.exists()) {
-              hideOverlay();
-              return;
-            }
+            if (!docSnap.exists()) return finishWithoutImport();
       
             const stored = JSON.parse(localStorage.getItem("starAcademyStudents")) || { students: {}, currentStudent: "" };
             const { name, data } = docSnap.data();
@@ -60,9 +54,17 @@
             localStorage.setItem("starAcademyStudents", JSON.stringify(stored));
       
             showStudentPopup(isNew, name);
-          } catch (e) {
-            console.error("Import misslyckades:", e);
+      
+            // Clean up URL
+            const cleanUrl = window.location.origin + window.location.pathname;
+            window.history.replaceState({}, document.title, cleanUrl);
+      
             hideOverlay();
+            loadMainScript();
+          } catch (e) {
+            console.error("Import från kod misslyckades:", e);
+            hideOverlay();
+            loadMainScript();
           }
         }
       
@@ -79,12 +81,8 @@
       
           setTimeout(() => {
             popup.classList.remove("show");
-            popup.remove();
+            document.body.removeChild(popup);
           }, 3000);
-      
-          setTimeout(() => {
-            hideOverlay(); // visa innehåll
-          }, 100); // visa sidan strax efter popup visats
         }
       
         function hideOverlay() {
@@ -92,8 +90,20 @@
           if (overlay) overlay.style.display = "none";
         }
       
+        function loadMainScript() {
+          const script = document.createElement("script");
+          script.src = "script.js";
+          script.type = "text/javascript";
+          document.body.appendChild(script);
+        }
+      
+        function finishWithoutImport() {
+          hideOverlay();
+          loadMainScript();
+        }
+      
         handleImportFromLink();
-      </script>      
+      </script>          
 <div id="mainContent" style="display: none;">
         <div class="piano-menu" id="menuButton" aria-expanded="false" aria-controls="main-menu">
             <div class="white-key"></div>
