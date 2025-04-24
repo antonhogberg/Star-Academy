@@ -19,7 +19,7 @@
 <body>
     <div id="importLoaderOverlay" style="position: fixed; inset: 0; background: #fff; display: none; align-items: center; justify-content: center; z-index: 9999;">
         <p style="font-size: 18px;">Laddar data…</p>
-      </div>
+      </div>    
       <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
         import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore.js";
@@ -54,19 +54,33 @@
             stored.currentStudent = name;
             localStorage.setItem("starAcademyStudents", JSON.stringify(stored));
       
-            // Nu kör vi den globala funktionen som skapats i script.js
-            window.initializeAppContent();
-      
-            showStudentPopup(isNew, name);
-      
-            // Rensa URL-parametern
+            // Clean URL
             const cleanUrl = window.location.origin + window.location.pathname;
             window.history.replaceState({}, document.title, cleanUrl);
+      
+            // Load script.js dynamically
+            const script = document.createElement("script");
+            script.src = "script.js";
+            script.onload = () => {
+              // Call initialization after script loads
+              window.initializeAppContent();
+              showStudentPopup(isNew, name);
+              mainContent.style.display = "block";
+              overlay.style.display = "none";
+            };
+            document.body.appendChild(script);
           } catch (e) {
             console.error("Import från kod misslyckades:", e);
-          } finally {
-            overlay.style.display = "none";
-            mainContent.style.display = "block";
+            showErrorPopup();
+            // Load script.js to initialize with existing data
+            const script = document.createElement("script");
+            script.src = "script.js";
+            script.onload = () => {
+              window.initializeAppContent();
+              mainContent.style.display = "block";
+              overlay.style.display = "none";
+            };
+            document.body.appendChild(script);
           }
         }
       
@@ -83,7 +97,24 @@
       
           setTimeout(() => {
             popup.classList.remove("show");
-            if (popup.parentNode) popup.parentNode.removeChild(popup);
+            setTimeout(() => popup.remove(), 500); // Wait for fade-out animation
+          }, 3000);
+        }
+      
+        function showErrorPopup() {
+          const popup = document.createElement("div");
+          popup.id = "errorPopup";
+          popup.className = "student-popup show";
+          popup.innerHTML = `
+            <div class="student-popup-content">
+              <p>Kunde inte importera elevdata. Visar befintlig data.</p>
+            </div>
+          `;
+          document.body.appendChild(popup);
+      
+          setTimeout(() => {
+            popup.classList.remove("show");
+            setTimeout(() => popup.remove(), 500); // Wait for fade-out animation
           }, 3000);
         }
       
@@ -92,10 +123,16 @@
           mainContent.style.display = "none";
           handleImportFromLink(code);
         } else {
-          overlay.style.display = "none";
-          mainContent.style.display = "block";
+          // No import, load script.js immediately
+          const script = document.createElement("script");
+          script.src = "script.js";
+          script.onload = () => {
+            window.initializeAppContent();
+            mainContent.style.display = "block";
+          };
+          document.body.appendChild(script);
         }
-      </script>      
+      </script>
 <div id="mainContent" style="display: none;">
         <div class="piano-menu" id="menuButton" aria-expanded="false" aria-controls="main-menu">
             <div class="white-key"></div>
