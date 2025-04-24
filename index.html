@@ -54,10 +54,12 @@
             stored.currentStudent = name;
             localStorage.setItem("starAcademyStudents", JSON.stringify(stored));
       
-            showStudentPopup(isNew, name);
-            updateContentImmediately(name, data); // Direktuppdatering av innehåll
+            // Nu kör vi den globala funktionen som skapats i script.js
+            window.initializeAppContent();
       
-            // Rensa URL-parametern efter import
+            showStudentPopup(isNew, name);
+      
+            // Rensa URL-parametern
             const cleanUrl = window.location.origin + window.location.pathname;
             window.history.replaceState({}, document.title, cleanUrl);
           } catch (e) {
@@ -85,13 +87,6 @@
           }, 3000);
         }
       
-        // Funktion för att direkt uppdatera sidans innehåll
-        function updateContentImmediately(name, data) {
-          document.getElementById("userName").textContent = name;
-          // Uppdatera SVG och andra element med den nya datan direkt här
-          updateStarStates(); // Funktionen i ditt script.js som uppdaterar SVG baserat på localStorage
-        }
-      
         if (code) {
           overlay.style.display = "flex";
           mainContent.style.display = "none";
@@ -100,8 +95,7 @@
           overlay.style.display = "none";
           mainContent.style.display = "block";
         }
-      </script>
-          
+      </script>      
 <div id="mainContent" style="display: none;">
         <div class="piano-menu" id="menuButton" aria-expanded="false" aria-controls="main-menu">
             <div class="white-key"></div>
