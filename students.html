@@ -32,29 +32,48 @@
     const db = getFirestore(app);
 
     window.shareExport = async function () {
+      console.log('shareExport called');
       const exportStatus = document.getElementById("exportStatus");
-      exportStatus.style.display = "block";
-      exportStatus.textContent = "Skapar länk, vänta…";
-
-      const studentsData = JSON.parse(localStorage.getItem("starAcademyStudents")) || { students: {}, currentStudent: "" };
-      const current = studentsData.currentStudent;
-      if (!current || !studentsData.students[current]) return;
-
-      const dataToExport = {
-        name: current,
-        data: studentsData.students[current]
-      };
-
+      const lang = localStorage.getItem('language') || 'sv';
       try {
+        if (!window.translations || !window.translations[lang]) {
+          throw new Error('Translations not available');
+        }
+        exportStatus.style.display = "block";
+        exportStatus.textContent = window.translations[lang].creatingLink;
+
+        const studentsData = JSON.parse(localStorage.getItem("starAcademyStudents")) || { students: {}, currentStudent: "" };
+        const current = studentsData.currentStudent;
+        if (!current || !studentsData.students[current]) {
+          console.warn('No current student selected');
+          return;
+        }
+
+        const dataToExport = {
+          name: current,
+          data: studentsData.students[current]
+        };
+
         const docRef = await addDoc(collection(db, "exports"), dataToExport);
         const link = `${window.location.origin}/Star-Academy/index.html?code=${docRef.id}`;
         await navigator.share({ title: "Elevdata", url: link });
       } catch (error) {
-        alert("Det gick inte att skapa delningslänk");
+        console.error('shareExport error:', error);
+        alert(window.translations[lang]?.error || "Det gick inte att skapa delningslänk");
       } finally {
         exportStatus.style.display = "none";
       }
     };
+
+    // Add event listener for shareButton
+    document.addEventListener('DOMContentLoaded', () => {
+      const shareButton = document.getElementById('shareButton');
+      if (shareButton) {
+        shareButton.addEventListener('click', window.shareExport);
+      } else {
+        console.error('shareButton not found');
+      }
+    });
   </script>
 </head>
 <body>
@@ -191,5 +210,5 @@
       }
     }
   </script>
-</body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'93583dc64cc27221',t:'MTc0NTUyNTM5Ny4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
