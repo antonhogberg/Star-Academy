@@ -39,21 +39,12 @@
         const urlParams = new URLSearchParams(window.location.search);
         const code = urlParams.get("code");
         const overlay = document.getElementById("importLoaderOverlay");
-      
-        if (code) {
-          overlay.style.display = "flex"; // Visa overlay endast om import sker
-          handleImportFromLink(code).then(() => {
-            overlay.style.display = "none";
-            window.location.reload(); // Nu när data är sparad – ladda om för rätt innehåll
-          });
-        } else {
-          overlay.style.display = "none"; // Dölj overlay direkt om ingen import
-        }
+        const mainContent = document.getElementById("mainContent");
       
         async function handleImportFromLink(code) {
           try {
             const docSnap = await getDoc(doc(db, "exports", code));
-            if (!docSnap.exists()) return;
+            if (!docSnap.exists()) throw new Error("Document not found.");
       
             const stored = JSON.parse(localStorage.getItem("starAcademyStudents")) || { students: {}, currentStudent: "" };
             const { name, data } = docSnap.data();
@@ -64,13 +55,16 @@
             localStorage.setItem("starAcademyStudents", JSON.stringify(stored));
       
             showStudentPopup(isNew, name);
+            updateContentImmediately(name, data); // Direktuppdatering av innehåll
       
             // Rensa URL-parametern efter import
             const cleanUrl = window.location.origin + window.location.pathname;
             window.history.replaceState({}, document.title, cleanUrl);
           } catch (e) {
             console.error("Import från kod misslyckades:", e);
+          } finally {
             overlay.style.display = "none";
+            mainContent.style.display = "block";
           }
         }
       
@@ -90,8 +84,24 @@
             if (popup.parentNode) popup.parentNode.removeChild(popup);
           }, 3000);
         }
+      
+        // Funktion för att direkt uppdatera sidans innehåll
+        function updateContentImmediately(name, data) {
+          document.getElementById("userName").textContent = name;
+          // Uppdatera SVG och andra element med den nya datan direkt här
+          updateStarStates(); // Funktionen i ditt script.js som uppdaterar SVG baserat på localStorage
+        }
+      
+        if (code) {
+          overlay.style.display = "flex";
+          mainContent.style.display = "none";
+          handleImportFromLink(code);
+        } else {
+          overlay.style.display = "none";
+          mainContent.style.display = "block";
+        }
       </script>
-                     
+          
 <div id="mainContent" style="display: none;">
         <div class="piano-menu" id="menuButton" aria-expanded="false" aria-controls="main-menu">
             <div class="white-key"></div>
