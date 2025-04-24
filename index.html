@@ -39,11 +39,14 @@
         async function handleImportFromLink() {
           const urlParams = new URLSearchParams(window.location.search);
           const code = urlParams.get("code");
-          if (!code) return finishWithoutImport();
+          if (!code) {
+            revealContent();
+            return;
+          }
       
           try {
             const docSnap = await getDoc(doc(db, "exports", code));
-            if (!docSnap.exists()) return finishWithoutImport();
+            if (!docSnap.exists()) return revealContent();
       
             const stored = JSON.parse(localStorage.getItem("starAcademyStudents")) || { students: {}, currentStudent: "" };
             const { name, data } = docSnap.data();
@@ -54,16 +57,9 @@
             localStorage.setItem("starAcademyStudents", JSON.stringify(stored));
       
             showStudentPopup(isNew, name);
-      
-            // Clean up URL
-            const cleanUrl = window.location.origin + window.location.pathname;
-            window.history.replaceState({}, document.title, cleanUrl);
-      
-            hideOverlay();
-            loadMainScript();
           } catch (e) {
             console.error("Import från kod misslyckades:", e);
-            hideOverlay();
+          } finally {
             loadMainScript();
           }
         }
@@ -78,35 +74,41 @@
             </div>
           `;
           document.body.appendChild(popup);
-      
-          setTimeout(() => {
-            popup.classList.remove("show");
-            document.body.removeChild(popup);
-          }, 3000);
         }
-      
-        function hideOverlay() {
-            const overlay = document.getElementById("importLoaderOverlay");
-            if (overlay) overlay.style.display = "none";
-
-            const mainContent = document.getElementById("mainContent");
-            if (mainContent) mainContent.style.display = "block";
-            }
       
         function loadMainScript() {
           const script = document.createElement("script");
           script.src = "script.js";
-          script.type = "text/javascript";
+          script.onload = () => {
+            revealContent();
+          };
           document.body.appendChild(script);
         }
       
-        function finishWithoutImport() {
-          hideOverlay();
-          loadMainScript();
+        function revealContent() {
+          const overlay = document.getElementById("importLoaderOverlay");
+          const mainContent = document.getElementById("mainContent");
+      
+          if (overlay) {
+            overlay.style.opacity = 1;
+            overlay.style.transition = "opacity 0.5s";
+            overlay.style.opacity = 0;
+            setTimeout(() => {
+              overlay.style.display = "none";
+              if (mainContent) {
+                mainContent.style.display = "block";
+                mainContent.style.opacity = 0;
+                mainContent.style.transition = "opacity 0.5s";
+                setTimeout(() => {
+                  mainContent.style.opacity = 1;
+                }, 10);
+              }
+            }, 500);
+          }
         }
       
         handleImportFromLink();
-      </script>          
+      </script>               
 <div id="mainContent" style="display: none;">
         <div class="piano-menu" id="menuButton" aria-expanded="false" aria-controls="main-menu">
             <div class="white-key"></div>
