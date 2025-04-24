@@ -17,7 +17,10 @@
     </script>
 </head>
 <body>
-    <script type="module">
+    <div id="importLoaderOverlay" style="position: fixed; inset: 0; background: #fff; display: flex; align-items: center; justify-content: center; z-index: 9999;">
+        <p style="font-size: 18px;">Laddar data…</p>
+      </div>
+      <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
         import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore.js";
       
@@ -36,11 +39,14 @@
         async function handleImportFromLink() {
           const urlParams = new URLSearchParams(window.location.search);
           const code = urlParams.get("code");
-          if (!code) return;
+          if (!code) {
+            document.getElementById("importLoaderOverlay").style.display = "none";
+            return;
+          }
       
           try {
             const docSnap = await getDoc(doc(db, "exports", code));
-            if (!docSnap.exists()) return;
+            if (!docSnap.exists()) throw new Error("Kod finns inte i databasen");
       
             const stored = JSON.parse(localStorage.getItem("starAcademyStudents")) || { students: {}, currentStudent: "" };
             const { name, data } = docSnap.data();
@@ -52,12 +58,14 @@
       
             showStudentPopup(isNew, name);
       
+          } catch (e) {
+            console.error("Import från kod misslyckades:", e);
+          } finally {
+            document.getElementById("importLoaderOverlay").style.display = "none";
+      
             // Rensa kod från URL
             const cleanUrl = window.location.origin + window.location.pathname;
             window.history.replaceState({}, document.title, cleanUrl);
-      
-          } catch (e) {
-            console.error("Import från kod misslyckades:", e);
           }
         }
       
@@ -75,11 +83,10 @@
           setTimeout(() => {
             popup.classList.remove("show");
             document.body.removeChild(popup);
-            window.location.reload(); // Ladda om för att visa stjärnor och namn korrekt
           }, 3000);
         }
       
-        handleImportFromLink();
+        window.addEventListener("DOMContentLoaded", handleImportFromLink);
       </script>      
     <div class="piano-menu" id="menuButton" aria-expanded="false" aria-controls="main-menu">
         <div class="white-key"></div>
