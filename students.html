@@ -14,68 +14,6 @@
     window.addEventListener('orientationchange', setViewportHeight);
     setViewportHeight();
   </script>
-
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
-    import { getFirestore, collection, addDoc, getDoc, doc as firestoreDoc } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore.js";
-
-    const firebaseConfig = {
-      apiKey: "REDACTED",
-      authDomain: "stjarnakademien-6b272.firebaseapp.com",
-      projectId: "stjarnakademien-6b272",
-      storageBucket: "stjarnakademien-6b272.appspot.com",
-      messagingSenderId: "773874793436",
-      appId: "1:773874793436:web:f7dc4307844e38709e2d19"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-
-    window.shareExport = async function () {
-      const exportStatus = document.getElementById("exportStatus");
-      exportStatus.style.display = "block";
-      exportStatus.textContent = "Skapar länk, vänta…";
-
-      const studentsData = JSON.parse(localStorage.getItem("starAcademyStudents")) || { students: {}, currentStudent: "" };
-      const current = studentsData.currentStudent;
-      if (!current || !studentsData.students[current]) return;
-
-      const dataToExport = {
-        name: current,
-        data: studentsData.students[current]
-      };
-
-      try {
-        const docRef = await addDoc(collection(db, "exports"), dataToExport);
-        const link = `${window.location.origin}/Star-Academy/index.html?code=${docRef.id}`;
-        await navigator.share({ title: "Elevdata", url: link });
-      } catch (error) {
-        alert("Det gick inte att skapa delningslänk");
-      } finally {
-        exportStatus.style.display = "none";
-      }
-    };
-
-    window.addEventListener("DOMContentLoaded", async () => {
-      const urlParams = new URLSearchParams(window.location.search);
-      const code = urlParams.get("code");
-      if (!code) return;
-
-      try {
-        const docSnap = await getDoc(firestoreDoc(getFirestore(), "exports", code));
-        if (!docSnap.exists()) return;
-
-        const stored = JSON.parse(localStorage.getItem("starAcademyStudents")) || { students: {}, currentStudent: "" };
-        const { name, data } = docSnap.data();
-        stored.students[name] = data;
-        stored.currentStudent = name;
-        localStorage.setItem("starAcademyStudents", JSON.stringify(stored));
-        window.location.href = "students.html";
-      } catch (e) {
-        console.error("Import misslyckades:", e);
-      }
-    });
-  </script>
 </head>
 <body>
   <div class="piano-menu" id="menuButton" aria-expanded="false" aria-controls="main-menu">
@@ -116,7 +54,7 @@
       <p id="exportInfo" class="info-text" data-translate="exportInfo"></p>
       <div style="display: flex; flex-direction: column; align-items: center;">
         <button id="shareButton" onclick="shareExport()" data-translate="shareButton"></button>
-        <p id="exportStatus" class="info-text" style="display: none;"></p>
+        <p id="exportStatus" class="info-text" data-translate="exportStatus" style="display: none;"></p>
       </div>
     </div>
   </div>

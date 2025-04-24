@@ -50,10 +50,7 @@
             stored.currentStudent = name;
             localStorage.setItem("starAcademyStudents", JSON.stringify(stored));
       
-            // Fördröj uppbyggnad tills popup syns
-            window.addEventListener("DOMContentLoaded", () => {
-              showStudentPopup(isNew, name);
-            });
+            showStudentPopup(isNew, name);
       
             // Rensa kod från URL
             const cleanUrl = window.location.origin + window.location.pathname;
