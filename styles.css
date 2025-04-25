@@ -1214,6 +1214,14 @@ body.chapters {
     background-color: var(--orange);
 }
 
+/* Export Button Container */
+.export-button-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
 /* Export Button */
 .student-manager button#shareButton {
     width: 320px;
@@ -1473,6 +1481,9 @@ body.chapters {
         padding: 0px 10px 20px 10px;
     }
 
+    .export-button-container {
+        margin-bottom: 48px; /* Increased for mobile */
+    }
     .student-manager button#shareButton {
         width: 72vw;
     }
