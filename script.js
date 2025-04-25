@@ -66,8 +66,9 @@ const translations = {
         exportTitle: "Export Student Data",
         exportInfo: "Tap the button below to share the current student to another device. The recipient just needs to open the link – the student will be added automatically!",
         shareButton: "Share student via AirDrop / Message",
-        creatingLink: "Generating link, please wait…"
-    },
+        creatingLink: "Generating link, please wait…",
+        copyLinkSuccess: "Link copied to clipboard! Paste to share."
+        },
     sv: {
         menuFrontPage: "Stjärnöversikt",
         menuChapter: "Kapitel",
@@ -133,8 +134,10 @@ const translations = {
         faqA7: "Ja, maila gärna: stjarnakademien@gmail.com",
         exportTitle: "Exportera elevdata:",
         exportInfo: "Genom att trycka på knappen nedan kan du dela den aktuella eleven till en annan enhet. Mottagaren behöver bara öppna länken – eleven läggs automatiskt till!",
+        exportStatus: "Ge",
         shareButton: "Dela elev via AirDrop / Meddelande",
-        creatingLink: "Skapar länk, vänta…"
+        creatingLink: "Skapar länk, vänta…",
+        copyLinkSuccess: "Länk kopierad till urklipp! Klistra in för att dela."
     }
 };
 
