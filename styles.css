@@ -435,8 +435,8 @@ body.chapters {
     background-position: center top;
     padding: 10px 15px;
     border-radius: 5px;
-    border: 2px solid var(--orange);
-    box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+    border: 2px solid var(--gold); /* Changed to gold */
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.5); /* Gold glow */
     text-align: center;
     display: flex;
     flex-direction: column;
@@ -1214,6 +1214,12 @@ body.chapters {
     background-color: var(--orange);
 }
 
+/* Export Section */
+.export-section {
+    margin-top: 2rem;
+    margin-bottom: 30px; /* Your desktop spacing */
+}
+
 /* Export Button Container */
 .export-button-container {
     display: flex;
@@ -1481,9 +1487,13 @@ body.chapters {
         padding: 0px 10px 20px 10px;
     }
 
-    .export-button-container {
-        margin-bottom: 48px; /* Increased for mobile */
+    .export-section {
+        margin-bottom: 30px; /* Your desktop spacing for consistency */
     }
+    .export-button-container {
+        margin-bottom: 48px; /* 40-50px mobile spacing */
+    }
+
     .student-manager button#shareButton {
         width: 72vw;
     }
@@ -1589,6 +1599,8 @@ body.chapters {
         max-width: 90vw;
         padding: 8px 12px;
         font-size: 16px;
+        border: 2px solid var(--gold); /* Gold on mobile */
+        box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
     }
     .student-popup-content .popup-star {
         width: 16px;
