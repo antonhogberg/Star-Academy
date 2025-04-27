@@ -74,10 +74,11 @@ body.chapters {
     position: fixed;
     top: 0;
     left: -250px;
-    width: 250px;
+    width: 200px;
     height: 100%;
-    background: #cccccc;
+    background: var(--light-grey); /* #cccccc */
     z-index: 1000;
+    box-sizing: border-box; /* Ensure padding/borders don’t increase width */
 }
 
 .hamburger-nav .student-select-container {
@@ -489,14 +490,14 @@ body.chapters {
 .student-select-container {
     position: fixed;
     top: 20px;
-    left: 270px; /* Menu width (250px) + 20px */
-    z-index: 900; /* Below menu (1000) */
+    left: 270px; /* Will be overridden by JS for dynamic positioning */
+    z-index: 1100; /* Above menu (1000) */
     display: flex;
     align-items: center;
 }
 
 #globalStudentSelect {
-    height: 40px; /* Match .piano-menu height */
+    height: 35px; /* Reduced by 5px */
     width: 140px; /* 70% of ~200px */
     padding: 5px;
     font-size: 14px;
@@ -1661,6 +1662,11 @@ body.chapters {
     .hamburger-nav #globalStudentSelect {
         width: 80%; /* Fit menu width */
         margin: 0 auto;
+    }
+
+    /* Show dropdown only when menu is active */
+    .hamburger-nav .menu.active ~ .student-select-container {
+        display: flex;
     }
 
     .title-container h1 {

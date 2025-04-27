@@ -13,6 +13,21 @@
         window.addEventListener('resize', setViewportHeight);
         window.addEventListener('orientationchange', setViewportHeight);
         setViewportHeight();
+
+        // Position dropdown dynamically
+        function positionDropdown() {
+            const menuButton = document.getElementById('menuButton');
+            const dropdownContainer = document.querySelector('.student-select-container');
+            if (menuButton && dropdownContainer) {
+                const rect = menuButton.getBoundingClientRect();
+                const leftOffset = rect.left;
+                const menuButtonWidth = rect.width;
+                dropdownContainer.style.left = `${leftOffset + menuButtonWidth + leftOffset}px`; // menuButton left + width + left offset
+            }
+        }
+        window.addEventListener('load', positionDropdown);
+        window.addEventListener('resize', positionDropdown);
+        window.addEventListener('orientationchange', positionDropdown);
     </script>
 </head>
 <body>

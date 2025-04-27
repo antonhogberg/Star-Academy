@@ -102,21 +102,33 @@ function showStudentPopup(message, duration) {
 function switchStudent() {
     const select = document.getElementById('globalStudentSelect') || document.getElementById('studentSelect');
     if (select) {
+        console.log('switchStudent called, new value:', select.value);
         window.studentsData.currentStudent = select.value;
         localStorage.setItem('starAcademyStudents', JSON.stringify(window.studentsData));
+        console.log('localStorage updated, currentStudent:', window.studentsData.currentStudent);
         if (typeof updateStarStates === 'function') {
+            console.log('Calling updateStarStates');
             updateStarStates();
+        } else {
+            console.error('updateStarStates not defined');
         }
         if (typeof window.initializeStarMap === 'function' && window.location.pathname.toLowerCase().includes('starmap.html')) {
+            console.log('Calling initializeStarMap');
             window.initializeStarMap();
         }
         if (window.location.pathname.toLowerCase().includes('chapter') && !window.isReloading) {
+            console.log('Reloading chapter page');
             window.isReloading = true;
             location.reload();
         }
         if (typeof loadNotes === 'function') {
+            console.log('Calling loadNotes');
             loadNotes(false);
         }
+        // Force dropdown to reflect currentStudent
+        select.value = window.studentsData.currentStudent;
+    } else {
+        console.error('Select element not found');
     }
 }
 
@@ -135,14 +147,16 @@ function updateDropdown() {
             const currentStudent = window.studentsData.currentStudent && studentNames.includes(window.studentsData.currentStudent)
                 ? window.studentsData.currentStudent
                 : studentNames[0];
-            select.value = currentStudent;
             window.studentsData.currentStudent = currentStudent;
             localStorage.setItem('starAcademyStudents', JSON.stringify(window.studentsData));
+            select.value = currentStudent;
+            console.log('updateDropdown set select.value to:', currentStudent);
         }
     });
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+    console.log('DOMContentLoaded, calling updateDropdown');
     updateDropdown();
     const lang = localStorage.getItem('language') || 'sv';
     const studentTitle = document.getElementById('chapterTitle');
