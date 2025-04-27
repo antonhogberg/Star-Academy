@@ -70,17 +70,6 @@ body.chapters {
     margin: 0;
 }
 
-.hamburger-nav .menu {
-    position: fixed;
-    top: 0;
-    left: -250px;
-    width: 200px;
-    height: 100%;
-    background: var(--light-grey); /* #cccccc */
-    z-index: 1000;
-    box-sizing: border-box; /* Ensure padding/borders don’t increase width */
-}
-
 .hamburger-nav .student-select-container {
     display: none; /* Hidden by default, shown in mobile */
     margin: 10px 0;
@@ -114,7 +103,7 @@ body.chapters {
     position: fixed;
     top: 0;
     left: -250px;
-    width: 200px;
+    width: 230px;
     height: calc(var(--vh, 1vh) * 100);
     background: #cccccc;
     padding: 20px 10px;
