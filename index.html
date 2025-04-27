@@ -22,7 +22,7 @@
                 const rect = menuButton.getBoundingClientRect();
                 const leftOffset = rect.left;
                 const menuButtonWidth = rect.width;
-                dropdownContainer.style.left = `${leftOffset + menuButtonWidth + leftOffset}px`; // menuButton left + width + left offset
+                dropdownContainer.style.left = `${leftOffset + menuButtonWidth + leftOffset}px`;
             }
         }
         window.addEventListener('load', positionDropdown);
@@ -45,7 +45,7 @@
             <div class="black-key bottom"></div>
         </div>
         <div class="student-select-container">
-            <select id="globalStudentSelect" onchange="switchStudent()"></select>
+            <select id="globalStudentSelect"></select>
         </div>
         <nav id="menu-placeholder"></nav>
         <div class="layout-container">
@@ -242,6 +242,7 @@ const mainContent = document.getElementById("mainContent");
 const loaderText = document.getElementById("loaderText");
 
 async function handleImportFromLink(code) {
+    console.log('handleImportFromLink called with code:', code);
     try {
         window.isImporting = true;
         overlay.style.display = "flex";
@@ -255,7 +256,9 @@ async function handleImportFromLink(code) {
         const docSnap = await getDoc(doc(db, "exports", code));
         await minDisplayTime;
 
-        if (!docSnap.exists()) throw new Error("Document not found.");
+        if (!docSnap.exists()) {
+            throw new Error("Document not found.");
+        }
 
         const stored = JSON.parse(localStorage.getItem("starAcademyStudents")) || { students: {}, currentStudent: "" };
         const { name, data } = docSnap.data();
@@ -263,9 +266,11 @@ async function handleImportFromLink(code) {
 
         stored.students[name] = data;
         stored.currentStudent = name;
-        localStorage.setItem("starAcademyStudents", JSON.stringify(stored));
+        localStorage.setItem('starAcademyStudents', JSON.stringify(stored));
+        console.log('Imported student:', name, 'localStorage updated:', stored);
 
         if (typeof window.initializeAppContent === 'function') {
+            console.log('Calling initializeAppContent');
             window.initializeAppContent();
         } else {
             console.error('initializeAppContent not defined');
@@ -276,17 +281,23 @@ async function handleImportFromLink(code) {
         const cleanUrl = window.location.origin + window.location.pathname;
         window.history.replaceState({}, document.title, cleanUrl);
     } catch (e) {
-        console.error("Import från kod misslyckades:", e);
+        console.error("Import failed:", e);
         setTimeout(() => showStudentPopup(false, e.message), 100);
     } finally {
         overlay.style.display = "none";
         mainContent.style.display = "block";
         window.isImporting = false;
         if (typeof updateDropdown === 'function') {
+            console.log('Calling updateDropdown');
             updateDropdown();
+        } else {
+            console.error('updateDropdown not defined');
         }
         if (typeof window.updateStarStates === 'function') {
+            console.log('Calling updateStarStates');
             window.updateStarStates();
+        } else {
+            console.error('updateStarStates not defined');
         }
     }
 }
@@ -316,12 +327,23 @@ function showStudentPopup(isNew, name) {
     document.body.appendChild(popup);
 
     setTimeout(() => {
-        popup.classList.remove("show");
+        popup.className = "student-popup";
         setTimeout(() => {
             if (popup.parentNode) popup.parentNode.removeChild(popup);
         }, 500);
     }, 4000);
 }
+
+// Attach onchange event for mobile compatibility
+document.addEventListener('DOMContentLoaded', () => {
+    const select = document.getElementById('globalStudentSelect');
+    if (select) {
+        select.addEventListener('change', () => {
+            console.log('Dropdown change event fired');
+            switchStudent();
+        });
+    }
+});
 
 if (code) {
     handleImportFromLink(code);
