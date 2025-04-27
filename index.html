@@ -30,9 +30,6 @@
             <div class="black-key bottom"></div>
         </div>
         <nav id="menu-placeholder"></nav>
-        <div class="student-select-container">
-            <select id="globalStudentSelect"></select>
-        </div>
         <div class="layout-container">
             <div class="progress-container">
                 <svg class="progress-svg" viewBox="0 0 1366 924"
@@ -198,12 +195,12 @@
         <div class="rank-badge">
             <img id="rankImage" src="rank-start.png" alt="Rank Badge" style="max-width: 100%; height: auto; display: block; margin: 0 auto;">
             <div id="rankName"></div>
+            <div id="userNameDisplay"></div>
         </div>
     </div>
 </div>
 </div>
 <script src="script.js"></script>
-<script src="students.js"></script>
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
 import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore.js";
@@ -309,23 +306,6 @@ function showStudentPopup(isNew, name) {
         }, 500);
     }, 4000);
 }
-
-window.initializeAppContent = function() {
-    console.log('initializeAppContent called');
-    updateStarStates();
-    updateDropdown(); // Initialize dropdown
-};
-
-document.addEventListener('DOMContentLoaded', () => {
-    const globalSelect = document.getElementById('globalStudentSelect');
-    if (globalSelect) {
-        globalSelect.addEventListener('change', () => {
-            console.log('globalStudentSelect changed');
-            switchStudent();
-            updateStarStates(); // Update UI after switching
-        });
-    }
-});
 
 if (code) {
     handleImportFromLink(code);
