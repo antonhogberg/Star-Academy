@@ -30,6 +30,10 @@
             <div class="black-key bottom"></div>
         </div>
         <nav id="menu-placeholder"></nav>
+        <!-- Added: Dropdown container -->
+        <div class="student-select-container">
+            <select id="globalStudentSelect"></select>
+        </div>
         <div class="layout-container">
             <div class="progress-container">
                 <svg class="progress-svg" viewBox="0 0 1366 924"
@@ -195,12 +199,14 @@
         <div class="rank-badge">
             <img id="rankImage" src="rank-start.png" alt="Rank Badge" style="max-width: 100%; height: auto; display: block; margin: 0 auto;">
             <div id="rankName"></div>
-            <div id="userNameDisplay"></div>
+            <!-- Removed: <div id="userNameDisplay"></div> -->
         </div>
     </div>
 </div>
 </div>
 <script src="script.js"></script>
+<!-- Added: students.js -->
+<script src="students.js"></script>
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
 import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore.js";
@@ -243,8 +249,8 @@ async function handleImportFromLink(code) {
         mainContent.style.display = "none";
         const lang = localStorage.getItem('language') || 'sv';
         loaderText.textContent = translations[lang].loading;
+        console.log('Import started, code:', code);
         
-        // Ensure minimum display time of 1 second
         const minDisplayTime = new Promise(resolve => setTimeout(resolve, 1000));
         const docSnap = await getDoc(doc(db, "exports", code));
         await minDisplayTime;
@@ -258,17 +264,20 @@ async function handleImportFromLink(code) {
         stored.students[name] = data;
         stored.currentStudent = name;
         localStorage.setItem("starAcademyStudents", JSON.stringify(stored));
+        console.log('localStorage updated, currentStudent:', name, 'students:', Object.keys(stored.students));
 
-        if (typeof window.initializeAppContent === 'function') {
-            window.initializeAppContent();
-        } else {
-            console.error('initializeAppContent not defined');
-        }
+        // Ensure DOM is ready before updating UI
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('Calling initializeAppContent after import');
+            if (typeof window.initializeAppContent === 'function') {
+                window.initializeAppContent();
+            } else {
+                console.error('initializeAppContent not defined');
+            }
+        }, { once: true });
 
-        // Show popup with delay to ensure loading screen is gone
         setTimeout(() => showStudentPopup(isNew, name), 100);
 
-        // Clean URL
         const cleanUrl = window.location.origin + window.location.pathname;
         window.history.replaceState({}, document.title, cleanUrl);
     } catch (e) {
@@ -278,6 +287,7 @@ async function handleImportFromLink(code) {
         overlay.style.display = "none";
         mainContent.style.display = "block";
         window.isImporting = false;
+        console.log('Import completed, isImporting:', window.isImporting);
     }
 }
 
@@ -307,14 +317,51 @@ function showStudentPopup(isNew, name) {
     }, 4000);
 }
 
+window.initializeAppContent = function() {
+    console.log('initializeAppContent called');
+    if (typeof updateStarStates === 'function') {
+        updateStarStates();
+    } else {
+        console.error('updateStarStates not defined');
+    }
+    if (typeof updateDropdown === 'function') {
+        updateDropdown();
+    } else {
+        console.error('updateDropdown not defined');
+    }
+};
+
+// Bind dropdown change event
+document.addEventListener('DOMContentLoaded', () => {
+    console.log('DOMContentLoaded in index.html');
+    const globalSelect = document.getElementById('globalStudentSelect');
+    if (globalSelect) {
+        console.log('Binding change event to globalStudentSelect');
+        globalSelect.addEventListener('change', () => {
+            console.log('globalStudentSelect changed');
+            if (typeof switchStudent === 'function') {
+                switchStudent();
+            }
+            if (typeof updateStarStates === 'function') {
+                updateStarStates();
+            }
+        });
+    } else {
+        console.error('globalStudentSelect not found');
+    }
+});
+
 if (code) {
     handleImportFromLink(code);
 } else {
     overlay.style.display = "none";
     mainContent.style.display = "block";
-    if (typeof window.initializeAppContent === 'function') {
-        window.initializeAppContent();
-    }
+    document.addEventListener('DOMContentLoaded', () => {
+        console.log('Calling initializeAppContent on page load');
+        if (typeof window.initializeAppContent === 'function') {
+            window.initializeAppContent();
+        }
+    }, { once: true });
 }
 </script>
 <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'92bbb6a45b62afb9',t:'MTc0Mzg4NDA4My4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>

@@ -2006,3 +2006,31 @@ body.chapters {
     }
 }
 
+.student-select-container {
+    position: fixed;
+    top: 10px;
+    left: 270px; /* 250px menu width + 20px gap */
+    z-index: 1100; /* Above menu (z-index: 1000) */
+    display: flex;
+    align-items: center;
+}
+
+#globalStudentSelect {
+    height: 35px;
+    width: 140px;
+    background: #cccccc; /* Match menu */
+    color: var(--gold); /* #ffd700 */
+    border: 2px solid var(--orange); /* #ff8c00 */
+    font-family: Cochin, Georgia, Arial, sans-serif;
+    font-size: 16px;
+    padding: 5px;
+    box-sizing: border-box;
+}
+
+.hamburger-nav .menu {
+    background: #cccccc !important;
+    width: 250px !important;
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
