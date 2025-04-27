@@ -104,8 +104,12 @@ function switchStudent() {
     if (select) {
         console.log('switchStudent called, new value:', select.value);
         window.studentsData.currentStudent = select.value;
-        localStorage.setItem('starAcademyStudents', JSON.stringify(window.studentsData));
-        console.log('localStorage updated, currentStudent:', window.studentsData.currentStudent);
+        try {
+            localStorage.setItem('starAcademyStudents', JSON.stringify(window.studentsData));
+            console.log('localStorage updated, currentStudent:', window.studentsData.currentStudent);
+        } catch (e) {
+            console.error('Failed to update localStorage:', e);
+        }
         if (typeof updateStarStates === 'function') {
             console.log('Calling updateStarStates');
             updateStarStates();
@@ -127,6 +131,7 @@ function switchStudent() {
         }
         // Force dropdown to reflect currentStudent
         select.value = window.studentsData.currentStudent;
+        updateDropdown(); // Ensure dropdown syncs
     } else {
         console.error('Select element not found');
     }
@@ -148,7 +153,12 @@ function updateDropdown() {
                 ? window.studentsData.currentStudent
                 : studentNames[0];
             window.studentsData.currentStudent = currentStudent;
-            localStorage.setItem('starAcademyStudents', JSON.stringify(window.studentsData));
+            try {
+                localStorage.setItem('starAcademyStudents', JSON.stringify(window.studentsData));
+                console.log('updateDropdown saved localStorage, currentStudent:', currentStudent);
+            } catch (e) {
+                console.error('Failed to update localStorage in updateDropdown:', e);
+            }
             select.value = currentStudent;
             console.log('updateDropdown set select.value to:', currentStudent);
         }
