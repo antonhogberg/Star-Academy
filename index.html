@@ -13,21 +13,6 @@
         window.addEventListener('resize', setViewportHeight);
         window.addEventListener('orientationchange', setViewportHeight);
         setViewportHeight();
-
-        // Position dropdown dynamically
-        function positionDropdown() {
-            const menuButton = document.getElementById('menuButton');
-            const dropdownContainer = document.querySelector('.student-select-container');
-            if (menuButton && dropdownContainer) {
-                const rect = menuButton.getBoundingClientRect();
-                const leftOffset = rect.left;
-                const menuButtonWidth = rect.width;
-                dropdownContainer.style.left = `${leftOffset + menuButtonWidth + leftOffset}px`;
-            }
-        }
-        window.addEventListener('load', positionDropdown);
-        window.addEventListener('resize', positionDropdown);
-        window.addEventListener('orientationchange', positionDropdown);
     </script>
 </head>
 <body>
@@ -43,9 +28,6 @@
             <div class="white-key"></div>
             <div class="black-key top"></div>
             <div class="black-key bottom"></div>
-        </div>
-        <div class="student-select-container">
-            <select id="globalStudentSelect"></select>
         </div>
         <nav id="menu-placeholder"></nav>
         <div class="layout-container">
@@ -213,12 +195,12 @@
         <div class="rank-badge">
             <img id="rankImage" src="rank-start.png" alt="Rank Badge" style="max-width: 100%; height: auto; display: block; margin: 0 auto;">
             <div id="rankName"></div>
+            <div id="userNameDisplay"></div>
         </div>
     </div>
 </div>
 </div>
-<script src="students.js"></script>
-<script type="module" src="script.js"></script>
+<script src="script.js"></script>
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
 import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore.js";
@@ -241,24 +223,33 @@ const overlay = document.getElementById("importLoaderOverlay");
 const mainContent = document.getElementById("mainContent");
 const loaderText = document.getElementById("loaderText");
 
+const translations = {
+    sv: {
+        loading: "Laddar elevdata...",
+        success: "Dina framgångar är uppdaterade, välkommen",
+        error: "Import misslyckades. Försök igen."
+    },
+    en: {
+        loading: "Loading student data...",
+        success: "Your stars are updated, welcome",
+        error: "Import failed. Please try again."
+    }
+};
+
 async function handleImportFromLink(code) {
-    console.log('handleImportFromLink called with code:', code);
     try {
         window.isImporting = true;
         overlay.style.display = "flex";
         mainContent.style.display = "none";
         const lang = localStorage.getItem('language') || 'sv';
-        loaderText.textContent = window.translations && window.translations[lang] && window.translations[lang].loading
-            ? window.translations[lang].loading
-            : lang === 'en' ? "Loading student data..." : "Laddar elevdata...";
-
+        loaderText.textContent = translations[lang].loading;
+        
+        // Ensure minimum display time of 1 second
         const minDisplayTime = new Promise(resolve => setTimeout(resolve, 1000));
         const docSnap = await getDoc(doc(db, "exports", code));
         await minDisplayTime;
-
-        if (!docSnap.exists()) {
-            throw new Error("Document not found.");
-        }
+        
+        if (!docSnap.exists()) throw new Error("Document not found.");
 
         const stored = JSON.parse(localStorage.getItem("starAcademyStudents")) || { students: {}, currentStudent: "" };
         const { name, data } = docSnap.data();
@@ -266,39 +257,27 @@ async function handleImportFromLink(code) {
 
         stored.students[name] = data;
         stored.currentStudent = name;
-        localStorage.setItem('starAcademyStudents', JSON.stringify(stored));
-        console.log('Imported student:', name, 'localStorage updated:', stored);
+        localStorage.setItem("starAcademyStudents", JSON.stringify(stored));
 
         if (typeof window.initializeAppContent === 'function') {
-            console.log('Calling initializeAppContent');
             window.initializeAppContent();
         } else {
             console.error('initializeAppContent not defined');
         }
 
+        // Show popup with delay to ensure loading screen is gone
         setTimeout(() => showStudentPopup(isNew, name), 100);
 
+        // Clean URL
         const cleanUrl = window.location.origin + window.location.pathname;
         window.history.replaceState({}, document.title, cleanUrl);
     } catch (e) {
-        console.error("Import failed:", e);
+        console.error("Import från kod misslyckades:", e);
         setTimeout(() => showStudentPopup(false, e.message), 100);
     } finally {
         overlay.style.display = "none";
         mainContent.style.display = "block";
         window.isImporting = false;
-        if (typeof updateDropdown === 'function') {
-            console.log('Calling updateDropdown');
-            updateDropdown();
-        } else {
-            console.error('updateDropdown not defined');
-        }
-        if (typeof window.updateStarStates === 'function') {
-            console.log('Calling updateStarStates');
-            window.updateStarStates();
-        } else {
-            console.error('updateStarStates not defined');
-        }
     }
 }
 
@@ -309,16 +288,10 @@ function showStudentPopup(isNew, name) {
     popup.className = "student-popup show";
     const lang = localStorage.getItem('language') || 'sv';
     const message = name && isNew
-        ? `${window.translations && window.translations[lang] && window.translations[lang].success
-            ? window.translations[lang].success
-            : lang === 'en' ? "Your stars are updated, welcome" : "Dina framgångar är uppdaterade, välkommen"} ${name}!`
+        ? `${translations[lang].success} ${name}!`
         : name && !isNew
-        ? `${window.translations && window.translations[lang] && window.translations[lang].success
-            ? window.translations[lang].success
-            : lang === 'en' ? "Your stars are updated, welcome" : "Dina framgångar är uppdaterade, välkommen"} ${name}!`
-        : window.translations && window.translations[lang] && window.translations[lang].error
-            ? window.translations[lang].error
-            : lang === 'en' ? "Import failed. Please try again." : "Import misslyckades. Försök igen.";
+        ? `${translations[lang].success} ${name}!`
+        : translations[lang].error;
     popup.innerHTML = `
         <div class="student-popup-content">
             <p>${message}</p>
@@ -327,23 +300,12 @@ function showStudentPopup(isNew, name) {
     document.body.appendChild(popup);
 
     setTimeout(() => {
-        popup.className = "student-popup";
+        popup.classList.remove("show");
         setTimeout(() => {
             if (popup.parentNode) popup.parentNode.removeChild(popup);
         }, 500);
     }, 4000);
 }
-
-// Attach onchange event for mobile compatibility
-document.addEventListener('DOMContentLoaded', () => {
-    const select = document.getElementById('globalStudentSelect');
-    if (select) {
-        select.addEventListener('change', () => {
-            console.log('Dropdown change event fired');
-            switchStudent();
-        });
-    }
-});
 
 if (code) {
     handleImportFromLink(code);
@@ -353,14 +315,9 @@ if (code) {
     if (typeof window.initializeAppContent === 'function') {
         window.initializeAppContent();
     }
-    if (typeof updateDropdown === 'function') {
-        updateDropdown();
-    }
-    if (typeof window.updateStarStates === 'function') {
-        window.updateStarStates();
-    }
 }
 </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'936c144cd830d1b6',t:'MTc0NTczMzQxMy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'92bbb6a45b62afb9',t:'MTc0Mzg4NDA4My4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'935543e18fdedd25',t:'MTc0NTQ5NDE5MC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
 </body>
 </html>

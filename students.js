@@ -1,8 +1,10 @@
+// Load student data from localStorage
 window.studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || {
     students: {},
     currentStudent: localStorage.getItem('userName') || ''
 };
 
+// Initialize the first student if they exist in userName but not in studentsData
 if (window.studentsData.currentStudent && !window.studentsData.students[window.studentsData.currentStudent]) {
     window.studentsData.students[window.studentsData.currentStudent] = {
         name: window.studentsData.currentStudent,
@@ -34,7 +36,7 @@ function addStudent() {
     };
 
     if (!name) {
-        showStudentPopup(translations[lang].addStudentNoName, 3000);
+        showStudentPopup(translations[lang].addStudentNoName, 3000); // 2s + 1s fade
         return;
     }
 
@@ -69,6 +71,8 @@ function addStudent() {
 
     if (typeof loadNotes === 'function') {
         loadNotes(false);
+    } else {
+        console.error('loadNotes function not found. Ensure it is defined in students.html.');
     }
 }
 
@@ -79,7 +83,7 @@ function showStudentPopup(message, duration) {
 
     if (!popup || !popupMessage) {
         console.error('Student popup elements not found in DOM');
-        alert(message);
+        alert(message); // Fallback
         return;
     }
 
@@ -89,57 +93,31 @@ function showStudentPopup(message, duration) {
     popup.style.opacity = '1';
 
     setTimeout(() => {
-        popup.style.transition = 'opacity 1s ease';
+        popup.style.transition = 'opacity 1s ease'; // 1s fade
         popup.style.opacity = '0';
         setTimeout(() => {
             popup.style.display = 'none';
             popup.style.opacity = '1';
             popup.style.transition = '';
         }, 1000);
-    }, duration - 1000);
+    }, duration - 1000); // Fade starts after 2s
 }
 
 function switchStudent() {
-    const select = document.getElementById('globalStudentSelect') || document.getElementById('studentSelect');
-    if (select) {
-        console.log('switchStudent called, new value:', select.value);
-        window.studentsData.currentStudent = select.value;
-        try {
-            localStorage.setItem('starAcademyStudents', JSON.stringify(window.studentsData));
-            console.log('localStorage updated, currentStudent:', window.studentsData.currentStudent);
-        } catch (e) {
-            console.error('Failed to update localStorage:', e);
-        }
-        if (typeof updateStarStates === 'function') {
-            console.log('Calling updateStarStates');
-            updateStarStates();
-        } else {
-            console.error('updateStarStates not defined');
-        }
-        if (typeof window.initializeStarMap === 'function' && window.location.pathname.toLowerCase().includes('starmap.html')) {
-            console.log('Calling initializeStarMap');
-            window.initializeStarMap();
-        }
-        if (window.location.pathname.toLowerCase().includes('chapter') && !window.isReloading) {
-            console.log('Reloading chapter page');
-            window.isReloading = true;
-            location.reload();
-        }
-        if (typeof loadNotes === 'function') {
-            console.log('Calling loadNotes');
-            loadNotes(false);
-        }
-        // Force dropdown to reflect currentStudent
-        select.value = window.studentsData.currentStudent;
-        updateDropdown(); // Ensure dropdown syncs
+    const select = document.getElementById('studentSelect');
+    window.studentsData.currentStudent = select.value;
+    localStorage.setItem('starAcademyStudents', JSON.stringify(window.studentsData));
+    
+    if (typeof loadNotes === 'function') {
+        loadNotes(false);
     } else {
-        console.error('Select element not found');
+        console.error('loadNotes function not found. Ensure it is defined in students.html.');
     }
 }
 
 function updateDropdown() {
-    const selects = document.querySelectorAll('#globalStudentSelect, #studentSelect');
-    selects.forEach(select => {
+    const select = document.getElementById('studentSelect');
+    if (select) {
         select.innerHTML = '';
         const studentNames = Object.keys(window.studentsData.students || {}).sort((a, b) => a.localeCompare(b));
         studentNames.forEach(name => {
@@ -152,24 +130,17 @@ function updateDropdown() {
             const currentStudent = window.studentsData.currentStudent && studentNames.includes(window.studentsData.currentStudent)
                 ? window.studentsData.currentStudent
                 : studentNames[0];
-            window.studentsData.currentStudent = currentStudent;
-            try {
-                localStorage.setItem('starAcademyStudents', JSON.stringify(window.studentsData));
-                console.log('updateDropdown saved localStorage, currentStudent:', currentStudent);
-            } catch (e) {
-                console.error('Failed to update localStorage in updateDropdown:', e);
-            }
             select.value = currentStudent;
-            console.log('updateDropdown set select.value to:', currentStudent);
+            window.studentsData.currentStudent = currentStudent;
+            localStorage.setItem('starAcademyStudents', JSON.stringify(window.studentsData));
         }
-    });
+    }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('DOMContentLoaded, calling updateDropdown');
     updateDropdown();
     const lang = localStorage.getItem('language') || 'sv';
-    const studentTitle = document.getElementById('chapterTitle');
+    const studentTitle = document.getElementById('chapterTitle'); // Match your HTML ID
     if (studentTitle) {
         studentTitle.textContent = lang === 'en' ? 'Manage Students' : 'Hantera elever';
     }
