@@ -76,7 +76,7 @@ body.chapters {
     left: -250px;
     width: 250px;
     height: 100%;
-    background: var(--semi-dark);
+    background: #cccccc;
     z-index: 1000;
 }
 
