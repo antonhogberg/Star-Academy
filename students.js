@@ -26,21 +26,28 @@ if (window.studentsData.currentStudent && !window.studentsData.students[window.s
 }
 
 function addStudent() {
+    console.log('addStudent called');
     const nameInput = document.getElementById('newStudentName');
+    if (!nameInput) {
+        console.error('newStudentName input not found');
+        return;
+    }
     const name = nameInput.value.trim();
     const lang = localStorage.getItem('language') || 'sv';
 
     window.studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || {
         students: {},
-        currentStudent: localStorage.getItem('userName') || ''
+        currentStudent: ''
     };
 
     if (!name) {
-        showStudentPopup(translations[lang].addStudentNoName, 3000); // 2s + 1s fade
+        console.log('No name entered');
+        showStudentPopup(translations[lang].addStudentNoName, 3000);
         return;
     }
 
     if (window.studentsData.students[name]) {
+        console.log('Duplicate name:', name);
         showStudentPopup(translations[lang].addStudentDuplicate, 3000);
         return;
     }
@@ -62,27 +69,37 @@ function addStudent() {
     }
 
     window.studentsData.currentStudent = name;
+    try {
+        localStorage.setItem('starAcademyStudents', JSON.stringify(window.studentsData));
+        console.log('New student added:', name, 'currentStudent:', window.studentsData.currentStudent);
+    } catch (e) {
+        console.error('Failed to save to localStorage:', e);
+        showStudentPopup('Failed to save student data', 3000);
+        return;
+    }
+
     updateDropdown();
-    localStorage.setItem('starAcademyStudents', JSON.stringify(window.studentsData));
     nameInput.value = '';
 
     const starSVG = '<svg class="popup-star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>';
     showStudentPopup(`${starSVG} ${translations[lang].addStudentSuccess} ${starSVG}`, 3000);
 
     if (typeof loadNotes === 'function') {
+        console.log('Calling loadNotes');
         loadNotes(false);
     } else {
-        console.error('loadNotes function not found. Ensure it is defined in students.html.');
+        console.log('loadNotes function not found');
     }
 }
 
 function showStudentPopup(message, duration) {
+    console.log('showStudentPopup called:', message);
     const popup = document.getElementById('studentPopup');
     const popupMessage = document.getElementById('studentPopupMessage');
     const nameInput = document.getElementById('newStudentName');
 
     if (!popup || !popupMessage) {
-        console.error('Student popup elements not found in DOM');
+        console.error('Student popup elements not found:', { popup: !!popup, popupMessage: !!popupMessage });
         alert(message); // Fallback
         return;
     }
@@ -93,33 +110,60 @@ function showStudentPopup(message, duration) {
     popup.style.opacity = '1';
 
     setTimeout(() => {
-        popup.style.transition = 'opacity 1s ease'; // 1s fade
+        popup.style.transition = 'opacity 1s ease';
         popup.style.opacity = '0';
         setTimeout(() => {
             popup.style.display = 'none';
             popup.style.opacity = '1';
             popup.style.transition = '';
         }, 1000);
-    }, duration - 1000); // Fade starts after 2s
+    }, duration - 1000);
 }
 
 function switchStudent() {
-    const select = document.getElementById('studentSelect');
-    window.studentsData.currentStudent = select.value;
-    localStorage.setItem('starAcademyStudents', JSON.stringify(window.studentsData));
-    
-    if (typeof loadNotes === 'function') {
-        loadNotes(false);
-    } else {
-        console.error('loadNotes function not found. Ensure it is defined in students.html.');
+    console.log('switchStudent called');
+    const select = document.getElementById('globalStudentSelect') || document.getElementById('studentSelect');
+    if (!select) {
+        console.error('No student select element found');
+        return;
+    }
+    const selectedValue = select.value;
+    if (selectedValue) {
+        window.studentsData.currentStudent = selectedValue;
+        try {
+            localStorage.setItem('starAcademyStudents', JSON.stringify(window.studentsData));
+            console.log('Current student updated:', selectedValue);
+            if (typeof window.updateStarStates === 'function') {
+                window.updateStarStates();
+            }
+            if (typeof loadNotes === 'function') {
+                loadNotes(false);
+            }
+        } catch (e) {
+            console.error('Failed to save to localStorage:', e);
+            showStudentPopup(translations[localStorage.getItem('language') || 'sv'].addStudentNoName, 3000);
+        }
     }
 }
 
 function updateDropdown() {
-    const select = document.getElementById('studentSelect');
-    if (select) {
+    console.log('updateDropdown called');
+    window.studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || {
+        students: {},
+        currentStudent: ''
+    };
+    console.log('window.studentsData:', window.studentsData);
+
+    const selects = [document.getElementById('studentSelect'), document.getElementById('globalStudentSelect')].filter(Boolean);
+    if (selects.length === 0) {
+        console.warn('No student select elements found');
+        return;
+    }
+
+    selects.forEach(select => {
         select.innerHTML = '';
         const studentNames = Object.keys(window.studentsData.students || {}).sort((a, b) => a.localeCompare(b));
+        console.log('Student names for dropdown:', studentNames);
         studentNames.forEach(name => {
             const option = document.createElement('option');
             option.value = name;
@@ -132,16 +176,46 @@ function updateDropdown() {
                 : studentNames[0];
             select.value = currentStudent;
             window.studentsData.currentStudent = currentStudent;
-            localStorage.setItem('starAcademyStudents', JSON.stringify(window.studentsData));
+            try {
+                localStorage.setItem('starAcademyStudents', JSON.stringify(window.studentsData));
+                console.log('Dropdown updated, currentStudent:', currentStudent);
+            } catch (e) {
+                console.error('Failed to save to localStorage:', e);
+            }
+        } else {
+            console.log('No students available, dropdown cleared');
         }
-    }
+    });
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+    console.log('DOMContentLoaded in students.js');
     updateDropdown();
     const lang = localStorage.getItem('language') || 'sv';
-    const studentTitle = document.getElementById('chapterTitle'); // Match your HTML ID
+    const studentTitle = document.getElementById('chapterTitle');
     if (studentTitle) {
         studentTitle.textContent = lang === 'en' ? 'Manage Students' : 'Hantera elever';
+    }
+
+    // Bind addStudent to the Add button
+    const addButton = document.getElementById('addStudentButton');
+    if (addButton) {
+        console.log('Binding addStudent to addStudentButton');
+        addButton.addEventListener('click', addStudent);
+    } else {
+        console.error('addStudentButton not found');
+    }
+
+    // Handle Enter key on input
+    const nameInput = document.getElementById('newStudentName');
+    if (nameInput) {
+        nameInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                console.log('Enter key pressed on newStudentName');
+                addStudent();
+            }
+        });
+    } else {
+        console.error('newStudentName input not found');
     }
 });

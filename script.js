@@ -68,7 +68,7 @@ const translations = {
         shareButton: "Share student via AirDrop / Message",
         creatingLink: "Generating link, please wait…",
         copyLinkSuccess: "Link copied to clipboard! Paste to share."
-        },
+    },
     sv: {
         menuFrontPage: "Stjärnöversikt",
         menuChapter: "Kapitel",
@@ -673,9 +673,9 @@ function initializeFAQ() {
 // Define initializeAppContent globally
 window.initializeAppContent = function() {
     console.log('initializeAppContent called');
-    updateStarStates(); // Update stars
+    updateStarStates();
     const studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
-    const userNameDisplay = document.getElementById("userNameDisplay");
+    const userNameDisplay = document.getElementById('userNameDisplay');
     if (userNameDisplay && studentsData.currentStudent) {
         userNameDisplay.textContent = studentsData.currentStudent;
     }
@@ -694,18 +694,13 @@ waitForDOM().then(() => {
         window.initializeAppContent();
     }
 
-    const studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
-    const userNameDisplay = document.getElementById('userNameDisplay');
-    if (userNameDisplay && studentsData.currentStudent) {
-        userNameDisplay.textContent = studentsData.currentStudent;
-    }
-
     // Handle starmap.html with inline SVG
     if (window.location.pathname.toLowerCase().includes('starmap.html') && typeof window.initializeStarMap === 'function') {
         console.log('Navigating to starmap.html');
         const starMapSvg = document.getElementById('starMap');
         if (starMapSvg) {
             console.log('Star Map SVG found (inline)');
+            const studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
             if (studentsData.currentStudent) {
                 console.log('Initializing Star Map');
                 // Delay initialization to ensure SVG is fully parsed
