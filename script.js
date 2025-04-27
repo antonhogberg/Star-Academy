@@ -68,7 +68,7 @@ const translations = {
         shareButton: "Share student via AirDrop / Message",
         creatingLink: "Generating link, please wait…",
         copyLinkSuccess: "Link copied to clipboard! Paste to share."
-    },
+        },
     sv: {
         menuFrontPage: "Stjärnöversikt",
         menuChapter: "Kapitel",
@@ -673,7 +673,12 @@ function initializeFAQ() {
 // Define initializeAppContent globally
 window.initializeAppContent = function() {
     console.log('initializeAppContent called');
-    updateStarStates();
+    updateStarStates(); // Update stars
+    const studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
+    const userNameDisplay = document.getElementById("userNameDisplay");
+    if (userNameDisplay && studentsData.currentStudent) {
+        userNameDisplay.textContent = studentsData.currentStudent;
+    }
 };
 
 // Main initialization
@@ -683,8 +688,8 @@ waitForDOM().then(() => {
     handleUserNamePopup();
     setInitialLanguage();
     
-    // Only run initializeAppContent if not importing and not on index.html
-    if (!window.isImporting && !window.location.pathname.toLowerCase().includes('index.html')) {
+    // Only run initializeAppContent if not importing
+    if (!window.isImporting) {
         console.log('Running initializeAppContent from waitForDOM');
         window.initializeAppContent();
     }
