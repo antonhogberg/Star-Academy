@@ -270,6 +270,9 @@ async function handleImportFromLink(code) {
         if (typeof updateDropdown === 'function') {
             updateDropdown();
         }
+        if (typeof window.updateStarStates === 'function') {
+            window.updateStarStates();
+        }
     }
 }
 
@@ -315,6 +318,9 @@ if (code) {
     }
     if (typeof updateDropdown === 'function') {
         updateDropdown();
+    }
+    if (typeof window.updateStarStates === 'function') {
+        window.updateStarStates();
     }
 }
 </script>

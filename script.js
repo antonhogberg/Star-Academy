@@ -811,3 +811,6 @@ waitForDOM().then(() => {
     window.addEventListener('resize', setStarMapHeight);
     window.addEventListener('orientationchange', setStarMapHeight);
 });
+
+// Expose updateStarStates globally
+window.updateStarStates = updateStarStates;
