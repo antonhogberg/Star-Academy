@@ -673,11 +673,15 @@ function initializeFAQ() {
 // Define initializeAppContent globally
 window.initializeAppContent = function() {
     console.log('initializeAppContent called');
-    updateStarStates(); // Update stars
-    const studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
-    const userNameDisplay = document.getElementById("userNameDisplay");
-    if (userNameDisplay && studentsData.currentStudent) {
-        userNameDisplay.textContent = studentsData.currentStudent;
+    updateStarStates();
+    updateDropdown(); // Initialize dropdown
+    const globalSelect = document.getElementById('globalStudentSelect');
+    if (globalSelect) {
+        globalSelect.addEventListener('change', () => {
+            console.log('globalStudentSelect changed');
+            switchStudent();
+            updateStarStates(); // Update UI after switching
+        });
     }
 };
 
