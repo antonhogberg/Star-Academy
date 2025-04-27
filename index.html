@@ -202,7 +202,8 @@
     </div>
 </div>
 </div>
-<script src="script.js"></script>
+<script src="students.js"></script>
+<script type="module" src="script.js"></script>
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
 import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore.js";
@@ -225,32 +226,20 @@ const overlay = document.getElementById("importLoaderOverlay");
 const mainContent = document.getElementById("mainContent");
 const loaderText = document.getElementById("loaderText");
 
-const translations = {
-    sv: {
-        loading: "Laddar elevdata...",
-        success: "Dina framgångar är uppdaterade, välkommen",
-        error: "Import misslyckades. Försök igen."
-    },
-    en: {
-        loading: "Loading student data...",
-        success: "Your stars are updated, welcome",
-        error: "Import failed. Please try again."
-    }
-};
-
 async function handleImportFromLink(code) {
     try {
         window.isImporting = true;
         overlay.style.display = "flex";
         mainContent.style.display = "none";
         const lang = localStorage.getItem('language') || 'sv';
-        loaderText.textContent = translations[lang].loading;
-        
-        // Ensure minimum display time of 1 second
+        loaderText.textContent = window.translations && window.translations[lang] && window.translations[lang].loading
+            ? window.translations[lang].loading
+            : lang === 'en' ? "Loading student data..." : "Laddar elevdata...";
+
         const minDisplayTime = new Promise(resolve => setTimeout(resolve, 1000));
         const docSnap = await getDoc(doc(db, "exports", code));
         await minDisplayTime;
-        
+
         if (!docSnap.exists()) throw new Error("Document not found.");
 
         const stored = JSON.parse(localStorage.getItem("starAcademyStudents")) || { students: {}, currentStudent: "" };
@@ -267,10 +256,8 @@ async function handleImportFromLink(code) {
             console.error('initializeAppContent not defined');
         }
 
-        // Show popup with delay to ensure loading screen is gone
         setTimeout(() => showStudentPopup(isNew, name), 100);
 
-        // Clean URL
         const cleanUrl = window.location.origin + window.location.pathname;
         window.history.replaceState({}, document.title, cleanUrl);
     } catch (e) {
@@ -280,6 +267,9 @@ async function handleImportFromLink(code) {
         overlay.style.display = "none";
         mainContent.style.display = "block";
         window.isImporting = false;
+        if (typeof updateDropdown === 'function') {
+            updateDropdown();
+        }
     }
 }
 
@@ -290,10 +280,16 @@ function showStudentPopup(isNew, name) {
     popup.className = "student-popup show";
     const lang = localStorage.getItem('language') || 'sv';
     const message = name && isNew
-        ? `${translations[lang].success} ${name}!`
+        ? `${window.translations && window.translations[lang] && window.translations[lang].success
+            ? window.translations[lang].success
+            : lang === 'en' ? "Your stars are updated, welcome" : "Dina framgångar är uppdaterade, välkommen"} ${name}!`
         : name && !isNew
-        ? `${translations[lang].success} ${name}!`
-        : translations[lang].error;
+        ? `${window.translations && window.translations[lang] && window.translations[lang].success
+            ? window.translations[lang].success
+            : lang === 'en' ? "Your stars are updated, welcome" : "Dina framgångar är uppdaterade, välkommen"} ${name}!`
+        : window.translations && window.translations[lang] && window.translations[lang].error
+            ? window.translations[lang].error
+            : lang === 'en' ? "Import failed. Please try again." : "Import misslyckades. Försök igen.";
     popup.innerHTML = `
         <div class="student-popup-content">
             <p>${message}</p>
@@ -317,9 +313,11 @@ if (code) {
     if (typeof window.initializeAppContent === 'function') {
         window.initializeAppContent();
     }
+    if (typeof updateDropdown === 'function') {
+        updateDropdown();
+    }
 }
 </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'92bbb6a45b62afb9',t:'MTc0Mzg4NDA4My4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'935543e18fdedd25',t:'MTc0NTQ5NDE5MC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'936c144cd830d1b6',t:'MTc0NTczMzQxMy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
 </body>
 </html>
