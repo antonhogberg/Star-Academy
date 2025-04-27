@@ -70,6 +70,23 @@ body.chapters {
     margin: 0;
 }
 
+.hamburger-nav .menu {
+    position: fixed;
+    top: 0;
+    left: -250px;
+    width: 250px;
+    height: 100%;
+    background: var(--semi-dark);
+    z-index: 1000;
+}
+
+.hamburger-nav .student-select-container {
+    display: none; /* Hidden by default, shown in mobile */
+    margin: 10px 0;
+    width: 100%;
+    text-align: center;
+}
+
 .hamburger {
     font-size: 48px;
     color: var(--orange);
@@ -466,6 +483,30 @@ body.chapters {
     fill: var(--gold);
     stroke: #000000;
     stroke-width: 1;
+}
+
+/* Global Student Select */
+.student-select-container {
+    position: fixed;
+    top: 20px;
+    left: 270px; /* Menu width (250px) + 20px */
+    z-index: 900; /* Below menu (1000) */
+    display: flex;
+    align-items: center;
+}
+
+#globalStudentSelect {
+    height: 40px; /* Match .piano-menu height */
+    width: 140px; /* 70% of ~200px */
+    padding: 5px;
+    font-size: 14px;
+    font-family: Cochin, Georgia, Arial, sans-serif;
+    color: var(--gold);
+    background: var(--semi-dark);
+    border: 1px solid var(--orange);
+    border-radius: 5px;
+    box-sizing: border-box;
+    cursor: pointer;
 }
 
 /* Content Styles */
@@ -1609,6 +1650,17 @@ body.chapters {
 
     .student-popup-content p {
         font-size: 18px;
+    }
+
+    .student-select-container {
+        display: none; /* Hide top dropdown */
+    }
+    .hamburger-nav .student-select-container {
+        display: block; /* Show in menu */
+    }
+    .hamburger-nav #globalStudentSelect {
+        width: 80%; /* Fit menu width */
+        margin: 0 auto;
     }
 
     .title-container h1 {

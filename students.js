@@ -1,10 +1,8 @@
-// Load student data from localStorage
 window.studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || {
     students: {},
     currentStudent: localStorage.getItem('userName') || ''
 };
 
-// Initialize the first student if they exist in userName but not in studentsData
 if (window.studentsData.currentStudent && !window.studentsData.students[window.studentsData.currentStudent]) {
     window.studentsData.students[window.studentsData.currentStudent] = {
         name: window.studentsData.currentStudent,
@@ -36,7 +34,7 @@ function addStudent() {
     };
 
     if (!name) {
-        showStudentPopup(translations[lang].addStudentNoName, 3000); // 2s + 1s fade
+        showStudentPopup(translations[lang].addStudentNoName, 3000);
         return;
     }
 
@@ -71,8 +69,6 @@ function addStudent() {
 
     if (typeof loadNotes === 'function') {
         loadNotes(false);
-    } else {
-        console.error('loadNotes function not found. Ensure it is defined in students.html.');
     }
 }
 
@@ -83,7 +79,7 @@ function showStudentPopup(message, duration) {
 
     if (!popup || !popupMessage) {
         console.error('Student popup elements not found in DOM');
-        alert(message); // Fallback
+        alert(message);
         return;
     }
 
@@ -93,31 +89,40 @@ function showStudentPopup(message, duration) {
     popup.style.opacity = '1';
 
     setTimeout(() => {
-        popup.style.transition = 'opacity 1s ease'; // 1s fade
+        popup.style.transition = 'opacity 1s ease';
         popup.style.opacity = '0';
         setTimeout(() => {
             popup.style.display = 'none';
             popup.style.opacity = '1';
             popup.style.transition = '';
         }, 1000);
-    }, duration - 1000); // Fade starts after 2s
+    }, duration - 1000);
 }
 
 function switchStudent() {
-    const select = document.getElementById('studentSelect');
-    window.studentsData.currentStudent = select.value;
-    localStorage.setItem('starAcademyStudents', JSON.stringify(window.studentsData));
-    
-    if (typeof loadNotes === 'function') {
-        loadNotes(false);
-    } else {
-        console.error('loadNotes function not found. Ensure it is defined in students.html.');
+    const select = document.getElementById('globalStudentSelect') || document.getElementById('studentSelect');
+    if (select) {
+        window.studentsData.currentStudent = select.value;
+        localStorage.setItem('starAcademyStudents', JSON.stringify(window.studentsData));
+        if (typeof updateStarStates === 'function') {
+            updateStarStates();
+        }
+        if (typeof window.initializeStarMap === 'function' && window.location.pathname.toLowerCase().includes('starmap.html')) {
+            window.initializeStarMap();
+        }
+        if (window.location.pathname.toLowerCase().includes('chapter') && !window.isReloading) {
+            window.isReloading = true;
+            location.reload();
+        }
+        if (typeof loadNotes === 'function') {
+            loadNotes(false);
+        }
     }
 }
 
 function updateDropdown() {
-    const select = document.getElementById('studentSelect');
-    if (select) {
+    const selects = document.querySelectorAll('#globalStudentSelect, #studentSelect');
+    selects.forEach(select => {
         select.innerHTML = '';
         const studentNames = Object.keys(window.studentsData.students || {}).sort((a, b) => a.localeCompare(b));
         studentNames.forEach(name => {
@@ -134,13 +139,13 @@ function updateDropdown() {
             window.studentsData.currentStudent = currentStudent;
             localStorage.setItem('starAcademyStudents', JSON.stringify(window.studentsData));
         }
-    }
+    });
 }
 
 document.addEventListener('DOMContentLoaded', () => {
     updateDropdown();
     const lang = localStorage.getItem('language') || 'sv';
-    const studentTitle = document.getElementById('chapterTitle'); // Match your HTML ID
+    const studentTitle = document.getElementById('chapterTitle');
     if (studentTitle) {
         studentTitle.textContent = lang === 'en' ? 'Manage Students' : 'Hantera elever';
     }
