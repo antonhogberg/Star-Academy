@@ -497,6 +497,7 @@ body.chapters {
     border-radius: 5px;
     box-sizing: border-box;
     cursor: pointer;
+    z-index: 1001;
 }
 
 /* Content Styles */
