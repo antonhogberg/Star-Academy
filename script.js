@@ -1,4 +1,3 @@
-// Language translations
 const translations = {
     en: {
         menuFrontPage: "Star Overview",
@@ -68,7 +67,7 @@ const translations = {
         shareButton: "Share student via AirDrop / Message",
         creatingLink: "Generating link, please wait…",
         copyLinkSuccess: "Link copied to clipboard! Paste to share."
-        },
+    },
     sv: {
         menuFrontPage: "Stjärnöversikt",
         menuChapter: "Kapitel",
@@ -141,7 +140,8 @@ const translations = {
     }
 };
 
-// Menu HTML template as a string
+window.translations = translations;
+
 const menuHtml = `
     <nav class="hamburger-nav">
         <div class="menu" id="main-menu">
@@ -165,11 +165,13 @@ const menuHtml = `
                 <span class="flag" onclick="switchLanguage('en')">🇬🇧</span>
                 <span class="flag" onclick="switchLanguage('sv')">🇸🇪</span>
             </div>
+            <div class="student-select-container">
+                <select id="globalStudentSelect" onchange="switchStudent()"></select>
+            </div>
         </div>
     </nav>
 `;
 
-// Function to inject the menu into the page
 function injectMenu() {
     console.log('injectMenu called');
     const placeholder = document.getElementById('menu-placeholder');
@@ -192,7 +194,6 @@ function injectMenu() {
     menu.style.left = '-250px';
     console.log('Menu initialized with left: -250px');
 
-    // Remove existing listeners to prevent duplicates
     const newHamburger = hamburger.cloneNode(true);
     hamburger.parentNode.replaceChild(newHamburger, hamburger);
 
@@ -249,19 +250,21 @@ function injectMenu() {
                 console.log('Submenu closed');
             } else {
                 submenu.style.display = 'block';
-                submenu.offsetHeight; // Force reflow
+                submenu.offsetHeight;
                 submenu.classList.add('open');
                 console.log('Submenu opened');
             }
             chaptersToggle.parentElement.classList.toggle('active');
         });
-    } else {
-        console.warn('Chapters toggle or submenu not found:', { chaptersToggle: !!chaptersToggle, submenu: !!submenu });
     }
 
     const lang = localStorage.getItem('language') || 'sv';
     switchLanguage(lang);
     setActivePage();
+
+    if (typeof updateDropdown === 'function') {
+        updateDropdown();
+    }
 }
 
 function updateStarStates() {
@@ -507,7 +510,6 @@ function switchLanguage(lang) {
         if (translations[lang][key]) titleContainerH1.textContent = translations[lang][key];
     }
 
-    // Export fields on students.html
     const exportTitle = document.getElementById('exportTitle');
     const exportInfo = document.getElementById('exportInfo');
     const shareButton = document.querySelector('[data-translate="shareButton"]');
@@ -670,29 +672,17 @@ function initializeFAQ() {
     });
 }
 
-// Define initializeAppContent globally
 window.initializeAppContent = function() {
     console.log('initializeAppContent called');
     updateStarStates();
-    updateDropdown(); // Initialize dropdown
-    const globalSelect = document.getElementById('globalStudentSelect');
-    if (globalSelect) {
-        globalSelect.addEventListener('change', () => {
-            console.log('globalStudentSelect changed');
-            switchStudent();
-            updateStarStates(); // Update UI after switching
-        });
-    }
 };
 
-// Main initialization
 waitForDOM().then(() => {
     console.log('waitForDOM resolved');
     injectMenu();
     handleUserNamePopup();
     setInitialLanguage();
     
-    // Only run initializeAppContent if not importing
     if (!window.isImporting) {
         console.log('Running initializeAppContent from waitForDOM');
         window.initializeAppContent();
@@ -704,7 +694,6 @@ waitForDOM().then(() => {
         userNameDisplay.textContent = studentsData.currentStudent;
     }
 
-    // Handle starmap.html with inline SVG
     if (window.location.pathname.toLowerCase().includes('starmap.html') && typeof window.initializeStarMap === 'function') {
         console.log('Navigating to starmap.html');
         const starMapSvg = document.getElementById('starMap');
@@ -712,7 +701,6 @@ waitForDOM().then(() => {
             console.log('Star Map SVG found (inline)');
             if (studentsData.currentStudent) {
                 console.log('Initializing Star Map');
-                // Delay initialization to ensure SVG is fully parsed
                 setTimeout(() => {
                     window.initializeStarMap();
                     updateStarStates();
@@ -724,7 +712,6 @@ waitForDOM().then(() => {
             console.error('Star Map SVG not found');
         }
 
-        // Force reload if loaded from Back/Forward Cache (BFCache)
         window.addEventListener('pageshow', (event) => {
             if (event.persisted) {
                 console.log('Page loaded from BFCache, forcing reload...');
@@ -735,7 +722,6 @@ waitForDOM().then(() => {
 
     if (window.location.pathname.toLowerCase().includes('faq.html')) initializeFAQ();
 
-    // Fix header disappearance on iPad when keyboard appears
     const header = document.querySelector('.title-container');
     if (header) {
         let initialViewportHeight = window.innerHeight;
@@ -767,7 +753,6 @@ waitForDOM().then(() => {
         setTimeout(forceHeaderRender, 100);
     }
 
-    // Dynamically set the star-map-container height to fit the viewport
     const setStarMapHeight = () => {
         const starMapContainer = document.querySelector('.star-map-container');
         const titleContainer = document.querySelector('.title-container');
