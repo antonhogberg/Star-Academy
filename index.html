@@ -30,6 +30,9 @@
             <div class="black-key bottom"></div>
         </div>
         <nav id="menu-placeholder"></nav>
+        <div class="student-select-container">
+            <select id="globalStudentSelect"></select>
+        </div>
         <div class="layout-container">
             <div class="progress-container">
                 <svg class="progress-svg" viewBox="0 0 1366 924"
@@ -195,12 +198,12 @@
         <div class="rank-badge">
             <img id="rankImage" src="rank-start.png" alt="Rank Badge" style="max-width: 100%; height: auto; display: block; margin: 0 auto;">
             <div id="rankName"></div>
-            <div id="userNameDisplay"></div>
         </div>
     </div>
 </div>
 </div>
 <script src="script.js"></script>
+<script src="students.js"></script>
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
 import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore.js";
@@ -237,86 +240,109 @@ const translations = {
 };
 
 async function handleImportFromLink(code) {
-    try {
-        window.isImporting = true;
-        overlay.style.display = "flex";
-        mainContent.style.display = "none";
-        const lang = localStorage.getItem('language') || 'sv';
-        loaderText.textContent = translations[lang].loading;
-        
-        // Ensure minimum display time of 1 second
-        const minDisplayTime = new Promise(resolve => setTimeout(resolve, 1000));
-        const docSnap = await getDoc(doc(db, "exports", code));
-        await minDisplayTime;
-        
-        if (!docSnap.exists()) throw new Error("Document not found.");
+            try {
+                window.isImporting = true;
+                overlay.style.display = "flex";
+                mainContent.style.display = "none";
+                const lang = localStorage.getItem('language') || 'sv';
+                loaderText.textContent = translations[lang].loading;
+                console.log('Import started, code:', code);
+                
+                const minDisplayTime = new Promise(resolve => setTimeout(resolve, 1000));
+                const docSnap = await getDoc(doc(db, "exports", code));
+                await minDisplayTime;
+                
+                if (!docSnap.exists()) throw new Error("Document not found.");
 
-        const stored = JSON.parse(localStorage.getItem("starAcademyStudents")) || { students: {}, currentStudent: "" };
-        const { name, data } = docSnap.data();
-        const isNew = !stored.students[name];
+                const stored = JSON.parse(localStorage.getItem("starAcademyStudents")) || { students: {}, currentStudent: "" };
+                const { name, data } = docSnap.data();
+                const isNew = !stored.students[name];
 
-        stored.students[name] = data;
-        stored.currentStudent = name;
-        localStorage.setItem("starAcademyStudents", JSON.stringify(stored));
+                stored.students[name] = data;
+                stored.currentStudent = name;
+                localStorage.setItem("starAcademyStudents", JSON.stringify(stored));
+                console.log('localStorage updated, currentStudent:', name, 'students:', Object.keys(stored.students));
 
-        if (typeof window.initializeAppContent === 'function') {
-            window.initializeAppContent();
-        } else {
-            console.error('initializeAppContent not defined');
+                document.addEventListener('DOMContentLoaded', () => {
+                    if (typeof window.initializeAppContent === 'function') {
+                        console.log('Calling initializeAppContent after import');
+                        window.initializeAppContent();
+                    } else {
+                        console.error('initializeAppContent not defined');
+                    }
+                }, { once: true });
+
+                setTimeout(() => showStudentPopup(isNew, name), 100);
+
+                const cleanUrl = window.location.origin + window.location.pathname;
+                window.history.replaceState({}, document.title, cleanUrl);
+            } catch (e) {
+                console.error("Import från kod misslyckades:", e);
+                setTimeout(() => showStudentPopup(false, e.message), 100);
+            } finally {
+                overlay.style.display = "none";
+                mainContent.style.display = "block";
+                window.isImporting = false;
+                console.log('Import completed, isImporting:', window.isImporting);
+            }
         }
 
-        // Show popup with delay to ensure loading screen is gone
-        setTimeout(() => showStudentPopup(isNew, name), 100);
+        function showStudentPopup(isNew, name) {
+            console.log('showStudentPopup called:', { isNew, name });
+            const popup = document.createElement("div");
+            popup.id = "studentPopup";
+            popup.className = "student-popup show";
+            const lang = localStorage.getItem('language') || 'sv';
+            const message = name && isNew
+                ? `${translations[lang].success} ${name}!`
+                : name && !isNew
+                ? `${translations[lang].success} ${name}!`
+                : translations[lang].error;
+            popup.innerHTML = `
+                <div class="student-popup-content">
+                    <p>${message}</p>
+                </div>
+            `;
+            document.body.appendChild(popup);
 
-        // Clean URL
-        const cleanUrl = window.location.origin + window.location.pathname;
-        window.history.replaceState({}, document.title, cleanUrl);
-    } catch (e) {
-        console.error("Import från kod misslyckades:", e);
-        setTimeout(() => showStudentPopup(false, e.message), 100);
-    } finally {
-        overlay.style.display = "none";
-        mainContent.style.display = "block";
-        window.isImporting = false;
-    }
-}
+            setTimeout(() => {
+                popup.classList.remove("show");
+                setTimeout(() => {
+                    if (popup.parentNode) popup.parentNode.removeChild(popup);
+                }, 500);
+            }, 4000);
+        }
 
-function showStudentPopup(isNew, name) {
-    console.log('showStudentPopup called:', { isNew, name });
-    const popup = document.createElement("div");
-    popup.id = "studentPopup";
-    popup.className = "student-popup show";
-    const lang = localStorage.getItem('language') || 'sv';
-    const message = name && isNew
-        ? `${translations[lang].success} ${name}!`
-        : name && !isNew
-        ? `${translations[lang].success} ${name}!`
-        : translations[lang].error;
-    popup.innerHTML = `
-        <div class="student-popup-content">
-            <p>${message}</p>
-        </div>
-    `;
-    document.body.appendChild(popup);
+        window.initializeAppContent = function() {
+            console.log('initializeAppContent called');
+            updateStarStates();
+            updateDropdown();
+        };
 
-    setTimeout(() => {
-        popup.classList.remove("show");
-        setTimeout(() => {
-            if (popup.parentNode) popup.parentNode.removeChild(popup);
-        }, 500);
-    }, 4000);
-}
+        document.addEventListener('DOMContentLoaded', () => {
+            const globalSelect = document.getElementById('globalStudentSelect');
+            if (globalSelect) {
+                globalSelect.addEventListener('change', () => {
+                    console.log('globalStudentSelect changed');
+                    switchStudent();
+                    updateStarStates();
+                });
+            }
+        });
 
-if (code) {
-    handleImportFromLink(code);
-} else {
-    overlay.style.display = "none";
-    mainContent.style.display = "block";
-    if (typeof window.initializeAppContent === 'function') {
-        window.initializeAppContent();
-    }
-}
-</script>
+        if (code) {
+            handleImportFromLink(code);
+        } else {
+            overlay.style.display = "none";
+            mainContent.style.display = "block";
+            document.addEventListener('DOMContentLoaded', () => {
+                if (typeof window.initializeAppContent === 'function') {
+                    console.log('Calling initializeAppContent on page load');
+                    window.initializeAppContent();
+                }
+            }, { once: true });
+        }
+    </script>
 <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'92bbb6a45b62afb9',t:'MTc0Mzg4NDA4My4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
 <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'935543e18fdedd25',t:'MTc0NTQ5NDE5MC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
 </body>
