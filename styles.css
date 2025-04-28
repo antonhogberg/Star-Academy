@@ -2027,8 +2027,8 @@ body.chapters {
 
 .student-select-container {
     position: fixed;
-    top: 15px; /* Match #menuButton */
-    left: 65px; /* 20px gap from #menuButton */
+    top: 18px; /* Match #menuButton */
+    left: 75px; /* 20px gap from #menuButton */
     z-index: 999; /* Below .hamburger-nav (1199) for desktop/iPad */
     display: flex;
     align-items: center;
