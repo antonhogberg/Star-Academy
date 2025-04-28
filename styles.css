@@ -308,7 +308,7 @@ body.chapters {
     position: fixed;
     top: 15px;
     left: 15px;
-    z-index: 1201;
+    z-index: 1202;
     background: transparent;
 }
 
@@ -1495,12 +1495,15 @@ body.chapters {
     }
 
     .student-select-container {
-        display: none;
-        z-index: 1200;
+        position: absolute;
+        top: 50px; /* Inside menu, below #menuButton */
+        left: 10px; /* Margin from menu edge */
+        z-index: 1201; /* Above .menu (1000), within .hamburger-nav (1199) */
+        opacity: 0; /* Hidden when menu closed */
+        transition: opacity 0.3s ease-in 0s, opacity 0.1s ease-out 0s; /* 300ms fade-in, 100ms fade-out */
     }
-    .hamburger-nav .menu.active ~ .student-select-container {
-        display: flex;
-        opacity: 1;
+    .hamburger-nav .menu.active .student-select-container {
+        opacity: 1; /* Visible when menu open */
     }
 
     .student-manager button#shareButton {
@@ -2023,7 +2026,6 @@ body.chapters {
     display: flex;
     align-items: center;
     opacity: 1;
-    transition: opacity 0.3s ease-in 0s, opacity 0.15s ease-out 0s; /* 300ms fade-in, 150ms fade-out */
 }
 
 
