@@ -1496,14 +1496,21 @@ body.chapters {
 
     .student-select-container {
         position: absolute;
-        top: 50px; /* Inside menu, below #menuButton */
+        top: 54px; /* 4px lower than 50px */
         left: 10px; /* Margin from menu edge */
         z-index: 1201; /* Above .menu (1000), within .hamburger-nav (1199) */
         opacity: 0; /* Hidden when menu closed */
-        transition: opacity 0.3s ease-in 0s, opacity 0.1s ease-out 0s; /* 300ms fade-in, 100ms fade-out */
+        transition: opacity 0.3s ease-in 0.3s, opacity 0.1s ease-out 0s; /* 300ms fade-in with 300ms delay, 100ms fade-out */
     }
     .hamburger-nav .menu.active .student-select-container {
         opacity: 1; /* Visible when menu open */
+    }
+
+    #globalStudentSelect {
+        background: #cccccc; /* Light grey, matches .menu */
+        color: #000000; /* Black, matches .menu-link */
+        border: 2px solid #000000; /* Black, matches .menu-link */
+        background-image: url('data:image/svg+xml;utf8,<svg fill="%23000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>'); /* Black chevron */
     }
 
     .student-manager button#shareButton {
@@ -2044,7 +2051,6 @@ body.chapters {
     appearance: none;
     -webkit-appearance: none;
     -moz-appearance: none;
-    -ms-appearance: none;
     position: relative;
     overflow: visible; /* Prevent clipping */
     background-image: url('data:image/svg+xml;utf8,<svg fill="%23ffffff" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
