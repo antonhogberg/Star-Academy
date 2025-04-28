@@ -2023,7 +2023,7 @@ body.chapters {
     display: flex;
     align-items: center;
     opacity: 1;
-    transition: opacity 0.3s ease-in-out; /* Fade-in/out for iPhone */
+    transition: opacity 0.3s ease-in 0s, opacity 0.15s ease-out 0s; /* 300ms fade-in, 150ms fade-out */
 }
 
 
