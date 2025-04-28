@@ -2009,8 +2009,8 @@ body.chapters {
 .student-select-container {
     position: fixed;
     top: 15px; /* Match #menuButton */
-    left: 65px; /* 40px button + 5px transparent + 15px gap */
-    z-index: 999; /* Below menu when open */
+    left: 65px; /* 40px button + 5px transparent + 20px gap */
+    z-index: 900; /* Below menu when open */
     display: flex;
     align-items: center;
 }
@@ -2018,13 +2018,41 @@ body.chapters {
 #globalStudentSelect {
     height: 35px;
     width: 140px;
-    background: #cccccc; /* Match menu */
-    color: var(--gold); /* #ffd700 */
+    background: var(--semi-dark); /* #4a4a4a */
+    color: #ffffff; /* White text */
     border: 2px solid var(--orange); /* #ff8c00 */
+    border-radius: 5px; /* Match .text-box, #newStudentName */
     font-family: Cochin, Georgia, Arial, sans-serif;
     font-size: 16px;
-    padding: 5px;
+    padding: 5px 25px 5px 10px; /* Space for arrow */
     box-sizing: border-box;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    position: relative;
+}
+
+#globalStudentSelect::after {
+    content: '▼';
+    font-size: 9px;
+    color: #ffffff; /* Match text color */
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    transition: transform 0.3s ease;
+}
+
+#globalStudentSelect:hover::after,
+#globalStudentSelect:focus::after {
+    transform: translateY(-50%) rotate(180deg);
+}
+
+#globalStudentSelect:focus {
+    outline: none;
+    border-color: var(--orange);
+    box-shadow: 0 0 5px rgba(255, 140, 0, 0.5); /* Match #studentSelect */
 }
 
 .hamburger-nav .menu {
@@ -2033,4 +2061,5 @@ body.chapters {
     box-sizing: border-box;
     padding: 0;
     margin: 0;
+    z-index: 1000; /* Above dropdown */
 }
