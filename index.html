@@ -387,13 +387,34 @@
         // iPhone: Toggle dropdown visibility with menu
         if (menuButton && menu && studentSelectContainer) {
             console.log('Binding menu toggle for iPhone dropdown');
+            // Initialize iPhone dropdown as hidden
+            if (window.innerWidth <= 767) {
+                studentSelectContainer.style.display = 'none';
+                studentSelectContainer.style.opacity = '0';
+                console.log('Initialized iPhone dropdown: hidden');
+            }
+
             menuButton.addEventListener('click', () => {
                 const isMenuOpen = menu.classList.contains('active');
                 console.log('Menu button clicked, isMenuOpen:', isMenuOpen);
                 if (window.innerWidth <= 767) {
-                    studentSelectContainer.style.display = isMenuOpen ? 'none' : 'flex';
-                    studentSelectContainer.style.opacity = isMenuOpen ? '0' : '1';
+                    studentSelectContainer.style.display = isMenuOpen ? 'flex' : 'none';
+                    studentSelectContainer.style.opacity = isMenuOpen ? '1' : '0';
                     console.log('iPhone dropdown display:', studentSelectContainer.style.display, 'opacity:', studentSelectContainer.style.opacity);
+                }
+            });
+
+            // Handle window resize to maintain iPhone state
+            window.addEventListener('resize', () => {
+                if (window.innerWidth <= 767) {
+                    const isMenuOpen = menu.classList.contains('active');
+                    studentSelectContainer.style.display = isMenuOpen ? 'flex' : 'none';
+                    studentSelectContainer.style.opacity = isMenuOpen ? '1' : '0';
+                    console.log('Resize iPhone dropdown display:', studentSelectContainer.style.display, 'opacity:', studentSelectContainer.style.opacity);
+                } else {
+                    studentSelectContainer.style.display = 'flex';
+                    studentSelectContainer.style.opacity = '1';
+                    console.log('Resize non-iPhone dropdown: visible');
                 }
             });
         } else {
