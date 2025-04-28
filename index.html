@@ -373,6 +373,8 @@
     document.addEventListener('DOMContentLoaded', () => {
         console.log('DOMContentLoaded in index.html');
         const globalSelect = document.getElementById('globalStudentSelect');
+        const studentSelectContainer = document.querySelector('.student-select-container');
+
         if (globalSelect) {
             console.log('Binding change event to globalStudentSelect');
             globalSelect.addEventListener('change', () => {
@@ -382,6 +384,30 @@
                 }
                 if (typeof updateStarStates === 'function') {
                     updateStarStates();
+                }
+                // Remove .open when option selected
+                if (studentSelectContainer) {
+                    studentSelectContainer.classList.remove('open');
+                    console.log('Removed .open on change');
+                }
+            });
+
+            // Toggle .open on mousedown to open dropdown
+            globalSelect.addEventListener('mousedown', (e) => {
+                console.log('globalStudentSelect mousedown');
+                if (studentSelectContainer) {
+                    const isOpen = studentSelectContainer.classList.contains('open');
+                    studentSelectContainer.classList.toggle('open', !isOpen);
+                    console.log('Toggled .open:', !isOpen);
+                }
+            });
+
+            // Remove .open on blur (e.g., clicking outside)
+            globalSelect.addEventListener('blur', () => {
+                console.log('globalStudentSelect blur');
+                if (studentSelectContainer) {
+                    studentSelectContainer.classList.remove('open');
+                    console.log('Removed .open on blur');
                 }
             });
         } else {
