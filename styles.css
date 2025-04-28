@@ -2010,7 +2010,7 @@ body.chapters {
     position: fixed;
     top: 15px; /* Match #menuButton */
     left: 65px; /* 40px button + 5px transparent + 20px gap */
-    z-index: 900; /* Below menu when open */
+    z-index: 1100; /* Below menu when open */
     display: flex;
     align-items: center;
 }
