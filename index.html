@@ -233,12 +233,12 @@
         sv: {
             loading: "Laddar elevdata...",
             success: "Dina framgångar är uppdaterade, välkommen",
-            error: "Import misslyckades. Försök igen."
+            error: "Ogiltig länk. Ingen elev lades till."
         },
         en: {
             loading: "Loading student data...",
             success: "Your stars are updated, welcome",
-            error: "Import failed. Please try again."
+            error: "Invalid link. No student was added."
         }
     };
 
@@ -266,7 +266,6 @@
             localStorage.setItem("starAcademyStudents", JSON.stringify(stored));
             console.log('localStorage updated, currentStudent:', name, 'students:', Object.keys(stored.students));
 
-            // Update UI after a delay to ensure DOM and SVG rendering
             setTimeout(() => {
                 console.log('Calling initializeAppContent after import');
                 if (typeof window.initializeAppContent === 'function') {
@@ -282,7 +281,7 @@
             window.history.replaceState({}, document.title, cleanUrl);
         } catch (e) {
             console.error("Import från kod misslyckades:", e);
-            setTimeout(() => showStudentPopup(false, e.message), 100);
+            setTimeout(() => showStudentPopup(false, null), 100); // Pass null for error
         } finally {
             overlay.style.display = "none";
             mainContent.style.display = "block";
@@ -297,9 +296,7 @@
         popup.id = "studentPopup";
         popup.className = "student-popup show";
         const lang = localStorage.getItem('language') || 'sv';
-        const message = name && isNew
-            ? `${translations[lang].success} ${name}!`
-            : name && !isNew
+        const message = name
             ? `${translations[lang].success} ${name}!`
             : translations[lang].error;
         popup.innerHTML = `
@@ -319,8 +316,6 @@
 
     window.initializeAppContent = function() {
         console.log('initializeAppContent called');
-
-        // Refresh window.studentsData
         if (typeof window.studentsData !== 'undefined') {
             window.studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || {
                 students: {},
@@ -329,7 +324,6 @@
             console.log('Refreshed window.studentsData:', window.studentsData);
         }
 
-        // Update dropdown with retry logic
         const updateDropdownWithRetry = (attempt = 1, maxAttempts = 5) => {
             if (typeof updateDropdown !== 'function') {
                 console.error('updateDropdown not defined');
@@ -347,7 +341,6 @@
             }
         };
 
-        // Update stars with retry logic
         const updateStarsWithRetry = (attempt = 1, maxAttempts = 5) => {
             if (typeof updateStarStates !== 'function') {
                 console.error('updateStarStates not defined');
@@ -369,25 +362,42 @@
         updateStarsWithRetry();
     };
 
-    // Bind dropdown change event
     document.addEventListener('DOMContentLoaded', () => {
-    console.log('DOMContentLoaded in index.html');
-    const globalSelect = document.getElementById('globalStudentSelect');
-    if (globalSelect) {
-        console.log('Binding change event to globalStudentSelect');
-        globalSelect.addEventListener('change', () => {
-            console.log('globalStudentSelect changed');
-            if (typeof switchStudent === 'function') {
-                switchStudent();
-            }
-            if (typeof updateStarStates === 'function') {
-                updateStarStates();
-            }
-        });
-    } else {
-        console.error('globalStudentSelect not found');
-    }
-});
+        console.log('DOMContentLoaded in index.html');
+        const globalSelect = document.getElementById('globalStudentSelect');
+        const menuButton = document.getElementById('menuButton');
+        const studentSelectContainer = document.querySelector('.student-select-container');
+
+        if (globalSelect) {
+            console.log('Binding change event to globalStudentSelect');
+            globalSelect.addEventListener('change', () => {
+                console.log('globalStudentSelect changed');
+                if (typeof switchStudent === 'function') {
+                    switchStudent();
+                }
+                if (typeof updateStarStates === 'function') {
+                    updateStarStates();
+                }
+            });
+        } else {
+            console.error('globalStudentSelect not found');
+        }
+
+        // iPhone: Toggle dropdown visibility with menu
+        if (menuButton && studentSelectContainer) {
+            console.log('Binding menu toggle for iPhone dropdown');
+            menuButton.addEventListener('click', () => {
+                const isMenuOpen = document.querySelector('.hamburger-nav .menu.active');
+                console.log('Menu button clicked, isMenuOpen:', !!isMenuOpen);
+                if (window.innerWidth <= 767) {
+                    studentSelectContainer.style.display = isMenuOpen ? 'none' : 'flex';
+                    console.log('iPhone dropdown display:', studentSelectContainer.style.display);
+                }
+            });
+        } else {
+            console.warn('Menu elements missing:', { menuButton: !!menuButton, studentSelectContainer: !!studentSelectContainer });
+        }
+    });
 
     if (code) {
         handleImportFromLink(code);
