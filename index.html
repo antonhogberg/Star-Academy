@@ -382,61 +382,30 @@
             console.error('globalStudentSelect not found');
         }
 
-        // iPhone: Toggle dropdown visibility with menu
-        const setupMenuToggle = () => {
-            const menuButton = document.getElementById('menuButton');
+        // iPhone: Move dropdown into menu
+        const setupMenuIntegration = () => {
             const menu = document.querySelector('.hamburger-nav .menu');
-            if (menuButton && menu && studentSelectContainer) {
-                console.log('Binding menu toggle for iPhone dropdown');
-                // Initialize iPhone dropdown as hidden
+            if (menu && studentSelectContainer) {
+                console.log('Moving student-select-container into menu for iPhone');
                 if (window.innerWidth <= 767) {
-                    studentSelectContainer.style.display = 'none';
-                    studentSelectContainer.style.opacity = '0';
-                    console.log('Initialized iPhone dropdown: hidden');
+                    menu.appendChild(studentSelectContainer);
+                    console.log('student-select-container appended to .hamburger-nav .menu');
                 }
-
-                menuButton.addEventListener('click', () => {
-                    // Delay to account for menu animation
-                    setTimeout(() => {
-                        const isMenuOpen = menu.classList.contains('active');
-                        console.log('Menu button clicked, isMenuOpen:', isMenuOpen);
-                        if (window.innerWidth <= 767) {
-                            studentSelectContainer.style.display = isMenuOpen ? 'flex' : 'none';
-                            studentSelectContainer.style.opacity = isMenuOpen ? '1' : '0';
-                            console.log('iPhone dropdown display:', studentSelectContainer.style.display, 'opacity:', studentSelectContainer.style.opacity);
-                        }
-                    }, 350); // Slightly longer than menu's 300ms animation
-                });
-
-                // Handle window resize
-                window.addEventListener('resize', () => {
-                    if (window.innerWidth <= 767) {
-                        const isMenuOpen = menu.classList.contains('active');
-                        studentSelectContainer.style.display = isMenuOpen ? 'flex' : 'none';
-                        studentSelectContainer.style.opacity = isMenuOpen ? '1' : '0';
-                        console.log('Resize iPhone dropdown display:', studentSelectContainer.style.display, 'opacity:', studentSelectContainer.style.opacity);
-                    } else {
-                        studentSelectContainer.style.display = 'flex';
-                        studentSelectContainer.style.opacity = '1';
-                        console.log('Resize non-iPhone dropdown: visible');
-                    }
-                });
-
                 return true;
             } else {
-                console.warn('Menu elements missing:', { menuButton: !!menuButton, menu: !!menu, studentSelectContainer: !!studentSelectContainer });
+                console.warn('Menu or studentSelectContainer missing:', { menu: !!menu, studentSelectContainer: !!studentSelectContainer });
                 return false;
             }
         };
 
         // Initial setup attempt
-        if (!setupMenuToggle()) {
+        if (!setupMenuIntegration()) {
             // Retry if menu not found
             const observer = new MutationObserver((mutations, obs) => {
                 if (document.querySelector('.hamburger-nav .menu')) {
-                    if (setupMenuToggle()) {
+                    if (setupMenuIntegration()) {
                         obs.disconnect();
-                        console.log('Menu toggle setup successful after DOM change');
+                        console.log('Menu integration setup successful after DOM change');
                     }
                 }
             });
