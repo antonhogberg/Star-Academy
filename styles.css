@@ -1496,7 +1496,7 @@ body.chapters {
 
     .student-select-container {
         position: absolute;
-        top: 54px; /* 4px lower than 50px */
+        top: 60px; /* 4px lower than 50px */
         left: 10px; /* Margin from menu edge */
         z-index: 1201; /* Above .menu (1000), within .hamburger-nav (1199) */
         opacity: 0; /* Hidden when menu closed */
