@@ -1497,12 +1497,13 @@ body.chapters {
     .student-select-container {
         display: none;
         opacity: 0;
+        z-index: 1200;
     }
     .hamburger-nav .menu.active ~ .student-select-container {
         display: flex;
         opacity: 1;
     }
-    
+
     .student-manager button#shareButton {
         width: 72vw;
     }
@@ -2019,13 +2020,12 @@ body.chapters {
     position: fixed;
     top: 15px; /* Match #menuButton */
     left: 65px; /* 20px gap from #menuButton */
-    z-index: 1200; /* Above .hamburger-nav (1199) */
+    z-index: 999; /* Below .hamburger-nav (1199) for desktop/iPad */
     display: flex;
     align-items: center;
     opacity: 1;
-    transition: opacity 0.3s ease-in-out; /* Fade-in for iPhone */
+    transition: opacity 0.3s ease-in-out; /* Fade-in/out for iPhone */
 }
-
 
 #globalStudentSelect {
     height: 35px;
@@ -2063,5 +2063,5 @@ body.chapters {
     box-sizing: border-box;
     padding: 0;
     margin: 0;
-    z-index: 1000; /* Below .student-select-container */
+    z-index: 1000; /* Below .student-select-container on iPhone */
 }
