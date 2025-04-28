@@ -2008,9 +2008,9 @@ body.chapters {
 
 .student-select-container {
     position: fixed;
-    top: 10px;
-    left: 270px; /* 250px menu width + 20px gap */
-    z-index: 1100; /* Above menu (z-index: 1000) */
+    top: 15px; /* Match #menuButton */
+    left: 65px; /* 40px button + 5px transparent + 15px gap */
+    z-index: 999; /* Below menu when open */
     display: flex;
     align-items: center;
 }
