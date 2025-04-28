@@ -390,12 +390,14 @@
                 console.log('Removed .open on change');
             });
 
-            // Focus event: Add .open when opening dropdown
-            globalSelect.addEventListener('focus', () => {
-                console.log('globalSelect focused');
+            // Focus or touchstart: Add .open when opening dropdown
+            const openDropdown = () => {
+                console.log('globalSelect opened (focus or touchstart)');
                 studentSelectContainer.classList.add('open');
-                console.log('Added .open on focus');
-            });
+                console.log('Added .open');
+            };
+            globalSelect.addEventListener('focus', openDropdown);
+            globalSelect.addEventListener('touchstart', openDropdown, { passive: true });
 
             // Blur event: Remove .open when losing focus (e.g., clicking outside)
             globalSelect.addEventListener('blur', () => {
@@ -403,14 +405,13 @@
                 setTimeout(() => {
                     studentSelectContainer.classList.remove('open');
                     console.log('Removed .open on blur');
-                }, 100); // Delay to allow change event to fire first
+                }, 200); // Delay for iOS touch events
             });
 
             // Click event: Handle same-option clicks (closing without change)
             globalSelect.addEventListener('click', (e) => {
                 console.log('globalSelect clicked');
                 const isOpen = studentSelectContainer.classList.contains('open');
-                // Toggle .open only if closing (avoid double-open)
                 if (isOpen) {
                     studentSelectContainer.classList.remove('open');
                     console.log('Removed .open on click');
