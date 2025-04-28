@@ -371,59 +371,23 @@
 
     // Bind dropdown change event
     document.addEventListener('DOMContentLoaded', () => {
-        console.log('DOMContentLoaded in index.html');
-        const globalSelect = document.getElementById('globalStudentSelect');
-        const studentSelectContainer = document.querySelector('.student-select-container');
-
-        if (globalSelect && studentSelectContainer) {
-            console.log('Binding events to globalStudentSelect');
-            // Change event: Remove .open when selecting an option
-            globalSelect.addEventListener('change', () => {
-                console.log('globalStudentSelect changed');
-                if (typeof switchStudent === 'function') {
-                    switchStudent();
-                }
-                if (typeof updateStarStates === 'function') {
-                    updateStarStates();
-                }
-                studentSelectContainer.classList.remove('open');
-                console.log('Removed .open on change');
-            });
-
-            // Focus or touchstart: Add .open when opening dropdown
-            const openDropdown = () => {
-                console.log('globalSelect opened (focus or touchstart)');
-                studentSelectContainer.classList.add('open');
-                console.log('Added .open');
-            };
-            globalSelect.addEventListener('focus', openDropdown);
-            globalSelect.addEventListener('touchstart', openDropdown, { passive: true });
-
-            // Blur event: Remove .open when losing focus (e.g., clicking outside)
-            globalSelect.addEventListener('blur', () => {
-                console.log('globalSelect blurred');
-                setTimeout(() => {
-                    studentSelectContainer.classList.remove('open');
-                    console.log('Removed .open on blur');
-                }, 200); // Delay for iOS touch events
-            });
-
-            // Click event: Handle same-option clicks (closing without change)
-            globalSelect.addEventListener('click', (e) => {
-                console.log('globalSelect clicked');
-                const isOpen = studentSelectContainer.classList.contains('open');
-                if (isOpen) {
-                    studentSelectContainer.classList.remove('open');
-                    console.log('Removed .open on click');
-                }
-            });
-        } else {
-            console.error('globalStudentSelect or studentSelectContainer not found', {
-                globalSelect: !!globalSelect,
-                studentSelectContainer: !!studentSelectContainer
-            });
-        }
-    });
+    console.log('DOMContentLoaded in index.html');
+    const globalSelect = document.getElementById('globalStudentSelect');
+    if (globalSelect) {
+        console.log('Binding change event to globalStudentSelect');
+        globalSelect.addEventListener('change', () => {
+            console.log('globalStudentSelect changed');
+            if (typeof switchStudent === 'function') {
+                switchStudent();
+            }
+            if (typeof updateStarStates === 'function') {
+                updateStarStates();
+            }
+        });
+    } else {
+        console.error('globalStudentSelect not found');
+    }
+});
 
     if (code) {
         handleImportFromLink(code);
