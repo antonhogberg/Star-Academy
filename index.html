@@ -281,7 +281,7 @@
             window.history.replaceState({}, document.title, cleanUrl);
         } catch (e) {
             console.error("Import från kod misslyckades:", e);
-            setTimeout(() => showStudentPopup(false, null), 100); // Pass null for error
+            setTimeout(() => showStudentPopup(false, null), 100);
         } finally {
             overlay.style.display = "none";
             mainContent.style.display = "block";
@@ -366,6 +366,7 @@
         console.log('DOMContentLoaded in index.html');
         const globalSelect = document.getElementById('globalStudentSelect');
         const menuButton = document.getElementById('menuButton');
+        const menu = document.querySelector('.hamburger-nav .menu');
         const studentSelectContainer = document.querySelector('.student-select-container');
 
         if (globalSelect) {
@@ -384,18 +385,19 @@
         }
 
         // iPhone: Toggle dropdown visibility with menu
-        if (menuButton && studentSelectContainer) {
+        if (menuButton && menu && studentSelectContainer) {
             console.log('Binding menu toggle for iPhone dropdown');
             menuButton.addEventListener('click', () => {
-                const isMenuOpen = document.querySelector('.hamburger-nav .menu.active');
-                console.log('Menu button clicked, isMenuOpen:', !!isMenuOpen);
+                const isMenuOpen = menu.classList.contains('active');
+                console.log('Menu button clicked, isMenuOpen:', isMenuOpen);
                 if (window.innerWidth <= 767) {
                     studentSelectContainer.style.display = isMenuOpen ? 'none' : 'flex';
-                    console.log('iPhone dropdown display:', studentSelectContainer.style.display);
+                    studentSelectContainer.style.opacity = isMenuOpen ? '0' : '1';
+                    console.log('iPhone dropdown display:', studentSelectContainer.style.display, 'opacity:', studentSelectContainer.style.opacity);
                 }
             });
         } else {
-            console.warn('Menu elements missing:', { menuButton: !!menuButton, studentSelectContainer: !!studentSelectContainer });
+            console.warn('Menu elements missing:', { menuButton: !!menuButton, menu: !!menu, studentSelectContainer: !!studentSelectContainer });
         }
     });
 
