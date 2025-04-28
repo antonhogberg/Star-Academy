@@ -2033,25 +2033,10 @@ body.chapters {
     -ms-appearance: none;
     position: relative;
     overflow: visible; /* Prevent clipping */
-}
-
-.student-select-container::after {
-    content: '▼';
-    font-size: 9px;
-    color: #ffffff; /* Match text color */
-    position: absolute;
-    right: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    transition: transform 0.3s ease;
-    display: block;
-    line-height: 9px;
-    pointer-events: none;
-    z-index: 2; /* Above <select> content */
-}
-
-.student-select-container.open::after {
-    transform: translateY(-50%) rotate(180deg);
+    background-image: url('data:image/svg+xml;utf8,<svg fill="%23ffffff" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 16px;
 }
 
 #globalStudentSelect:focus {
