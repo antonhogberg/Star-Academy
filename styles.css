@@ -2010,7 +2010,7 @@ body.chapters {
     position: fixed;
     top: 15px; /* Match #menuButton */
     left: 65px; /* 40px button + 5px transparent + 20px gap */
-    z-index: 999; /* Below menu when open */
+    z-index: 1100; /* Above menu for testing */
     display: flex;
     align-items: center;
 }
@@ -2024,30 +2024,34 @@ body.chapters {
     border-radius: 5px; /* Match .text-box, #newStudentName */
     font-family: Cochin, Georgia, Arial, sans-serif;
     font-size: 16px;
-    padding: 5px 30px 5px 10px; /* Extra space for arrow */
+    padding: 5px 35px 5px 10px; /* Space for arrow */
     box-sizing: border-box;
     cursor: pointer;
     appearance: none;
     -webkit-appearance: none;
     -moz-appearance: none;
+    -ms-appearance: none; /* Additional vendor prefix */
     position: relative;
-    z-index: 1; /* Ensure dropdown is clickable */
+    overflow: visible; /* Prevent clipping */
 }
 
-.student-select-container::after {
+#globalStudentSelect::after {
     content: '▼';
     font-size: 9px;
     color: #ffffff; /* Match text color */
     position: absolute;
-    right: 10px;
+    right: 12px;
     top: 50%;
     transform: translateY(-50%);
     transition: transform 0.3s ease;
-    pointer-events: none; /* Prevent arrow from blocking clicks */
+    display: block;
+    line-height: 9px;
+    pointer-events: none;
+    z-index: 2; /* Above <select> content */
 }
 
-.student-select-container:hover::after,
-.student-select-container:focus-within::after {
+#globalStudentSelect:hover::after,
+#globalStudentSelect:focus::after {
     transform: translateY(-50%) rotate(180deg);
 }
 
@@ -2063,5 +2067,5 @@ body.chapters {
     box-sizing: border-box;
     padding: 0;
     margin: 0;
-    z-index: 1000; /* Above dropdown */
+    z-index: 1000; /* Below dropdown for testing */
 }
