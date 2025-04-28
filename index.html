@@ -431,11 +431,11 @@
 
         // Initial setup attempt
         if (!setupMenuToggle()) {
-            // Retry if menu not found (e.g., injected later by script.js)
+            // Retry if menu not found
             const observer = new MutationObserver((mutations, obs) => {
                 if (document.querySelector('.hamburger-nav .menu')) {
                     if (setupMenuToggle()) {
-                        obs.disconnect(); // Stop observing once successful
+                        obs.disconnect();
                         console.log('Menu toggle setup successful after DOM change');
                     }
                 }
