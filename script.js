@@ -68,9 +68,7 @@ const translations = {
         shareButton: "Share student via AirDrop / Message",
         creatingLink: "Generating link, please wait…",
         copyLinkSuccess: "Link copied to clipboard! Paste to share.",
-        shareWithQR: "Share with AirDrop/Message/QR",
-        scanQRCode: "Scan the QR code, or",
-        closeButton: "Close"
+        scanInstruction: "Scan the QR code or...    "
     },
     sv: {
         menuFrontPage: "Stjärnöversikt",
@@ -81,7 +79,7 @@ const translations = {
         menuFAQ: "Vanliga frågor",
         popupWelcome: "Välkommen till Stjärnkartan!",
         popupIntro: "Klicka fram dina Stjärnakademien-stjärnor här! Samla sex stjärnor i övningarna för att klättra i rang – kolla dina framsteg under Stjärnöversikt.",
-        popupTeacherNote: "Lärare? Lägg till och växla mellan elever under Hanacctera elever. Obs! Allt sparas lokalt på denna enhet – rensas cachen försvinner dina framsteg.",
+        popupTeacherNote: "Lärare? Lägg till och växla mellan elever under Hantera elever. Obs! Allt sparas lokalt på denna enhet – rensas cachen försvinner dina framsteg.",
         popupEnterName: "Ange ditt namn nedan och tryck Lägg till för att börja!",
         rankExplorer: "Utforskare",
         rankStarCadet: "Stjärnkadett",
@@ -141,9 +139,7 @@ const translations = {
         shareButton: "Dela elev via AirDrop / Meddelande",
         creatingLink: "Skapar länk, vänta…",
         copyLinkSuccess: "Länk kopierad till urklipp! Klistra in för att dela.",
-        shareWithQR: "Dela med AirDrop/Meddelande/QR",
-        scanQRCode: "Scanna QR-koden eller:",
-        closeButton: "Stäng"
+        scanInstruction: "Skanna QR-koden eller..."
     }
 };
 
@@ -518,16 +514,10 @@ function switchLanguage(lang) {
     const exportInfo = document.getElementById('exportInfo');
     const shareButton = document.querySelector('[data-translate="shareButton"]');
     const exportStatus = document.getElementById('exportStatus');
-    const shareWithQRButton = document.querySelector('[data-translate="shareWithQR"]');
-    const scanQrText = document.querySelector('[data-translate="scanQRCode"]');
-    const closeButton = document.querySelector('[data-translate="closeButton"]');
     if (exportTitle) exportTitle.textContent = translations[lang].exportTitle;
     if (exportInfo) exportInfo.textContent = translations[lang].exportInfo;
     if (shareButton) shareButton.textContent = translations[lang].shareButton;
     if (exportStatus) exportStatus.textContent = translations[lang].creatingLink;
-    if (shareWithQRButton) shareWithQRButton.textContent = translations[lang].shareWithQR;
-    if (scanQrText) scanQrText.textContent = translations[lang].scanQRCode;
-    if (closeButton) closeButton.textContent = translations[lang].closeButton;
 }
 
 function setInitialLanguage() {
