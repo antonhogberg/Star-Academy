@@ -65,10 +65,11 @@ const translations = {
         faqA7: "Yes, feel free to email: staracademypianoschool@gmail.com",
         exportTitle: "Export Student Data",
         exportInfo: "Tap the button below to share the current student to another device. The recipient just needs to open the link – the student will be added automatically!",
-        shareButton: "Share student via AirDrop / Message",
         creatingLink: "Generating link, please wait…",
         copyLinkSuccess: "Link copied to clipboard! Paste to share.",
-        scanOrShare: "Scan the QR code or..."
+        scanOrShare: "Scan the QR code or...",
+        shareButtonExport: "Share student via AirDrop / Message / QR-code",
+        shareButtonQR: "Share student via AirDrop / Message"
     },
     sv: {
         menuFrontPage: "Stjärnöversikt",
@@ -135,11 +136,11 @@ const translations = {
         faqA7: "Ja, maila gärna: stjarnakademien@gmail.com",
         exportTitle: "Exportera elevdata",
         exportInfo: "Genom att trycka på knappen nedan kan du dela den aktuella eleven till en annan enhet. Mottagaren behöver bara öppna länken – eleven läggs automatiskt till!",
-        exportStatus: "Ge",
-        shareButton: "Dela elev via AirDrop / Meddelande",
         creatingLink: "Skapar länk, vänta…",
         copyLinkSuccess: "Länk kopierad till urklipp! Klistra in för att dela.",
-        scanOrShare: "Skanna QR-koden eller..."
+        scanOrShare: "Skanna QR-koden eller...",
+        shareButtonExport: "Dela elev via AirDrop / Meddelande / QR-kod",
+        shareButtonQR: "Dela elev via AirDrop / Meddelande"
     }
 };
 
@@ -459,9 +460,6 @@ function switchLanguage(lang) {
     const qrInstruction = document.getElementById('qrInstruction');
     if (qrInstruction) qrInstruction.textContent = translations[lang].scanOrShare;
 
-    const shareButtonInQR = document.getElementById('shareButtonInQR');
-    if (shareButtonInQR) shareButtonInQR.textContent = translations[lang].shareButton;
-
     const chapterNumber = document.querySelector('.chapter-number');
     const chapterName = document.querySelector('.chapter-name');
     if (chapterNumber && chapterName) {
@@ -518,11 +516,14 @@ function switchLanguage(lang) {
     // Export section (students.html)
     const exportTitle = document.getElementById('exportTitle');
     const exportInfo = document.getElementById('exportInfo');
-    const shareButton = document.getElementById('shareExportButton');
+    const shareExportButton = document.getElementById('shareExportButton');
+    const shareButtonInQR = document.getElementById('shareButtonInQR');
     const exportStatus = document.getElementById('exportStatus');
+
     if (exportTitle) exportTitle.textContent = translations[lang].exportTitle;
     if (exportInfo) exportInfo.textContent = translations[lang].exportInfo;
-    if (shareButton) shareButton.textContent = translations[lang].shareButton;
+    if (shareExportButton) shareExportButton.textContent = translations[lang].shareButtonExport;
+    if (shareButtonInQR) shareButtonInQR.textContent = translations[lang].shareButtonQR;
     if (exportStatus) exportStatus.textContent = translations[lang].creatingLink;
 }
 
