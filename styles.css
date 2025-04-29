@@ -2073,3 +2073,8 @@ body.chapters {
     margin: 0;
     z-index: 1000; /* Below .student-select-container on iPhone */
 }
+
+#qrCodeContainer canvas {
+    max-width: 100%;
+    height: auto;
+  }
