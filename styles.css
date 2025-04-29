@@ -1229,7 +1229,8 @@ body.chapters {
 }
 
 /* Export Button */
-.student-manager button#shareButton {
+.student-manager button#shareButton,
+.student-manager button#shareExportButton {
     width: 320px;
     height: 42px;
     box-sizing: border-box;
@@ -1252,7 +1253,9 @@ body.chapters {
 }
 
 .student-manager button#shareButton:hover,
-.student-manager button#shareButton:active {
+.student-manager button#shareExportButton:hover,
+.student-manager button#shareButton:active,
+.student-manager button#shareExportButton:active {
     transform: none !important;
 }
 
