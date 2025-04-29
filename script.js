@@ -68,7 +68,7 @@ const translations = {
         shareButton: "Share student via AirDrop / Message",
         creatingLink: "Generating link, please wait…",
         copyLinkSuccess: "Link copied to clipboard! Paste to share.",
-        scanInstruction: "Scan the QR code or...    "
+        scanOrShare: "Scan the QR code or..."
     },
     sv: {
         menuFrontPage: "Stjärnöversikt",
@@ -139,7 +139,7 @@ const translations = {
         shareButton: "Dela elev via AirDrop / Meddelande",
         creatingLink: "Skapar länk, vänta…",
         copyLinkSuccess: "Länk kopierad till urklipp! Klistra in för att dela.",
-        scanInstruction: "Skanna QR-koden eller..."
+        scanOrShare: "Skanna QR-koden eller..."
     }
 };
 
@@ -442,10 +442,10 @@ function switchLanguage(lang) {
     const chaptersToggle = document.querySelector('.chapters-toggle');
     if (chaptersToggle) chaptersToggle.textContent = translations[lang].menuChapters;
 
-    const popupWelcome = document.querySelector('#popupWelcome');
-    const popupIntro = document.querySelector('#popupIntro');
-    const popupTeacherNote = document.querySelector('#popupTeacherNote');
-    const popupEnterName = document.querySelector('#popupEnterName');
+    const popupWelcome = document.getElementById('popupWelcome');
+    const popupIntro = document.getElementById('popupIntro');
+    const popupTeacherNote = document.getElementById('popupTeacherNote');
+    const popupEnterName = document.getElementById('popupEnterName');
     const submitNameButton = document.getElementById('submitNameButton');
     if (popupWelcome) popupWelcome.textContent = translations[lang].popupWelcome;
     if (popupIntro) popupIntro.textContent = translations[lang].popupIntro;
@@ -455,6 +455,12 @@ function switchLanguage(lang) {
 
     const congratsMessage = document.getElementById('congratsMessage');
     if (congratsMessage) congratsMessage.textContent = translations[lang].congratsMessage;
+
+    const qrInstruction = document.getElementById('qrInstruction');
+    if (qrInstruction) qrInstruction.textContent = translations[lang].scanOrShare;
+
+    const shareButtonInQR = document.getElementById('shareButtonInQR');
+    if (shareButtonInQR) shareButtonInQR.textContent = translations[lang].shareButton;
 
     const chapterNumber = document.querySelector('.chapter-number');
     const chapterName = document.querySelector('.chapter-name');
@@ -509,16 +515,17 @@ function switchLanguage(lang) {
         if (translations[lang][key]) titleContainerH1.textContent = translations[lang][key];
     }
 
-    // Export fields on students.html
+    // Export section (students.html)
     const exportTitle = document.getElementById('exportTitle');
     const exportInfo = document.getElementById('exportInfo');
-    const shareButton = document.querySelector('[data-translate="shareButton"]');
+    const shareButton = document.getElementById('shareExportButton');
     const exportStatus = document.getElementById('exportStatus');
     if (exportTitle) exportTitle.textContent = translations[lang].exportTitle;
     if (exportInfo) exportInfo.textContent = translations[lang].exportInfo;
     if (shareButton) shareButton.textContent = translations[lang].shareButton;
     if (exportStatus) exportStatus.textContent = translations[lang].creatingLink;
 }
+
 
 function setInitialLanguage() {
     const hash = window.location.hash.replace('#', '').toLowerCase();
