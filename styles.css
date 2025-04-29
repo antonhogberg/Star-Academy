@@ -1516,9 +1516,13 @@ body.chapters {
         background-image: url('data:image/svg+xml;utf8,<svg fill="%23000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>'); /* Black chevron */
     }
 
-    .student-manager button#shareButton,
+    .student-manager button#shareButton {
+        width: 72vw;
+    }
+
     .student-manager button#shareExportButton {
         width: 72vw;
+        font-size: 15px;
     }
     .student-manager #exportStatus {
         margin-bottom: 30px;
