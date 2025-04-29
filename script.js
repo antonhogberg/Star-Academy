@@ -68,7 +68,7 @@ const translations = {
         creatingLink: "Generating link, please wait…",
         copyLinkSuccess: "Link copied to clipboard! Paste to share.",
         scanOrShare: "Scan the QR code or...",
-        shareButtonExport: "Share student via AirDrop / Message / QR-code",
+        shareButtonExport: "Share via AirDrop / Message / QR-code",
         shareButtonQR: "Share student via AirDrop / Message"
     },
     sv: {
@@ -139,7 +139,7 @@ const translations = {
         creatingLink: "Skapar länk, vänta…",
         copyLinkSuccess: "Länk kopierad till urklipp! Klistra in för att dela.",
         scanOrShare: "Skanna QR-koden eller...",
-        shareButtonExport: "Dela elev via AirDrop / Meddelande / QR-kod",
+        shareButtonExport: "Dela via AirDrop / Meddelande / QR-kod",
         shareButtonQR: "Dela elev via AirDrop / Meddelande"
     }
 };
