@@ -1495,15 +1495,14 @@ body.chapters {
     }
 
     .student-select-container {
-        position: absolute;
-        top: 54px; /* 4px lower than 50px */
-        left: 10px; /* Margin from menu edge */
-        z-index: 1201; /* Above .menu (1000), within .hamburger-nav (1199) */
-        opacity: 0; /* Hidden when menu closed */
+        display: none;
+        z-index: 1200; /* Above .hamburger-nav (1199) */
+        opacity: 0;
         transition: opacity 0.3s ease-in 0.3s, opacity 0.1s ease-out 0s; /* 300ms fade-in with 300ms delay, 100ms fade-out */
     }
 
     .hamburger-nav .menu.active .student-select-container {
+        display: flex;
         opacity: 1; /* Visible when menu open */
     }
 
