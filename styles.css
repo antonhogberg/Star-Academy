@@ -2078,3 +2078,28 @@ body.chapters {
     max-width: 100%;
     height: auto;
   }
+
+  #qrPopup .student-popup-content {
+    width: auto;
+    max-width: 90vw;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-sizing: border-box;
+  }
+  
+  #qrPopup #qrCodeContainer {
+    margin: 0;
+    padding-bottom: 15px;
+    background: #000;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+  }
+  
+  #qrPopup canvas {
+    width: 100%;
+    height: auto;
+    max-width: 200px; /* Optional, limit QR size for phones */
+  }
