@@ -1803,35 +1803,27 @@ body.popup-open .student-manager {
     }
 }
 
-/* Smaller iPads in landscape (768px to 1024px) */
-@media (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
-    .student-manager {
-        padding: 0px 10px 10px 10px;
-        overflow-y: visible;
-        height: auto;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
+/* iPhone landscape (allow scrolling) */
+@media (orientation: landscape) and (max-width: 767px),
+       (orientation: landscape) and (hover: none) and (pointer: coarse) {
+    body.is-mobile,
+    body {
+        display: block;
+        overflow-y: hidden !important;
+        -webkit-overflow-scrolling: none;
+        height: calc(var(--vh, 1vh) * 100);
     }
 
-    .notes-container {
-        margin: 2px auto;
+    body.is-mobile:after,
+    body:after {
+        display: none;
     }
 
-    #studentNotes {
-        width: 320px;
-        height: min(calc(100vh - 450px), 360px);
-        padding: 10px;
-        font-size: 18px !important;
-    }
-
-    .export-section {
-        margin-top: 1rem;
-        margin-bottom: 20px;
-    }
-
-    .export-button-container {
-        margin-bottom: 10px;
+    .layout-container.is-mobile,
+    .layout-container {
+        overflow-y: hidden !important;
+        -webkit-overflow-scrolling: none;
+        height: calc(var(--vh, 1vh) * 100);
     }
 }
 
@@ -2024,6 +2016,15 @@ body.popup-open .student-manager {
         margin-bottom: 10px;
     }
 
+    .export-section {
+        margin-top: 1rem;
+        margin-bottom: 20px;
+    }
+
+    .export-button-container {
+        margin-bottom: 10px;
+    }
+
     .popup {
         max-width: 40%;
     }
@@ -2045,6 +2046,39 @@ body.popup-open .student-manager {
     .star-map-container {
         top: 70px;
         height: calc(100vh - 70px);
+    }
+}
+
+/* Smaller iPads in landscape (768px to 1024px) */
+@media (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
+    .student-manager {
+        padding: 0px 10px 10px 10px;
+        overflow-y: visible;
+        height: auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .notes-container {
+        margin: 2px auto;
+    }
+
+    #studentNotes {
+        width: 320px;
+        height: min(calc(100vh - 580px), 360px);
+        min-height: 150px;
+        padding: 10px;
+        font-size: 18px !important;
+    }
+
+    .export-section {
+        margin-top: 1rem;
+        margin-bottom: 20px;
+    }
+
+    .export-button-container {
+        margin-bottom: 10px;
     }
 }
 
