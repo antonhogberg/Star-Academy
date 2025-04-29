@@ -55,6 +55,10 @@
         })
       });
 
+      document.getElementById('closeQrPopup').addEventListener('click', () => {
+      document.getElementById('qrPopup').style.display = 'none';
+      });
+
       if (!response.ok) {
         throw new Error('Failed to save to Firestore');
       }
@@ -158,10 +162,11 @@
     </div>
 
     <div id="qrPopup" class="student-popup" style="display: none;">
-      <div class="student-popup-content">
-        <div id="qrCodeContainer"></div>
-        <p id="scanInstruction" data-translate="scanInstruction">Scan the QR code or...</p>
-        <button id="shareButtonInQR" data-translate="shareButton">Share Student</button>
+      <div class="student-popup-content" style="position: relative; flex-direction: column; align-items: center; padding: 30px 20px;">
+        <button id="closeQrPopup" style="position: absolute; top: 10px; right: 10px; background: none; border: none; font-size: 24px; color: #ffd700; cursor: pointer;">&times;</button>
+        <div id="qrCodeContainer" style="margin: 30px 0; padding: 20px; background: #000; border-radius: 10px;"></div>
+        <p id="qrInstruction" style="margin-bottom: 20px; color: white; text-align: center;" data-translate="scanOrShare">Scanna QR-koden eller...</p>
+        <button id="shareButtonInQR" class="share-button" data-translate="shareButton">Dela via AirDrop / Meddelande</button>
       </div>
     </div>
   </div>
