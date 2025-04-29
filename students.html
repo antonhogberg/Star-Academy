@@ -14,107 +14,110 @@
     window.addEventListener('orientationchange', setViewportHeight);
     setViewportHeight();
   </script>
-  <script>
-    window.shareExport = async function () {
-      console.log('shareExport called');
-      const exportStatus = document.getElementById("exportStatus");
-      const qrPopup = document.getElementById("qrPopup");
-      const qrCodeContainer = document.getElementById("qrCodeContainer");
-      const popup = document.getElementById("studentPopup");
-      const popupMessage = document.getElementById("studentPopupMessage");
-      const shareButtonInQR = document.getElementById("shareButtonInQR");
-      const lang = localStorage.getItem('language') || 'sv';
 
-      try {
-        exportStatus.style.display = "block";
-        exportStatus.textContent = window.translations && window.translations[lang] && window.translations[lang].creatingLink
-          ? window.translations[lang].creatingLink
-          : lang === 'en' ? "Generating link, please wait…" : "Skapar länk, vänta…";
+<script>
+  window.shareExport = async function () {
+    console.log('shareExport called');
+    const exportStatus = document.getElementById("exportStatus");
+    const qrPopup = document.getElementById("qrPopup");
+    const qrCodeContainer = document.getElementById("qrCodeContainer");
+    const popup = document.getElementById("studentPopup");
+    const popupMessage = document.getElementById("studentPopupMessage");
+    const shareButtonInQR = document.getElementById("shareButtonInQR");
+    const lang = localStorage.getItem('language') || 'sv';
 
-        const studentsData = JSON.parse(localStorage.getItem("starAcademyStudents")) || { students: {}, currentStudent: "" };
-        const current = studentsData.currentStudent;
-        if (!current || !studentsData.students[current]) {
-          console.warn('No current student selected');
-          return;
-        }
+    try {
+      exportStatus.style.display = "block";
+      exportStatus.textContent = window.translations && window.translations[lang] && window.translations[lang].creatingLink
+        ? window.translations[lang].creatingLink
+        : lang === 'en' ? "Generating link, please wait…" : "Skapar länk, vänta…";
 
-        const dataToExport = {
-          name: current,
-          data: studentsData.students[current]
-        };
+      const studentsData = JSON.parse(localStorage.getItem("starAcademyStudents")) || { students: {}, currentStudent: "" };
+      const current = studentsData.currentStudent;
+      if (!current || !studentsData.students[current]) {
+        console.warn('No current student selected');
+        return;
+      }
 
-        const response = await fetch('https://firestore.googleapis.com/v1/projects/stjarnakademien-6b272/databases/(default)/documents/exports', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            fields: {
-              name: { stringValue: dataToExport.name },
-              data: { mapValue: { fields: convertToFirestoreFields(dataToExport.data) } }
-            }
-          })
-        });
+      const dataToExport = {
+        name: current,
+        data: studentsData.students[current]
+      };
 
-        document.getElementById('closeQrPopup').addEventListener('click', () => {
-          document.getElementById('qrPopup').style.display = 'none';
-        });
-
-        if (!response.ok) {
-          throw new Error('Failed to save to Firestore');
-        }
-
-        const docData = await response.json();
-        const docId = docData.name.split('/').pop();
-        const link = `${window.location.origin}/Star-Academy/index.html?code=${docId}`;
-
-        // Create QR code
-        qrCodeContainer.innerHTML = ''; // Clear previous QR code
-        new QRCode(qrCodeContainer, {
-          text: link,
-          width: 180,
-          height: 180
-        });
-
-        // Show QR popup
-        qrPopup.style.display = 'flex';
-        qrPopup.classList.add('show');
-
-        // Share button inside QR popup
-        shareButtonInQR.onclick = async function() {
-          if (navigator.share && navigator.canShare({ url: link })) {
-            try {
-              await navigator.share({ title: "Elevdata", url: link });
-            } catch (err) {
-              console.error('Error sharing:', err);
-            }
-          } else {
-            await navigator.clipboard.writeText(link);
-            alert(window.translations && window.translations[lang] && window.translations[lang].copyLinkSuccess
-              ? window.translations[lang].copyLinkSuccess
-              : lang === 'en' ? "Link copied to clipboard! Paste to share." : "Länk kopierad till urklipp! Klistra in för att dela.");
+      const response = await fetch('https://firestore.googleapis.com/v1/projects/stjarnakademien-6b272/databases/(default)/documents/exports', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          fields: {
+            name: { stringValue: dataToExport.name },
+            data: { mapValue: { fields: convertToFirestoreFields(dataToExport.data) } }
           }
-        };
-      } catch (error) {
-        console.error('shareExport error:', error);
-        alert(window.translations && window.translations[lang] && window.translations[lang].error
-          ? window.translations[lang].error
-          : lang === 'en' ? "Failed to create sharing link" : "Det gick inte att skapa delningslänk");
-      } finally {
-        exportStatus.style.display = "none";
-      }
-    };
+        })
+      });
 
-    function convertToFirestoreFields(obj) {
-      const fields = {};
-      for (const [key, value] of Object.entries(obj)) {
-        if (typeof value === 'string') {
-          fields[key] = { stringValue: value };
-        } else if (typeof value === 'object' && value !== null) {
-          fields[key] = { mapValue: { fields: convertToFirestoreFields(value) } };
-        }
+      document.getElementById('closeQrPopup').addEventListener('click', () => {
+      document.getElementById('qrPopup').style.display = 'none';
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to save to Firestore');
       }
-      return fields;
+
+      const docData = await response.json();
+      const docId = docData.name.split('/').pop();
+      const link = `${window.location.origin}/Star-Academy/index.html?code=${docId}`;
+
+      // Create QR code
+      qrCodeContainer.innerHTML = ''; // Clear previous QR code
+      new QRCode(qrCodeContainer, {
+        text: link,
+        width: 180,
+        height: 180
+      });
+
+      // Show QR popup
+      qrPopup.style.display = 'flex';
+      qrPopup.classList.add('show');
+
+      // Share button inside QR popup
+      shareButtonInQR.onclick = async function() {
+        if (navigator.share && navigator.canShare({ url: link })) {
+          try {
+            await navigator.share({ title: "Elevdata", url: link });
+          } catch (err) {
+            console.error('Error sharing:', err);
+          }
+        } else {
+          await navigator.clipboard.writeText(link);
+          alert(window.translations && window.translations[lang] && window.translations[lang].copyLinkSuccess
+            ? window.translations[lang].copyLinkSuccess
+            : lang === 'en' ? "Link copied to clipboard! Paste to share." : "Länk kopierad till urklipp! Klistra in för att dela.");
+        }
+      };
+
+    } catch (error) {
+      console.error('shareExport error:', error);
+      alert(window.translations && window.translations[lang] && window.translations[lang].error
+        ? window.translations[lang].error
+        : lang === 'en' ? "Failed to create sharing link" : "Det gick inte att skapa delningslänk");
+    } finally {
+      exportStatus.style.display = "none";
     }
-  </script>
+  };
+
+  // Helper function (keep your original)
+  function convertToFirestoreFields(obj) {
+    const fields = {};
+    for (const [key, value] of Object.entries(obj)) {
+      if (typeof value === 'string') {
+        fields[key] = { stringValue: value };
+      } else if (typeof value === 'object' && value !== null) {
+        fields[key] = { mapValue: { fields: convertToFirestoreFields(value) } };
+      }
+    }
+    return fields;
+  }
+</script>
 </head>
 <body>
   <div class="piano-menu" id="menuButton" aria-expanded="false" aria-controls="main-menu">
@@ -124,7 +127,7 @@
     <div class="black-key top"></div>
     <div class="black-key bottom"></div>
   </div>
-  <nav id="menu-placeholder"></address>
+  <nav id="menu-placeholder"></nav>
   <div class="student-manager" style="text-align: center;">
     <h1 id="studentsPageTitle" class="students-title" data-translate="studentManager"></h1>
 
@@ -132,7 +135,7 @@
     <div class="input-button-container">
       <div class="input-group">
         <input type="text" id="newStudentName">
-        <button id="addStudentButton" type="button" data-translate="addStudent"></button>
+        <button id="addStudentButton" data-translate="addStudent"></button>
       </div>
     </div>
 
@@ -177,6 +180,7 @@
   <script src="students.js"></script>
 
   <script>
+    // Funktion för att spara anteckningar (debounced)
     function debounce(func, wait) {
       let timeout;
       return function (...args) {
@@ -208,10 +212,7 @@
       const newStudentInput = document.getElementById('newStudentName');
       if (newStudentInput) {
         newStudentInput.addEventListener('keydown', (e) => {
-          if (e.key === 'Enter') {
-            console.log('Enter key pressed on newStudentName');
-            addStudent();
-          }
+          if (e.key === 'Enter' && newStudentInput.value.trim()) addStudent();
         });
       }
 
@@ -262,5 +263,6 @@
     }
   </script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'93609c6a2ea253d8',t:'MTc0NTYxMzE2MC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
 </body>
 </html>
