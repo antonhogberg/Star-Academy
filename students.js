@@ -25,8 +25,7 @@ if (window.studentsData.currentStudent && !window.studentsData.students[window.s
     localStorage.setItem('starAcademyStudents', JSON.stringify(window.studentsData));
 }
 
-function addStudent(e) {
-    if (e) e.preventDefault(); // Prevent form-like submission
+function addStudent() {
     console.log('addStudent called');
     const nameInput = document.getElementById('newStudentName');
     if (!nameInput) {
@@ -34,7 +33,6 @@ function addStudent(e) {
         return;
     }
     const name = nameInput.value.trim();
-    console.log('Name input value:', name); // Debug input value
     const lang = localStorage.getItem('language') || 'sv';
 
     window.studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || {
@@ -203,7 +201,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const addButton = document.getElementById('addStudentButton');
     if (addButton) {
         console.log('Binding addStudent to addStudentButton');
-        addButton.addEventListener('click', (e) => addStudent(e));
+        addButton.addEventListener('click', addStudent);
     } else {
         console.error('addStudentButton not found');
     }
@@ -214,7 +212,7 @@ document.addEventListener('DOMContentLoaded', () => {
         nameInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') {
                 console.log('Enter key pressed on newStudentName');
-                addStudent(e);
+                addStudent();
             }
         });
     } else {
