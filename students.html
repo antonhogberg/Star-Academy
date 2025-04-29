@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
   <title>Stjärnakademiens elever</title>
   <link rel="stylesheet" href="styles.css" />
+  <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
   <script>
     function setViewportHeight() {
       let vh = window.innerHeight * 0.01;
@@ -13,9 +14,7 @@
     window.addEventListener('resize', setViewportHeight);
     window.addEventListener('orientationchange', setViewportHeight);
     setViewportHeight();
-  </script>
 
-  <script>
     window.shareExport = async function () {
       console.log('shareExport called');
       const exportStatus = document.getElementById("exportStatus");
@@ -24,9 +23,7 @@
       const lang = localStorage.getItem('language') || 'sv';
       try {
         exportStatus.style.display = "block";
-        exportStatus.textContent = window.translations && window.translations[lang] && window.translations[lang].creatingLink
-          ? window.translations[lang].creatingLink
-          : lang === 'en' ? "Generating link, please wait…" : "Skapar länk, vänta…";
+        exportStatus.textContent = window.translations[lang].creatingLink;
 
         const studentsData = JSON.parse(localStorage.getItem("starAcademyStudents")) || { students: {}, currentStudent: "" };
         const current = studentsData.currentStudent;
@@ -46,7 +43,7 @@
           body: JSON.stringify({
             fields: {
               name: { stringValue: dataToExport.name },
-              data: { mapValue: { fields: convertToFirestoreFields(dataToExport.data) } } // Save as object
+              data: { mapValue: { fields: convertToFirestoreFields(dataToExport.data) } }
             }
           })
         });
@@ -59,14 +56,27 @@
         const docId = docData.name.split('/').pop();
         const link = `${window.location.origin}/Star-Academy/index.html?code=${docId}`;
 
+        // Generate QR code with qrcode.js
+        const qrCanvas = document.getElementById("qrCodeCanvas");
+        if (qrCanvas) {
+          qrCanvas.innerHTML = ''; // Clear previous QR code
+          new QRCode(qrCanvas, {
+            text: link,
+            width: 150,
+            height: 150,
+            colorDark: "#000000",
+            colorLight: "#ffffff",
+            correctLevel: QRCode.CorrectLevel.H
+          });
+          console.log('QR code generated with link:', link);
+        }
+
         if (navigator.share && navigator.canShare({ url: link })) {
           await navigator.share({ title: "Elevdata", url: link });
         } else {
           await navigator.clipboard.writeText(link);
           const starSVG = '<svg class="popup-star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>';
-          popupMessage.innerHTML = `${starSVG} ${window.translations && window.translations[lang] && window.translations[lang].copyLinkSuccess
-            ? window.translations[lang].copyLinkSuccess
-            : lang === 'en' ? "Link copied to clipboard! Paste to share." : "Länk kopierad till urklipp! Klistra in för att dela."} ${starSVG}`;
+          popupMessage.innerHTML = `${starSVG} ${window.translations[lang].copyLinkSuccess} ${starSVG}`;
           popup.style.display = 'flex';
           popup.className = 'student-popup show';
           setTimeout(() => {
@@ -76,15 +86,12 @@
         }
       } catch (error) {
         console.error('shareExport error:', error);
-        alert(window.translations && window.translations[lang] && window.translations[lang].error
-          ? window.translations[lang].error
-          : lang === 'en' ? "Failed to create sharing link" : "Det gick inte att skapa delningslänk");
+        alert(window.translations[lang].error);
       } finally {
         exportStatus.style.display = "none";
       }
     };
 
-    // Helper function to convert object to Firestore fields
     function convertToFirestoreFields(obj) {
       const fields = {};
       for (const [key, value] of Object.entries(obj)) {
@@ -95,6 +102,24 @@
         }
       }
       return fields;
+    }
+
+    function openExportPopup() {
+      const popup = document.getElementById("exportQrPopup");
+      if (popup) {
+        popup.style.display = 'flex';
+        popup.className = 'student-popup show';
+        console.log('Export QR popup opened');
+      }
+    }
+
+    function closeExportPopup() {
+      const popup = document.getElementById("exportQrPopup");
+      if (popup) {
+        popup.className = 'student-popup';
+        setTimeout(() => { popup.style.display = 'none'; }, 500);
+        console.log('Export QR popup closed');
+      }
     }
   </script>
 </head>
@@ -114,7 +139,7 @@
     <div class="input-button-container">
       <div class="input-group">
         <input type="text" id="newStudentName">
-        <button id="addStudentButton" onclick="addStudent()" data-translate="addStudent"></button>
+        <button id="addStudentButton" onclick="addStudent()" data-translate="addButton"></button>
       </div>
     </div>
 
@@ -125,7 +150,7 @@
 
     <div class="notes-wrapper">
       <div class="notes-container">
-        <div id="notesLabel" class="field-label" data-translate="notes"></div>
+        <div id="notesLabel" class="field-label" data-translate="notesLabel"></div>
         <div class="notes-button-container">
           <textarea id="studentNotes" rows="5"></textarea>
         </div>
@@ -135,8 +160,8 @@
     <div class="export-section">
       <h2 id="exportTitle" class="field-label" data-translate="exportTitle"></h2>
       <div class="export-button-container">
-        <button id="shareButton" onclick="shareExport()" data-translate="shareButton"></button>
-        <p id="exportStatus" class="info-text" data-translate="exportStatus" style="display: none;"></p>
+        <button id="openExportPopup" onclick="openExportPopup()" data-translate="shareWithQR"></button>
+        <p id="exportStatus" class="info-text" data-translate="creatingLink" style="display: none;"></p>
       </div>
     </div>
   </div>
@@ -145,12 +170,19 @@
       <p id="studentPopupMessage"></p>
     </div>
   </div>
+  <div id="exportQrPopup" class="student-popup">
+    <div class="student-popup-content">
+      <div id="qrCodeCanvas" style="width: 150px; height: 150px; margin-bottom: 10px;"></div>
+      <p id="scanQrText" data-translate="scanQRCode"></p>
+      <button id="shareButton" onclick="shareExport()" data-translate="shareButton"></button>
+      <button onclick="closeExportPopup()" data-translate="closeButton"></button>
+    </div>
+  </div>
 
   <script src="script.js"></script>
   <script src="students.js"></script>
 
   <script>
-    // Funktion för att spara anteckningar (debounced)
     function debounce(func, wait) {
       let timeout;
       return function (...args) {
@@ -164,7 +196,7 @@
       const currentStudent = window.studentsData.currentStudent;
 
       if (!currentStudent || !window.studentsData.students[currentStudent]) {
-        if (!silent) alert('Välj en elev först');
+        if (!silent) alert(window.translations[localStorage.getItem('language') || 'sv'].addStudentNoName);
         return;
       }
 
@@ -232,5 +264,5 @@
       }
     }
   </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'93609c6a2ea253d8',t:'MTc0NTYxMzE2MC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</body>
 </html>
