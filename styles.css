@@ -2036,6 +2036,15 @@ body.popup-open .student-manager {
     }
 }
 
+/* iPad Pro 13" in landscape (1201px to 1400px) */
+@media (min-width: 1201px) and (max-width: 1400px) and (orientation: landscape) {
+    .star-map-container {
+        top: 50px;
+        height: calc(100vh - 50px);
+        max-height: 960px;
+    }
+}
+
 /* Desktop (min-width: 1401px) */
 @media (min-width: 1401px) and (orientation: landscape) and (hover: hover) and (min-aspect-ratio: 16/10) {
     body.chapters {
