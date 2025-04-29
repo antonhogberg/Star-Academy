@@ -1495,22 +1495,21 @@ body.chapters {
     }
 
     .student-select-container {
-        position: absolute;
-        top: 60px; /* 4px lower than 50px */
-        left: 10px; /* Margin from menu edge */
-        z-index: 1201; /* Above .menu (1000), within .hamburger-nav (1199) */
-        opacity: 0; /* Hidden when menu closed */
+        display: none;
+        z-index: 1200; /* Above .hamburger-nav (1199) */
+        opacity: 0;
         transition: opacity 0.3s ease-in 0.3s, opacity 0.1s ease-out 0s; /* 300ms fade-in with 300ms delay, 100ms fade-out */
     }
-    .hamburger-nav .menu.active .student-select-container {
-        opacity: 1; /* Visible when menu open */
+    .hamburger-nav .menu.active ~ .student-select-container {
+        display: flex;
+        opacity: 1;
     }
 
     #globalStudentSelect {
-        background: #cccccc; /* Light grey, matches .menu */
-        color: #000000; /* Black, matches .menu-link */
-        border: 2px solid #000000; /* Black, matches .menu-link */
-        background-image: url('data:image/svg+xml;utf8,<svg fill="%23000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>'); /* Black chevron */
+        background: #cccccc !important; /* Light grey, matches .menu */
+        color: #000000 !important; /* Black, matches .menu-link */
+        border: 2px solid #000000 !important; /* Black, matches .menu-link */
+        background-image: url('data:image/svg+xml;utf8,<svg fill="%23000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>') !important; /* Black chevron */
     }
 
     .student-manager button#shareButton {
