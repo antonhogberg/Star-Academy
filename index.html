@@ -30,10 +30,6 @@
             <div class="black-key bottom"></div>
         </div>
         <nav id="menu-placeholder"></nav>
-        <!-- Added: Dropdown container -->
-        <div class="student-select-container">
-            <select id="globalStudentSelect"></select>
-        </div>
         <div class="layout-container">
             <div class="progress-container">
                 <svg class="progress-svg" viewBox="0 0 1366 924"
@@ -199,234 +195,202 @@
         <div class="rank-badge">
             <img id="rankImage" src="rank-start.png" alt="Rank Badge" style="max-width: 100%; height: auto; display: block; margin: 0 auto;">
             <div id="rankName"></div>
-            <!-- Removed: <div id="userNameDisplay"></div> -->
         </div>
     </div>
 </div>
 </div>
 <script src="script.js"></script>
-<!-- Added: students.js -->
 <script src="students.js"></script>
 <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
-    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
+import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore.js";
 
-    const firebaseConfig = {
-        apiKey: "REDACTED",
-        authDomain: "stjarnakademien-6b272.firebaseapp.com",
-        projectId: "stjarnakademien-6b272",
-        storageBucket: "stjarnakademien-6b272.appspot.com",
-        messagingSenderId: "773874793436",
-        appId: "1:773874793436:web:f7dc4307844e38709e2d19"
-    };
+const firebaseConfig = {
+    apiKey: "REDACTED",
+    authDomain: "stjarnakademien-6b272.firebaseapp.com",
+    projectId: "stjarnakademien-6b272",
+    storageBucket: "stjarnakademien-6b272.appspot.com",
+    messagingSenderId: "773874793436",
+    appId: "1:773874793436:web:f7dc4307844e38709e2d19"
+};
 
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 
-    const urlParams = new URLSearchParams(window.location.search);
-    const code = urlParams.get("code");
-    const overlay = document.getElementById("importLoaderOverlay");
-    const mainContent = document.getElementById("mainContent");
-    const loaderText = document.getElementById("loaderText");
+const urlParams = new URLSearchParams(window.location.search);
+const code = urlParams.get("code");
+const overlay = document.getElementById("importLoaderOverlay");
+const mainContent = document.getElementById("mainContent");
+const loaderText = document.getElementById("loaderText");
 
-    const translations = {
-        sv: {
-            loading: "Laddar elevdata...",
-            success: "Dina framgångar är uppdaterade, välkommen",
-            error: "Ogiltig länk. Ingen elev lades till."
-        },
-        en: {
-            loading: "Loading student data...",
-            success: "Your stars are updated, welcome",
-            error: "Invalid link. No student was added."
-        }
-    };
-
-    async function handleImportFromLink(code) {
-        try {
-            window.isImporting = true;
-            overlay.style.display = "flex";
-            mainContent.style.display = "none";
-            const lang = localStorage.getItem('language') || 'sv';
-            loaderText.textContent = translations[lang].loading;
-            console.log('Import started, code:', code);
-            
-            const minDisplayTime = new Promise(resolve => setTimeout(resolve, 1000));
-            const docSnap = await getDoc(doc(db, "exports", code));
-            await minDisplayTime;
-            
-            if (!docSnap.exists()) throw new Error("Document not found.");
-
-            const stored = JSON.parse(localStorage.getItem("starAcademyStudents")) || { students: {}, currentStudent: "" };
-            const { name, data } = docSnap.data();
-            const isNew = !stored.students[name];
-
-            stored.students[name] = data;
-            stored.currentStudent = name;
-            localStorage.setItem("starAcademyStudents", JSON.stringify(stored));
-            console.log('localStorage updated, currentStudent:', name, 'students:', Object.keys(stored.students));
-
-            setTimeout(() => {
-                console.log('Calling initializeAppContent after import');
-                if (typeof window.initializeAppContent === 'function') {
-                    window.initializeAppContent();
-                } else {
-                    console.error('initializeAppContent not defined');
-                }
-            }, 200);
-
-            setTimeout(() => showStudentPopup(isNew, name), 100);
-
-            const cleanUrl = window.location.origin + window.location.pathname;
-            window.history.replaceState({}, document.title, cleanUrl);
-        } catch (e) {
-            console.error("Import från kod misslyckades:", e);
-            setTimeout(() => showStudentPopup(false, null), 100);
-        } finally {
-            overlay.style.display = "none";
-            mainContent.style.display = "block";
-            window.isImporting = false;
-            console.log('Import completed, isImporting:', window.isImporting);
-        }
+const translations = {
+    sv: {
+        loading: "Laddar elevdata...",
+        success: "Dina framgångar är uppdaterade, välkommen",
+        error: "Ogiltig länk. Ingen elev lades till."
+    },
+    en: {
+        loading: "Loading student data...",
+        success: "Your stars are updated, welcome",
+        error: "Invalid link. No student was added."
     }
+};
 
-    function showStudentPopup(isNew, name) {
-        console.log('showStudentPopup called:', { isNew, name });
-        const popup = document.createElement("div");
-        popup.id = "studentPopup";
-        popup.className = "student-popup show";
+async function handleImportFromLink(code) {
+    try {
+        window.isImporting = true;
+        overlay.style.display = "flex";
+        mainContent.style.display = "none";
         const lang = localStorage.getItem('language') || 'sv';
-        const message = name
-            ? `${translations[lang].success} ${name}!`
-            : translations[lang].error;
-        popup.innerHTML = `
-            <div class="student-popup-content">
-                <p>${message}</p>
-            </div>
-        `;
-        document.body.appendChild(popup);
+        loaderText.textContent = translations[lang].loading;
+        console.log('Import started, code:', code);
+        
+        const minDisplayTime = new Promise(resolve => setTimeout(resolve, 1000));
+        const docSnap = await getDoc(doc(db, "exports", code));
+        await minDisplayTime;
+        
+        if (!docSnap.exists()) throw new Error("Document not found.");
+
+        const stored = JSON.parse(localStorage.getItem("starAcademyStudents")) || { students: {}, currentStudent: "" };
+        const { name, data } = docSnap.data();
+        const isNew = !stored.students[name];
+
+        stored.students[name] = data;
+        stored.currentStudent = name;
+        localStorage.setItem("starAcademyStudents", JSON.stringify(stored));
+        console.log('localStorage updated, currentStudent:', name, 'students:', Object.keys(stored.students));
 
         setTimeout(() => {
-            popup.classList.remove("show");
-            setTimeout(() => {
-                if (popup.parentNode) popup.parentNode.removeChild(popup);
-            }, 500);
-        }, 4000);
-    }
-
-    window.initializeAppContent = function() {
-        console.log('initializeAppContent called');
-        if (typeof window.studentsData !== 'undefined') {
-            window.studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || {
-                students: {},
-                currentStudent: ''
-            };
-            console.log('Refreshed window.studentsData:', window.studentsData);
-        }
-
-        const updateDropdownWithRetry = (attempt = 1, maxAttempts = 5) => {
-            if (typeof updateDropdown !== 'function') {
-                console.error('updateDropdown not defined');
-                return;
-            }
-            const select = document.getElementById('globalStudentSelect');
-            if (select) {
-                console.log('globalStudentSelect found, updating dropdown');
-                updateDropdown();
-            } else if (attempt <= maxAttempts) {
-                console.warn(`globalStudentSelect not found, retrying (${attempt}/${maxAttempts})`);
-                setTimeout(() => updateDropdownWithRetry(attempt + 1, maxAttempts), 200);
-            } else {
-                console.error('Failed to find globalStudentSelect after max retries');
-            }
-        };
-
-        const updateStarsWithRetry = (attempt = 1, maxAttempts = 5) => {
-            if (typeof updateStarStates !== 'function') {
-                console.error('updateStarStates not defined');
-                return;
-            }
-            const testStar = document.getElementById('bottom_star1');
-            if (testStar) {
-                console.log('SVG elements found, updating stars');
-                updateStarStates();
-            } else if (attempt <= maxAttempts) {
-                console.warn(`SVG elements not found, retrying (${attempt}/${maxAttempts})`);
-                setTimeout(() => updateStarsWithRetry(attempt + 1, maxAttempts), 200);
-            } else {
-                console.error('Failed to find SVG elements after max retries');
-            }
-        };
-
-        updateDropdownWithRetry();
-        updateStarsWithRetry();
-    };
-
-    document.addEventListener('DOMContentLoaded', () => {
-        console.log('DOMContentLoaded in index.html');
-        const globalSelect = document.getElementById('globalStudentSelect');
-        const studentSelectContainer = document.querySelector('.student-select-container');
-
-        if (globalSelect) {
-            console.log('Binding change event to globalStudentSelect');
-            globalSelect.addEventListener('change', () => {
-                console.log('globalStudentSelect changed');
-                if (typeof switchStudent === 'function') {
-                    switchStudent();
-                }
-                if (typeof updateStarStates === 'function') {
-                    updateStarStates();
-                }
-            });
-        } else {
-            console.error('globalStudentSelect not found');
-        }
-
-        // iPhone: Move dropdown into menu
-        const setupMenuIntegration = () => {
-            const menu = document.querySelector('.hamburger-nav .menu');
-            if (menu && studentSelectContainer) {
-                console.log('Moving student-select-container into menu for iPhone');
-                if (window.innerWidth <= 767) {
-                    menu.appendChild(studentSelectContainer);
-                    console.log('student-select-container appended to .hamburger-nav .menu');
-                }
-                return true;
-            } else {
-                console.warn('Menu or studentSelectContainer missing:', { menu: !!menu, studentSelectContainer: !!studentSelectContainer });
-                return false;
-            }
-        };
-
-        // Initial setup attempt
-        if (!setupMenuIntegration()) {
-            // Retry if menu not found
-            const observer = new MutationObserver((mutations, obs) => {
-                if (document.querySelector('.hamburger-nav .menu')) {
-                    if (setupMenuIntegration()) {
-                        obs.disconnect();
-                        console.log('Menu integration setup successful after DOM change');
-                    }
-                }
-            });
-            observer.observe(document.body, { childList: true, subtree: true });
-        }
-    });
-
-    if (code) {
-        handleImportFromLink(code);
-    } else {
-        overlay.style.display = "none";
-        mainContent.style.display = "block";
-        setTimeout(() => {
-            console.log('Calling initializeAppContent on page load');
+            console.log('Calling initializeAppContent after import');
             if (typeof window.initializeAppContent === 'function') {
                 window.initializeAppContent();
+            } else {
+                console.error('initializeAppContent not defined');
             }
         }, 200);
+
+        setTimeout(() => showStudentPopup(isNew, name), 100);
+
+        const cleanUrl = window.location.origin + window.location.pathname;
+        window.history.replaceState({}, document.title, cleanUrl);
+    } catch (e) {
+        console.error("Import från kod misslyckades:", e);
+        setTimeout(() => showStudentPopup(false, null), 100);
+    } finally {
+        overlay.style.display = "none";
+        mainContent.style.display = "block";
+        window.isImporting = false;
+        console.log('Import completed, isImporting:', window.isImporting);
     }
+}
+
+function showStudentPopup(isNew, name) {
+    console.log('showStudentPopup called:', { isNew, name });
+    const popup = document.createElement("div");
+    popup.id = "studentPopup";
+    popup.className = "student-popup show";
+    const lang = localStorage.getItem('language') || 'sv';
+    const message = name
+        ? `${translations[lang].success} ${name}!`
+        : translations[lang].error;
+    popup.innerHTML = `
+        <div class="student-popup-content">
+            <p>${message}</p>
+        </div>
+    `;
+    document.body.appendChild(popup);
+
+    setTimeout(() => {
+        popup.classList.remove("show");
+        setTimeout(() => {
+            if (popup.parentNode) popup.parentNode.removeChild(popup);
+        }, 500);
+    }, 4000);
+}
+
+window.initializeAppContent = function() {
+    console.log('initializeAppContent called');
+    if (typeof window.studentsData !== 'undefined') {
+        window.studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || {
+            students: {},
+            currentStudent: ''
+        };
+        console.log('Refreshed window.studentsData:', window.studentsData);
+    }
+
+    const updateDropdownWithRetry = (attempt = 1, maxAttempts = 5) => {
+        if (typeof updateDropdown !== 'function') {
+            console.error('updateDropdown not defined');
+            return;
+        }
+        const select = document.getElementById('globalStudentSelect');
+        if (select) {
+            console.log('globalStudentSelect found, updating dropdown');
+            updateDropdown();
+        } else if (attempt <= maxAttempts) {
+            console.warn(`globalStudentSelect not found, retrying (${attempt}/${maxAttempts})`);
+            setTimeout(() => updateDropdownWithRetry(attempt + 1, maxAttempts), 200);
+        } else {
+            console.error('Failed to find globalStudentSelect after max retries');
+        }
+    };
+
+    const updateStarsWithRetry = (attempt = 1, maxAttempts = 5) => {
+        if (typeof updateStarStates !== 'function') {
+            console.error('updateStarStates not defined');
+            return;
+        }
+        const testStar = document.getElementById('bottom_star1');
+        if (testStar) {
+            console.log('SVG elements found, updating stars');
+            updateStarStates();
+        } else if (attempt <= maxAttempts) {
+            console.warn(`SVG elements not found, retrying (${attempt}/${maxAttempts})`);
+            setTimeout(() => updateStarsWithRetry(attempt + 1, maxAttempts), 200);
+        } else {
+            console.error('Failed to find SVG elements after max retries');
+        }
+    };
+
+    updateDropdownWithRetry();
+    updateStarsWithRetry();
+};
+
+document.addEventListener('DOMContentLoaded', () => {
+    console.log('DOMContentLoaded in index.html');
+    const globalSelect = document.getElementById('globalStudentSelect');
+
+    if (globalSelect) {
+        console.log('Binding change event to globalStudentSelect');
+        globalSelect.addEventListener('change', () => {
+            console.log('globalStudentSelect changed');
+            if (typeof switchStudent === 'function') {
+                switchStudent();
+            }
+            if (typeof updateStarStates === 'function') {
+                updateStarStates();
+            }
+        });
+    } else {
+        console.error('globalStudentSelect not found');
+    }
+});
+
+if (code) {
+    handleImportFromLink(code);
+} else {
+    overlay.style.display = "none";
+    mainContent.style.display = "block";
+    setTimeout(() => {
+        console.log('Calling initializeAppContent on page load');
+        if (typeof window.initializeAppContent === 'function') {
+            window.initializeAppContent();
+        }
+    }, 200);
+}
 </script>
 <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'92bbb6a45b62afb9',t:'MTc0Mzg4NDA4My4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
 <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'935543e18fdedd25',t:'MTc0NTQ5NDE5MC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9386569dd826b0ca',t:'MTc0NjAwODc2MC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
 </body>
 </html>
