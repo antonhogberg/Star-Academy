@@ -702,6 +702,7 @@ waitForDOM().then(() => {
     
     // Call updateDropdown after injectMenu to ensure #globalStudentSelect exists
     const globalSelect = document.getElementById('globalStudentSelect');
+    const userNameDisplay = document.getElementById('userNameDisplay');
     if (globalSelect) {
         console.log('globalStudentSelect found, updating dropdown and binding change event');
         if (typeof updateDropdown === 'function') {
@@ -721,6 +722,16 @@ waitForDOM().then(() => {
                 updateStarStates();
             } else {
                 console.error('updateStarStates not defined');
+            }
+            // Update starmap.html stars if on that page
+            if (window.location.pathname.toLowerCase().includes('starmap.html') && typeof window.initializeStarMap === 'function') {
+                console.log('Re-initializing Star Map after student change');
+                window.initializeStarMap();
+            }
+            // Update userNameDisplay if present
+            if (userNameDisplay) {
+                const studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
+                userNameDisplay.textContent = studentsData.currentStudent || '';
             }
         });
     } else {
@@ -745,7 +756,10 @@ waitForDOM().then(() => {
                 // Delay initialization to ensure SVG is fully parsed
                 setTimeout(() => {
                     window.initializeStarMap();
-                    updateStarStates();
+                    // Update userNameDisplay on initial load
+                    if (userNameDisplay) {
+                        userNameDisplay.textContent = studentsData.currentStudent || '';
+                    }
                 }, 100);
             } else {
                 console.log('No current student, skipping Star Map initialization');
