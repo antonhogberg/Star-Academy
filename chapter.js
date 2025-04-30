@@ -1,6 +1,4 @@
-// chapter.js
-
-document.addEventListener('DOMContentLoaded', () => {
+function initializeChapter() {
     const starImages = [
         'white-star.png',
         'one-star.png',
@@ -15,6 +13,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const chapterNum = chapterNumMatch ? parseInt(chapterNumMatch[1]) : 1;
     const exercisesPerPart = 4;
     const parts = 4;
+
+    // Clear existing parts to re-render
+    partsContainer.innerHTML = '';
 
     for (let part = 0; part < parts; part++) {
         const partDiv = document.createElement('div');
@@ -44,16 +45,14 @@ document.addEventListener('DOMContentLoaded', () => {
             codeLabel.className = 'exercise-code';
 
             img.addEventListener('click', () => {
-                // Immediately update the level in localStorage
                 const studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
                 const progress = studentsData.students[studentsData.currentStudent]?.progress || {};
                 let level = progress[exerciseKey] ? parseInt(progress[exerciseKey]) : 0;
-                level = (level + 1) % 7; // Increment and cycle (0 to 6)
+                level = (level + 1) % 7;
                 progress[exerciseKey] = level.toString();
                 studentsData.students[studentsData.currentStudent].progress = progress;
                 localStorage.setItem('starAcademyStudents', JSON.stringify(studentsData));
 
-                // Animate the change (allow overlapping animations)
                 img.style.opacity = '0';
                 setTimeout(() => {
                     img.src = starImages[level];
@@ -61,7 +60,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 }, 300);
             });
 
-            // Listen for storage events to sync with other pages
             window.addEventListener('storage', (event) => {
                 if (event.key === 'starAcademyStudents') {
                     const updatedStudentsData = JSON.parse(event.newValue) || { students: {}, currentStudent: '' };
@@ -76,6 +74,18 @@ document.addEventListener('DOMContentLoaded', () => {
                         }, 300);
                         console.log(`Star ${exerciseCode} updated via storage event, level: ${level}`);
                     }
+
+                    // Update dropdown and userNameDisplay after storage change
+                    const globalSelect = document.getElementById('globalStudentSelect');
+                    const userNameDisplay = document.getElementById('userNameDisplay');
+                    if (globalSelect && typeof updateDropdown === 'function') {
+                        console.log('Storage event: Updating dropdown');
+                        updateDropdown();
+                    }
+                    if (userNameDisplay) {
+                        console.log('Storage event: Updating userNameDisplay');
+                        userNameDisplay.textContent = updatedStudentsData.currentStudent || '';
+                    }
                 }
             });
 
@@ -87,4 +97,11 @@ document.addEventListener('DOMContentLoaded', () => {
         partDiv.appendChild(exerciseDiv);
         partsContainer.appendChild(partDiv);
     }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    initializeChapter();
 });
+
+// Expose initializeChapter globally
+window.initializeChapter = initializeChapter;

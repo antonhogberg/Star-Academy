@@ -736,6 +736,11 @@ waitForDOM().then(() => {
                 console.log('Re-initializing Star Map after student change');
                 window.initializeStarMap();
             }
+            // Update chapter pages stars if on a chapter page
+            if (window.location.pathname.toLowerCase().includes('chapter') && typeof window.initializeChapter === 'function') {
+                console.log('Re-initializing Chapter after student change');
+                window.initializeChapter();
+            }
             // Update userNameDisplay if present
             if (userNameDisplay) {
                 const studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
@@ -774,6 +779,32 @@ waitForDOM().then(() => {
             }
         } else {
             console.error('Star Map SVG not found');
+        }
+
+        // Force reload if loaded from Back/Forward Cache (BFCache)
+        window.addEventListener('pageshow', (event) => {
+            if (event.persisted) {
+                console.log('Page loaded from BFCache, forcing reload...');
+                window.location.reload();
+            }
+        });
+    }
+
+    // Handle chapter pages
+    if (window.location.pathname.toLowerCase().includes('chapter') && typeof window.initializeChapter === 'function') {
+        console.log('Navigating to chapter page');
+        const studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
+        if (studentsData.currentStudent) {
+            console.log('Initializing Chapter');
+            setTimeout(() => {
+                window.initializeChapter();
+                // Update userNameDisplay on initial load
+                if (userNameDisplay) {
+                    userNameDisplay.textContent = studentsData.currentStudent || '';
+                }
+            }, 100);
+        } else {
+            console.log('No current student, skipping Chapter initialization');
         }
 
         // Force reload if loaded from Back/Forward Cache (BFCache)
