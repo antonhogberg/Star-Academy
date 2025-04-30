@@ -195,9 +195,8 @@ function injectMenu() {
         return;
     }
 
-    menu.style.left = '-250px';
-    menu.style.visibility = 'hidden'; // Ensure menu is hidden on load
-    console.log('Menu initialized with left: -250px, visibility: hidden');
+    // Removed menu.style.visibility = 'hidden'; as it's handled by CSS
+    console.log('Menu initialized with left: -250px via CSS');
 
     // Remove existing listeners to prevent duplicates
     const newHamburger = hamburger.cloneNode(true);
@@ -210,14 +209,11 @@ function injectMenu() {
         newHamburger.classList.toggle('active');
         if (!isExpanded) {
             menu.classList.add('active');
-            menu.style.visibility = 'visible'; // Show menu during animation
             menu.animate([{ left: '-250px' }, { left: '0' }], { duration: 300, easing: 'ease-in-out', fill: 'forwards' });
             console.log('Menu opened');
         } else {
-            const menuAnimation = menu.animate([{ left: '0' }, { left: '-250px' }], { duration: 300, easing: 'ease-in-out', fill: 'forwards' });
-            menuAnimation.onfinish = () => {
+            menu.animate([{ left: '0' }, { left: '-250px' }], { duration: 300, easing: 'ease-in-out', fill: 'forwards' }).onfinish = () => {
                 menu.classList.remove('active');
-                menu.style.visibility = 'hidden'; // Hide menu after animation
                 console.log('Menu closed');
             };
         }
@@ -228,10 +224,8 @@ function injectMenu() {
             console.log(`Menu link clicked: ${link.getAttribute('href')}`);
             newHamburger.setAttribute('aria-expanded', 'false');
             newHamburger.classList.remove('active');
-            const menuAnimation = menu.animate([{ left: '0' }, { left: '-250px' }], { duration: 300, easing: 'ease-in-out', fill: 'forwards' });
-            menuAnimation.onfinish = () => {
+            menu.animate([{ left: '0' }, { left: '-250px' }], { duration: 300, easing: 'ease-in-out', fill: 'forwards' }).onfinish = () => {
                 menu.classList.remove('active');
-                menu.style.visibility = 'hidden';
                 console.log('Menu closed after link click');
             };
         });
@@ -242,10 +236,8 @@ function injectMenu() {
             console.log('Clicked outside menu');
             newHamburger.setAttribute('aria-expanded', 'false');
             newHamburger.classList.remove('active');
-            const menuAnimation = menu.animate([{ left: '0' }, { left: '-250px' }], { duration: 300, easing: 'ease-in-out', fill: 'forwards' });
-            menuAnimation.onfinish = () => {
+            menu.animate([{ left: '0' }, { left: '-250px' }], { duration: 300, easing: 'ease-in-out', fill: 'forwards' }).onfinish = () => {
                 menu.classList.remove('active');
-                menu.style.visibility = 'hidden';
                 console.log('Menu closed due to outside click');
             };
         }
