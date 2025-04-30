@@ -102,11 +102,10 @@ body.popup-open .student-manager {
 }
 
 .hamburger-nav .menu {
-    /* Ensure menu styles support visibility control */
     position: fixed;
     top: 0;
-    left: -250px;
-    width: 200px;
+    left: -250px; /* Set initial position in CSS */
+    width: 250px;
     height: calc(var(--vh, 1vh) * 100);
     background: #cccccc;
 }
@@ -986,7 +985,7 @@ body.popup-open .student-manager {
 }
 
 .student-select-container {
-    position: fixed;
+    position: absolute;
     top: 18px;
     left: 58px;
     z-index: 999;
