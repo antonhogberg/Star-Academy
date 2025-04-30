@@ -150,6 +150,18 @@ function initializeSvg(doc) {
 
                     checkCompletion(updatedStudentsData);
                 }
+
+                // Update dropdown and userNameDisplay after storage change
+                const globalSelect = document.getElementById('globalStudentSelect');
+                const userNameDisplay = document.getElementById('userNameDisplay');
+                if (globalSelect && typeof updateDropdown === 'function') {
+                    console.log('Storage event: Updating dropdown');
+                    updateDropdown();
+                }
+                if (userNameDisplay) {
+                    console.log('Storage event: Updating userNameDisplay');
+                    userNameDisplay.textContent = updatedStudentsData.currentStudent || '';
+                }
             }
         });
     });
