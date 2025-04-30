@@ -67,7 +67,11 @@ function initializeSvg(doc) {
         image { pointer-events: all; transition: opacity 0.3s ease-in-out; }
         path { transition: stroke 0.3s ease-in-out !important; }
     `;
-    doc.getElementById('starMap').appendChild(styleElement);
+    const starMapSvg = doc.getElementById('starMap');
+    // Remove existing style elements to avoid duplicates
+    const existingStyles = starMapSvg.querySelectorAll('style');
+    existingStyles.forEach(style => style.remove());
+    starMapSvg.appendChild(styleElement);
 
     progressionPath.forEach(({ star, lines }) => {
         const starElement = doc.getElementById(`star-${star.replace(/:/g, '-')}`);
@@ -78,17 +82,17 @@ function initializeSvg(doc) {
             return;
         }
 
-        const progress = studentsData.students[studentsData.currentStudent]?.progress || {};
         const exerciseKey = `exercise${star}`;
-        let level = progress[exerciseKey] ? parseInt(progress[exerciseKey]) : 0;
-        starElement.setAttributeNS('http://www.w3.org/1999/xlink', 'href', starImages[level]);
+        const progress = studentsData.students[studentsData.currentStudent]?.progress || {};
+        const currentLevel = progress[exerciseKey] ? parseInt(progress[exerciseKey]) : 0;
+        starElement.setAttributeNS('http://www.w3.org/1999/xlink', 'href', starImages[currentLevel]);
 
         lineElements.forEach(lineElement => {
             const currentStyle = lineElement.getAttribute('style') || '';
             const newStyle = currentStyle.replace(/stroke\s*:\s*[^;]+;?/, '').trim();
             lineElement.setAttribute('style', newStyle);
-            lineElement.style.stroke = level === 6 ? '#FFD700' : '#FFFFFF';
-            if (level === 6) {
+            lineElement.style.stroke = currentLevel === 6 ? '#FFD700' : '#FFFFFF';
+            if (currentLevel === 6) {
                 lineElement.setAttribute('filter', 'url(#golden-glow)');
             } else {
                 lineElement.removeAttribute('filter');
@@ -96,20 +100,25 @@ function initializeSvg(doc) {
         });
 
         starElement.style.cursor = 'pointer';
-        starElement.addEventListener('click', () => {
+
+        // Remove existing click listeners to prevent duplicates
+        const newStarElement = starElement.cloneNode(true);
+        starElement.parentNode.replaceChild(newStarElement, starElement);
+
+        newStarElement.addEventListener('click', () => {
             console.log(`Star ${star} clicked`);
             const studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
             const progress = studentsData.students[studentsData.currentStudent]?.progress || {};
             let level = progress[exerciseKey] ? parseInt(progress[exerciseKey]) : 0;
-            level = (level + 1) % 7;
+            level = (level + 1) % 7; // Increment and cycle (0 to 6)
             progress[exerciseKey] = level.toString();
             studentsData.students[studentsData.currentStudent].progress = progress;
             localStorage.setItem('starAcademyStudents', JSON.stringify(studentsData));
 
-            starElement.style.opacity = '0';
+            newStarElement.style.opacity = '0';
             setTimeout(() => {
-                starElement.setAttributeNS('http://www.w3.org/1999/xlink', 'href', starImages[level]);
-                starElement.style.opacity = '1';
+                newStarElement.setAttributeNS('http://www.w3.org/1999/xlink', 'href', starImages[level]);
+                newStarElement.style.opacity = '1';
             }, 300);
 
             lineElements.forEach(lineElement => {
@@ -125,21 +134,23 @@ function initializeSvg(doc) {
             checkCompletion(studentsData);
         });
 
-        window.addEventListener('storage', (event) => {
+        // Remove existing storage listeners to prevent duplicates
+        window.removeEventListener('storage', window.storageListener);
+        window.storageListener = (event) => {
             if (event.key === 'starAcademyStudents') {
                 const updatedStudentsData = JSON.parse(event.newValue) || { students: {}, currentStudent: '' };
                 const updatedProgress = updatedStudentsData.students[updatedStudentsData.currentStudent]?.progress || {};
                 const updatedLevel = updatedProgress[exerciseKey] ? parseInt(updatedProgress[exerciseKey]) : 0;
-                if (updatedLevel !== level) {
-                    level = updatedLevel;
-                    starElement.style.opacity = '0';
+                const currentLevel = updatedProgress[exerciseKey] ? parseInt(updatedProgress[exerciseKey]) : 0;
+                if (updatedLevel !== currentLevel) {
+                    newStarElement.style.opacity = '0';
                     setTimeout(() => {
-                        starElement.setAttributeNS('http://www.w3.org/1999/xlink', 'href', starImages[level]);
-                        starElement.style.opacity = '1';
+                        newStarElement.setAttributeNS('http://www.w3.org/1999/xlink', 'href', starImages[updatedLevel]);
+                        newStarElement.style.opacity = '1';
                     }, 300);
 
                     lineElements.forEach(lineElement => {
-                        if (level === 6) {
+                        if (updatedLevel === 6) {
                             lineElement.setAttribute('filter', 'url(#golden-glow)');
                             lineElement.style.stroke = '#FFD700';
                         } else {
@@ -163,7 +174,8 @@ function initializeSvg(doc) {
                     userNameDisplay.textContent = updatedStudentsData.currentStudent || '';
                 }
             }
-        });
+        };
+        window.addEventListener('storage', window.storageListener);
     });
 
     checkCompletion(studentsData);
