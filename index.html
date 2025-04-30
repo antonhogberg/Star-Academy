@@ -335,7 +335,25 @@ window.initializeAppContent = function() {
         }
     };
 
+    const updateDropdownWithRetry = (attempt = 1, maxAttempts = 5) => {
+        if (typeof updateDropdown !== 'function') {
+            console.error('updateDropdown not defined');
+            return;
+        }
+        const select = document.getElementById('globalStudentSelect');
+        if (select) {
+            console.log('globalStudentSelect found, updating dropdown');
+            updateDropdown();
+        } else if (attempt <= maxAttempts) {
+            console.warn(`globalStudentSelect not found, retrying (${attempt}/${maxAttempts})`);
+            setTimeout(() => updateDropdownWithRetry(attempt + 1, maxAttempts), 200);
+        } else {
+            console.error('Failed to find globalStudentSelect after max retries');
+        }
+    };
+
     updateStarsWithRetry();
+    updateDropdownWithRetry();
 };
 
 if (code) {
