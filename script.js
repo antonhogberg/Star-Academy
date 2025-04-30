@@ -1,4 +1,3 @@
-// Language translations
 const translations = {
     en: {
         menuFrontPage: "Star Overview",
@@ -148,6 +147,9 @@ const translations = {
 const menuHtml = `
     <nav class="hamburger-nav">
         <div class="menu" id="main-menu">
+            <div class="student-select-container">
+                <select id="globalStudentSelect"></select>
+            </div>
             <a href="index.html" class="menu-link"></a>
             <a href="starmap.html" class="menu-link"></a>
             <div class="menu-item">
@@ -186,9 +188,10 @@ function injectMenu() {
 
     const hamburger = document.getElementById('menuButton');
     const menu = document.querySelector('.menu');
+    const studentSelectContainer = document.querySelector('.student-select-container');
 
-    if (!hamburger || !menu) {
-        console.error('Menu elements missing:', { hamburger: !!hamburger, menu: !!menu });
+    if (!hamburger || !menu || !studentSelectContainer) {
+        console.error('Menu elements missing:', { hamburger: !!hamburger, menu: !!menu, studentSelectContainer: !!studentSelectContainer });
         return;
     }
 
@@ -526,7 +529,6 @@ function switchLanguage(lang) {
     if (shareButtonInQR) shareButtonInQR.textContent = translations[lang].shareButtonQR;
     if (exportStatus) exportStatus.textContent = translations[lang].creatingLink;
 }
-
 
 function setInitialLanguage() {
     const hash = window.location.hash.replace('#', '').toLowerCase();

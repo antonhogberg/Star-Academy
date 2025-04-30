@@ -987,7 +987,7 @@ body.popup-open .student-manager {
 .student-select-container {
     position: fixed;
     top: 18px;
-    left: 55px;
+    left: 58px;
     z-index: 999;
     display: flex;
     align-items: center;
@@ -997,7 +997,8 @@ body.popup-open .student-manager {
 #globalStudentSelect {
     height: 35px;
     width: 180px;
-    background: var(--semi-dark);
+    background: var(--semi-dark) url('data:image/svg+xml;utf8,<svg fill="%23ffffff" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>') no-repeat right 10px center;
+    background-size: 16px;
     color: #ffffff;
     border: 2px solid var(--orange);
     border-radius: 5px;
@@ -1011,10 +1012,6 @@ body.popup-open .student-manager {
     -moz-appearance: none;
     position: relative;
     overflow: visible;
-    background-image: url('data:image/svg+xml;utf8,<svg fill="%23ffffff" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
-    background-repeat: no-repeat;
-    background-position: right 10px center;
-    background-size: 16px;
 }
 
 #globalStudentSelect:focus {
@@ -1776,22 +1773,6 @@ body.popup-open .student-manager {
         width: 90vw;
         max-width: 90vw;
         padding: 15px 20px;
-    }
-
-    .student-select-container {
-        left: -195px;
-        z-index: 1200;
-        transition: left 0.6s ease-in-out; /* Match menu's 0.6s duration */
-    }
-
-    .hamburger-nav .menu.active .student-select-container {
-        left: 55px;
-    }
-
-    #globalStudentSelect {
-        background-color: var(--semi-dark); /* Only set background-color, inherit the image */
-        color: #ffffff;
-        border: 2px solid var(--orange);
     }
 
     .star-map-container {
