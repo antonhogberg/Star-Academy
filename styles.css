@@ -1779,20 +1779,19 @@ body.popup-open .student-manager {
     }
 
     .student-select-container {
-        left: -195px; /* Match menu's closed position: -250px + 55px */
+        left: -195px;
         z-index: 1200;
-        transition: left 0.3s ease-in-out; /* Match menu's timing */
+        transition: left 0.6s ease-in-out; /* Match menu's 0.6s duration */
     }
 
     .hamburger-nav .menu.active .student-select-container {
-        left: 55px; /* Slide to visible position when menu opens */
+        left: 55px;
     }
 
     #globalStudentSelect {
-        background: var(--semi-dark);
+        background-color: var(--semi-dark); /* Only set background-color, inherit the image */
         color: #ffffff;
         border: 2px solid var(--orange);
-        background-image: url('data:image/svg+xml;utf8,<svg fill="%23ffffff" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
     }
 
     .star-map-container {
