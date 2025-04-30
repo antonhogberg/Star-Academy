@@ -700,6 +700,33 @@ waitForDOM().then(() => {
     handleUserNamePopup();
     setInitialLanguage();
     
+    // Call updateDropdown after injectMenu to ensure #globalStudentSelect exists
+    const globalSelect = document.getElementById('globalStudentSelect');
+    if (globalSelect) {
+        console.log('globalStudentSelect found, updating dropdown and binding change event');
+        if (typeof updateDropdown === 'function') {
+            updateDropdown();
+        } else {
+            console.error('updateDropdown not defined');
+        }
+
+        globalSelect.addEventListener('change', () => {
+            console.log('globalStudentSelect changed');
+            if (typeof switchStudent === 'function') {
+                switchStudent();
+            } else {
+                console.error('switchStudent not defined');
+            }
+            if (typeof updateStarStates === 'function') {
+                updateStarStates();
+            } else {
+                console.error('updateStarStates not defined');
+            }
+        });
+    } else {
+        console.error('globalStudentSelect not found after injectMenu');
+    }
+
     // Only run initializeAppContent if not importing
     if (!window.isImporting) {
         console.log('Running initializeAppContent from waitForDOM');
