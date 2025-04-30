@@ -102,12 +102,13 @@ body.popup-open .student-manager {
 }
 
 .hamburger-nav .menu {
-    background: #cccccc !important;
-    width: 250px !important;
-    box-sizing: border-box;
-    padding: 0;
-    margin: 0;
-    z-index: 1000;
+    /* Ensure menu styles support visibility control */
+    position: fixed;
+    top: 0;
+    left: -250px;
+    width: 200px;
+    height: calc(var(--vh, 1vh) * 100);
+    background: #cccccc;
 }
 
 .hamburger {

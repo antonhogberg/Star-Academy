@@ -356,26 +356,6 @@ window.initializeAppContent = function() {
     updateStarsWithRetry();
 };
 
-document.addEventListener('DOMContentLoaded', () => {
-    console.log('DOMContentLoaded in index.html');
-    const globalSelect = document.getElementById('globalStudentSelect');
-
-    if (globalSelect) {
-        console.log('Binding change event to globalStudentSelect');
-        globalSelect.addEventListener('change', () => {
-            console.log('globalStudentSelect changed');
-            if (typeof switchStudent === 'function') {
-                switchStudent();
-            }
-            if (typeof updateStarStates === 'function') {
-                updateStarStates();
-            }
-        });
-    } else {
-        console.error('globalStudentSelect not found');
-    }
-});
-
 if (code) {
     handleImportFromLink(code);
 } else {
