@@ -1,11 +1,11 @@
 const starImages = [
-    'white-star.png',
-    'one-star.png',
-    'two-stars.png',
-    'three-stars.png',
-    'four-stars.png',
-    'five-stars.png',
-    'six-stars.png'
+    'white-star.png',  // 0
+    'one-star.png',    // 1
+    'two-stars.png',   // 2
+    'three-stars.png', // 3
+    'four-stars.png',  // 4
+    'five-stars.png',  // 5
+    'six-stars.png'    // 6
 ];
 
 const progressionPath = [
@@ -85,7 +85,13 @@ function initializeSvg(doc) {
         const exerciseKey = `exercise${star}`;
         const progress = studentsData.students[studentsData.currentStudent]?.progress || {};
         const currentLevel = progress[exerciseKey] ? parseInt(progress[exerciseKey]) : 0;
+
+        // Set the initial image and handle load errors
         starElement.setAttributeNS('http://www.w3.org/1999/xlink', 'href', starImages[currentLevel]);
+        starElement.onerror = () => {
+            console.error(`Failed to load image for star-${star}: ${starImages[currentLevel]}`);
+            starElement.setAttributeNS('http://www.w3.org/1999/xlink', 'href', starImages[0]); // Fallback to white-star.png
+        };
 
         lineElements.forEach(lineElement => {
             const currentStyle = lineElement.getAttribute('style') || '';
@@ -110,7 +116,7 @@ function initializeSvg(doc) {
             const studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
             const progress = studentsData.students[studentsData.currentStudent]?.progress || {};
             let level = progress[exerciseKey] ? parseInt(progress[exerciseKey]) : 0;
-            level = (level + 1) % 7; // Increment and cycle (0 to 6)
+            level = (level + 1) % 7;
             progress[exerciseKey] = level.toString();
             studentsData.students[studentsData.currentStudent].progress = progress;
             localStorage.setItem('starAcademyStudents', JSON.stringify(studentsData));
@@ -118,6 +124,10 @@ function initializeSvg(doc) {
             newStarElement.style.opacity = '0';
             setTimeout(() => {
                 newStarElement.setAttributeNS('http://www.w3.org/1999/xlink', 'href', starImages[level]);
+                newStarElement.onerror = () => {
+                    console.error(`Failed to load image for star-${star}: ${starImages[level]}`);
+                    newStarElement.setAttributeNS('http://www.w3.org/1999/xlink', 'href', starImages[0]);
+                };
                 newStarElement.style.opacity = '1';
             }, 300);
 
@@ -146,6 +156,10 @@ function initializeSvg(doc) {
                     newStarElement.style.opacity = '0';
                     setTimeout(() => {
                         newStarElement.setAttributeNS('http://www.w3.org/1999/xlink', 'href', starImages[updatedLevel]);
+                        newStarElement.onerror = () => {
+                            console.error(`Failed to load image for star-${star}: ${starImages[updatedLevel]}`);
+                            newStarElement.setAttributeNS('http://www.w3.org/1999/xlink', 'href', starImages[0]);
+                        };
                         newStarElement.style.opacity = '1';
                     }, 300);
 
