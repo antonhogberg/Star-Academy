@@ -624,6 +624,14 @@ function handleUserNamePopup() {
                     }, 1000);
                 }, 2000);
 
+                // Update dropdown with new student
+                if (typeof updateDropdown === 'function') {
+                    console.log('Calling updateDropdown after saving name');
+                    updateDropdown();
+                } else {
+                    console.error('updateDropdown not defined');
+                }
+
                 updateStarStates();
                 if (window.location.pathname.toLowerCase().includes('starmap.html') && typeof window.initializeStarMap === 'function') {
                     console.log('Calling initializeStarMap after saving name');
