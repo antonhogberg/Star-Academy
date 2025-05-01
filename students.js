@@ -26,7 +26,7 @@ if (window.studentsData.currentStudent && !window.studentsData.students[window.s
 }
 
 function addStudent(e) {
-    if (e) e.preventDefault();
+    if (e) e.preventDefault(); // Prevent form-like submission
     console.log('addStudent called');
     const nameInput = document.getElementById('newStudentName');
     if (!nameInput) {
@@ -34,7 +34,7 @@ function addStudent(e) {
         return;
     }
     const name = nameInput.value.trim();
-    console.log('Name input value:', name);
+    console.log('Name input value:', name); // Debug input value
     const lang = localStorage.getItem('language') || 'sv';
 
     window.studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || {
@@ -102,7 +102,7 @@ function showStudentPopup(message, duration) {
 
     if (!popup || !popupMessage) {
         console.error('Student popup elements not found:', { popup: !!popup, popupMessage: !!popupMessage });
-        alert(message);
+        alert(message); // Fallback
         return;
     }
 
@@ -131,11 +131,6 @@ function switchStudent() {
     }
     const selectedValue = select.value;
     if (selectedValue) {
-        // Refresh window.studentsData from localStorage to ensure latest data
-        window.studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || {
-            students: {},
-            currentStudent: ''
-        };
         window.studentsData.currentStudent = selectedValue;
         try {
             localStorage.setItem('starAcademyStudents', JSON.stringify(window.studentsData));
@@ -175,8 +170,13 @@ function updateDropdown() {
             const option = document.createElement('option');
             option.value = name;
             option.textContent = name;
+            if (name === window.studentsData.currentStudent) {
+                option.selected = true; // Explicitly set the selected attribute
+            }
             select.appendChild(option);
         });
+
+        // Ensure the dropdown value matches the currentStudent
         if (studentNames.length > 0) {
             const currentStudent = window.studentsData.currentStudent && studentNames.includes(window.studentsData.currentStudent)
                 ? window.studentsData.currentStudent
@@ -195,34 +195,25 @@ function updateDropdown() {
     });
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    console.log('DOMContentLoaded in students.js');
-    updateDropdown();
-    const lang = localStorage.getItem('language') || 'sv';
-    const studentTitle = document.getElementById('chapterTitle');
-    if (studentTitle) {
-        studentTitle.textContent = lang === 'en' ? 'Manage Students' : 'Hantera elever';
-    }
+// Removed DOMContentLoaded listener to prevent duplicate calls to updateDropdown
+// Bind addStudent to the Add button (for students.html)
+const addButton = document.getElementById('addStudentButton');
+if (addButton) {
+    console.log('Binding addStudent to addStudentButton');
+    addButton.addEventListener('click', (e) => addStudent(e));
+} else {
+    console.error('addStudentButton not found');
+}
 
-    // Bind addStudent to the Add button
-    const addButton = document.getElementById('addStudentButton');
-    if (addButton) {
-        console.log('Binding addStudent to addStudentButton');
-        addButton.addEventListener('click', (e) => addStudent(e));
-    } else {
-        console.error('addStudentButton not found');
-    }
-
-    // Handle Enter key on input
-    const nameInput = document.getElementById('newStudentName');
-    if (nameInput) {
-        nameInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                console.log('Enter key pressed on newStudentName');
-                addStudent(e);
-            }
-        });
-    } else {
-        console.error('newStudentName input not found');
-    }
-});
+// Handle Enter key on input (for students.html)
+const nameInput = document.getElementById('newStudentName');
+if (nameInput) {
+    nameInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            console.log('Enter key pressed on newStudentName');
+            addStudent(e);
+        }
+    });
+} else {
+    console.error('newStudentName input not found');
+}

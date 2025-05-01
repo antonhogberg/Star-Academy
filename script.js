@@ -175,7 +175,6 @@ const menuHtml = `
     </nav>
 `;
 
-// Function to inject the menu into the page
 function injectMenu() {
     console.log('injectMenu called');
     const placeholder = document.getElementById('menu-placeholder');
@@ -195,7 +194,6 @@ function injectMenu() {
         return;
     }
 
-    // Removed menu.style.visibility = 'hidden'; as it's handled by CSS
     console.log('Menu initialized with left: -250px via CSS');
 
     // Remove existing listeners to prevent duplicates
@@ -231,7 +229,14 @@ function injectMenu() {
         });
     });
 
+    // Click outside handler to close menu
     document.addEventListener('click', (e) => {
+        const globalSelect = document.getElementById('globalStudentSelect');
+        // Ignore clicks on the dropdown or its children
+        if (globalSelect && (globalSelect === e.target || globalSelect.contains(e.target))) {
+            console.log('Click on dropdown, ignoring for menu close');
+            return;
+        }
         if (!newHamburger.contains(e.target) && !menu.contains(e.target)) {
             console.log('Clicked outside menu');
             newHamburger.setAttribute('aria-expanded', 'false');
@@ -719,40 +724,34 @@ waitForDOM().then(() => {
             console.error('updateDropdown not defined');
         }
 
-        globalSelect.addEventListener('change', (event) => {
+        globalSelect.addEventListener('change', (e) => {
             console.log('globalStudentSelect changed');
-            const selectedValue = event.target.value;
-
-            // On starmap.html, reload the page with a query parameter to switch users
-            if (window.location.pathname.toLowerCase().includes('starmap.html')) {
-                console.log('Reloading starmap.html with new user query parameter');
-                const url = new URL(window.location);
-                url.searchParams.set('newUser', selectedValue);
-                window.location.href = url.toString();
+            if (typeof switchStudent === 'function') {
+                switchStudent();
             } else {
-                // For other pages, proceed with normal user switch
-                if (typeof switchStudent === 'function') {
-                    switchStudent();
-                } else {
-                    console.error('switchStudent not defined');
-                }
-
-                if (typeof updateStarStates === 'function') {
-                    updateStarStates();
-                } else {
-                    console.error('updateStarStates not defined');
-                }
-
-                if (window.location.pathname.toLowerCase().includes('chapter') && typeof window.initializeChapter === 'function') {
-                    console.log('Re-initializing Chapter after student change');
-                    window.initializeChapter();
-                }
-
-                if (userNameDisplay) {
-                    const studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
-                    userNameDisplay.textContent = studentsData.currentStudent || '';
-                }
+                console.error('switchStudent not defined');
             }
+            if (typeof updateStarStates === 'function') {
+                updateStarStates();
+            } else {
+                console.error('updateStarStates not defined');
+            }
+            if (window.location.pathname.toLowerCase().includes('starmap.html') && typeof window.initializeStarMap === 'function') {
+                console.log('Re-initializing Star Map after student change');
+                window.initializeStarMap();
+            }
+            if (window.location.pathname.toLowerCase().includes('chapter') && typeof window.initializeChapter === 'function') {
+                console.log('Re-initializing Chapter after student change');
+                window.initializeChapter();
+            }
+            if (userNameDisplay) {
+                const studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
+                userNameDisplay.textContent = studentsData.currentStudent || '';
+            }
+            // Explicitly set the dropdown value to the new currentStudent
+            const studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
+            globalSelect.value = studentsData.currentStudent;
+            console.log('Dropdown value set to:', globalSelect.value);
         });
     } else {
         console.error('globalStudentSelect not found after injectMenu');
