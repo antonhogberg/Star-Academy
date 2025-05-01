@@ -8,6 +8,16 @@ const starImages = [
     'six-stars.png'    // 6
 ];
 
+function initializeSvg() {
+    const svg = document.getElementById("starMap");
+    if (!svg) {
+        console.error("SVG element with id 'starMap' not found.");
+        return null;
+    }
+    return svg;
+}
+
+
 const progressionPath = [
     { star: '1:1:1', nextStar: '2:1:1', lines: ['line1'] },
     { star: '2:1:1', nextStar: '3:1:1', lines: ['line2'] },
