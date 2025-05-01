@@ -44,69 +44,80 @@ const progressionPath = [
 function initializeStarMap() {
     const svgObject = document.getElementById("starMapSvg");
     if (!svgObject) {
-        console.error("SVG object not found");
-        return;
+      console.error("SVG object not found");
+      return;
     }
-
-    const doc = svgObject.contentDocument;
-    if (!doc) {
-        console.error("SVG content document not ready");
+  
+    // Wait for the SVG to load
+    svgObject.addEventListener("load", () => {
+      const doc = svgObject.contentDocument;
+      if (!doc) {
+        console.error("SVG content not ready");
         return;
-    }
-
-    const studentsData = JSON.parse(localStorage.getItem("starAcademyStudents")) || { students: {}, currentStudent: "" };
-    const currentStudent = studentsData.currentStudent;
-    const progress = studentsData.students[currentStudent]?.progress || {};
-
-    const starImages = [
+      }
+  
+      const studentsData = JSON.parse(localStorage.getItem("starAcademyStudents")) || {
+        students: {},
+        currentStudent: "",
+      };
+  
+      const currentStudent = studentsData.currentStudent;
+      const progress = studentsData.students[currentStudent]?.progress || {};
+  
+      const starImages = [
         "white-star.png",
         "one-star.png",
         "two-stars.png",
         "three-stars.png",
         "four-stars.png",
         "five-stars.png",
-        "six-stars.png"
-    ];
-
-    for (let chapter = 1; chapter <= 2; chapter++) {
+        "six-stars.png",
+      ];
+  
+      for (let chapter = 1; chapter <= 2; chapter++) {
         for (let part = 1; part <= 1; part++) {
-            for (let exercise = 1; exercise <= 4; exercise++) {
-                const exerciseKey = `exercise${chapter}:${part}:${exercise}`;
-                const level = parseInt(progress[exerciseKey]) || 0;
-                const starId = `star-${chapter}-${part}-${exercise}`;
-                const starElement = doc.getElementById(starId);
-
-                if (!starElement) {
-                    console.warn(`Star not found: ${starId}`);
-                    continue;
-                }
-
-                const newStarElement = starElement.cloneNode(true);
-                newStarElement.setAttributeNS('http://www.w3.org/1999/xlink', 'href', starImages[level]);
-                newStarElement.style.opacity = "1";
-
-                newStarElement.addEventListener("click", () => {
-                    const studentsData = JSON.parse(localStorage.getItem("starAcademyStudents")) || { students: {}, currentStudent: "" };
-                    const progress = studentsData.students[studentsData.currentStudent]?.progress || {};
-                    let level = parseInt(progress[exerciseKey]) || 0;
-                    level = (level + 1) % 7;
-                    progress[exerciseKey] = level.toString();
-                    studentsData.students[studentsData.currentStudent].progress = progress;
-                    localStorage.setItem("starAcademyStudents", JSON.stringify(studentsData));
-
-                    newStarElement.style.opacity = "0";
-                    setTimeout(() => {
-                        newStarElement.setAttributeNS("http://www.w3.org/1999/xlink", "href", starImages[level]);
-                        newStarElement.style.opacity = "1";
-                    }, 300);
-                });
-
-                starElement.parentNode.replaceChild(newStarElement, starElement);
+          for (let exercise = 1; exercise <= 4; exercise++) {
+            const exerciseKey = `exercise${chapter}:${part}:${exercise}`;
+            const level = parseInt(progress[exerciseKey]) || 0;
+            const starId = `star-${chapter}-${part}-${exercise}`;
+            const starElement = doc.getElementById(starId);
+  
+            if (!starElement) {
+              console.warn(`Star not found: ${starId}`);
+              continue;
             }
+  
+            // Replace with new image node
+            const newStar = starElement.cloneNode(true);
+            newStar.setAttributeNS("http://www.w3.org/1999/xlink", "href", starImages[level]);
+            newStar.style.opacity = "1";
+  
+            newStar.addEventListener("click", () => {
+              const currentData = JSON.parse(localStorage.getItem("starAcademyStudents")) || {
+                students: {},
+                currentStudent: "",
+              };
+              const progress = currentData.students[currentData.currentStudent]?.progress || {};
+              let level = parseInt(progress[exerciseKey]) || 0;
+              level = (level + 1) % 7;
+              progress[exerciseKey] = level.toString();
+              currentData.students[currentData.currentStudent].progress = progress;
+              localStorage.setItem("starAcademyStudents", JSON.stringify(currentData));
+  
+              newStar.style.opacity = "0";
+              setTimeout(() => {
+                newStar.setAttributeNS("http://www.w3.org/1999/xlink", "href", starImages[level]);
+                newStar.style.opacity = "1";
+              }, 300);
+            });
+  
+            starElement.parentNode.replaceChild(newStar, starElement);
+          }
         }
-    }
-}
-
+      }
+    });
+  }
+  
 
 function createStarElement(doc, starId, level, x, y, width, height) {
     const starElement = doc.createElementNS('http://www.w3.org/2000/svg', 'image');
