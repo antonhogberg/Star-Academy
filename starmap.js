@@ -8,16 +8,6 @@ const starImages = [
     'six-stars.png'    // 6
 ];
 
-function initializeSvg() {
-    const svg = document.getElementById("starMap");
-    if (!svg) {
-        console.error("SVG element with id 'starMap' not found.");
-        return null;
-    }
-    return svg;
-}
-
-
 const progressionPath = [
     { star: '1:1:1', nextStar: '2:1:1', lines: ['line1'] },
     { star: '2:1:1', nextStar: '3:1:1', lines: ['line2'] },
@@ -52,82 +42,16 @@ const progressionPath = [
 ];
 
 function initializeStarMap() {
-    const svgObject = document.getElementById("starMapSvg");
-    if (!svgObject) {
-      console.error("SVG object not found");
-      return;
-    }
-  
-    // Wait for the SVG to load
-    svgObject.addEventListener("load", () => {
-      const doc = svgObject.contentDocument;
-      if (!doc) {
-        console.error("SVG content not ready");
+    console.log('initializeStarMap called');
+    const svgElement = document.getElementById('starMap');
+    if (!svgElement) {
+        console.error('Star Map SVG element not found');
         return;
-      }
-  
-      const studentsData = JSON.parse(localStorage.getItem("starAcademyStudents")) || {
-        students: {},
-        currentStudent: "",
-      };
-  
-      const currentStudent = studentsData.currentStudent;
-      const progress = studentsData.students[currentStudent]?.progress || {};
-  
-      const starImages = [
-        "white-star.png",
-        "one-star.png",
-        "two-stars.png",
-        "three-stars.png",
-        "four-stars.png",
-        "five-stars.png",
-        "six-stars.png",
-      ];
-  
-      for (let chapter = 1; chapter <= 2; chapter++) {
-        for (let part = 1; part <= 1; part++) {
-          for (let exercise = 1; exercise <= 4; exercise++) {
-            const exerciseKey = `exercise${chapter}:${part}:${exercise}`;
-            const level = parseInt(progress[exerciseKey]) || 0;
-            const starId = `star-${chapter}-${part}-${exercise}`;
-            const starElement = doc.getElementById(starId);
-  
-            if (!starElement) {
-              console.warn(`Star not found: ${starId}`);
-              continue;
-            }
-  
-            // Replace with new image node
-            const newStar = starElement.cloneNode(true);
-            newStar.setAttributeNS("http://www.w3.org/1999/xlink", "href", starImages[level]);
-            newStar.style.opacity = "1";
-  
-            newStar.addEventListener("click", () => {
-              const currentData = JSON.parse(localStorage.getItem("starAcademyStudents")) || {
-                students: {},
-                currentStudent: "",
-              };
-              const progress = currentData.students[currentData.currentStudent]?.progress || {};
-              let level = parseInt(progress[exerciseKey]) || 0;
-              level = (level + 1) % 7;
-              progress[exerciseKey] = level.toString();
-              currentData.students[currentData.currentStudent].progress = progress;
-              localStorage.setItem("starAcademyStudents", JSON.stringify(currentData));
-  
-              newStar.style.opacity = "0";
-              setTimeout(() => {
-                newStar.setAttributeNS("http://www.w3.org/1999/xlink", "href", starImages[level]);
-                newStar.style.opacity = "1";
-              }, 300);
-            });
-  
-            starElement.parentNode.replaceChild(newStar, starElement);
-          }
-        }
-      }
-    });
-  }
-  
+    }
+
+    // Since the SVG is inline, we can directly pass the document context
+    initializeSvg(document);
+}
 
 function createStarElement(doc, starId, level, x, y, width, height) {
     const starElement = doc.createElementNS('http://www.w3.org/2000/svg', 'image');
