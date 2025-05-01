@@ -85,12 +85,14 @@ function initializeSvg(doc) {
         const exerciseKey = `exercise${star}`;
         const progress = studentsData.students[studentsData.currentStudent]?.progress || {};
         const currentLevel = progress[exerciseKey] ? parseInt(progress[exerciseKey]) : 0;
+        console.log(`Star-${star}: currentLevel=${currentLevel}, image=${starImages[currentLevel]}`);
 
-        // Set the initial image and handle load errors
+        // Force SVG re-render by resetting the href
+        starElement.setAttributeNS('http://www.w3.org/1999/xlink', 'href', '');
         starElement.setAttributeNS('http://www.w3.org/1999/xlink', 'href', starImages[currentLevel]);
         starElement.onerror = () => {
             console.error(`Failed to load image for star-${star}: ${starImages[currentLevel]}`);
-            starElement.setAttributeNS('http://www.w3.org/1999/xlink', 'href', starImages[0]); // Fallback to white-star.png
+            starElement.setAttributeNS('http://www.w3.org/1999/xlink', 'href', starImages[0]);
         };
 
         lineElements.forEach(lineElement => {
@@ -123,6 +125,7 @@ function initializeSvg(doc) {
 
             newStarElement.style.opacity = '0';
             setTimeout(() => {
+                newStarElement.setAttributeNS('http://www.w3.org/1999/xlink', 'href', '');
                 newStarElement.setAttributeNS('http://www.w3.org/1999/xlink', 'href', starImages[level]);
                 newStarElement.onerror = () => {
                     console.error(`Failed to load image for star-${star}: ${starImages[level]}`);
@@ -151,30 +154,29 @@ function initializeSvg(doc) {
                 const updatedStudentsData = JSON.parse(event.newValue) || { students: {}, currentStudent: '' };
                 const updatedProgress = updatedStudentsData.students[updatedStudentsData.currentStudent]?.progress || {};
                 const updatedLevel = updatedProgress[exerciseKey] ? parseInt(updatedProgress[exerciseKey]) : 0;
-                const currentLevel = updatedProgress[exerciseKey] ? parseInt(updatedProgress[exerciseKey]) : 0;
-                if (updatedLevel !== currentLevel) {
-                    newStarElement.style.opacity = '0';
-                    setTimeout(() => {
-                        newStarElement.setAttributeNS('http://www.w3.org/1999/xlink', 'href', starImages[updatedLevel]);
-                        newStarElement.onerror = () => {
-                            console.error(`Failed to load image for star-${star}: ${starImages[updatedLevel]}`);
-                            newStarElement.setAttributeNS('http://www.w3.org/1999/xlink', 'href', starImages[0]);
-                        };
-                        newStarElement.style.opacity = '1';
-                    }, 300);
 
-                    lineElements.forEach(lineElement => {
-                        if (updatedLevel === 6) {
-                            lineElement.setAttribute('filter', 'url(#golden-glow)');
-                            lineElement.style.stroke = '#FFD700';
-                        } else {
-                            lineElement.removeAttribute('filter');
-                            lineElement.style.stroke = '#FFFFFF';
-                        }
-                    });
+                newStarElement.style.opacity = '0';
+                setTimeout(() => {
+                    newStarElement.setAttributeNS('http://www.w3.org/1999/xlink', 'href', '');
+                    newStarElement.setAttributeNS('http://www.w3.org/1999/xlink', 'href', starImages[updatedLevel]);
+                    newStarElement.onerror = () => {
+                        console.error(`Failed to load image for star-${star}: ${starImages[updatedLevel]}`);
+                        newStarElement.setAttributeNS('http://www.w3.org/1999/xlink', 'href', starImages[0]);
+                    };
+                    newStarElement.style.opacity = '1';
+                }, 300);
 
-                    checkCompletion(updatedStudentsData);
-                }
+                lineElements.forEach(lineElement => {
+                    if (updatedLevel === 6) {
+                        lineElement.setAttribute('filter', 'url(#golden-glow)');
+                        lineElement.style.stroke = '#FFD700';
+                    } else {
+                        lineElement.removeAttribute('filter');
+                        lineElement.style.stroke = '#FFFFFF';
+                    }
+                });
+
+                checkCompletion(updatedStudentsData);
 
                 // Update dropdown and userNameDisplay after storage change
                 const globalSelect = document.getElementById('globalStudentSelect');
