@@ -26,7 +26,7 @@ if (window.studentsData.currentStudent && !window.studentsData.students[window.s
 }
 
 function addStudent(e) {
-    if (e) e.preventDefault(); // Prevent form-like submission
+    if (e) e.preventDefault();
     console.log('addStudent called');
     const nameInput = document.getElementById('newStudentName');
     if (!nameInput) {
@@ -34,7 +34,7 @@ function addStudent(e) {
         return;
     }
     const name = nameInput.value.trim();
-    console.log('Name input value:', name); // Debug input value
+    console.log('Name input value:', name);
     const lang = localStorage.getItem('language') || 'sv';
 
     window.studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || {
@@ -102,7 +102,7 @@ function showStudentPopup(message, duration) {
 
     if (!popup || !popupMessage) {
         console.error('Student popup elements not found:', { popup: !!popup, popupMessage: !!popupMessage });
-        alert(message); // Fallback
+        alert(message);
         return;
     }
 
@@ -131,6 +131,11 @@ function switchStudent() {
     }
     const selectedValue = select.value;
     if (selectedValue) {
+        // Refresh window.studentsData from localStorage to ensure latest data
+        window.studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || {
+            students: {},
+            currentStudent: ''
+        };
         window.studentsData.currentStudent = selectedValue;
         try {
             localStorage.setItem('starAcademyStudents', JSON.stringify(window.studentsData));

@@ -719,36 +719,62 @@ waitForDOM().then(() => {
             console.error('updateDropdown not defined');
         }
 
-        globalSelect.addEventListener('change', () => {
+        globalSelect.addEventListener('change', (event) => {
             console.log('globalStudentSelect changed');
-            if (typeof switchStudent === 'function') {
-                switchStudent();
+            const selectedValue = event.target.value;
+
+            // On starmap.html, reload the page with a query parameter to switch users
+            if (window.location.pathname.toLowerCase().includes('starmap.html')) {
+                console.log('Reloading starmap.html with new user query parameter');
+                const url = new URL(window.location);
+                url.searchParams.set('newUser', selectedValue);
+                window.location.href = url.toString();
             } else {
-                console.error('switchStudent not defined');
-            }
-            if (typeof updateStarStates === 'function') {
-                updateStarStates();
-            } else {
-                console.error('updateStarStates not defined');
-            }
-            // Update starmap.html stars if on that page
-            if (window.location.pathname.toLowerCase().includes('starmap.html') && typeof window.initializeStarMap === 'function') {
-                console.log('Re-initializing Star Map after student change');
-                window.initializeStarMap();
-            }
-            // Update chapter pages stars if on a chapter page
-            if (window.location.pathname.toLowerCase().includes('chapter') && typeof window.initializeChapter === 'function') {
-                console.log('Re-initializing Chapter after student change');
-                window.initializeChapter();
-            }
-            // Update userNameDisplay if present
-            if (userNameDisplay) {
-                const studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
-                userNameDisplay.textContent = studentsData.currentStudent || '';
+                // For other pages, proceed with normal user switch
+                if (typeof switchStudent === 'function') {
+                    switchStudent();
+                } else {
+                    console.error('switchStudent not defined');
+                }
+
+                if (typeof updateStarStates === 'function') {
+                    updateStarStates();
+                } else {
+                    console.error('updateStarStates not defined');
+                }
+
+                if (window.location.pathname.toLowerCase().includes('chapter') && typeof window.initializeChapter === 'function') {
+                    console.log('Re-initializing Chapter after student change');
+                    window.initializeChapter();
+                }
+
+                if (userNameDisplay) {
+                    const studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
+                    userNameDisplay.textContent = studentsData.currentStudent || '';
+                }
             }
         });
     } else {
         console.error('globalStudentSelect not found after injectMenu');
+    }
+
+    // Check for newUser query parameter on starmap.html and switch user
+    if (window.location.pathname.toLowerCase().includes('starmap.html')) {
+        const urlParams = new URLSearchParams(window.location.search);
+        const newUser = urlParams.get('newUser');
+        if (newUser) {
+            console.log(`Switching to user ${newUser} from query parameter`);
+            window.studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || {
+                students: {},
+                currentStudent: ''
+            };
+            window.studentsData.currentStudent = newUser;
+            localStorage.setItem('starAcademyStudents', JSON.stringify(window.studentsData));
+            
+            // Clean up the URL to remove the query parameter
+            const cleanUrl = window.location.pathname;
+            window.history.replaceState({}, document.title, cleanUrl);
+        }
     }
 
     // Only run initializeAppContent if not importing
@@ -766,10 +792,8 @@ waitForDOM().then(() => {
             const studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
             if (studentsData.currentStudent) {
                 console.log('Initializing Star Map');
-                // Delay initialization to ensure SVG is fully parsed
                 setTimeout(() => {
                     window.initializeStarMap();
-                    // Update userNameDisplay on initial load
                     if (userNameDisplay) {
                         userNameDisplay.textContent = studentsData.currentStudent || '';
                     }
@@ -798,7 +822,6 @@ waitForDOM().then(() => {
             console.log('Initializing Chapter');
             setTimeout(() => {
                 window.initializeChapter();
-                // Update userNameDisplay on initial load
                 if (userNameDisplay) {
                     userNameDisplay.textContent = studentsData.currentStudent || '';
                 }
@@ -807,7 +830,6 @@ waitForDOM().then(() => {
             console.log('No current student, skipping Chapter initialization');
         }
 
-        // Force reload if loaded from Back/Forward Cache (BFCache)
         window.addEventListener('pageshow', (event) => {
             if (event.persisted) {
                 console.log('Page loaded from BFCache, forcing reload...');
