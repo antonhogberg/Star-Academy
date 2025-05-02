@@ -8,6 +8,9 @@ const starImages = [
     'six-stars.png'    // 6
 ];
 
+// Cache-busting timestamp for image URLs
+const cacheBuster = Date.now();
+
 const progressionPath = [
     { star: '1:1:1', nextStar: '2:1:1', lines: ['line1'] },
     { star: '2:1:1', nextStar: '3:1:1', lines: ['line2'] },
@@ -53,22 +56,6 @@ function initializeStarMap() {
     initializeSvg(document);
 }
 
-function createStarElement(doc, starId, level, x, y, width, height) {
-    const starElement = doc.createElementNS('http://www.w3.org/2000/svg', 'image');
-    starElement.setAttribute('id', `star-${starId.replace(/:/g, '-')}`);
-    starElement.setAttribute('x', x);
-    starElement.setAttribute('y', y);
-    starElement.setAttribute('width', width);
-    starElement.setAttribute('height', height);
-    starElement.setAttributeNS('http://www.w3.org/1999/xlink', 'href', starImages[level]);
-    starElement.onerror = () => {
-        console.error(`Failed to load image for star-${starId}: ${starImages[level]}`);
-        starElement.setAttributeNS('http://www.w3.org/1999/xlink', 'href', starImages[0]);
-    };
-    starElement.style.cursor = 'pointer';
-    return starElement;
-}
-
 function initializeSvg(doc) {
     console.log('initializeSvg called');
     const studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
@@ -103,16 +90,13 @@ function initializeSvg(doc) {
         const currentLevel = progress[exerciseKey] ? parseInt(progress[exerciseKey]) : 0;
         console.log(`Star-${star}: currentLevel=${currentLevel}, image=${starImages[currentLevel]}`);
 
-        // Store original attributes to recreate the element
-        const x = starElement.getAttribute('x');
-        const y = starElement.getAttribute('y');
-        const width = starElement.getAttribute('width');
-        const height = starElement.getAttribute('height');
-
-        // Remove the existing star element and create a new one
-        const parent = starElement.parentNode;
-        const newStarElement = createStarElement(doc, star, currentLevel, x, y, width, height);
-        parent.replaceChild(newStarElement, starElement);
+        // Force SVG re-render with cache-busting
+        starElement.setAttributeNS('http://www.w3.org/1999/xlink', 'href', '');
+        starElement.setAttributeNS('http://www.w3.org/1999/xlink', 'href', `${starImages[currentLevel]}?v=${cacheBuster}`);
+        starElement.onerror = () => {
+            console.error(`Failed to load image for star-${star}: ${starImages[currentLevel]}`);
+            starElement.setAttributeNS('http://www.w3.org/1999/xlink', 'href', starImages[0]);
+        };
 
         lineElements.forEach(lineElement => {
             const currentStyle = lineElement.getAttribute('style') || '';
@@ -126,29 +110,26 @@ function initializeSvg(doc) {
             }
         });
 
+        starElement.style.cursor = 'pointer';
+
+        // Remove existing click listeners to prevent duplicates
+        const newStarElement = starElement.cloneNode(true);
+        starElement.parentNode.replaceChild(newStarElement, starElement);
+
         newStarElement.addEventListener('click', () => {
             console.log(`Star ${star} clicked`);
             const studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
             const progress = studentsData.students[studentsData.currentStudent]?.progress || {};
             let level = progress[exerciseKey] ? parseInt(progress[exerciseKey]) : 0;
-
-            // Sync display with localStorage value before incrementing
-            newStarElement.style.opacity = '0';
-            setTimeout(() => {
-                newStarElement.setAttributeNS('http://www.w3.org/1999/xlink', 'href', starImages[level]);
-                newStarElement.style.opacity = '1';
-            }, 300);
-
-            // Increment the level
             level = (level + 1) % 7;
             progress[exerciseKey] = level.toString();
             studentsData.students[studentsData.currentStudent].progress = progress;
             localStorage.setItem('starAcademyStudents', JSON.stringify(studentsData));
 
-            // Update the star image after incrementing
             newStarElement.style.opacity = '0';
             setTimeout(() => {
-                newStarElement.setAttributeNS('http://www.w3.org/1999/xlink', 'href', starImages[level]);
+                newStarElement.setAttributeNS('http://www.w3.org/1999/xlink', 'href', '');
+                newStarElement.setAttributeNS('http://www.w3.org/1999/xlink', 'href', `${starImages[level]}?v=${cacheBuster}`);
                 newStarElement.onerror = () => {
                     console.error(`Failed to load image for star-${star}: ${starImages[level]}`);
                     newStarElement.setAttributeNS('http://www.w3.org/1999/xlink', 'href', starImages[0]);
@@ -177,9 +158,16 @@ function initializeSvg(doc) {
                 const updatedProgress = updatedStudentsData.students[updatedStudentsData.currentStudent]?.progress || {};
                 const updatedLevel = updatedProgress[exerciseKey] ? parseInt(updatedProgress[exerciseKey]) : 0;
 
-                // Remove and recreate the star element to force re-render
-                const newStarElementUpdate = createStarElement(doc, star, updatedLevel, x, y, width, height);
-                parent.replaceChild(newStarElementUpdate, newStarElement);
+                newStarElement.style.opacity = '0';
+                setTimeout(() => {
+                    newStarElement.setAttributeNS('http://www.w3.org/1999/xlink', 'href', '');
+                    newStarElement.setAttributeNS('http://www.w3.org/1999/xlink', 'href', `${starImages[updatedLevel]}?v=${cacheBuster}`);
+                    newStarElement.onerror = () => {
+                        console.error(`Failed to load image for star-${star}: ${starImages[updatedLevel]}`);
+                        newStarElement.setAttributeNS('http://www.w3.org/1999/xlink', 'href', starImages[0]);
+                    };
+                    newStarElement.style.opacity = '1';
+                }, 300);
 
                 lineElements.forEach(lineElement => {
                     if (updatedLevel === 6) {

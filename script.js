@@ -719,40 +719,35 @@ waitForDOM().then(() => {
             console.error('updateDropdown not defined');
         }
 
-        globalSelect.addEventListener('change', (event) => {
+        globalSelect.addEventListener('change', (e) => {
             console.log('globalStudentSelect changed');
-            const selectedValue = event.target.value;
-
-            // On starmap.html, reload the page with a query parameter to switch users
-            if (window.location.pathname.toLowerCase().includes('starmap.html')) {
-                console.log('Reloading starmap.html with new user query parameter');
-                const url = new URL(window.location);
-                url.searchParams.set('newUser', selectedValue);
-                window.location.href = url.toString();
+            e.stopPropagation(); // Prevent the click event from bubbling to the click-outside handler
+            if (typeof switchStudent === 'function') {
+                switchStudent();
             } else {
-                // For other pages, proceed with normal user switch
-                if (typeof switchStudent === 'function') {
-                    switchStudent();
-                } else {
-                    console.error('switchStudent not defined');
-                }
-
-                if (typeof updateStarStates === 'function') {
-                    updateStarStates();
-                } else {
-                    console.error('updateStarStates not defined');
-                }
-
-                if (window.location.pathname.toLowerCase().includes('chapter') && typeof window.initializeChapter === 'function') {
-                    console.log('Re-initializing Chapter after student change');
-                    window.initializeChapter();
-                }
-
-                if (userNameDisplay) {
-                    const studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
-                    userNameDisplay.textContent = studentsData.currentStudent || '';
-                }
+                console.error('switchStudent not defined');
             }
+            if (typeof updateStarStates === 'function') {
+                updateStarStates();
+            } else {
+                console.error('updateStarStates not defined');
+            }
+            if (window.location.pathname.toLowerCase().includes('starmap.html') && typeof window.initializeStarMap === 'function') {
+                console.log('Re-initializing Star Map after student change');
+                window.initializeStarMap();
+            }
+            if (window.location.pathname.toLowerCase().includes('chapter') && typeof window.initializeChapter === 'function') {
+                console.log('Re-initializing Chapter after student change');
+                window.initializeChapter();
+            }
+            if (userNameDisplay) {
+                const studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
+                userNameDisplay.textContent = studentsData.currentStudent || '';
+            }
+            // Explicitly set the dropdown value to the new currentStudent
+            const studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
+            globalSelect.value = studentsData.currentStudent;
+            console.log('Dropdown value set to:', globalSelect.value);
         });
     } else {
         console.error('globalStudentSelect not found after injectMenu');
