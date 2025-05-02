@@ -87,16 +87,15 @@ function initializeSvg(doc) {
         const currentLevel = progress[exerciseKey] ? parseInt(progress[exerciseKey]) : 0;
         console.log(`Star-${star}: currentLevel=${currentLevel}, image=${starImages[currentLevel]}`);
 
-        // Force SVG re-render by toggling visibility
-        starElement.style.display = 'none';
+        // Force SVG re-render by removing and re-appending the element
+        const parent = starElement.parentNode;
+        parent.removeChild(starElement);
         starElement.setAttributeNS('http://www.w3.org/1999/xlink', 'href', starImages[currentLevel]);
         starElement.onerror = () => {
             console.error(`Failed to load image for star-${star}: ${starImages[currentLevel]}`);
             starElement.setAttributeNS('http://www.w3.org/1999/xlink', 'href', starImages[0]);
         };
-        // Trigger reflow to force re-render
-        starElement.offsetHeight;
-        starElement.style.display = 'block';
+        parent.appendChild(starElement);
 
         lineElements.forEach(lineElement => {
             const currentStyle = lineElement.getAttribute('style') || '';
@@ -123,10 +122,10 @@ function initializeSvg(doc) {
             let level = progress[exerciseKey] ? parseInt(progress[exerciseKey]) : 0;
 
             // Sync display with localStorage before incrementing
-            newStarElement.style.display = 'none';
+            const parentClick = newStarElement.parentNode;
+            parentClick.removeChild(newStarElement);
             newStarElement.setAttributeNS('http://www.w3.org/1999/xlink', 'href', starImages[level]);
-            newStarElement.offsetHeight;
-            newStarElement.style.display = 'block';
+            parentClick.appendChild(newStarElement);
 
             level = (level + 1) % 7;
             progress[exerciseKey] = level.toString();
@@ -135,14 +134,13 @@ function initializeSvg(doc) {
 
             newStarElement.style.opacity = '0';
             setTimeout(() => {
-                newStarElement.style.display = 'none';
+                parentClick.removeChild(newStarElement);
                 newStarElement.setAttributeNS('http://www.w3.org/1999/xlink', 'href', starImages[level]);
                 newStarElement.onerror = () => {
                     console.error(`Failed to load image for star-${star}: ${starImages[level]}`);
                     newStarElement.setAttributeNS('http://www.w3.org/1999/xlink', 'href', starImages[0]);
                 };
-                newStarElement.offsetHeight;
-                newStarElement.style.display = 'block';
+                parentClick.appendChild(newStarElement);
                 newStarElement.style.opacity = '1';
             }, 300);
 
@@ -169,14 +167,14 @@ function initializeSvg(doc) {
 
                 newStarElement.style.opacity = '0';
                 setTimeout(() => {
-                    newStarElement.style.display = 'none';
+                    const parentStorage = newStarElement.parentNode;
+                    parentStorage.removeChild(newStarElement);
                     newStarElement.setAttributeNS('http://www.w3.org/1999/xlink', 'href', starImages[updatedLevel]);
                     newStarElement.onerror = () => {
                         console.error(`Failed to load image for star-${star}: ${starImages[updatedLevel]}`);
                         newStarElement.setAttributeNS('http://www.w3.org/1999/xlink', 'href', starImages[0]);
                     };
-                    newStarElement.offsetHeight;
-                    newStarElement.style.display = 'block';
+                    parentStorage.appendChild(newStarElement);
                     newStarElement.style.opacity = '1';
                 }, 300);
 
