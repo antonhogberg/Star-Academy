@@ -8,9 +8,6 @@ const starImages = [
     'six-stars.png'    // 6
 ];
 
-// Cache-busting timestamp for image URLs
-const cacheBuster = Date.now();
-
 const progressionPath = [
     { star: '1:1:1', nextStar: '2:1:1', lines: ['line1'] },
     { star: '2:1:1', nextStar: '3:1:1', lines: ['line2'] },
@@ -90,13 +87,16 @@ function initializeSvg(doc) {
         const currentLevel = progress[exerciseKey] ? parseInt(progress[exerciseKey]) : 0;
         console.log(`Star-${star}: currentLevel=${currentLevel}, image=${starImages[currentLevel]}`);
 
-        // Force SVG re-render with cache-busting
-        starElement.setAttributeNS('http://www.w3.org/1999/xlink', 'href', '');
-        starElement.setAttributeNS('http://www.w3.org/1999/xlink', 'href', `${starImages[currentLevel]}?v=${cacheBuster}`);
+        // Force SVG re-render by toggling visibility
+        starElement.style.display = 'none';
+        starElement.setAttributeNS('http://www.w3.org/1999/xlink', 'href', starImages[currentLevel]);
         starElement.onerror = () => {
             console.error(`Failed to load image for star-${star}: ${starImages[currentLevel]}`);
             starElement.setAttributeNS('http://www.w3.org/1999/xlink', 'href', starImages[0]);
         };
+        // Trigger reflow to force re-render
+        starElement.offsetHeight;
+        starElement.style.display = 'block';
 
         lineElements.forEach(lineElement => {
             const currentStyle = lineElement.getAttribute('style') || '';
@@ -121,6 +121,13 @@ function initializeSvg(doc) {
             const studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
             const progress = studentsData.students[studentsData.currentStudent]?.progress || {};
             let level = progress[exerciseKey] ? parseInt(progress[exerciseKey]) : 0;
+
+            // Sync display with localStorage before incrementing
+            newStarElement.style.display = 'none';
+            newStarElement.setAttributeNS('http://www.w3.org/1999/xlink', 'href', starImages[level]);
+            newStarElement.offsetHeight;
+            newStarElement.style.display = 'block';
+
             level = (level + 1) % 7;
             progress[exerciseKey] = level.toString();
             studentsData.students[studentsData.currentStudent].progress = progress;
@@ -128,12 +135,14 @@ function initializeSvg(doc) {
 
             newStarElement.style.opacity = '0';
             setTimeout(() => {
-                newStarElement.setAttributeNS('http://www.w3.org/1999/xlink', 'href', '');
-                newStarElement.setAttributeNS('http://www.w3.org/1999/xlink', 'href', `${starImages[level]}?v=${cacheBuster}`);
+                newStarElement.style.display = 'none';
+                newStarElement.setAttributeNS('http://www.w3.org/1999/xlink', 'href', starImages[level]);
                 newStarElement.onerror = () => {
                     console.error(`Failed to load image for star-${star}: ${starImages[level]}`);
                     newStarElement.setAttributeNS('http://www.w3.org/1999/xlink', 'href', starImages[0]);
                 };
+                newStarElement.offsetHeight;
+                newStarElement.style.display = 'block';
                 newStarElement.style.opacity = '1';
             }, 300);
 
@@ -160,12 +169,14 @@ function initializeSvg(doc) {
 
                 newStarElement.style.opacity = '0';
                 setTimeout(() => {
-                    newStarElement.setAttributeNS('http://www.w3.org/1999/xlink', 'href', '');
-                    newStarElement.setAttributeNS('http://www.w3.org/1999/xlink', 'href', `${starImages[updatedLevel]}?v=${cacheBuster}`);
+                    newStarElement.style.display = 'none';
+                    newStarElement.setAttributeNS('http://www.w3.org/1999/xlink', 'href', starImages[updatedLevel]);
                     newStarElement.onerror = () => {
                         console.error(`Failed to load image for star-${star}: ${starImages[updatedLevel]}`);
                         newStarElement.setAttributeNS('http://www.w3.org/1999/xlink', 'href', starImages[0]);
                     };
+                    newStarElement.offsetHeight;
+                    newStarElement.style.display = 'block';
                     newStarElement.style.opacity = '1';
                 }, 300);
 
