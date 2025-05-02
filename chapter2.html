@@ -3,7 +3,7 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta charset="UTF-8">
-    <title>Kapitel 2</title>
+    <title>Kapitel 2 / Chapter 2</title>
     <link rel="stylesheet" href="styles.css">
     <script>
         function setViewportHeight() {
@@ -35,7 +35,7 @@
     </div>
     <nav id="menu-placeholder"></nav>
     <div class="chapter-container" id="chapterContainer">
-            <h1 class="chapter-title">
+        <h1 class="chapter-title">
             <span class="chapter-number"></span>
             <span class="chapter-name"></span>
         </h1>
@@ -58,88 +58,13 @@
             <p id="studentPopupMessage"></p>
         </div>
     </div>
+    <div class="user-name-display">
+        <span id="userNameDisplay"></span>
+    </div>
+    <script src="students.js"></script>
     <script src="chapter.js"></script>
     <script src="script.js"></script>
     <script>
-        function saveName() {
-            const nameInput = document.getElementById('nameInput');
-            const namePopup = document.getElementById('namePopup');
-            const chapterContainer = document.getElementById('chapterContainer');
-            let studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
-            const name = nameInput?.value.trim();
-            const lang = localStorage.getItem('language') || 'sv';
-
-            if (name) {
-                if (studentsData.students[name]) {
-                    showStudentPopup(translations[lang].addStudentDuplicate, 3000);
-                    return;
-                }
-                studentsData.students[name] = {
-                    name: name,
-                    progress: {},
-                    rank: "Explorer"
-                };
-                for (let chapter = 1; chapter <= 7; chapter++) {
-                    for (let part = 1; part <= 4; part++) {
-                        for (let exercise = 1; exercise <= 4; exercise++) {
-                            const key = `exercise${chapter}:${part}:${exercise}`;
-                            studentsData.students[name].progress[key] = localStorage.getItem(key) || "0";
-                            localStorage.removeItem(key);
-                        }
-                    }
-                }
-                studentsData.currentStudent = name;
-                localStorage.setItem('starAcademyStudents', JSON.stringify(studentsData));
-                namePopup.style.display = 'none';
-
-                const starSVG = '<svg class="popup-star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>';
-                showStudentPopup(`${starSVG} ${translations[lang].addStudentSuccess} ${starSVG}`, 3000);
-
-                // Reset scroll position and adjust container height
-                setTimeout(() => {
-                    window.scrollTo(0, 0);
-                    setViewportHeight();
-
-                    // Om vi är på mobil (<768px), sätt container till auto
-                    if (window.innerWidth < 768 && chapterContainer) {
-                        chapterContainer.style.height = 'auto';
-                    }
-                }, 0);
-            } else {
-                showStudentPopup(translations[lang].addStudentNoName, 3000);
-            }
-        }
-
-    
-        function showStudentPopup(message, duration) {
-            const popup = document.getElementById('studentPopup');
-            const popupMessage = document.getElementById('studentPopupMessage');
-            const nameInput = document.getElementById('nameInput');
-    
-            if (!popup || !popupMessage) {
-                console.error('Student popup elements not found in DOM');
-                alert(message);
-                return;
-            }
-    
-            if (nameInput) nameInput.blur();
-            popupMessage.innerHTML = message;
-            popup.style.display = 'flex';
-            popup.style.opacity = '1';
-    
-            setTimeout(() => {
-                popup.style.transition = 'opacity 1s ease';
-                popup.style.opacity = '0';
-                setTimeout(() => {
-                    popup.style.display = 'none';
-                    popup.style.opacity = '1';
-                    popup.style.transition = '';
-                    // Ensure scroll position is at the top after success popup closes
-                    window.scrollTo(0, 0);
-                }, 1000);
-            }, duration - 1000);
-        }
-    
         document.addEventListener('DOMContentLoaded', () => {
             document.body.style.touchAction = 'manipulation';
             let studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
@@ -153,5 +78,6 @@
             switchLanguage(initialLang);
         });
     </script>
+    <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'93898aec2a83b0e8',t:'MTc0NjA0MjM1OS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
 </body>
 </html>
