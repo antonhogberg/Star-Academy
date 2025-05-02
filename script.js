@@ -175,7 +175,6 @@ const menuHtml = `
     </nav>
 `;
 
-// Function to inject the menu into the page
 function injectMenu() {
     console.log('injectMenu called');
     const placeholder = document.getElementById('menu-placeholder');
@@ -195,7 +194,6 @@ function injectMenu() {
         return;
     }
 
-    // Removed menu.style.visibility = 'hidden'; as it's handled by CSS
     console.log('Menu initialized with left: -250px via CSS');
 
     // Remove existing listeners to prevent duplicates
@@ -211,6 +209,11 @@ function injectMenu() {
             menu.classList.add('active');
             menu.animate([{ left: '-250px' }, { left: '0' }], { duration: 300, easing: 'ease-in-out', fill: 'forwards' });
             console.log('Menu opened');
+            // Refresh the dropdown when opening the menu
+            if (typeof updateDropdown === 'function') {
+                console.log('Calling updateDropdown when menu opens');
+                updateDropdown();
+            }
         } else {
             menu.animate([{ left: '0' }, { left: '-250px' }], { duration: 300, easing: 'ease-in-out', fill: 'forwards' }).onfinish = () => {
                 menu.classList.remove('active');
