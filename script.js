@@ -733,12 +733,14 @@ waitForDOM().then(() => {
                 url.searchParams.set('newUser', selectedValue);
                 window.location.href = url.toString();
             } else {
-                // For other pages, proceed with normal user switch
-                if (typeof switchStudent === 'function') {
-                    switchStudent();
-                } else {
-                    console.error('switchStudent not defined');
-                }
+                // Directly update currentStudent to avoid inline switchStudent() conflict
+                window.studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || {
+                    students: {},
+                    currentStudent: ''
+                };
+                window.studentsData.currentStudent = selectedValue;
+                localStorage.setItem('starAcademyStudents', JSON.stringify(window.studentsData));
+                console.log('Current student updated via menu dropdown:', selectedValue);
         
                 // Refresh dropdowns to reflect the new user
                 if (typeof updateDropdown === 'function') {
