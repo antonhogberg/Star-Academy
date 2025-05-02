@@ -87,11 +87,15 @@ function initializeSvg(doc) {
         const currentLevel = progress[exerciseKey] ? parseInt(progress[exerciseKey]) : 0;
         console.log(`Star-${star}: currentLevel=${currentLevel}, image=${starImages[currentLevel]}`);
 
+        // Force SVG re-render by removing and re-appending the element
+        const parent = starElement.parentNode;
+        parent.removeChild(starElement);
         starElement.setAttributeNS('http://www.w3.org/1999/xlink', 'href', starImages[currentLevel]);
         starElement.onerror = () => {
             console.error(`Failed to load image for star-${star}: ${starImages[currentLevel]}`);
             starElement.setAttributeNS('http://www.w3.org/1999/xlink', 'href', starImages[0]);
         };
+        parent.appendChild(starElement);
 
         lineElements.forEach(lineElement => {
             const currentStyle = lineElement.getAttribute('style') || '';
@@ -117,20 +121,26 @@ function initializeSvg(doc) {
             const progress = studentsData.students[studentsData.currentStudent]?.progress || {};
             let level = progress[exerciseKey] ? parseInt(progress[exerciseKey]) : 0;
 
+            // Sync display with localStorage before incrementing
+            const parentClick = newStarElement.parentNode;
+            parentClick.removeChild(newStarElement);
+            newStarElement.setAttributeNS('http://www.w3.org/1999/xlink', 'href', starImages[level]);
+            parentClick.appendChild(newStarElement);
+
             level = (level + 1) % 7;
             progress[exerciseKey] = level.toString();
             studentsData.students[studentsData.currentStudent].progress = progress;
             localStorage.setItem('starAcademyStudents', JSON.stringify(studentsData));
-            // Update window.studentsData to keep it in sync
-            window.studentsData = studentsData;
 
             newStarElement.style.opacity = '0';
             setTimeout(() => {
+                parentClick.removeChild(newStarElement);
                 newStarElement.setAttributeNS('http://www.w3.org/1999/xlink', 'href', starImages[level]);
                 newStarElement.onerror = () => {
                     console.error(`Failed to load image for star-${star}: ${starImages[level]}`);
                     newStarElement.setAttributeNS('http://www.w3.org/1999/xlink', 'href', starImages[0]);
                 };
+                parentClick.appendChild(newStarElement);
                 newStarElement.style.opacity = '1';
             }, 300);
 
@@ -157,11 +167,14 @@ function initializeSvg(doc) {
 
                 newStarElement.style.opacity = '0';
                 setTimeout(() => {
+                    const parentStorage = newStarElement.parentNode;
+                    parentStorage.removeChild(newStarElement);
                     newStarElement.setAttributeNS('http://www.w3.org/1999/xlink', 'href', starImages[updatedLevel]);
                     newStarElement.onerror = () => {
                         console.error(`Failed to load image for star-${star}: ${starImages[updatedLevel]}`);
                         newStarElement.setAttributeNS('http://www.w3.org/1999/xlink', 'href', starImages[0]);
                     };
+                    parentStorage.appendChild(newStarElement);
                     newStarElement.style.opacity = '1';
                 }, 300);
 
@@ -177,8 +190,13 @@ function initializeSvg(doc) {
 
                 checkCompletion(updatedStudentsData);
 
-                // Update userNameDisplay after storage change
+                // Update dropdown and userNameDisplay after storage change
+                const globalSelect = document.getElementById('globalStudentSelect');
                 const userNameDisplay = document.getElementById('userNameDisplay');
+                if (globalSelect && typeof updateDropdown === 'function') {
+                    console.log('Storage event: Updating dropdown');
+                    updateDropdown();
+                }
                 if (userNameDisplay) {
                     console.log('Storage event: Updating userNameDisplay');
                     userNameDisplay.textContent = updatedStudentsData.currentStudent || '';
