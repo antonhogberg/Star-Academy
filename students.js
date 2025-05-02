@@ -131,6 +131,11 @@ function switchStudent() {
     }
     const selectedValue = select.value;
     if (selectedValue) {
+        // Reload window.studentsData to ensure it has the latest updates
+        window.studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || {
+            students: {},
+            currentStudent: ''
+        };
         window.studentsData.currentStudent = selectedValue;
         try {
             localStorage.setItem('starAcademyStudents', JSON.stringify(window.studentsData));
@@ -196,7 +201,17 @@ function updateDropdown() {
     });
 }
 
-// Removed DOMContentLoaded listener to prevent duplicate calls to updateDropdown
+// Keep window.studentsData in sync with localStorage changes
+window.addEventListener('storage', (event) => {
+    if (event.key === 'starAcademyStudents') {
+        console.log('Storage event in students.js: Updating window.studentsData');
+        window.studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || {
+            students: {},
+            currentStudent: ''
+        };
+    }
+});
+
 // Bind addStudent to the Add button (for students.html)
 const addButton = document.getElementById('addStudentButton');
 if (addButton) {
