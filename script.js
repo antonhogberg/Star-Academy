@@ -725,7 +725,7 @@ waitForDOM().then(() => {
         globalSelect.addEventListener('change', (event) => {
             console.log('globalStudentSelect changed');
             const selectedValue = event.target.value;
-
+        
             // On starmap.html, reload the page with a query parameter to switch users
             if (window.location.pathname.toLowerCase().includes('starmap.html')) {
                 console.log('Reloading starmap.html with new user query parameter');
@@ -739,18 +739,32 @@ waitForDOM().then(() => {
                 } else {
                     console.error('switchStudent not defined');
                 }
-
+        
+                // Refresh dropdowns to reflect the new user
+                if (typeof updateDropdown === 'function') {
+                    console.log('Calling updateDropdown after user switch');
+                    updateDropdown();
+                } else {
+                    console.error('updateDropdown not defined');
+                }
+        
+                // Update notes textarea on students.html
+                if (window.location.pathname.toLowerCase().includes('students.html') && typeof loadNotes === 'function') {
+                    console.log('Calling loadNotes after user switch on students.html');
+                    loadNotes();
+                }
+        
                 if (typeof updateStarStates === 'function') {
                     updateStarStates();
                 } else {
                     console.error('updateStarStates not defined');
                 }
-
+        
                 if (window.location.pathname.toLowerCase().includes('chapter') && typeof window.initializeChapter === 'function') {
                     console.log('Re-initializing Chapter after student change');
                     window.initializeChapter();
                 }
-
+        
                 if (userNameDisplay) {
                     const studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
                     userNameDisplay.textContent = studentsData.currentStudent || '';
