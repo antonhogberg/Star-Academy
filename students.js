@@ -161,7 +161,11 @@ function updateDropdown() {
     };
     console.log('window.studentsData:', window.studentsData);
 
-    const selects = [document.getElementById('studentSelect'), document.getElementById('globalStudentSelect')].filter(Boolean);
+    const selects = [
+        document.getElementById('studentSelect'),
+        document.getElementById('globalStudentSelect'),
+        document.getElementById('removeStudentSelect') // Add removeStudentSelect
+    ].filter(Boolean);
     if (selects.length === 0) {
         console.warn('No student select elements found');
         return;
