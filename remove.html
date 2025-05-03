@@ -10,21 +10,24 @@
         #confirmRemovePopup {
             display: none;
             position: fixed;
-            top: 0;
-            left: 0;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
             width: 100%;
             height: 100%;
             background: rgba(0, 0, 0, 0.8);
             z-index: 1000;
-            justify-content: center;
-            align-items: center;
         }
         #confirmRemovePopup.show {
             display: flex;
         }
         #confirmRemovePopup .student-popup-content {
             position: relative;
-            background: #fff;
+            background-color: var(--dark-bg);
+            background-image: url('background.jpg');
+            background-size: 100% auto;
+            background-repeat: repeat-y;
+            background-position: center top;
             padding: 20px;
             border-radius: 10px;
             text-align: center;
@@ -43,19 +46,31 @@
         #confirmRemovePopup .student-popup-content p {
             margin: 0 0 20px;
             font-size: 16px;
-            color: #333;
+            color: #ffffff; /* Changed to white */
         }
         #confirmRemovePopup .student-popup-content button {
-            background: #ff0000;
-            color: #fff;
-            border: none;
-            padding: 10px 20px;
+            width: 320px;
+            height: 42px;
+            box-sizing: border-box;
+            padding: 0;
+            margin: 0;
+            background: var(--semi-dark);
+            border: 1px solid var(--orange);
             border-radius: 5px;
-            cursor: pointer;
+            color: var(--gold);
+            font-family: Cochin, Georgia, Arial, sans-serif;
             font-size: 16px;
+            line-height: 19.2px;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            -webkit-tap-highlight-color: transparent;
         }
         #confirmRemovePopup .student-popup-content button:hover {
-            background: #e60000;
+            transform: none !important;
         }
         /* Center the remove container and style its children */
         .remove-container {
@@ -160,10 +175,30 @@
     <script src="students.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+            console.log('DOMContentLoaded fired on remove.html');
+            // Ensure window.studentsData is initialized
+            window.studentsData = window.studentsData || JSON.parse(localStorage.getItem('starAcademyStudents')) || {
+                students: {},
+                currentStudent: ''
+            };
+            console.log('window.studentsData on remove.html:', window.studentsData);
+
             // Populate the dropdown with students
             const removeSelect = document.getElementById('removeStudentSelect');
             if (removeSelect) {
-                updateDropdown(); // Use existing updateDropdown from students.js
+                updateDropdown();
+                console.log('removeStudentSelect after updateDropdown:', removeSelect.options);
+
+                // Retry if dropdown is empty
+                if (removeSelect.options.length === 0) {
+                    console.log('Dropdown empty, retrying in 500ms...');
+                    setTimeout(() => {
+                        updateDropdown();
+                        console.log('removeStudentSelect after retry:', removeSelect.options);
+                    }, 500);
+                }
+            } else {
+                console.error('removeStudentSelect not found');
             }
 
             // Handle the Remove button click
