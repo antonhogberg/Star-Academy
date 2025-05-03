@@ -728,32 +728,37 @@ function initializeRemovePage() {
     };
     console.log('window.studentsData on remove.html:', window.studentsData);
 
-    // Populate the dropdown with students
-    const removeSelect = document.getElementById('removeStudentSelect');
-    if (removeSelect) {
-        updateDropdown();
-        console.log('removeStudentSelect after updateDropdown:', removeSelect.options);
-
-        // Retry if dropdown is empty
-        if (removeSelect.options.length === 0) {
-            console.log('Dropdown empty, retrying in 500ms...');
-            setTimeout(() => {
-                updateDropdown();
-                console.log('removeStudentSelect after retry:', removeSelect.options);
-            }, 500);
-        }
-    } else {
-        console.error('removeStudentSelect not found');
-        return;
-    }
-
-    // Handle the Remove button click
-    let removeButton = document.getElementById('removeStudentButton');
+    // Update the button text with the current student's name
+    const removeButton = document.getElementById('removeStudentButton');
     let confirmRemovePopup = document.getElementById('confirmRemovePopup');
     let confirmRemoveMessage = document.getElementById('confirmRemoveMessage');
     let confirmRemoveButton = document.getElementById('confirmRemoveButton');
     let closeConfirmRemovePopup = document.getElementById('closeConfirmRemovePopup');
     const lang = localStorage.getItem('language') || 'sv';
+
+    const updateButtonText = () => {
+        if (window.studentsData.currentStudent) {
+            const baseText = lang === 'en' ? "Remove current student: " : "Radera aktuell elev: ";
+            removeButton.textContent = `${baseText}${window.studentsData.currentStudent}`;
+        } else {
+            const baseText = lang === 'en' ? "Remove current student: None" : "Radera aktuell elev: Ingen";
+            removeButton.textContent = baseText;
+        }
+    };
+
+    // Initial button text update
+    updateButtonText();
+
+    // Listen for changes to localStorage to update the button text
+    window.addEventListener('storage', (event) => {
+        if (event.key === 'starAcademyStudents') {
+            window.studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || {
+                students: {},
+                currentStudent: ''
+            };
+            updateButtonText();
+        }
+    });
 
     // Remove existing listeners by cloning elements
     if (removeButton) {
@@ -779,9 +784,9 @@ function initializeRemovePage() {
 
     if (removeButton) {
         removeButton.addEventListener('click', () => {
-            const selectedStudent = removeSelect.value; // Capture the selected student when opening the popup
+            const selectedStudent = window.studentsData.currentStudent; // Use the current student
             if (!selectedStudent) {
-                alert(lang === 'en' ? "Please select a student to remove." : "Vänligen välj en elev att radera.");
+                alert(lang === 'en' ? "No current student selected to remove." : "Ingen aktuell elev vald att radera.");
                 return;
             }
 
@@ -809,7 +814,6 @@ function initializeRemovePage() {
                     console.log('Before deletion:', JSON.stringify(data.students));
                     console.log('Deleting student:', selectedStudent);
 
-                    // Remove the originally selected student
                     if (data.students[selectedStudent]) {
                         delete data.students[selectedStudent];
 
@@ -823,10 +827,8 @@ function initializeRemovePage() {
                         localStorage.setItem('starAcademyStudents', JSON.stringify(data));
                         window.studentsData = data;
 
-                        // Refresh dropdowns
-                        if (typeof updateDropdown === 'function') {
-                            updateDropdown();
-                        }
+                        // Update the button text
+                        updateButtonText();
 
                         // Hide the popup
                         confirmRemovePopup.style.display = 'none';
