@@ -1571,8 +1571,8 @@ body.popup-open .student-manager {
 
 #confirmRemovePopup .student-popup-content #closeConfirmRemovePopup {
     position: absolute;
-    top: 15px; /* Adjusted to match right distance */
-    right: 15px; /* Adjusted for symmetry */
+    top: 0px; /* Adjusted to match right distance */
+    right: 10px;
     background: none;
     border: none;
     font-size: 24px;
