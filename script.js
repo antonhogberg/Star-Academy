@@ -752,6 +752,11 @@ function initializeRemovePage() {
     const closeConfirmRemovePopup = document.getElementById('closeConfirmRemovePopup');
     let lang = localStorage.getItem('language') || 'sv';
 
+    if (!removeButton || !confirmRemovePopup || !confirmRemoveMessage || !confirmRemoveButton || !closeConfirmRemovePopup) {
+        console.error('One or more required elements not found on remove.html');
+        return;
+    }
+
     // Function to update the button text
     const updateButtonText = () => {
         if (window.studentsData.currentStudent) {
@@ -763,6 +768,20 @@ function initializeRemovePage() {
 
     // Initial button text update
     updateButtonText();
+
+    // Fallback to update button text periodically
+    let lastKnownUser = window.studentsData.currentStudent;
+    const checkUserChange = setInterval(() => {
+        if (window.studentsData.currentStudent !== lastKnownUser) {
+            lastKnownUser = window.studentsData.currentStudent;
+            updateButtonText();
+        }
+    }, 500);
+
+    // Clean up interval when leaving the page
+    window.addEventListener('unload', () => {
+        clearInterval(checkUserChange);
+    });
 
     // Listen for language changes
     window.addEventListener('storage', (event) => {
@@ -777,14 +796,6 @@ function initializeRemovePage() {
             updateButtonText();
         }
     });
-
-    // Listen for user changes in the same tab via the menu dropdown
-    const globalSelect = document.getElementById('globalStudentSelect');
-    if (globalSelect) {
-        globalSelect.addEventListener('change', () => {
-            updateButtonText();
-        });
-    }
 
     if (removeButton) {
         removeButton.addEventListener('click', () => {
@@ -807,52 +818,46 @@ function initializeRemovePage() {
             confirmRemovePopup.classList.add('show');
 
             // Handle the Confirm Remove button click
-            if (confirmRemoveButton) {
-                confirmRemoveButton.addEventListener('click', () => {
-                    let data = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
+            confirmRemoveButton.addEventListener('click', () => {
+                let data = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
 
-                    console.log('Before deletion:', JSON.stringify(data.students));
-                    console.log('Deleting student:', selectedStudent);
+                console.log('Before deletion:', JSON.stringify(data.students));
+                console.log('Deleting student:', selectedStudent);
 
-                    if (data.students[selectedStudent]) {
-                        delete data.students[selectedStudent];
+                if (data.students[selectedStudent]) {
+                    delete data.students[selectedStudent];
 
-                        console.log('After deletion:', JSON.stringify(data.students));
+                    console.log('After deletion:', JSON.stringify(data.students));
 
-                        // Set currentStudent to the first remaining student
-                        const remainingStudents = Object.keys(data.students).sort((a, b) => a.localeCompare(b));
-                        data.currentStudent = remainingStudents.length > 0 ? remainingStudents[0] : '';
+                    // Set currentStudent to the first remaining student
+                    const remainingStudents = Object.keys(data.students).sort((a, b) => a.localeCompare(b));
+                    data.currentStudent = remainingStudents.length > 0 ? remainingStudents[0] : '';
 
-                        // Save updated data
-                        localStorage.setItem('starAcademyStudents', JSON.stringify(data));
-                        window.studentsData = data;
+                    // Save updated data
+                    localStorage.setItem('starAcademyStudents', JSON.stringify(data));
+                    window.studentsData = data;
 
-                        // Update the button text
-                        updateButtonText();
+                    // Update the button text
+                    updateButtonText();
 
-                        // Hide the popup
-                        confirmRemovePopup.style.display = 'none';
-                    }
-                }, { once: true });
-            }
+                    // Hide the popup
+                    confirmRemovePopup.style.display = 'none';
+                }
+            }, { once: true });
         });
     }
 
     // Handle closing the popup by clicking outside
-    if (confirmRemovePopup) {
-        confirmRemovePopup.addEventListener('click', (e) => {
-            if (!confirmRemovePopup.querySelector('.student-popup-content').contains(e.target)) {
-                confirmRemovePopup.style.display = 'none';
-            }
-        });
-    }
+    confirmRemovePopup.addEventListener('click', (e) => {
+        if (!confirmRemovePopup.querySelector('.student-popup-content').contains(e.target)) {
+            confirmRemovePopup.style.display = 'none';
+        }
+    });
 
     // Handle closing the popup with the X button
-    if (closeConfirmRemovePopup) {
-        closeConfirmRemovePopup.addEventListener('click', () => {
-            confirmRemovePopup.style.display = 'none';
-        });
-    }
+    closeConfirmRemovePopup.addEventListener('click', () => {
+        confirmRemovePopup.style.display = 'none';
+    });
 }
 
 // Define initializeAppContent globally
@@ -1010,9 +1015,11 @@ waitForDOM().then(() => {
 
     if (window.location.pathname.toLowerCase().includes('faq.html')) initializeFAQ();
 
-    // Add call to initializeRemovePage for remove.html
     if (window.location.pathname.toLowerCase().includes('remove.html')) {
-        initializeRemovePage();
+        window.removePageInitialized = false;
+        setTimeout(() => {
+            initializeRemovePage();
+        }, 100); // Add a small delay to ensure DOM is fully loaded
     }
 
     const header = document.querySelector('.title-container');
