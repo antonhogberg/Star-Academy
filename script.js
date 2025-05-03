@@ -6,6 +6,7 @@ const translations = {
         menuStarMap: "Star Map",
         menuChapters: "Chapters",
         menuFAQ: "FAQ",
+        menuRemove: "Remove student", // New menu item
         popupWelcome: "Welcome to the Star Map!",
         popupIntro: "Click to reveal your Star Academy stars! Earn six stars in exercises to rise in rank—track your progress under Star Overview.",
         popupTeacherNote: "Teacher? Add and switch students under Manage Students. Note: Data is saved locally on this device—clear the cache, and it’s gone.",
@@ -68,7 +69,10 @@ const translations = {
         copyLinkSuccess: "Link copied to clipboard! Paste to share.",
         scanOrShare: "Scan the QR code or...",
         shareButtonExport: "Share via AirDrop / Message / QR-code",
-        shareButtonQR: "Share student via AirDrop / Message"
+        shareButtonQR: "Share student via AirDrop / Message",
+        removeStudentTitle: "Remove student", // New translation for title
+        removeStudentButton: "Remove student", // New translation for button
+        confirmRemoveMessage: "Press the button below to remove" // New translation for popup message
     },
     sv: {
         menuFrontPage: "Stjärnöversikt",
@@ -77,6 +81,7 @@ const translations = {
         menuStarMap: "Stjärnkarta",
         menuChapters: "Kapitel",
         menuFAQ: "Vanliga frågor",
+        menuRemove: "Radera elev", // New menu item
         popupWelcome: "Välkommen till Stjärnkartan!",
         popupIntro: "Klicka fram dina Stjärnakademien-stjärnor här! Samla sex stjärnor i övningarna för att klättra i rang – kolla dina framsteg under Stjärnöversikt.",
         popupTeacherNote: "Lärare? Lägg till och växla mellan elever under Hantera elever. Obs! Allt sparas lokalt på denna enhet – rensas cachen försvinner dina framsteg.",
@@ -139,12 +144,13 @@ const translations = {
         copyLinkSuccess: "Länk kopierad till urklipp! Klistra in för att dela.",
         scanOrShare: "Skanna QR-koden eller...",
         shareButtonExport: "Dela via AirDrop / Meddelande / QR-kod",
-        shareButtonQR: "Dela elev via AirDrop / Meddelande"
+        shareButtonQR: "Dela elev via AirDrop / Meddelande",
+        removeStudentTitle: "Radera elev", // New translation for title
+        removeStudentButton: "Radera elev", // New translation for button
+        confirmRemoveMessage: "Tryck på knappen nedan för att radera" // New translation for popup message
     }
 };
 
-// Menu HTML template as a string
-// Menu HTML template as a string
 const menuHtml = `
     <nav class="hamburger-nav">
         <div class="menu" id="main-menu">
@@ -167,6 +173,7 @@ const menuHtml = `
             </div>
             <a href="students.html" class="menu-link"></a>
             <a href="faq.html" class="menu-link"></a>
+            <a href="remove.html" class="menu-link"></a> <!-- New menu link -->
             <div class="language-switcher">
                 <span class="flag" onclick="switchLanguage('en')">🇬🇧</span>
                 <span class="flag" onclick="switchLanguage('sv')">🇸🇪</span>
@@ -436,6 +443,8 @@ function switchLanguage(lang) {
             link.textContent = translations[lang].menuStarMap;
         } else if (href === 'faq.html') {
             link.textContent = translations[lang].menuFAQ;
+        } else if (href === 'remove.html') { // New menu link handling
+            link.textContent = translations[lang].menuRemove;
         } else {
             const chapterNum = href?.match(/chapter(\d+)\.html/)?.[1];
             if (chapterNum) {
@@ -517,6 +526,21 @@ function switchLanguage(lang) {
     if (titleContainerH1) {
         const key = titleContainerH1.getAttribute('data-translate');
         if (translations[lang][key]) titleContainerH1.textContent = translations[lang][key];
+    }
+
+    // Remove page translations
+    const removeStudentTitle = document.querySelector('h1[data-translate="removeStudentTitle"]');
+    const removeStudentButton = document.querySelector('button[data-translate="removeStudentButton"]');
+    const confirmRemoveMessage = document.querySelector('p[data-translate="confirmRemoveMessage"]');
+    if (removeStudentTitle) removeStudentTitle.textContent = translations[lang].removeStudentTitle;
+    if (removeStudentButton) {
+        document.querySelectorAll('button[data-translate="removeStudentButton"]').forEach(button => {
+            button.textContent = translations[lang].removeStudentButton;
+        });
+    }
+    if (confirmRemoveMessage) {
+        const selectedStudent = document.getElementById('removeStudentSelect')?.value || '';
+        confirmRemoveMessage.textContent = `${translations[lang].confirmRemoveMessage}${selectedStudent ? ` ${selectedStudent}.` : '.'}`;
     }
 
     // Export section (students.html)
