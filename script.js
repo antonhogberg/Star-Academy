@@ -719,6 +719,109 @@ function initializeFAQ() {
     });
 }
 
+function initializeRemovePage() {
+    console.log('initializeRemovePage called');
+    // Ensure window.studentsData is initialized
+    window.studentsData = window.studentsData || JSON.parse(localStorage.getItem('starAcademyStudents')) || {
+        students: {},
+        currentStudent: ''
+    };
+    console.log('window.studentsData on remove.html:', window.studentsData);
+
+    // Populate the dropdown with students
+    const removeSelect = document.getElementById('removeStudentSelect');
+    if (removeSelect) {
+        updateDropdown();
+        console.log('removeStudentSelect after updateDropdown:', removeSelect.options);
+
+        // Retry if dropdown is empty
+        if (removeSelect.options.length === 0) {
+            console.log('Dropdown empty, retrying in 500ms...');
+            setTimeout(() => {
+                updateDropdown();
+                console.log('removeStudentSelect after retry:', removeSelect.options);
+            }, 500);
+        }
+    } else {
+        console.error('removeStudentSelect not found');
+    }
+
+    // Handle the Remove button click
+    const removeButton = document.getElementById('removeStudentButton');
+    const confirmRemovePopup = document.getElementById('confirmRemovePopup');
+    const confirmRemoveMessage = document.getElementById('confirmRemoveMessage');
+    const confirmRemoveButton = document.getElementById('confirmRemoveButton');
+    const closeConfirmRemovePopup = document.getElementById('closeConfirmRemovePopup');
+    const lang = localStorage.getItem('language') || 'sv';
+
+    if (removeButton) {
+        removeButton.addEventListener('click', () => {
+            const selectedStudent = removeSelect.value;
+            if (!selectedStudent) {
+                alert(lang === 'en' ? "Please select a student to remove." : "Vänligen välj en elev att radera.");
+                return;
+            }
+
+            // Update the confirmation message with the selected student's name
+            const baseMessage = lang === 'en' ? "Press the button below to remove " : "Tryck på knappen nedan för att radera ";
+            confirmRemoveMessage.textContent = `${baseMessage}${selectedStudent}.`;
+
+            // Update the button text with the selected student's name
+            const buttonBaseText = lang === 'en' ? "Remove " : "Radera ";
+            confirmRemoveButton.textContent = `${buttonBaseText}${selectedStudent}`;
+
+            // Show the confirmation popup
+            confirmRemovePopup.style.display = 'flex';
+            confirmRemovePopup.classList.add('show');
+        });
+    }
+
+    // Handle the Confirm Remove button click
+    if (confirmRemoveButton) {
+        confirmRemoveButton.addEventListener('click', () => {
+            const selectedStudent = removeSelect.value;
+            let data = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
+
+            // Remove the selected student
+            if (data.students[selectedStudent]) {
+                delete data.students[selectedStudent];
+
+                // Set currentStudent to the first remaining student
+                const remainingStudents = Object.keys(data.students).sort((a, b) => a.localeCompare(b));
+                data.currentStudent = remainingStudents.length > 0 ? remainingStudents[0] : '';
+
+                // Save updated data
+                localStorage.setItem('starAcademyStudents', JSON.stringify(data));
+                window.studentsData = data;
+
+                // Refresh dropdowns
+                if (typeof updateDropdown === 'function') {
+                    updateDropdown();
+                }
+
+                // Hide the popup
+                confirmRemovePopup.style.display = 'none';
+            }
+        });
+    }
+
+    // Handle closing the popup by clicking outside
+    if (confirmRemovePopup) {
+        confirmRemovePopup.addEventListener('click', (e) => {
+            if (!confirmRemovePopup.querySelector('.student-popup-content').contains(e.target)) {
+                confirmRemovePopup.style.display = 'none';
+            }
+        });
+    }
+
+    // Handle closing the popup with the X button
+    if (closeConfirmRemovePopup) {
+        closeConfirmRemovePopup.addEventListener('click', () => {
+            confirmRemovePopup.style.display = 'none';
+        });
+    }
+}
+
 // Define initializeAppContent globally
 window.initializeAppContent = function() {
     console.log('initializeAppContent called');
@@ -737,7 +840,6 @@ waitForDOM().then(() => {
     handleUserNamePopup();
     setInitialLanguage();
     
-    // Call updateDropdown after injectMenu to ensure #globalStudentSelect exists
     const globalSelect = document.getElementById('globalStudentSelect');
     const userNameDisplay = document.getElementById('userNameDisplay');
     if (globalSelect) {
@@ -751,15 +853,13 @@ waitForDOM().then(() => {
         globalSelect.addEventListener('change', (event) => {
             console.log('globalStudentSelect changed');
             const selectedValue = event.target.value;
-        
-            // On starmap.html, reload the page with a query parameter to switch users
+
             if (window.location.pathname.toLowerCase().includes('starmap.html')) {
                 console.log('Reloading starmap.html with new user query parameter');
                 const url = new URL(window.location);
                 url.searchParams.set('newUser', selectedValue);
                 window.location.href = url.toString();
             } else {
-                // Directly update currentStudent to avoid inline switchStudent() conflict
                 window.studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || {
                     students: {},
                     currentStudent: ''
@@ -767,32 +867,30 @@ waitForDOM().then(() => {
                 window.studentsData.currentStudent = selectedValue;
                 localStorage.setItem('starAcademyStudents', JSON.stringify(window.studentsData));
                 console.log('Current student updated via menu dropdown:', selectedValue);
-        
-                // Refresh dropdowns to reflect the new user
+
                 if (typeof updateDropdown === 'function') {
                     console.log('Calling updateDropdown after user switch');
                     updateDropdown();
                 } else {
                     console.error('updateDropdown not defined');
                 }
-        
-                // Update notes textarea on students.html
+
                 if (window.location.pathname.toLowerCase().includes('students.html') && typeof loadNotes === 'function') {
                     console.log('Calling loadNotes after user switch on students.html');
                     loadNotes();
                 }
-        
+
                 if (typeof updateStarStates === 'function') {
                     updateStarStates();
                 } else {
                     console.error('updateStarStates not defined');
                 }
-        
+
                 if (window.location.pathname.toLowerCase().includes('chapter') && typeof window.initializeChapter === 'function') {
                     console.log('Re-initializing Chapter after student change');
                     window.initializeChapter();
                 }
-        
+
                 if (userNameDisplay) {
                     const studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
                     userNameDisplay.textContent = studentsData.currentStudent || '';
@@ -803,7 +901,6 @@ waitForDOM().then(() => {
         console.error('globalStudentSelect not found after injectMenu');
     }
 
-    // Check for newUser query parameter on starmap.html and switch user
     if (window.location.pathname.toLowerCase().includes('starmap.html')) {
         const urlParams = new URLSearchParams(window.location.search);
         const newUser = urlParams.get('newUser');
@@ -816,19 +913,16 @@ waitForDOM().then(() => {
             window.studentsData.currentStudent = newUser;
             localStorage.setItem('starAcademyStudents', JSON.stringify(window.studentsData));
             
-            // Clean up the URL to remove the query parameter
             const cleanUrl = window.location.pathname;
             window.history.replaceState({}, document.title, cleanUrl);
         }
     }
 
-    // Only run initializeAppContent if not importing
     if (!window.isImporting) {
         console.log('Running initializeAppContent from waitForDOM');
         window.initializeAppContent();
     }
 
-    // Handle starmap.html with inline SVG
     if (window.location.pathname.toLowerCase().includes('starmap.html') && typeof window.initializeStarMap === 'function') {
         console.log('Navigating to starmap.html');
         const starMapSvg = document.getElementById('starMap');
@@ -850,7 +944,6 @@ waitForDOM().then(() => {
             console.error('Star Map SVG not found');
         }
 
-        // Force reload if loaded from Back/Forward Cache (BFCache)
         window.addEventListener('pageshow', (event) => {
             if (event.persisted) {
                 console.log('Page loaded from BFCache, forcing reload...');
@@ -859,7 +952,6 @@ waitForDOM().then(() => {
         });
     }
 
-    // Handle chapter pages
     if (window.location.pathname.toLowerCase().includes('chapter') && typeof window.initializeChapter === 'function') {
         console.log('Navigating to chapter page');
         const studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
@@ -885,7 +977,11 @@ waitForDOM().then(() => {
 
     if (window.location.pathname.toLowerCase().includes('faq.html')) initializeFAQ();
 
-    // Fix header disappearance on iPad when keyboard appears
+    // Add call to initializeRemovePage for remove.html
+    if (window.location.pathname.toLowerCase().includes('remove.html')) {
+        initializeRemovePage();
+    }
+
     const header = document.querySelector('.title-container');
     if (header) {
         let initialViewportHeight = window.innerHeight;
@@ -917,7 +1013,6 @@ waitForDOM().then(() => {
         setTimeout(forceHeaderRender, 100);
     }
 
-    // Dynamically set the star-map-container height to fit the viewport
     const setStarMapHeight = () => {
         const starMapContainer = document.querySelector('.star-map-container');
         const titleContainer = document.querySelector('.title-container');
