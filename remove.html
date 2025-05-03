@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Remove Student - Star Academy</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Style for the confirmation popup with a glowing red border */
+        #confirmRemovePopup {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        #confirmRemovePopup.show {
+            display: flex;
+        }
+        #confirmRemovePopup .student-popup-content {
+            position: relative;
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            border: 3px solid #ff0000;
+            box-shadow: 0 0 15px #ff0000, 0 0 30px #ff0000;
+            animation: glow 1.5s ease-in-out infinite alternate;
+        }
+        @keyframes glow {
+            from {
+                box-shadow: 0 0 15px #ff0000, 0 0 30px #ff0000;
+            }
+            to {
+                box-shadow: 0 0 25px #ff0000, 0 0 50px #ff0000;
+            }
+        }
+        #confirmRemovePopup .student-popup-content p {
+            margin: 0 0 20px;
+            font-size: 16px;
+            color: #333;
+        }
+        #confirmRemovePopup .student-popup-content button {
+            background: #ff0000;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        #confirmRemovePopup .student-popup-content button:hover {
+            background: #e60000;
+        }
+    </style>
+</head>
+<body>
+    <div class="piano-menu" id="menuButton" aria-expanded="false" aria-controls="main-menu">
+        <div class="white-key"></div>
+        <div class="white-key"></div>
+        <div class="white-key"></div>
+        <div class="black-key top"></div>
+        <div class="black-key bottom"></div>
+    </div>
+    <nav id="menu-placeholder"></nav>
+    <div class="content">
+        <h1 data-translate="removeStudentTitle">Remove student</h1>
+        <div class="remove-container">
+            <div class="dropdown-container">
+                <select id="removeStudentSelect" style="padding: 10px; font-size: 16px;"></select>
+            </div>
+            <div class="remove-button-container">
+                <button id="removeStudentButton" type="button" data-translate="removeStudentButton">Remove student</button>
+            </div>
+        </div>
+    </div>
+    <div id="confirmRemovePopup" class="student-popup">
+        <div class="student-popup-content">
+            <p id="confirmRemoveMessage" data-translate="confirmRemoveMessage">Tryck på knappen nedan för att radera</p>
+            <button id="confirmRemoveButton" data-translate="removeStudentButton">Remove student</button>
+        </div>
+    </div>
+    <script src="script.js"></script>
+    <script src="students.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Populate the dropdown with students
+            const removeSelect = document.getElementById('removeStudentSelect');
+            if (removeSelect) {
+                updateDropdown(); // Use existing updateDropdown from students.js
+            }
+
+            // Handle the Remove button click
+            const removeButton = document.getElementById('removeStudentButton');
+            const confirmRemovePopup = document.getElementById('confirmRemovePopup');
+            const confirmRemoveMessage = document.getElementById('confirmRemoveMessage');
+            const confirmRemoveButton = document.getElementById('confirmRemoveButton');
+            const lang = localStorage.getItem('language') || 'sv';
+
+            if (removeButton) {
+                removeButton.addEventListener('click', () => {
+                    const selectedStudent = removeSelect.value;
+                    if (!selectedStudent) {
+                        alert(lang === 'en' ? "Please select a student to remove." : "Vänligen välj en elev att radera.");
+                        return;
+                    }
+
+                    // Update the confirmation message with the selected student's name
+                    const baseMessage = lang === 'en' ? "Press the button below to remove " : "Tryck på knappen nedan för att radera ";
+                    confirmRemoveMessage.textContent = `${baseMessage}${selectedStudent}.`;
+
+                    // Show the confirmation popup
+                    confirmRemovePopup.style.display = 'flex';
+                    confirmRemovePopup.classList.add('show');
+                });
+            }
+
+            // Handle the Confirm Remove button click
+            if (confirmRemoveButton) {
+                confirmRemoveButton.addEventListener('click', () => {
+                    const selectedStudent = removeSelect.value;
+                    let data = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
+
+                    // Remove the selected student
+                    if (data.students[selectedStudent]) {
+                        delete data.students[selectedStudent];
+
+                        // Set currentStudent to the first remaining student
+                        const remainingStudents = Object.keys(data.students).sort((a, b) => a.localeCompare(b));
+                        data.currentStudent = remainingStudents.length > 0 ? remainingStudents[0] : '';
+
+                        // Save updated data
+                        localStorage.setItem('starAcademyStudents', JSON.stringify(data));
+                        window.studentsData = data;
+
+                        // Refresh dropdowns
+                        if (typeof updateDropdown === 'function') {
+                            updateDropdown();
+                        }
+
+                        // Hide the popup
+                        confirmRemovePopup.style.display = 'none';
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>
