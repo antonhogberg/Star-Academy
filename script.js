@@ -744,19 +744,42 @@ function initializeRemovePage() {
         }
     } else {
         console.error('removeStudentSelect not found');
+        return;
     }
 
     // Handle the Remove button click
-    const removeButton = document.getElementById('removeStudentButton');
-    const confirmRemovePopup = document.getElementById('confirmRemovePopup');
-    const confirmRemoveMessage = document.getElementById('confirmRemoveMessage');
-    const confirmRemoveButton = document.getElementById('confirmRemoveButton');
-    const closeConfirmRemovePopup = document.getElementById('closeConfirmRemovePopup');
+    let removeButton = document.getElementById('removeStudentButton');
+    let confirmRemovePopup = document.getElementById('confirmRemovePopup');
+    let confirmRemoveMessage = document.getElementById('confirmRemoveMessage');
+    let confirmRemoveButton = document.getElementById('confirmRemoveButton');
+    let closeConfirmRemovePopup = document.getElementById('closeConfirmRemovePopup');
     const lang = localStorage.getItem('language') || 'sv';
+
+    // Remove existing listeners by cloning elements
+    if (removeButton) {
+        const newRemoveButton = removeButton.cloneNode(true);
+        removeButton.parentNode.replaceChild(newRemoveButton, removeButton);
+        removeButton = newRemoveButton;
+    }
+
+    if (closeConfirmRemovePopup) {
+        const newCloseButton = closeConfirmRemovePopup.cloneNode(true);
+        closeConfirmRemovePopup.parentNode.replaceChild(newCloseButton, closeConfirmRemovePopup);
+        closeConfirmRemovePopup = newCloseButton;
+    }
+
+    if (confirmRemovePopup) {
+        const newPopup = confirmRemovePopup.cloneNode(true);
+        confirmRemovePopup.parentNode.replaceChild(newPopup, confirmRemovePopup);
+        confirmRemovePopup = newPopup;
+
+        confirmRemoveMessage = confirmRemovePopup.querySelector('#confirmRemoveMessage');
+        confirmRemoveButton = confirmRemovePopup.querySelector('#confirmRemoveButton');
+    }
 
     if (removeButton) {
         removeButton.addEventListener('click', () => {
-            const selectedStudent = removeSelect.value;
+            const selectedStudent = removeSelect.value; // Capture the selected student when opening the popup
             if (!selectedStudent) {
                 alert(lang === 'en' ? "Please select a student to remove." : "Vänligen välj en elev att radera.");
                 return;
@@ -773,34 +796,42 @@ function initializeRemovePage() {
             // Show the confirmation popup
             confirmRemovePopup.style.display = 'flex';
             confirmRemovePopup.classList.add('show');
-        });
-    }
 
-    // Handle the Confirm Remove button click
-    if (confirmRemoveButton) {
-        confirmRemoveButton.addEventListener('click', () => {
-            const selectedStudent = removeSelect.value;
-            let data = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
+            // Handle the Confirm Remove button click
+            if (confirmRemoveButton) {
+                // Remove any existing listeners to prevent duplicates
+                const newConfirmButton = confirmRemoveButton.cloneNode(true);
+                confirmRemoveButton.parentNode.replaceChild(newConfirmButton, confirmRemoveButton);
+                
+                newConfirmButton.addEventListener('click', () => {
+                    let data = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
 
-            // Remove the selected student
-            if (data.students[selectedStudent]) {
-                delete data.students[selectedStudent];
+                    console.log('Before deletion:', JSON.stringify(data.students));
+                    console.log('Deleting student:', selectedStudent);
 
-                // Set currentStudent to the first remaining student
-                const remainingStudents = Object.keys(data.students).sort((a, b) => a.localeCompare(b));
-                data.currentStudent = remainingStudents.length > 0 ? remainingStudents[0] : '';
+                    // Remove the originally selected student
+                    if (data.students[selectedStudent]) {
+                        delete data.students[selectedStudent];
 
-                // Save updated data
-                localStorage.setItem('starAcademyStudents', JSON.stringify(data));
-                window.studentsData = data;
+                        console.log('After deletion:', JSON.stringify(data.students));
 
-                // Refresh dropdowns
-                if (typeof updateDropdown === 'function') {
-                    updateDropdown();
-                }
+                        // Set currentStudent to the first remaining student
+                        const remainingStudents = Object.keys(data.students).sort((a, b) => a.localeCompare(b));
+                        data.currentStudent = remainingStudents.length > 0 ? remainingStudents[0] : '';
 
-                // Hide the popup
-                confirmRemovePopup.style.display = 'none';
+                        // Save updated data
+                        localStorage.setItem('starAcademyStudents', JSON.stringify(data));
+                        window.studentsData = data;
+
+                        // Refresh dropdowns
+                        if (typeof updateDropdown === 'function') {
+                            updateDropdown();
+                        }
+
+                        // Hide the popup
+                        confirmRemovePopup.style.display = 'none';
+                    }
+                });
             }
         });
     }
