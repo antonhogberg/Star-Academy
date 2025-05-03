@@ -6,7 +6,7 @@ const translations = {
         menuStarMap: "Star Map",
         menuChapters: "Chapters",
         menuFAQ: "FAQ",
-        menuRemove: "Remove student", // New menu item
+        menuRemove: "Remove student",
         popupWelcome: "Welcome to the Star Map!",
         popupIntro: "Click to reveal your Star Academy stars! Earn six stars in exercises to rise in rank—track your progress under Star Overview.",
         popupTeacherNote: "Teacher? Add and switch students under Manage Students. Note: Data is saved locally on this device—clear the cache, and it’s gone.",
@@ -70,9 +70,10 @@ const translations = {
         scanOrShare: "Scan the QR code or...",
         shareButtonExport: "Share via AirDrop / Message / QR-code",
         shareButtonQR: "Share student via AirDrop / Message",
-        removeStudentTitle: "Remove student", // New translation for title
-        removeStudentButton: "Remove student", // New translation for button
-        confirmRemoveMessage: "Press the button below to remove" // New translation for popup message
+        removeStudentTitle: "Remove student",
+        removeStudentButton: "Remove student",
+        confirmRemoveMessage: "Press the button below to remove",
+        confirmRemoveButton: "Remove" // New translation for the "Remove" part
     },
     sv: {
         menuFrontPage: "Stjärnöversikt",
@@ -81,7 +82,7 @@ const translations = {
         menuStarMap: "Stjärnkarta",
         menuChapters: "Kapitel",
         menuFAQ: "Vanliga frågor",
-        menuRemove: "Radera elev", // New menu item
+        menuRemove: "Radera elev",
         popupWelcome: "Välkommen till Stjärnkartan!",
         popupIntro: "Klicka fram dina Stjärnakademien-stjärnor här! Samla sex stjärnor i övningarna för att klättra i rang – kolla dina framsteg under Stjärnöversikt.",
         popupTeacherNote: "Lärare? Lägg till och växla mellan elever under Hantera elever. Obs! Allt sparas lokalt på denna enhet – rensas cachen försvinner dina framsteg.",
@@ -145,9 +146,10 @@ const translations = {
         scanOrShare: "Skanna QR-koden eller...",
         shareButtonExport: "Dela via AirDrop / Meddelande / QR-kod",
         shareButtonQR: "Dela elev via AirDrop / Meddelande",
-        removeStudentTitle: "Radera elev", // New translation for title
-        removeStudentButton: "Radera elev", // New translation for button
-        confirmRemoveMessage: "Tryck på knappen nedan för att radera" // New translation for popup message
+        removeStudentTitle: "Radera elev",
+        removeStudentButton: "Radera elev",
+        confirmRemoveMessage: "Tryck på knappen nedan för att radera",
+        confirmRemoveButton: "Radera" // New translation for the "Radera" part
     }
 };
 

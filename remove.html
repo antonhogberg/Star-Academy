@@ -46,7 +46,7 @@
         #confirmRemovePopup .student-popup-content p {
             margin: 0 0 20px;
             font-size: 16px;
-            color: #ffffff; /* Changed to white */
+            color: #ffffff;
         }
         #confirmRemovePopup .student-popup-content button {
             width: 320px;
@@ -71,6 +71,16 @@
         }
         #confirmRemovePopup .student-popup-content button:hover {
             transform: none !important;
+        }
+        #closeConfirmRemovePopup {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: #ffd700;
+            cursor: pointer;
         }
         /* Center the remove container and style its children */
         .remove-container {
@@ -118,6 +128,7 @@
             flex-direction: column;
             align-items: center;
             margin-bottom: 20px;
+            margin-top: 20px; /* Added spacing between dropdown and button */
         }
         #removeStudentButton {
             width: 320px;
@@ -143,6 +154,16 @@
         #removeStudentButton:hover {
             transform: none !important;
         }
+        /* Responsive widths */
+        @media (max-width: 767px) and (orientation: portrait) {
+            #removeStudentSelect,
+            #removeStudentButton {
+                width: 72vw;
+            }
+            #confirmRemovePopup .student-popup-content button {
+                width: 72vw;
+            }
+        }
     </style>
 </head>
 <body>
@@ -167,8 +188,9 @@
     </div>
     <div id="confirmRemovePopup" class="student-popup">
         <div class="student-popup-content">
+            <button id="closeConfirmRemovePopup">×</button>
             <p id="confirmRemoveMessage" data-translate="confirmRemoveMessage">Tryck på knappen nedan för att radera</p>
-            <button id="confirmRemoveButton" data-translate="removeStudentButton">Remove student</button>
+            <button id="confirmRemoveButton"></button>
         </div>
     </div>
     <script src="script.js"></script>
@@ -206,6 +228,7 @@
             const confirmRemovePopup = document.getElementById('confirmRemovePopup');
             const confirmRemoveMessage = document.getElementById('confirmRemoveMessage');
             const confirmRemoveButton = document.getElementById('confirmRemoveButton');
+            const closeConfirmRemovePopup = document.getElementById('closeConfirmRemovePopup');
             const lang = localStorage.getItem('language') || 'sv';
 
             if (removeButton) {
@@ -219,6 +242,10 @@
                     // Update the confirmation message with the selected student's name
                     const baseMessage = lang === 'en' ? "Press the button below to remove " : "Tryck på knappen nedan för att radera ";
                     confirmRemoveMessage.textContent = `${baseMessage}${selectedStudent}.`;
+
+                    // Update the button text with the selected student's name
+                    const buttonBaseText = lang === 'en' ? "Remove " : "Radera ";
+                    confirmRemoveButton.textContent = `${buttonBaseText}${selectedStudent}`;
 
                     // Show the confirmation popup
                     confirmRemovePopup.style.display = 'flex';
@@ -252,6 +279,22 @@
                         // Hide the popup
                         confirmRemovePopup.style.display = 'none';
                     }
+                });
+            }
+
+            // Handle closing the popup by clicking outside
+            if (confirmRemovePopup) {
+                confirmRemovePopup.addEventListener('click', (e) => {
+                    if (!confirmRemovePopup.querySelector('.student-popup-content').contains(e.target)) {
+                        confirmRemovePopup.style.display = 'none';
+                    }
+                });
+            }
+
+            // Handle closing the popup with the X button
+            if (closeConfirmRemovePopup) {
+                closeConfirmRemovePopup.addEventListener('click', () => {
+                    confirmRemovePopup.style.display = 'none';
                 });
             }
         });
