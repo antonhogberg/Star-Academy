@@ -73,7 +73,9 @@ const translations = {
         removeStudentTitle: "Remove student",
         removeStudentButton: "Remove student",
         confirmRemoveMessage: "Press the button below to remove",
-        confirmRemoveButton: "Remove" // New translation for the "Remove" part
+        confirmRemoveButton: "Remove",
+        removeCurrentStudent: "Remove current student: ", // New translation for the button
+        removeCurrentStudentNone: "Remove current student: None" // New translation for the "None" case
     },
     sv: {
         menuFrontPage: "Stjärnöversikt",
@@ -149,7 +151,9 @@ const translations = {
         removeStudentTitle: "Radera elev",
         removeStudentButton: "Radera elev",
         confirmRemoveMessage: "Tryck på knappen nedan för att radera",
-        confirmRemoveButton: "Radera" // New translation for the "Radera" part
+        confirmRemoveButton: "Radera",
+        removeCurrentStudent: "Radera aktuell elev: ", // New translation for the button
+        removeCurrentStudentNone: "Radera aktuell elev: Ingen" // New translation for the "None" case
     }
 };
 
@@ -445,7 +449,7 @@ function switchLanguage(lang) {
             link.textContent = translations[lang].menuStarMap;
         } else if (href === 'faq.html') {
             link.textContent = translations[lang].menuFAQ;
-        } else if (href === 'remove.html') { // New menu link handling
+        } else if (href === 'remove.html') {
             link.textContent = translations[lang].menuRemove;
         } else {
             const chapterNum = href?.match(/chapter(\d+)\.html/)?.[1];
@@ -532,17 +536,21 @@ function switchLanguage(lang) {
 
     // Remove page translations
     const removeStudentTitle = document.querySelector('h1[data-translate="removeStudentTitle"]');
-    const removeStudentButton = document.querySelector('button[data-translate="removeStudentButton"]');
     const confirmRemoveMessage = document.querySelector('p[data-translate="confirmRemoveMessage"]');
     if (removeStudentTitle) removeStudentTitle.textContent = translations[lang].removeStudentTitle;
-    if (removeStudentButton) {
-        document.querySelectorAll('button[data-translate="removeStudentButton"]').forEach(button => {
-            button.textContent = translations[lang].removeStudentButton;
-        });
-    }
     if (confirmRemoveMessage) {
-        const selectedStudent = document.getElementById('removeStudentSelect')?.value || '';
+        const selectedStudent = window.studentsData.currentStudent || '';
         confirmRemoveMessage.textContent = `${translations[lang].confirmRemoveMessage}${selectedStudent ? ` ${selectedStudent}.` : '.'}`;
+    }
+
+    // Update the removeStudentButton text dynamically
+    const removeStudentButton = document.getElementById('removeStudentButton');
+    if (removeStudentButton && window.studentsData) {
+        if (window.studentsData.currentStudent) {
+            removeStudentButton.textContent = `${translations[lang].removeCurrentStudent}${window.studentsData.currentStudent}`;
+        } else {
+            removeStudentButton.textContent = translations[lang].removeCurrentStudentNone;
+        }
     }
 
     // Export section (students.html)
@@ -721,6 +729,14 @@ function initializeFAQ() {
 
 function initializeRemovePage() {
     console.log('initializeRemovePage called');
+
+    // Prevent re-initialization
+    if (window.removePageInitialized) {
+        console.log('remove.html already initialized, skipping');
+        return;
+    }
+    window.removePageInitialized = true;
+
     // Ensure window.studentsData is initialized
     window.studentsData = window.studentsData || JSON.parse(localStorage.getItem('starAcademyStudents')) || {
         students: {},
@@ -728,30 +744,32 @@ function initializeRemovePage() {
     };
     console.log('window.studentsData on remove.html:', window.studentsData);
 
-    // Update the button text with the current student's name
+    // Initialize elements
     const removeButton = document.getElementById('removeStudentButton');
-    let confirmRemovePopup = document.getElementById('confirmRemovePopup');
-    let confirmRemoveMessage = document.getElementById('confirmRemoveMessage');
-    let confirmRemoveButton = document.getElementById('confirmRemoveButton');
-    let closeConfirmRemovePopup = document.getElementById('closeConfirmRemovePopup');
-    const lang = localStorage.getItem('language') || 'sv';
+    const confirmRemovePopup = document.getElementById('confirmRemovePopup');
+    const confirmRemoveMessage = document.getElementById('confirmRemoveMessage');
+    const confirmRemoveButton = document.getElementById('confirmRemoveButton');
+    const closeConfirmRemovePopup = document.getElementById('closeConfirmRemovePopup');
+    let lang = localStorage.getItem('language') || 'sv';
 
+    // Function to update the button text
     const updateButtonText = () => {
         if (window.studentsData.currentStudent) {
-            const baseText = lang === 'en' ? "Remove current student: " : "Radera aktuell elev: ";
-            removeButton.textContent = `${baseText}${window.studentsData.currentStudent}`;
+            removeButton.textContent = `${translations[lang].removeCurrentStudent}${window.studentsData.currentStudent}`;
         } else {
-            const baseText = lang === 'en' ? "Remove current student: None" : "Radera aktuell elev: Ingen";
-            removeButton.textContent = baseText;
+            removeButton.textContent = translations[lang].removeCurrentStudentNone;
         }
     };
 
     // Initial button text update
     updateButtonText();
 
-    // Listen for changes to localStorage to update the button text
+    // Listen for language changes
     window.addEventListener('storage', (event) => {
-        if (event.key === 'starAcademyStudents') {
+        if (event.key === 'language') {
+            lang = localStorage.getItem('language') || 'sv';
+            updateButtonText();
+        } else if (event.key === 'starAcademyStudents') {
             window.studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || {
                 students: {},
                 currentStudent: ''
@@ -760,42 +778,28 @@ function initializeRemovePage() {
         }
     });
 
-    // Remove existing listeners by cloning elements
-    if (removeButton) {
-        const newRemoveButton = removeButton.cloneNode(true);
-        removeButton.parentNode.replaceChild(newRemoveButton, removeButton);
-        removeButton = newRemoveButton;
-    }
-
-    if (closeConfirmRemovePopup) {
-        const newCloseButton = closeConfirmRemovePopup.cloneNode(true);
-        closeConfirmRemovePopup.parentNode.replaceChild(newCloseButton, closeConfirmRemovePopup);
-        closeConfirmRemovePopup = newCloseButton;
-    }
-
-    if (confirmRemovePopup) {
-        const newPopup = confirmRemovePopup.cloneNode(true);
-        confirmRemovePopup.parentNode.replaceChild(newPopup, confirmRemovePopup);
-        confirmRemovePopup = newPopup;
-
-        confirmRemoveMessage = confirmRemovePopup.querySelector('#confirmRemoveMessage');
-        confirmRemoveButton = confirmRemovePopup.querySelector('#confirmRemoveButton');
+    // Listen for user changes in the same tab via the menu dropdown
+    const globalSelect = document.getElementById('globalStudentSelect');
+    if (globalSelect) {
+        globalSelect.addEventListener('change', () => {
+            updateButtonText();
+        });
     }
 
     if (removeButton) {
         removeButton.addEventListener('click', () => {
-            const selectedStudent = window.studentsData.currentStudent; // Use the current student
+            const selectedStudent = window.studentsData.currentStudent;
             if (!selectedStudent) {
                 alert(lang === 'en' ? "No current student selected to remove." : "Ingen aktuell elev vald att radera.");
                 return;
             }
 
             // Update the confirmation message with the selected student's name
-            const baseMessage = lang === 'en' ? "Press the button below to remove " : "Tryck på knappen nedan för att radera ";
+            const baseMessage = translations[lang].confirmRemoveMessage;
             confirmRemoveMessage.textContent = `${baseMessage}${selectedStudent}.`;
 
             // Update the button text with the selected student's name
-            const buttonBaseText = lang === 'en' ? "Remove " : "Radera ";
+            const buttonBaseText = translations[lang].confirmRemoveButton;
             confirmRemoveButton.textContent = `${buttonBaseText}${selectedStudent}`;
 
             // Show the confirmation popup
@@ -804,11 +808,7 @@ function initializeRemovePage() {
 
             // Handle the Confirm Remove button click
             if (confirmRemoveButton) {
-                // Remove any existing listeners to prevent duplicates
-                const newConfirmButton = confirmRemoveButton.cloneNode(true);
-                confirmRemoveButton.parentNode.replaceChild(newConfirmButton, confirmRemoveButton);
-                
-                newConfirmButton.addEventListener('click', () => {
+                confirmRemoveButton.addEventListener('click', () => {
                     let data = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
 
                     console.log('Before deletion:', JSON.stringify(data.students));
@@ -833,7 +833,7 @@ function initializeRemovePage() {
                         // Hide the popup
                         confirmRemovePopup.style.display = 'none';
                     }
-                });
+                }, { once: true });
             }
         });
     }
