@@ -75,7 +75,8 @@ const translations = {
         confirmRemoveMessage: "Press the button below to remove ", // Added trailing space
         confirmRemoveButton: "Remove ", // Added trailing space
         removeCurrentStudent: "Remove current student: ",
-        removeCurrentStudentNone: "Remove current student: None"
+        removeCurrentStudentNone: "Remove current student: None",
+        starMapDescription: "Welcome to the Star Map! Click on each star to track your progress in Star Academy. Earn up to six stars per exercise by practicing in the Piano School. Scroll to explore all chapters and exercises."
     },
     sv: {
         menuFrontPage: "Stjärnöversikt",
@@ -153,7 +154,8 @@ const translations = {
         confirmRemoveMessage: "Tryck på knappen nedan för att radera ", // Added trailing space
         confirmRemoveButton: "Radera ", // Added trailing space
         removeCurrentStudent: "Radera aktuell elev: ",
-        removeCurrentStudentNone: "Radera aktuell elev: Ingen"
+        removeCurrentStudentNone: "Radera aktuell elev: Ingen",
+        starMapDescription: "Välkommen till Stjärnkartan! Klicka på varje stjärna för att följa dina framsteg i Stjärnakademien. Förtjäna upp till sex stjärnor per övning genom att öva i Pianoskolan. Scrolla för att utforska alla kapitel och övningar."
     }
 };
 
@@ -551,6 +553,12 @@ function switchLanguage(lang) {
         } else {
             removeStudentButton.textContent = translations[lang].removeCurrentStudentNone;
         }
+    }
+
+    // Star Map description
+    const starMapDescription = document.querySelector('p[data-translate="starMapDescription"]');
+    if (starMapDescription) {
+        starMapDescription.textContent = translations[lang].starMapDescription;
     }
 
     // Export section (students.html)
@@ -991,6 +999,23 @@ waitForDOM().then(() => {
             const cleanUrl = window.location.pathname;
             window.history.replaceState({}, document.title, cleanUrl);
         }
+
+        // Ensure initial scroll position and add scroll listener for info overlay
+        const starMapContainer = document.querySelector('.star-map-container');
+        const infoOverlay = document.querySelector('.info-overlay');
+        if (starMapContainer && infoOverlay) {
+            // Set initial scroll position to align SVG's left edge with viewport
+            starMapContainer.scrollLeft = 0;
+
+            // Hide info overlay when user scrolls left
+            starMapContainer.addEventListener('scroll', () => {
+                if (starMapContainer.scrollLeft > 0) {
+                    infoOverlay.classList.add('hidden');
+                } else {
+                    infoOverlay.classList.remove('hidden');
+                }
+            });
+        }
     }
 
     if (!window.isImporting) {
@@ -1056,7 +1081,7 @@ waitForDOM().then(() => {
         window.removePageInitialized = false;
         setTimeout(() => {
             initializeRemovePage();
-        }, 100); // Add a small delay to ensure DOM is fully loaded
+        }, 100);
     }
 
     const header = document.querySelector('.title-container');
