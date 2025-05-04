@@ -178,8 +178,8 @@ const menuHtml = `
                 </ul>
             </div>
             <a href="students.html" class="menu-link"></a>
+            <a href="remove.html" class="menu-link"></a>
             <a href="faq.html" class="menu-link"></a>
-            <a href="remove.html" class="menu-link"></a> <!-- New menu link -->
             <div class="language-switcher">
                 <span class="flag" onclick="switchLanguage('en')">🇬🇧</span>
                 <span class="flag" onclick="switchLanguage('sv')">🇸🇪</span>
