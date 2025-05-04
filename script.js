@@ -191,98 +191,101 @@ const menuHtml = `
 `;
 
 function injectMenu() {
-    const menuPlaceholder = document.getElementById('menu-placeholder');
-    if (!menuPlaceholder) {
+    console.log('injectMenu called');
+    const placeholder = document.getElementById('menu-placeholder');
+    if (!placeholder) {
         console.error('Menu placeholder not found');
         return;
     }
 
-    const lang = localStorage.getItem('language') || 'sv';
-    const menuHtml = `
-        <div class="piano-menu" id="menuButton" aria-expanded="false" aria-controls="main-menu">
-            <div class="white-key"></div>
-            <div class="white-key"></div>
-            <div class="white-key"></div>
-            <div class="black-key top"></div>
-            <div class="black-key bottom"></div>
-        </div>
-        <nav class="menu" id="main-menu" aria-hidden="true">
-            <button class="close-btn" id="closeMenuButton" aria-label="Close menu">×</button>
-            <div class="menu-item">
-                <a href="index.html" class="menu-link" data-translate="menuFrontPage">${translations[lang].menuFrontPage}</a>
-            </div>
-            <div class="menu-item">
-                <a href="starmap.html#svg-start" class="menu-link" data-translate="menuStarMap">${translations[lang].menuStarMap}</a>
-            </div>
-            <div class="menu-item">
-                <span class="chapters-toggle" data-translate="menuChapters">${translations[lang].menuChapters}</span>
-                <ul class="submenu" id="chaptersSubmenu">
-                    <li><a href="chapter1.html"><span data-translate="chapter1">${translations[lang].chapter1}</span></a></li>
-                    <li><a href="chapter2.html"><span data-translate="chapter2">${translations[lang].chapter2}</span></a></li>
-                    <li><a href="chapter3.html"><span data-translate="chapter3">${translations[lang].chapter3}</span></a></li>
-                    <li><a href="chapter4.html"><span data-translate="chapter4">${translations[lang].chapter4}</span></a></li>
-                    <li><a href="chapter5.html"><span data-translate="chapter5">${translations[lang].chapter5}</span></a></li>
-                    <li><a href="chapter6.html"><span data-translate="chapter6">${translations[lang].chapter6}</span></a></li>
-                    <li><a href="chapter7.html"><span data-translate="chapter7">${translations[lang].chapter7}</span></a></li>
-                </ul>
-            </div>
-            <div class="menu-item">
-                <a href="students.html" class="menu-link" data-translate="menuStudents">${translations[lang].menuStudents}</a>
-            </div>
-            <div class="menu-item">
-                <a href="remove.html" class="menu-link" data-translate="menuRemove">${translations[lang].menuRemove}</a>
-            </div>
-            <div class="menu-item">
-                <a href="faq.html" class="menu-link" data-translate="menuFAQ">${translations[lang].menuFAQ}</a>
-            </div>
-            <div class="language-switcher">
-                <span class="flag" data-lang="sv" title="Swedish">🇸🇪</span>
-                <span class="flag" data-lang="en" title="English">🇬🇧</span>
-            </div>
-        </nav>
-    `;
+    placeholder.innerHTML = menuHtml;
+    console.log('Menu HTML injected');
 
-    menuPlaceholder.innerHTML = menuHtml;
+    const hamburger = document.getElementById('menuButton');
+    const menu = document.querySelector('.menu');
 
-    const menuButton = document.getElementById('menuButton');
-    const closeMenuButton = document.getElementById('closeMenuButton');
-    const menu = document.getElementById('main-menu');
-    const chaptersToggle = document.querySelector('.chapters-toggle');
-    const chaptersSubmenu = document.getElementById('chaptersSubmenu');
-    const flags = document.querySelectorAll('.flag');
-
-    if (menuButton && closeMenuButton && menu) {
-        menuButton.addEventListener('click', () => {
-            const isExpanded = menuButton.getAttribute('aria-expanded') === 'true';
-            menuButton.setAttribute('aria-expanded', !isExpanded);
-            menu.setAttribute('aria-hidden', isExpanded);
-            menu.classList.toggle('active');
-            menuButton.classList.toggle('active');
-        });
-
-        closeMenuButton.addEventListener('click', () => {
-            menuButton.setAttribute('aria-expanded', 'false');
-            menu.setAttribute('aria-hidden', 'true');
-            menu.classList.remove('active');
-            menuButton.classList.remove('active');
-        });
+    if (!hamburger || !menu) {
+        console.error('Menu elements missing:', { hamburger: !!hamburger, menu: !!menu });
+        return;
     }
 
-    if (chaptersToggle && chaptersSubmenu) {
-        chaptersToggle.addEventListener('click', () => {
-            const parentItem = chaptersToggle.parentElement;
-            const isOpen = chaptersSubmenu.classList.contains('open');
-            chaptersSubmenu.classList.toggle('open');
-            parentItem.classList.toggle('active');
-        });
-    }
+    console.log('Menu initialized with left: -250px via CSS');
 
-    flags.forEach(flag => {
-        flag.addEventListener('click', () => {
-            const lang = flag.getAttribute('data-lang');
-            switchLanguage(lang);
+    // Remove existing listeners to prevent duplicates
+    const newHamburger = hamburger.cloneNode(true);
+    hamburger.parentNode.replaceChild(newHamburger, hamburger);
+
+    newHamburger.addEventListener('click', () => {
+        console.log('Hamburger clicked');
+        const isExpanded = newHamburger.getAttribute('aria-expanded') === 'true';
+        newHamburger.setAttribute('aria-expanded', !isExpanded);
+        newHamburger.classList.toggle('active');
+        if (!isExpanded) {
+            menu.classList.add('active');
+            menu.animate([{ left: '-250px' }, { left: '0' }], { duration: 300, easing: 'ease-in-out', fill: 'forwards' });
+            console.log('Menu opened');
+            // Refresh the dropdown when opening the menu
+            if (typeof updateDropdown === 'function') {
+                console.log('Calling updateDropdown when menu opens');
+                updateDropdown();
+            }
+        } else {
+            menu.animate([{ left: '0' }, { left: '-250px' }], { duration: 300, easing: 'ease-in-out', fill: 'forwards' }).onfinish = () => {
+                menu.classList.remove('active');
+                console.log('Menu closed');
+            };
+        }
+    });
+
+    document.querySelectorAll('.menu-link').forEach(link => {
+        link.addEventListener('click', () => {
+            console.log(`Menu link clicked: ${link.getAttribute('href')}`);
+            newHamburger.setAttribute('aria-expanded', 'false');
+            newHamburger.classList.remove('active');
+            menu.animate([{ left: '0' }, { left: '-250px' }], { duration: 300, easing: 'ease-in-out', fill: 'forwards' }).onfinish = () => {
+                menu.classList.remove('active');
+                console.log('Menu closed after link click');
+            };
         });
     });
+
+    document.addEventListener('click', (e) => {
+        if (!newHamburger.contains(e.target) && !menu.contains(e.target)) {
+            console.log('Clicked outside menu');
+            newHamburger.setAttribute('aria-expanded', 'false');
+            newHamburger.classList.remove('active');
+            menu.animate([{ left: '0' }, { left: '-250px' }], { duration: 300, easing: 'ease-in-out', fill: 'forwards' }).onfinish = () => {
+                menu.classList.remove('active');
+                console.log('Menu closed due to outside click');
+            };
+        }
+    });
+
+    const chaptersToggle = document.querySelector('.chapters-toggle');
+    const submenu = document.querySelector('.submenu');
+    if (chaptersToggle && submenu) {
+        chaptersToggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            console.log('Chapters toggle clicked');
+            const isSubmenuOpen = submenu.classList.contains('open');
+            if (isSubmenuOpen) {
+                submenu.classList.remove('open');
+                console.log('Submenu closed');
+            } else {
+                submenu.style.display = 'block';
+                submenu.offsetHeight; // Force reflow
+                submenu.classList.add('open');
+                console.log('Submenu opened');
+            }
+            chaptersToggle.parentElement.classList.toggle('active');
+        });
+    } else {
+        console.warn('Chapters toggle or submenu not found:', { chaptersToggle: !!chaptersToggle, submenu: !!submenu });
+    }
+
+    const lang = localStorage.getItem('language') || 'sv';
+    switchLanguage(lang);
+    setActivePage();
 }
 
 function updateStarStates() {
@@ -938,7 +941,6 @@ waitForDOM().then(() => {
                 console.log('Reloading starmap.html with new user query parameter');
                 const url = new URL(window.location);
                 url.searchParams.set('newUser', selectedValue);
-                url.hash = 'svg-start'; // Ensure the fragment is preserved on user switch
                 window.location.href = url.toString();
             } else {
                 window.studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || {
@@ -994,7 +996,7 @@ waitForDOM().then(() => {
             window.studentsData.currentStudent = newUser;
             localStorage.setItem('starAcademyStudents', JSON.stringify(window.studentsData));
             
-            const cleanUrl = window.location.pathname + '#svg-start'; // Preserve the fragment
+            const cleanUrl = window.location.pathname;
             window.history.replaceState({}, document.title, cleanUrl);
         }
 
@@ -1002,28 +1004,17 @@ waitForDOM().then(() => {
         const starMapContainer = document.querySelector('.star-map-container');
         const infoOverlay = document.querySelector('.info-overlay');
         if (starMapContainer && infoOverlay) {
-            // Scroll to the anchor point
-            const anchor = document.getElementById('svg-start');
-            if (anchor) {
-                anchor.scrollIntoView({ behavior: 'smooth', inline: 'start' });
-            } else {
-                // Fallback: manually set scrollLeft to 300px (width of description-container)
-                starMapContainer.scrollLeft = 300;
-            }
+            // Set initial scroll position to align SVG's left edge with viewport
+            starMapContainer.scrollLeft = 0;
 
-            // Adjust info-overlay visibility based on scroll position
+            // Hide info overlay when user scrolls left
             starMapContainer.addEventListener('scroll', () => {
-                const scrollLeft = starMapContainer.scrollLeft;
-                const threshold = 50; // Allow a small range around scrollLeft = 300
-                if (scrollLeft >= 300 - threshold && scrollLeft <= 300 + threshold) {
-                    infoOverlay.classList.remove('hidden');
-                } else {
+                if (starMapContainer.scrollLeft > 0) {
                     infoOverlay.classList.add('hidden');
+                } else {
+                    infoOverlay.classList.remove('hidden');
                 }
             });
-
-            // Trigger the scroll event on load to set initial visibility
-            starMapContainer.dispatchEvent(new Event('scroll'));
         }
     }
 
