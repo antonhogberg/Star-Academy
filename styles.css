@@ -1422,6 +1422,14 @@ body.popup-open .student-manager {
         top: 70px;
         height: calc(100vh - 70px);
     }
+
+    .star-map-container svg {
+        left: 300px; /* Consistent offset */
+    }
+
+    .description-container {
+        width: 300px;
+    }
 }
 
 @media (min-width: 1201px) and (max-width: 1400px) and (orientation: landscape) {
@@ -1430,12 +1438,28 @@ body.popup-open .student-manager {
         height: calc(100vh - 50px);
         max-height: 960px;
     }
+
+    .star-map-container svg {
+        left: 300px; /* Consistent offset */
+    }
+
+    .description-container {
+        width: 300px;
+    }
 }
 
 @media (min-width: 1401px) and (orientation: landscape) and (hover: hover) and (min-aspect-ratio: 16/10) {
     .star-map-container {
         height: calc(100vh - 70px);
         top: 70px;
+    }
+
+    .star-map-container svg {
+        left: 300px; /* Consistent offset */
+    }
+
+    .description-container {
+        width: 300px;
     }
 }
 
@@ -1931,12 +1955,6 @@ body.popup-open .student-manager {
         margin: 0px auto;
         border: none;
         background: none;
-    }
-
-    #studentNotes {
-        width: 72vw;
-        height: 360px;
-        font-size: 18px !important;
     }
 
     .student-manager input#newStudentName {
