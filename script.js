@@ -166,7 +166,7 @@ const menuHtml = `
                 <select id="globalStudentSelect"></select>
             </div>
             <a href="index.html" class="menu-link"></a>
-            <a href="starmap.html" class="menu-link"></a>
+            <a href="starmap.html#svg-start" class="menu-link"></a>
             <div class="menu-item">
                 <span class="chapters-toggle"></span>
                 <ul class="submenu">
@@ -447,7 +447,7 @@ function switchLanguage(lang) {
             link.textContent = translations[lang].menuFrontPage;
         } else if (href === 'students.html') {
             link.textContent = translations[lang].menuStudents;
-        } else if (href === 'starmap.html') {
+        } else if (href === 'starmap.html#svg-start') {
             link.textContent = translations[lang].menuStarMap;
         } else if (href === 'faq.html') {
             link.textContent = translations[lang].menuFAQ;
@@ -587,7 +587,7 @@ function setActivePage() {
     const links = document.querySelectorAll('.menu-link');
     links.forEach(link => {
         const href = link.getAttribute('href')?.toLowerCase();
-        if (href && (currentPath.endsWith(href) || (currentPath === '/' && href === 'index.html'))) {
+        if (href && (currentPath.endsWith(href.replace('#svg-start', '')) || (currentPath === '/' && href === 'index.html'))) {
             link.classList.add('active-page');
         }
     });
@@ -996,7 +996,7 @@ waitForDOM().then(() => {
             window.studentsData.currentStudent = newUser;
             localStorage.setItem('starAcademyStudents', JSON.stringify(window.studentsData));
             
-            const cleanUrl = window.location.pathname;
+            const cleanUrl = window.location.pathname + (window.location.hash || '');
             window.history.replaceState({}, document.title, cleanUrl);
         }
 
@@ -1004,17 +1004,38 @@ waitForDOM().then(() => {
         const starMapContainer = document.querySelector('.star-map-container');
         const infoOverlay = document.querySelector('.info-overlay');
         if (starMapContainer && infoOverlay) {
-            // Set initial scroll position to align SVG's left edge with viewport
-            starMapContainer.scrollLeft = 0;
+            // Determine scroll target based on device (300px desktop, 200px mobile)
+            const isMobile = window.matchMedia("(max-width: 767px) and (orientation: portrait)").matches;
+            const scrollTarget = isMobile ? 200 : 300;
+            const threshold = 50; // Threshold for showing info-overlay
 
-            // Hide info overlay when user scrolls left
+            // Scroll to #svg-start anchor if present
+            const svgStartAnchor = document.getElementById('svg-start');
+            if (svgStartAnchor) {
+                svgStartAnchor.scrollIntoView({ behavior: 'smooth', inline: 'start' });
+                console.log('Scrolled to #svg-start anchor');
+            } else {
+                // Fallback to manual scroll
+                starMapContainer.scrollLeft = scrollTarget;
+                console.log(`Fallback: Set scrollLeft to ${scrollTarget}px`);
+            }
+
+            // Update info-overlay visibility on scroll
             starMapContainer.addEventListener('scroll', () => {
-                if (starMapContainer.scrollLeft > 0) {
-                    infoOverlay.classList.add('hidden');
-                } else {
+                const scrollLeft = starMapContainer.scrollLeft;
+                if (Math.abs(scrollLeft - scrollTarget) < threshold) {
                     infoOverlay.classList.remove('hidden');
+                } else {
+                    infoOverlay.classList.add('hidden');
                 }
             });
+
+            // Initial check for info-overlay visibility
+            if (Math.abs(starMapContainer.scrollLeft - scrollTarget) < threshold) {
+                infoOverlay.classList.remove('hidden');
+            } else {
+                infoOverlay.classList.add('hidden');
+            }
         }
     }
 
