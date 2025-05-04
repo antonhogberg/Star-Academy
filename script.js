@@ -72,10 +72,10 @@ const translations = {
         shareButtonQR: "Share student via AirDrop / Message",
         removeStudentTitle: "Remove student",
         removeStudentButton: "Remove student",
-        confirmRemoveMessage: "Press the button below to remove",
-        confirmRemoveButton: "Remove",
-        removeCurrentStudent: "Remove current student: ", // New translation for the button
-        removeCurrentStudentNone: "Remove current student: None" // New translation for the "None" case
+        confirmRemoveMessage: "Press the button below to remove ", // Added trailing space
+        confirmRemoveButton: "Remove ", // Added trailing space
+        removeCurrentStudent: "Remove current student: ",
+        removeCurrentStudentNone: "Remove current student: None"
     },
     sv: {
         menuFrontPage: "Stjärnöversikt",
@@ -150,10 +150,10 @@ const translations = {
         shareButtonQR: "Dela elev via AirDrop / Meddelande",
         removeStudentTitle: "Radera elev",
         removeStudentButton: "Radera elev",
-        confirmRemoveMessage: "Tryck på knappen nedan för att radera",
-        confirmRemoveButton: "Radera",
-        removeCurrentStudent: "Radera aktuell elev: ", // New translation for the button
-        removeCurrentStudentNone: "Radera aktuell elev: Ingen" // New translation for the "None" case
+        confirmRemoveMessage: "Tryck på knappen nedan för att radera ", // Added trailing space
+        confirmRemoveButton: "Radera ", // Added trailing space
+        removeCurrentStudent: "Radera aktuell elev: ",
+        removeCurrentStudentNone: "Radera aktuell elev: Ingen"
     }
 };
 
@@ -757,12 +757,22 @@ function initializeRemovePage() {
         return;
     }
 
+    // Store popup state
+    let popupOpen = false;
+    let currentPopupStudent = null;
+
     // Function to update the button text
     const updateButtonText = () => {
         if (window.studentsData.currentStudent) {
             removeButton.textContent = `${translations[lang].removeCurrentStudent}${window.studentsData.currentStudent}`;
         } else {
             removeButton.textContent = translations[lang].removeCurrentStudentNone;
+        }
+
+        // Update popup text if the popup is open
+        if (popupOpen && currentPopupStudent) {
+            confirmRemoveMessage.textContent = `${translations[lang].confirmRemoveMessage}${currentPopupStudent}.`;
+            confirmRemoveButton.textContent = `${translations[lang].confirmRemoveButton}${currentPopupStudent}`;
         }
     };
 
@@ -805,6 +815,10 @@ function initializeRemovePage() {
                 return;
             }
 
+            // Update popup state
+            popupOpen = true;
+            currentPopupStudent = selectedStudent;
+
             // Update the confirmation message with the selected student's name
             const baseMessage = translations[lang].confirmRemoveMessage;
             confirmRemoveMessage.textContent = `${baseMessage}${selectedStudent}.`;
@@ -840,6 +854,10 @@ function initializeRemovePage() {
                     // Update the button text
                     updateButtonText();
 
+                    // Reset popup state
+                    popupOpen = false;
+                    currentPopupStudent = null;
+
                     // Hide the popup
                     confirmRemovePopup.style.display = 'none';
                 }
@@ -851,12 +869,16 @@ function initializeRemovePage() {
     confirmRemovePopup.addEventListener('click', (e) => {
         if (!confirmRemovePopup.querySelector('.student-popup-content').contains(e.target)) {
             confirmRemovePopup.style.display = 'none';
+            popupOpen = false;
+            currentPopupStudent = null;
         }
     });
 
     // Handle closing the popup with the X button
     closeConfirmRemovePopup.addEventListener('click', () => {
         confirmRemovePopup.style.display = 'none';
+        popupOpen = false;
+        currentPopupStudent = null;
     });
 }
 
