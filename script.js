@@ -748,7 +748,7 @@ function initializeRemovePage() {
     const removeButton = document.getElementById('removeStudentButton');
     const confirmRemovePopup = document.getElementById('confirmRemovePopup');
     const confirmRemoveMessage = document.getElementById('confirmRemoveMessage');
-    const confirmRemoveButton = document.getElementById('confirmRemoveButton');
+    let confirmRemoveButton = document.getElementById('confirmRemoveButton');
     const closeConfirmRemovePopup = document.getElementById('closeConfirmRemovePopup');
     let lang = localStorage.getItem('language') || 'sv';
 
@@ -827,6 +827,11 @@ function initializeRemovePage() {
             const buttonBaseText = translations[lang].confirmRemoveButton;
             confirmRemoveButton.textContent = `${buttonBaseText}${selectedStudent}`;
 
+            // Clone confirmRemoveButton to remove existing listeners
+            const newConfirmButton = confirmRemoveButton.cloneNode(true);
+            confirmRemoveButton.parentNode.replaceChild(newConfirmButton, confirmRemoveButton);
+            confirmRemoveButton = newConfirmButton;
+
             // Show the confirmation popup
             confirmRemovePopup.style.display = 'flex';
             confirmRemovePopup.classList.add('show');
@@ -861,7 +866,7 @@ function initializeRemovePage() {
                     // Hide the popup
                     confirmRemovePopup.style.display = 'none';
                 }
-            }, { once: true });
+            });
         });
     }
 
@@ -871,6 +876,11 @@ function initializeRemovePage() {
             confirmRemovePopup.style.display = 'none';
             popupOpen = false;
             currentPopupStudent = null;
+
+            // Clone confirmRemoveButton to remove existing listeners
+            const newConfirmButton = confirmRemoveButton.cloneNode(true);
+            confirmRemoveButton.parentNode.replaceChild(newConfirmButton, confirmRemoveButton);
+            confirmRemoveButton = newConfirmButton;
         }
     });
 
@@ -879,6 +889,11 @@ function initializeRemovePage() {
         confirmRemovePopup.style.display = 'none';
         popupOpen = false;
         currentPopupStudent = null;
+
+        // Clone confirmRemoveButton to remove existing listeners
+        const newConfirmButton = confirmRemoveButton.cloneNode(true);
+        confirmRemoveButton.parentNode.replaceChild(newConfirmButton, confirmRemoveButton);
+        confirmRemoveButton = newConfirmButton;
     });
 }
 
