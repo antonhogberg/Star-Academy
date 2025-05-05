@@ -1009,6 +1009,15 @@ waitForDOM().then(() => {
             const scrollTarget = 280; // Adjusted to match #svg-start position (~300 - 20 from viewBox)
             const threshold = 50; // Threshold for showing info-overlay on left-scroll
 
+            // Explicitly scroll to #svg-start anchor after DOM and styles are set
+            setTimeout(() => {
+                const svgStartAnchor = document.getElementById('svg-start');
+                if (svgStartAnchor) {
+                    svgStartAnchor.scrollIntoView({ behavior: 'smooth', inline: 'start' });
+                    console.log('Scrolled to #svg-start anchor after delay');
+                }
+            }, 100);
+
             // Define the scroll handler
             window.starMapScrollListener = () => {
                 if (localStorage.getItem('infoOverlayHidden') === 'true') {
@@ -1017,7 +1026,7 @@ waitForDOM().then(() => {
 
                 const scrollLeft = starMapContainer.scrollLeft;
                 // Fade out immediately on right-scroll
-                if (scrollLeft > scrollTarget) {
+                if (scrollLeft > scrollTarget + threshold) { // Adjusted to allow small movements
                     infoOverlay.classList.add('hidden');
                     localStorage.setItem('infoOverlayHidden', 'true');
                     console.log('Info-overlay hidden on right-scroll');
@@ -1214,7 +1223,10 @@ waitForDOM().then(() => {
         }
     };
 
-    setStarMapHeight();
-    window.addEventListener('resize', setStarMapHeight);
-    window.addEventListener('orientationchange', setStarMapHeight);
+    // Delay setStarMapHeight to allow anchor scrolling
+    setTimeout(() => {
+        setStarMapHeight();
+        window.addEventListener('resize', setStarMapHeight);
+        window.addEventListener('orientationchange', setStarMapHeight);
+    }, 100);
 });
