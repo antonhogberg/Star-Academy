@@ -1009,10 +1009,8 @@ waitForDOM().then(() => {
             const scrollTarget = 280; // Adjusted to match #svg-start position (~300 - 20 from viewBox)
             const threshold = 50; // Threshold for showing info-overlay on left-scroll
 
-            // State for scroll stop
-            let lastScrollLeft = scrollTarget;
-            let hasCrossedAnchor = false; // Tracks if the user has crossed the anchor point
-            let isBouncing = false; // Prevents multiple bounce animations
+            // Flag to disable scroll listener during initial scroll
+            let isInitialScroll = true;
 
             // Explicitly scroll to #svg-start anchor after DOM and styles are set
             setTimeout(() => {
@@ -1021,25 +1019,33 @@ waitForDOM().then(() => {
                     svgStartAnchor.scrollIntoView({ behavior: 'smooth', inline: 'start' });
                     console.log('Scrolled to #svg-start anchor after delay');
                 }
+                // Mark initial scroll as complete after animation
+                setTimeout(() => {
+                    isInitialScroll = false;
+                    console.log('Initial scroll complete, enabling scroll listener');
+                }, 500); // Approximate duration of smooth scroll animation
             }, 100);
 
             // Define the scroll handler
             window.starMapScrollListener = () => {
-                const scrollLeft = starMapContainer.scrollLeft;
+                if (isInitialScroll) {
+                    console.log('Ignoring scroll event during initial scroll animation');
+                    return; // Ignore scroll events during initial animation
+                }
 
-                // Handle info-overlay visibility
                 if (localStorage.getItem('infoOverlayHidden') === 'true') {
                     return; // Do not show again until page reload
                 }
 
+                const scrollLeft = starMapContainer.scrollLeft;
                 // Fade out immediately on right-scroll
-                if (scrollLeft > scrollTarget + threshold) {
+                if (scrollLeft > scrollTarget + threshold) { // 280 + 50 = 330
                     infoOverlay.classList.add('hidden');
                     localStorage.setItem('infoOverlayHidden', 'true');
                     console.log('Info-overlay hidden on right-scroll');
                 }
                 // Fade out gradually on left-scroll
-                else if (scrollLeft < scrollTarget - threshold) {
+                else if (scrollLeft < scrollTarget - threshold) { // 280 - 50 = 230
                     infoOverlay.classList.add('hidden');
                     localStorage.setItem('infoOverlayHidden', 'true');
                     console.log('Info-overlay hidden on left-scroll');
@@ -1049,51 +1055,6 @@ waitForDOM().then(() => {
                     infoOverlay.classList.remove('hidden');
                     console.log('Info-overlay visible within threshold');
                 }
-
-                // Handle scroll stop at anchor point
-                if (isBouncing) return; // Prevent interference during bounce animation
-
-                // Determine scroll direction
-                const scrollingRight = scrollLeft > lastScrollLeft;
-                const scrollingLeft = scrollLeft < lastScrollLeft;
-
-                // Check if crossing the anchor point
-                if (scrollingRight && scrollLeft > scrollTarget && lastScrollLeft <= scrollTarget) {
-                    // Scrolling right past the anchor
-                    if (!hasCrossedAnchor) {
-                        // First crossing: stop at anchor with bouncy effect
-                        isBouncing = true;
-                        starMapContainer.scrollTo({
-                            left: scrollTarget,
-                            behavior: 'smooth'
-                        });
-                        console.log('Caught scroll at anchor (scrolling right)');
-                        setTimeout(() => {
-                            isBouncing = false;
-                            hasCrossedAnchor = true; // Allow crossing on next scroll
-                        }, 500); // Duration of bounce animation
-                    }
-                } else if (scrollingLeft && scrollLeft < scrollTarget && lastScrollLeft >= scrollTarget) {
-                    // Scrolling left past the anchor
-                    if (!hasCrossedAnchor) {
-                        // First crossing: stop at anchor with bouncy effect
-                        isBouncing = true;
-                        starMapContainer.scrollTo({
-                            left: scrollTarget,
-                            behavior: 'smooth'
-                        });
-                        console.log('Caught scroll at anchor (scrolling left)');
-                        setTimeout(() => {
-                            isBouncing = false;
-                            hasCrossedAnchor = true; // Allow crossing on next scroll
-                        }, 500); // Duration of bounce animation
-                    }
-                } else if (Math.abs(scrollLeft - scrollTarget) > threshold) {
-                    // If the user has scrolled significantly past the anchor, reset the crossing state
-                    hasCrossedAnchor = false;
-                }
-
-                lastScrollLeft = scrollLeft;
             };
 
             // Attach the scroll listener
@@ -1105,7 +1066,6 @@ waitForDOM().then(() => {
                 console.log('Info-overlay clicked, scrolling to scrollLeft = 0');
                 localStorage.setItem('infoOverlayHidden', 'true'); // Hide after click
                 infoOverlay.classList.add('hidden');
-                hasCrossedAnchor = false; // Reset crossing state when clicking overlay
             };
 
             // Attach the click listener
@@ -1120,7 +1080,7 @@ waitForDOM().then(() => {
                 } else {
                     console.log('Initial check: Info-overlay hidden');
                 }
-            }, 600);
+            }, 600); // Increased delay to ensure scroll animation completes
         }
     }
 
