@@ -5,6 +5,7 @@
     --orange: #ff8c00;
     --dark-bg: #000000;
     --semi-dark: #4a4a4a;
+    --grey: #999999;
 }
 
 /* Global Styles */
@@ -997,7 +998,7 @@ body.popup-open .student-manager {
 #globalStudentSelect {
     height: 35px;
     width: 180px;
-    background: var(--semi-dark) url('data:image/svg+xml;utf8,<svg fill="%23ffffff" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>') no-repeat right 10px center;
+    background: var(--grey) url('data:image/svg+xml;utf8,<svg fill="%23ffffff" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>') no-repeat right 10px center;
     background-size: 16px;
     color: #ffffff;
     border: 2px solid var(--orange);
