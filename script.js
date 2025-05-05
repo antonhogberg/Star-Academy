@@ -937,37 +937,6 @@ waitForDOM().then(() => {
     handleUserNamePopup();
     setInitialLanguage();
     
-    const globalSelect = document.getElementById('globalStudentSelect');
-    const userNameDisplay = document.getElementById('userNameDisplay');
-    if (globalSelect) {
-        console.log('globalStudentSelect found, updating dropdown and binding change event');
-        if (typeof updateDropdown === 'function') {
-            updateDropdown();
-        } else {
-            console.error('updateDropdown not defined');
-        }
-
-        globalSelect.addEventListener('change', (event) => {
-            console.log('globalStudentSelect changed');
-            const selectedValue = event.target.value;
-
-            if (window.location.pathname.toLowerCase().includes('starmap.html')) {
-                console.log('Reloading starmap.html with new user query parameter');
-                const url = new URL(window.location);
-                url.searchParams.set('newUser', selectedValue);
-                window.location.href = url.toString();
-            } else {
-                switchStudent(selectedValue);
-                if (userNameDisplay) {
-                    const studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
-                    userNameDisplay.textContent = studentsData.currentStudent || '';
-                }
-            }
-        });
-    } else {
-        console.error('globalStudentSelect not found after injectMenu');
-    }
-
     if (window.location.pathname.toLowerCase().includes('starmap.html')) {
         const urlParams = new URLSearchParams(window.location.search);
         const newUser = urlParams.get('newUser');
@@ -982,10 +951,36 @@ waitForDOM().then(() => {
         const starMapContainer = document.querySelector('.star-map-container');
         const infoOverlay = document.querySelector('.info-overlay');
         if (starMapContainer && infoOverlay) {
+            // Initialize hidden state in localStorage if not set
+            if (localStorage.getItem('infoOverlayHidden') === null) {
+                localStorage.setItem('infoOverlayHidden', 'false');
+            }
+
+            // Reset hidden state on full page load (not cache)
+            window.addEventListener('pageshow', (event) => {
+                if (event.persisted) {
+                    console.log('Page loaded from BFCache, forcing reload...');
+                    window.location.reload();
+                } else {
+                    console.log('Page fully loaded, resetting infoOverlayHidden');
+                    localStorage.setItem('infoOverlayHidden', 'false');
+                }
+            });
+
+            // Remove any existing scroll listeners to prevent duplicates
+            if (window.starMapScrollListener) {
+                starMapContainer.removeEventListener('scroll', window.starMapScrollListener);
+            }
+
+            // Remove any existing click listeners to prevent duplicates
+            if (window.infoOverlayClickListener) {
+                infoOverlay.removeEventListener('click', window.infoOverlayClickListener);
+            }
+
             // Determine scroll target based on device (500px desktop, 300px mobile)
             const isMobile = window.matchMedia("(max-width: 767px) and (orientation: portrait)").matches;
             const scrollTarget = isMobile ? 300 : 500;
-            const threshold = 50; // Threshold for showing info-overlay
+            const threshold = 50; // Threshold for showing info-overlay on left-scroll
 
             // Scroll to #svg-start anchor if present
             const svgStartAnchor = document.getElementById('svg-start');
@@ -998,27 +993,52 @@ waitForDOM().then(() => {
                 console.log(`Fallback: Set scrollLeft to ${scrollTarget}px`);
             }
 
-            // Update info-overlay visibility on scroll
-            starMapContainer.addEventListener('scroll', () => {
-                const scrollLeft = starMapContainer.scrollLeft;
-                if (Math.abs(scrollLeft - scrollTarget) < threshold) {
-                    infoOverlay.classList.remove('hidden');
-                } else {
-                    infoOverlay.classList.add('hidden');
+            // Define the scroll handler
+            window.starMapScrollListener = () => {
+                if (localStorage.getItem('infoOverlayHidden') === 'true') {
+                    return; // Do not show again until page reload
                 }
-            });
 
-            // Add click event to scroll to description
-            infoOverlay.addEventListener('click', () => {
+                const scrollLeft = starMapContainer.scrollLeft;
+                // Fade out immediately on right-scroll
+                if (scrollLeft > scrollTarget) {
+                    infoOverlay.classList.add('hidden');
+                    localStorage.setItem('infoOverlayHidden', 'true');
+                    console.log('Info-overlay hidden on right-scroll');
+                }
+                // Fade out gradually on left-scroll
+                else if (scrollLeft < scrollTarget - threshold) {
+                    infoOverlay.classList.add('hidden');
+                    localStorage.setItem('infoOverlayHidden', 'true');
+                    console.log('Info-overlay hidden on left-scroll');
+                }
+                // Keep visible within threshold on initial load
+                else {
+                    infoOverlay.classList.remove('hidden');
+                    console.log('Info-overlay visible within threshold');
+                }
+            };
+
+            // Attach the scroll listener
+            starMapContainer.addEventListener('scroll', window.starMapScrollListener);
+
+            // Define the click handler
+            window.infoOverlayClickListener = () => {
                 starMapContainer.scrollTo({ left: 0, behavior: 'smooth' });
                 console.log('Info-overlay clicked, scrolling to scrollLeft = 0');
-            });
+                localStorage.setItem('infoOverlayHidden', 'true'); // Hide after click
+                infoOverlay.classList.add('hidden');
+            };
+
+            // Attach the click listener
+            infoOverlay.addEventListener('click', window.infoOverlayClickListener);
 
             // Initial check for info-overlay visibility
-            if (Math.abs(starMapContainer.scrollLeft - scrollTarget) < threshold) {
+            if (Math.abs(starMapContainer.scrollLeft - scrollTarget) < threshold && localStorage.getItem('infoOverlayHidden') === 'false') {
                 infoOverlay.classList.remove('hidden');
             } else {
                 infoOverlay.classList.add('hidden');
+                localStorage.setItem('infoOverlayHidden', 'true');
             }
         }
     }
@@ -1038,6 +1058,7 @@ waitForDOM().then(() => {
                 console.log('Initializing Star Map');
                 setTimeout(() => {
                     window.initializeStarMap();
+                    const userNameDisplay = document.getElementById('userNameDisplay');
                     if (userNameDisplay) {
                         userNameDisplay.textContent = studentsData.currentStudent || '';
                     }
@@ -1048,13 +1069,6 @@ waitForDOM().then(() => {
         } else {
             console.error('Star Map SVG not found');
         }
-
-        window.addEventListener('pageshow', (event) => {
-            if (event.persisted) {
-                console.log('Page loaded from BFCache, forcing reload...');
-                window.location.reload();
-            }
-        });
     }
 
     if (window.location.pathname.toLowerCase().includes('chapter') && typeof window.initializeChapter === 'function') {
@@ -1064,6 +1078,7 @@ waitForDOM().then(() => {
             console.log('Initializing Chapter');
             setTimeout(() => {
                 window.initializeChapter();
+                const userNameDisplay = document.getElementById('userNameDisplay');
                 if (userNameDisplay) {
                     userNameDisplay.textContent = studentsData.currentStudent || '';
                 }
