@@ -1416,20 +1416,20 @@ body.popup-open .student-manager {
 }
 
 .star-map-steps p {
-    margin-bottom: 15px;
+    margin-bottom: 35px; /* Increased to add more space (17.5px above and below the line) */
     white-space: normal;
-    position: relative; /* For positioning the separator line */
+    position: relative;
 }
 
 .star-map-steps p:not(:last-child)::after {
     content: '';
     position: absolute;
-    bottom: -7.5px; /* Half of margin-bottom to center the line between paragraphs */
+    bottom: -17.5px; /* Center the line in the 35px gap */
     left: 50%;
     transform: translateX(-50%);
-    width: 35%; /* 30-40% of the container's width */
+    width: 42.5%; /* Increased to 40-45% of the container's width */
     height: 1px;
-    background-color: var(--grey);
+    background-color: #ffffff; /* Changed to white */
 }
 
 .star-map-steps p:last-child {
