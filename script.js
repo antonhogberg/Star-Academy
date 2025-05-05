@@ -88,7 +88,7 @@ const translations = {
         menuFrontPage: "Stjärnöversikt",
         menuChapter: "Kapitel",
         menuStudents: "För lärare",
-        menuStarMap: "Stjärnkarta",
+        menuStarMap: "Stjärnkartan",
         menuChapters: "Kapitel",
         menuFAQ: "Vanliga frågor",
         menuRemove: "Radera elev",
@@ -1009,6 +1009,9 @@ waitForDOM().then(() => {
             const scrollTarget = 280; // Adjusted to match #svg-start position (~300 - 20 from viewBox)
             const threshold = 50; // Threshold for showing info-overlay on left-scroll
 
+            // Flag to disable scroll listener during initial scroll
+            let isInitialScroll = true;
+
             // Explicitly scroll to #svg-start anchor after DOM and styles are set
             setTimeout(() => {
                 const svgStartAnchor = document.getElementById('svg-start');
@@ -1016,23 +1019,33 @@ waitForDOM().then(() => {
                     svgStartAnchor.scrollIntoView({ behavior: 'smooth', inline: 'start' });
                     console.log('Scrolled to #svg-start anchor after delay');
                 }
+                // Mark initial scroll as complete after animation
+                setTimeout(() => {
+                    isInitialScroll = false;
+                    console.log('Initial scroll complete, enabling scroll listener');
+                }, 500); // Approximate duration of smooth scroll animation
             }, 100);
 
             // Define the scroll handler
             window.starMapScrollListener = () => {
+                if (isInitialScroll) {
+                    console.log('Ignoring scroll event during initial scroll animation');
+                    return; // Ignore scroll events during initial animation
+                }
+
                 if (localStorage.getItem('infoOverlayHidden') === 'true') {
                     return; // Do not show again until page reload
                 }
 
                 const scrollLeft = starMapContainer.scrollLeft;
                 // Fade out immediately on right-scroll
-                if (scrollLeft > scrollTarget + threshold) { // Adjusted to allow small movements
+                if (scrollLeft > scrollTarget + threshold) { // 280 + 50 = 330
                     infoOverlay.classList.add('hidden');
                     localStorage.setItem('infoOverlayHidden', 'true');
                     console.log('Info-overlay hidden on right-scroll');
                 }
                 // Fade out gradually on left-scroll
-                else if (scrollLeft < scrollTarget - threshold) {
+                else if (scrollLeft < scrollTarget - threshold) { // 280 - 50 = 230
                     infoOverlay.classList.add('hidden');
                     localStorage.setItem('infoOverlayHidden', 'true');
                     console.log('Info-overlay hidden on left-scroll');
@@ -1065,10 +1078,9 @@ waitForDOM().then(() => {
                     infoOverlay.classList.remove('hidden');
                     console.log('Initial check: Info-overlay shown');
                 } else {
-                    infoOverlay.classList.add('hidden');
                     console.log('Initial check: Info-overlay hidden');
                 }
-            }, 300);
+            }, 600); // Increased delay to ensure scroll animation completes
         }
     }
 
