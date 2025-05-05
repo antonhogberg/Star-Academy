@@ -1308,6 +1308,8 @@ body.popup-open .student-manager {
     width: 100%;
     height: calc(100vh - 70px);
     flex-shrink: 0;
+    white-space: nowrap;
+    display: flex;
 }
 
 .star-map-container svg {
@@ -1387,29 +1389,17 @@ body.popup-open .student-manager {
     padding: 20px;
     box-sizing: border-box;
     overflow-y: auto;
+    border: 2px solid #ff6200; /* Orange border */
+    border-radius: 10px; /* Rounded corners */
+    margin-left: 20px; /* 20px margin from the left edge */
 }
 
 .description-container h3 {
-    font-size: 20px;
-    margin: 0 0 10px;
-    color: #ffffff;
+    text-align: center; /* Center the title */
 }
 
-.description-container ul {
-    list-style-type: disc;
-    padding-left: 20px;
-    margin: 0;
-}
-
-.description-container li {
-    font-size: 18px;
-    margin-bottom: 10px;
-    line-height: 1.4;
-}
-
-/* Bold the start of bullet points (e.g., "Börja med Stjärna 1:1:1:") */
-.description-container li strong {
-    font-weight: bold;
+.description-container ul li span[data-translate] {
+    font-weight: normal; /* Ensure semi-titles are not bold */
 }
 
 /* Responsive adjustments for Star Map */

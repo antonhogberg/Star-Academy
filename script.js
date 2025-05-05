@@ -572,7 +572,20 @@ function switchLanguage(lang) {
     if (starMapTitle) starMapTitle.textContent = translations[lang].starMapTitle;
     document.querySelectorAll('.description-container li[data-translate]').forEach(li => {
         const key = li.getAttribute('data-translate');
-        if (translations[lang][key]) li.textContent = translations[lang][key];
+        if (translations[lang][key]) {
+            const translatedText = translations[lang][key];
+            // Split the translated text at the first colon to separate the semi-title
+            const parts = translatedText.split(':', 1);
+            if (parts.length > 0) {
+                const semiTitle = parts[0] + ':'; // Include the colon in the semi-title
+                const restOfText = translatedText.substring(semiTitle.length).trim();
+                // Reconstruct the HTML with the semi-title in <strong>
+                li.innerHTML = `<strong>${semiTitle}</strong> ${restOfText}`;
+            } else {
+                // Fallback: if no colon, just set the text
+                li.textContent = translatedText;
+            }
+        }
     });
 
     // Export section (students.html)
