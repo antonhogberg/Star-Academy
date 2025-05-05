@@ -1230,7 +1230,7 @@ waitForDOM().then(() => {
             }
             starMapContainer.style.position = 'fixed';
             starMapContainer.style.transform = 'none';
-
+    
             const starMapSvg = starMapContainer.querySelector('svg');
             if (starMapSvg) {
                 if (isMobile) {
@@ -1238,10 +1238,10 @@ waitForDOM().then(() => {
                     starMapSvg.style.width = 'auto';
                 } else {
                     starMapSvg.style.height = `${starMapContainer.clientHeight - totalBorderHeight}px`;
-                    starMapSvg.style.width = '2780px'; /* Matches cropped SVG */
+                    starMapSvg.style.width = '2780px'; /* Matches new SVG width */
                 }
             }
-
+    
             console.log('Star Map Height:', starMapContainer.style.height, 'Viewport Height:', viewportHeight, 'px', 'Title Height:', titleHeight, 'px', 'Top Position:', topPosition, 'px', 'Body Border Width:', bodyBorderWidth, 'px', 'Is Mobile:', isMobile, 'Is iPad:', isIPad);
         }
     };
