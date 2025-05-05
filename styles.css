@@ -1324,34 +1324,6 @@ body.popup-open .student-manager {
     transform: none;
 }
 
-.description-container {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 300px;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.8);
-    color: #ffffff;
-    padding: 20px;
-    box-sizing: border-box;
-    overflow-y: auto;
-}
-.description-container h3 {
-    font-size: 20px;
-    margin: 0 0 10px;
-    color: #ffffff;
-}
-.description-container ul {
-    list-style-type: disc;
-    padding-left: 20px;
-    margin: 0;
-}
-.description-container li {
-    font-size: 18px;
-    margin-bottom: 10px;
-    line-height: 1.4;
-}
-
 .info-overlay {
     position: absolute;
     top: 50%;
@@ -1370,21 +1342,43 @@ body.popup-open .student-manager {
     display: none;
 }
 
-.info-overlay .arrow {
-    font-size: 24px;
+.info-overlay .arrow,
+.info-overlay .info-icon {
     color: #ffd700;
+    font-size: 24px;
+    margin-right: 5px;
+    line-height: 1;
 }
 
-.info-overlay .info-icon {
+.description-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 500px;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    color: #ffffff;
+    padding: 20px;
+    box-sizing: border-box;
+    overflow-y: auto;
+}
+
+.description-container h3 {
+    font-size: 20px;
+    margin: 0 0 10px;
+    color: #ffffff;
+}
+
+.description-container ul {
+    list-style-type: disc;
+    padding-left: 20px;
+    margin: 0;
+}
+
+.description-container li {
     font-size: 18px;
-    font-weight: bold;
-    color: #ffd700;
-    border-radius: 50%;
-    width: 24px;
-    height: 24px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    margin-bottom: 10px;
+    line-height: 1.4;
 }
 
 /* Responsive adjustments for Star Map */
@@ -1399,7 +1393,7 @@ body.popup-open .student-manager {
     }
 
     .description-container {
-        width: 200px;
+        width: 300px;
     }
     .description-container h3 {
         font-size: 18px;
