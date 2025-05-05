@@ -991,9 +991,6 @@ waitForDOM().then(() => {
                 if (event.persisted) {
                     console.log('Page loaded from BFCache, forcing reload...');
                     window.location.reload();
-                } else {
-                    console.log('Page fully loaded, resetting infoOverlayHidden');
-                    localStorage.setItem('infoOverlayHidden', 'false');
                 }
             });
 
@@ -1070,7 +1067,6 @@ waitForDOM().then(() => {
                     console.log('Initial check: Info-overlay shown');
                 } else {
                     infoOverlay.classList.add('hidden');
-                    localStorage.setItem('infoOverlayHidden', 'true');
                     console.log('Initial check: Info-overlay hidden');
                 }
             }, 100);
