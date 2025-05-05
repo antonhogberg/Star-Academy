@@ -952,81 +952,15 @@ waitForDOM().then(() => {
             const selectedValue = event.target.value;
 
             if (window.location.pathname.toLowerCase().includes('starmap.html')) {
-                const urlParams = new URLSearchParams(window.location.search);
-                const newUser = urlParams.get('newUser');
-                if (newUser) {
-                    console.log(`Switching to user ${newUser} from query parameter`);
-                    window.studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || {
-                        students: {},
-                        currentStudent: ''
-                    };
-                    window.studentsData.currentStudent = newUser;
-                    localStorage.setItem('starAcademyStudents', JSON.stringify(window.studentsData));
-                    
-                    const cleanUrl = window.location.pathname + (window.location.hash || '');
-                    window.history.replaceState({}, document.title, cleanUrl);
-                }
-            
-                // Ensure initial scroll position and add scroll/click listeners for info overlay
-                const starMapContainer = document.querySelector('.star-map-container');
-                const infoOverlay = document.querySelector('.info-overlay');
-                if (starMapContainer && infoOverlay) {
-                    // Determine scroll target based on device (500px desktop, 300px mobile)
-                    const isMobile = window.matchMedia("(max-width: 767px) and (orientation: portrait)").matches;
-                    const scrollTarget = isMobile ? 300 : 500;
-                    const threshold = 50; // Threshold for showing info-overlay on left-scroll
-                    let hasHidden = false; // Flag to track if overlay has been hidden
-            
-                    // Scroll to #svg-start anchor if present
-                    const svgStartAnchor = document.getElementById('svg-start');
-                    if (svgStartAnchor) {
-                        svgStartAnchor.scrollIntoView({ behavior: 'smooth', inline: 'start' });
-                        console.log('Scrolled to #svg-start anchor');
-                    } else {
-                        // Fallback to manual scroll
-                        starMapContainer.scrollLeft = scrollTarget;
-                        console.log(`Fallback: Set scrollLeft to ${scrollTarget}px`);
-                    }
-            
-                    // Update info-overlay visibility on scroll
-                    starMapContainer.addEventListener('scroll', () => {
-                        if (hasHidden) return; // Do not show again until page reload
-            
-                        const scrollLeft = starMapContainer.scrollLeft;
-                        // Fade out immediately on right-scroll
-                        if (scrollLeft > scrollTarget) {
-                            infoOverlay.classList.add('hidden');
-                            hasHidden = true;
-                            console.log('Info-overlay hidden on right-scroll');
-                        }
-                        // Fade out gradually on left-scroll
-                        else if (scrollLeft < scrollTarget - threshold) {
-                            infoOverlay.classList.add('hidden');
-                            hasHidden = true;
-                            console.log('Info-overlay hidden on left-scroll');
-                        }
-                        // Keep visible within threshold on initial load
-                        else {
-                            infoOverlay.classList.remove('hidden');
-                            console.log('Info-overlay visible within threshold');
-                        }
-                    });
-            
-                    // Add click event to scroll to description
-                    infoOverlay.addEventListener('click', () => {
-                        starMapContainer.scrollTo({ left: 0, behavior: 'smooth' });
-                        console.log('Info-overlay clicked, scrolling to scrollLeft = 0');
-                        hasHidden = true; // Hide after click
-                        infoOverlay.classList.add('hidden');
-                    });
-            
-                    // Initial check for info-overlay visibility
-                    if (Math.abs(starMapContainer.scrollLeft - scrollTarget) < threshold) {
-                        infoOverlay.classList.remove('hidden');
-                    } else {
-                        infoOverlay.classList.add('hidden');
-                        hasHidden = true;
-                    }
+                console.log('Reloading starmap.html with new user query parameter');
+                const url = new URL(window.location);
+                url.searchParams.set('newUser', selectedValue);
+                window.location.href = url.toString();
+            } else {
+                switchStudent(selectedValue);
+                if (userNameDisplay) {
+                    const studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
+                    userNameDisplay.textContent = studentsData.currentStudent || '';
                 }
             }
         });
@@ -1039,13 +973,7 @@ waitForDOM().then(() => {
         const newUser = urlParams.get('newUser');
         if (newUser) {
             console.log(`Switching to user ${newUser} from query parameter`);
-            window.studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || {
-                students: {},
-                currentStudent: ''
-            };
-            window.studentsData.currentStudent = newUser;
-            localStorage.setItem('starAcademyStudents', JSON.stringify(window.studentsData));
-            
+            switchStudent(newUser);
             const cleanUrl = window.location.pathname + (window.location.hash || '');
             window.history.replaceState({}, document.title, cleanUrl);
         }
@@ -1230,7 +1158,7 @@ waitForDOM().then(() => {
             }
             starMapContainer.style.position = 'fixed';
             starMapContainer.style.transform = 'none';
-    
+
             const starMapSvg = starMapContainer.querySelector('svg');
             if (starMapSvg) {
                 if (isMobile) {
@@ -1241,7 +1169,7 @@ waitForDOM().then(() => {
                     starMapSvg.style.width = '2780px'; /* Matches new SVG width */
                 }
             }
-    
+
             console.log('Star Map Height:', starMapContainer.style.height, 'Viewport Height:', viewportHeight, 'px', 'Title Height:', titleHeight, 'px', 'Top Position:', topPosition, 'px', 'Body Border Width:', bodyBorderWidth, 'px', 'Is Mobile:', isMobile, 'Is iPad:', isIPad);
         }
     };
