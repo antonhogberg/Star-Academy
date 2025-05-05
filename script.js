@@ -980,9 +980,8 @@ waitForDOM().then(() => {
 
         // Ensure initial scroll position and add scroll/click listeners for info overlay
         const starMapContainer = document.querySelector('.star-map-container');
-        const descriptionContainer = document.querySelector('.description-container');
         const infoOverlay = document.querySelector('.info-overlay');
-        if (starMapContainer && descriptionContainer && infoOverlay) {
+        if (starMapContainer && infoOverlay) {
             // Reset hidden state immediately on page load
             localStorage.setItem('infoOverlayHidden', 'false');
             console.log('Reset infoOverlayHidden to false on page load');
@@ -1005,61 +1004,48 @@ waitForDOM().then(() => {
                 infoOverlay.removeEventListener('click', window.infoOverlayClickListener);
             }
 
-            // Determine scroll target based on device (end of description container)
+            // Determine scroll target based on device and anchor position
             const isMobile = window.matchMedia("(max-width: 767px) and (orientation: portrait)").matches;
-            const scrollTarget = isMobile ? 300 : 500; // End of description container
-            const threshold = 50; // Threshold for showing info-overlay and scroll stop
+            const scrollTarget = 280; // Adjusted to match #svg-start position (~300 - 20 from viewBox)
+            const threshold = 50; // Threshold for showing info-overlay on left-scroll
 
-            // State for scroll stop
-            let hasCrossedStopPoint = false; // Tracks if the user has crossed the stop point
-            let isTouching = false; // Tracks if the user is currently touching
-            let touchStartX = 0; // Tracks the starting X position of a touch gesture
+            // Flag to disable scroll listener during initial scroll
+            let isInitialScroll = true;
 
-            // Explicitly scroll to the stop point after DOM and styles are set
+            // Explicitly scroll to #svg-start anchor after DOM and styles are set
             setTimeout(() => {
-                starMapContainer.scrollTo({
-                    left: scrollTarget,
-                    behavior: 'smooth'
-                });
-                console.log('Scrolled to stop point after delay');
-            }, 100);
-
-            // Handle touchstart to track the start of a swipe
-            starMapContainer.addEventListener('touchstart', (event) => {
-                isTouching = true;
-                touchStartX = event.touches[0].clientX;
-                console.log('Touch started at x:', touchStartX);
-            });
-
-            // Handle touchend to reset touch state
-            starMapContainer.addEventListener('touchend', () => {
-                isTouching = false;
-                // Reset hasCrossedStopPoint after the gesture ends
+                const svgStartAnchor = document.getElementById('svg-start');
+                if (svgStartAnchor) {
+                    svgStartAnchor.scrollIntoView({ behavior: 'smooth', inline: 'start' });
+                    console.log('Scrolled to #svg-start anchor after delay');
+                }
+                // Mark initial scroll as complete after animation
                 setTimeout(() => {
-                    if (Math.abs(starMapContainer.scrollLeft - scrollTarget) > threshold) {
-                        hasCrossedStopPoint = false;
-                    }
-                }, 500); // Delay to allow momentum scrolling to settle
-                console.log('Touch ended');
-            });
+                    isInitialScroll = false;
+                    console.log('Initial scroll complete, enabling scroll listener');
+                }, 500); // Approximate duration of smooth scroll animation
+            }, 100);
 
             // Define the scroll handler
             window.starMapScrollListener = () => {
-                const scrollLeft = starMapContainer.scrollLeft;
+                if (isInitialScroll) {
+                    console.log('Ignoring scroll event during initial scroll animation');
+                    return; // Ignore scroll events during initial animation
+                }
 
-                // Handle info-overlay visibility
                 if (localStorage.getItem('infoOverlayHidden') === 'true') {
                     return; // Do not show again until page reload
                 }
 
+                const scrollLeft = starMapContainer.scrollLeft;
                 // Fade out immediately on right-scroll
-                if (scrollLeft > scrollTarget + threshold) {
+                if (scrollLeft > scrollTarget + threshold) { // 280 + 50 = 330
                     infoOverlay.classList.add('hidden');
                     localStorage.setItem('infoOverlayHidden', 'true');
                     console.log('Info-overlay hidden on right-scroll');
                 }
                 // Fade out gradually on left-scroll
-                else if (scrollLeft < scrollTarget - threshold) {
+                else if (scrollLeft < scrollTarget - threshold) { // 280 - 50 = 230
                     infoOverlay.classList.add('hidden');
                     localStorage.setItem('infoOverlayHidden', 'true');
                     console.log('Info-overlay hidden on left-scroll');
@@ -1068,32 +1054,6 @@ waitForDOM().then(() => {
                 else {
                     infoOverlay.classList.remove('hidden');
                     console.log('Info-overlay visible within threshold');
-                }
-
-                // Enhance scroll-snap-stop with two-gesture requirement
-                if (isTouching) {
-                    const scrollingRight = scrollLeft > scrollTarget;
-                    const scrollingLeft = scrollLeft < scrollTarget;
-
-                    if (scrollingRight && scrollLeft > scrollTarget && !hasCrossedStopPoint) {
-                        // Scrolling right past the stop point
-                        starMapContainer.scrollTo({
-                            left: scrollTarget,
-                            behavior: 'smooth'
-                        });
-                        starMapContainer.classList.add('rubberband');
-                        console.log('Enhanced scroll-snap-stop (scrolling right)');
-                        hasCrossedStopPoint = true; // Allow crossing on next scroll
-                    } else if (scrollingLeft && scrollLeft < scrollTarget && !hasCrossedStopPoint) {
-                        // Scrolling left past the stop point
-                        starMapContainer.scrollTo({
-                            left: scrollTarget,
-                            behavior: 'smooth'
-                        });
-                        starMapContainer.classList.add('rubberband');
-                        console.log('Enhanced scroll-snap-stop (scrolling left)');
-                        hasCrossedStopPoint = true; // Allow crossing on next scroll
-                    }
                 }
             };
 
@@ -1106,7 +1066,6 @@ waitForDOM().then(() => {
                 console.log('Info-overlay clicked, scrolling to scrollLeft = 0');
                 localStorage.setItem('infoOverlayHidden', 'true'); // Hide after click
                 infoOverlay.classList.add('hidden');
-                hasCrossedStopPoint = false; // Reset crossing state when clicking overlay
             };
 
             // Attach the click listener
@@ -1121,7 +1080,7 @@ waitForDOM().then(() => {
                 } else {
                     console.log('Initial check: Info-overlay hidden');
                 }
-            }, 600);
+            }, 600); // Increased delay to ensure scroll animation completes
         }
     }
 
