@@ -1297,6 +1297,29 @@ body.popup-open .student-manager {
     max-width: 200px;
 }
 
+#scroll-stop-point {
+    position: absolute;
+    top: 0;
+    left: 500px; /* Matches description-container width on desktop */
+}
+
+@media (max-width: 767px) and (orientation: portrait) {
+    #scroll-stop-point {
+        left: 300px; /* Matches description-container width on mobile */
+    }
+}
+
+.star-map-container.rubberband {
+    animation: rubberband 0.5s ease-out;
+}
+
+@keyframes rubberband {
+    0% { transform: scaleX(1); }
+    30% { transform: scaleX(1.25); }
+    60% { transform: scaleX(0.75); }
+    100% { transform: scaleX(1); }
+}
+
 /* Star Map Styles */
 .star-map-container {
     position: fixed;
