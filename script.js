@@ -1004,21 +1004,10 @@ waitForDOM().then(() => {
                 infoOverlay.removeEventListener('click', window.infoOverlayClickListener);
             }
 
-            // Determine scroll target based on device (500px desktop, 300px mobile)
+            // Determine scroll target based on device and anchor position
             const isMobile = window.matchMedia("(max-width: 767px) and (orientation: portrait)").matches;
-            const scrollTarget = isMobile ? 300 : 500;
+            const scrollTarget = 280; // Adjusted to match #svg-start position (~300 - 20 from viewBox)
             const threshold = 50; // Threshold for showing info-overlay on left-scroll
-
-            // Scroll to #svg-start anchor if present
-            const svgStartAnchor = document.getElementById('svg-start');
-            if (svgStartAnchor) {
-                svgStartAnchor.scrollIntoView({ behavior: 'smooth', inline: 'start' });
-                console.log('Scrolled to #svg-start anchor');
-            } else {
-                // Fallback to manual scroll
-                starMapContainer.scrollLeft = scrollTarget;
-                console.log(`Fallback: Set scrollLeft to ${scrollTarget}px`);
-            }
 
             // Define the scroll handler
             window.starMapScrollListener = () => {
@@ -1062,6 +1051,7 @@ waitForDOM().then(() => {
 
             // Initial check for info-overlay visibility (delayed to ensure scroll position is set)
             setTimeout(() => {
+                console.log('Initial scrollLeft:', starMapContainer.scrollLeft);
                 if (Math.abs(starMapContainer.scrollLeft - scrollTarget) < threshold && localStorage.getItem('infoOverlayHidden') === 'false') {
                     infoOverlay.classList.remove('hidden');
                     console.log('Initial check: Info-overlay shown');
@@ -1069,7 +1059,7 @@ waitForDOM().then(() => {
                     infoOverlay.classList.add('hidden');
                     console.log('Initial check: Info-overlay hidden');
                 }
-            }, 100);
+            }, 300);
         }
     }
 
