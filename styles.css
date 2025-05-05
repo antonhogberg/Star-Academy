@@ -1299,6 +1299,7 @@ body.popup-open .student-manager {
 
 /* Star Map Styles */
 .star-map-container {
+    scroll-snap-type: x mandatory;
     position: fixed;
     top: 70px;
     transform: none;
@@ -1308,6 +1309,8 @@ body.popup-open .student-manager {
     width: 100%;
     height: calc(100vh - 70px);
     flex-shrink: 0;
+    white-space: nowrap;
+    display: flex;
 }
 
 .star-map-container svg {
@@ -1322,6 +1325,10 @@ body.popup-open .student-manager {
     position: absolute;
     top: 0;
     transform: none;
+}
+
+.star-map-container.rubberband {
+    animation: rubberband 0.5s ease-out;
 }
 
 .info-overlay {
@@ -1369,6 +1376,13 @@ body.popup-open .student-manager {
     justify-content: center;
 }
 
+@keyframes rubberband {
+    0% { transform: scaleX(1); }
+    30% { transform: scaleX(1.25); }
+    60% { transform: scaleX(0.75); }
+    100% { transform: scaleX(1); }
+}
+
 /* Pulsating animation */
 @keyframes pulse {
     0% { transform: translateY(-50%) scale(1); }
@@ -1387,6 +1401,9 @@ body.popup-open .student-manager {
     padding: 20px;
     box-sizing: border-box;
     overflow-y: auto;
+    scroll-snap-align: end;
+    scroll-snap-stop: always;
+    flex: 0 0 auto;
 }
 
 .description-container h3 {
