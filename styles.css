@@ -1370,29 +1370,22 @@ body.popup-open .student-manager {
     display: none;
 }
 
-.info-overlay .arrow,
-.info-overlay .info-icon {
+.info-overlay .arrow {
+    font-size: 24px;
     color: #ffd700;
-    font-size: 24px;
-    margin-right: 5px;
-}
-/* .info-overlay .arrow {
-    font-size: 24px;
-    color: #ff8c00;
 }
 
 .info-overlay .info-icon {
     font-size: 18px;
     font-weight: bold;
-    color: #ff8c00;
-    border: 2px solid #ff8c00;
+    color: #ffd700;
     border-radius: 50%;
     width: 24px;
     height: 24px;
     display: flex;
     align-items: center;
     justify-content: center;
-} */
+}
 
 /* Responsive adjustments for Star Map */
 @media (max-width: 767px) and (orientation: portrait) {
