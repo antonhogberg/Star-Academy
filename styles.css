@@ -1315,7 +1315,7 @@ body.popup-open .student-manager {
     height: 100% !important;
     display: block;
     position: relative;
-    left: 300px; /* Offset to account for the description width */
+    left: 500px; /* Offset to account for the description width */
 }
 
 .star-map-container svg#starMap {
@@ -1389,7 +1389,7 @@ body.popup-open .student-manager {
     }
 
     .star-map-container svg {
-        left: 200px; /* Smaller offset for smaller screens */
+        left: 300px; /* Smaller offset for smaller screens */
     }
 
     .description-container {
