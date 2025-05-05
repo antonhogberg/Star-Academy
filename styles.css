@@ -1334,36 +1334,49 @@ body.popup-open .student-manager {
     color: #ffffff;
     padding: 20px;
     box-sizing: border-box;
-    z-index: 10;
+    overflow-y: auto;
 }
-
-.description-container p {
+.description-container h3 {
+    font-size: 20px;
+    margin: 0 0 10px;
+    color: #ffffff;
+}
+.description-container ul {
+    list-style-type: disc;
+    padding-left: 20px;
     margin: 0;
-    font-family: Cochin, Georgia, Arial, sans-serif;
-    font-size: 16px;
-    line-height: 1.5;
+}
+.description-container li {
+    font-size: 18px;
+    margin-bottom: 10px;
+    line-height: 1.4;
 }
 
 .info-overlay {
-    position: fixed;
+    position: absolute;
     top: 50%;
     left: 10px;
     transform: translateY(-50%);
     display: flex;
     align-items: center;
-    gap: 10px;
-    z-index: 20;
-    background: rgba(255, 255, 255, 0.9);
-    padding: 10px;
-    border-radius: 5px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    background: transparent;
+    border: none;
+    padding: 5px;
+    cursor: pointer;
+    z-index: 10;
 }
 
 .info-overlay.hidden {
     display: none;
 }
 
-.info-overlay .arrow {
+.info-overlay .arrow,
+.info-overlay .info-icon {
+    color: #ffd700;
+    font-size: 24px;
+    margin-right: 5px;
+}
+/* .info-overlay .arrow {
     font-size: 24px;
     color: #ff8c00;
 }
@@ -1379,7 +1392,7 @@ body.popup-open .student-manager {
     display: flex;
     align-items: center;
     justify-content: center;
-}
+} */
 
 /* Responsive adjustments for Star Map */
 @media (max-width: 767px) and (orientation: portrait) {
@@ -1394,11 +1407,12 @@ body.popup-open .student-manager {
 
     .description-container {
         width: 200px;
-        padding: 10px;
     }
-
-    .description-container p {
-        font-size: 14px;
+    .description-container h3 {
+        font-size: 18px;
+    }
+    .description-container li {
+        font-size: 16px;
     }
 
     .info-overlay {
