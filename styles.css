@@ -1386,20 +1386,26 @@ body.popup-open .student-manager {
     height: 100%;
     background: rgba(0, 0, 0, 0.8);
     color: #ffffff;
-    padding: 20px;
+    padding: 30px; /* Increased padding to 30px */
     box-sizing: border-box;
-    overflow-y: auto;
-    border: 2px solid #ff6200; /* Orange border */
+    overflow-x: hidden; /* No horizontal scroll */
+    overflow-y: auto; /* Vertical scroll on */
+    border: 2px solid #FFD700; /* Gold border */
     border-radius: 10px; /* Rounded corners */
     margin-left: 20px; /* 20px margin from the left edge */
+    margin-right: 40px; /* 40px margin from the right edge */
 }
 
 .description-container h3 {
     text-align: center; /* Center the title */
 }
 
-.description-container ul li span[data-translate] {
-    font-weight: normal; /* Ensure semi-titles are not bold */
+.description-container ul li {
+    margin-bottom: 15px; /* Space between bullet points */
+}
+
+.description-container ul li:last-child {
+    margin-bottom: 0; /* No extra space after the last bullet point */
 }
 
 /* Responsive adjustments for Star Map */
