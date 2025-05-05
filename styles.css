@@ -1327,7 +1327,7 @@ body.popup-open .student-manager {
 .info-overlay {
     position: absolute;
     top: 50%;
-    left: 510px; /* Matches 500px description-container width */
+    left: 510px;
     transform: translateY(-50%);
     display: flex;
     align-items: center;
@@ -1353,18 +1353,18 @@ body.popup-open .student-manager {
 
 .info-overlay .arrow,
 .info-overlay .info-icon {
-    color: #ffffff; /* White instead of gold */
+    color: #ffffff;
     font-size: 24px;
     margin-right: 5px;
     line-height: 1;
-    font-family: sans-serif; /* Ensures consistent rendering */
+    font-family: Arial, sans-serif; /* Ensures consistent rendering */
 }
 
 .info-overlay .info-icon {
-    border: 2px solid #ffffff; /* Circular border */
+    border: 2px solid #ffffff;
     border-radius: 50%;
-    width: 24px;
-    height: 24px;
+    width: 28px; /* Slightly larger for ℹ️ */
+    height: 28px;
     display: flex;
     align-items: center;
     justify-content: center;
