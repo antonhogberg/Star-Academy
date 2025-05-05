@@ -570,20 +570,20 @@ function switchLanguage(lang) {
     // Star Map description
     const starMapTitle = document.querySelector('h3[data-translate="starMapTitle"]');
     if (starMapTitle) starMapTitle.textContent = translations[lang].starMapTitle;
-    document.querySelectorAll('.description-container li[data-translate]').forEach(li => {
-        const key = li.getAttribute('data-translate');
+    document.querySelectorAll('.star-map-steps p[data-translate]').forEach(p => {
+        const key = p.getAttribute('data-translate');
         if (translations[lang][key]) {
             const translatedText = translations[lang][key];
-            // Split the translated text to separate the semi-title (up to the last colon followed by a space)
-            const match = translatedText.match(/^(.*?):\s/);
+            // Split the translated text to separate the semi-title (up to the last colon before the main text)
+            const match = translatedText.match(/^(.*?)(?=\s[A-Z])/);
             if (match) {
-                const semiTitle = match[0]; // Includes the colon and space (e.g., "Börja med Stjärna 1:1:1: ")
+                const semiTitle = match[0];
                 const restOfText = translatedText.substring(semiTitle.length).trim();
-                // Reconstruct the HTML with the semi-title in <strong>
-                li.innerHTML = `<strong>${semiTitle}</strong>${restOfText}`;
+                // Reconstruct the HTML with the semi-title in <strong> and a wrapping span
+                p.innerHTML = `<span class="semi-title"><strong>${semiTitle}</strong></span> ${restOfText}`;
             } else {
                 // Fallback: if no match, just set the text
-                li.textContent = translatedText;
+                p.textContent = translatedText;
             }
         }
     });
