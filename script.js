@@ -574,15 +574,15 @@ function switchLanguage(lang) {
         const key = li.getAttribute('data-translate');
         if (translations[lang][key]) {
             const translatedText = translations[lang][key];
-            // Split the translated text at the first colon to separate the semi-title
-            const parts = translatedText.split(':', 1);
-            if (parts.length > 0) {
-                const semiTitle = parts[0] + ':'; // Include the colon in the semi-title
+            // Split the translated text to separate the semi-title (up to the last colon followed by a space)
+            const match = translatedText.match(/^(.*?):\s/);
+            if (match) {
+                const semiTitle = match[0]; // Includes the colon and space (e.g., "Börja med Stjärna 1:1:1: ")
                 const restOfText = translatedText.substring(semiTitle.length).trim();
                 // Reconstruct the HTML with the semi-title in <strong>
-                li.innerHTML = `<strong>${semiTitle}</strong> ${restOfText}`;
+                li.innerHTML = `<strong>${semiTitle}</strong>${restOfText}`;
             } else {
-                // Fallback: if no colon, just set the text
+                // Fallback: if no match, just set the text
                 li.textContent = translatedText;
             }
         }
