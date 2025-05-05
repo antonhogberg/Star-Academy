@@ -1394,37 +1394,51 @@ body.popup-open .student-manager {
     position: absolute;
     top: 0;
     left: 0;
-    width: 440px; /* Reduced by 60px to hide from starting view */
+    width: 440px;
     height: 100%;
     background: rgba(0, 0, 0, 0.8);
     color: #ffffff;
-    padding: 30px 30px 30px 10px; /* Reduced left padding by 20px */
+    padding: 30px; /* Equal padding on all sides */
     box-sizing: border-box;
     overflow-x: hidden;
     overflow-y: auto;
     border: 2px solid #FFD700; /* Gold border */
     border-radius: 10px;
     margin-left: 20px;
-    margin-right: 80px; /* Increased by 40px to compensate for width reduction */
+    margin-right: 80px;
     white-space: normal;
 }
 
 .description-container h3 {
-    text-align: center; /* Center the title */
+    text-align: center;
+    margin-top: 0; /* Ensure no extra top margin */
+    padding-top: 0; /* Ensure no top padding */
 }
 
-.description-container ul li {
+.star-map-steps p {
     margin-bottom: 15px;
-    white-space: normal; /* Ensure bullet points wrap */
+    white-space: normal;
+    position: relative; /* For positioning the separator line */
 }
 
-.description-container ul li:last-child {
+.star-map-steps p:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    bottom: -7.5px; /* Half of margin-bottom to center the line between paragraphs */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 35%; /* 30-40% of the container's width */
+    height: 1px;
+    background-color: var(--grey);
+}
+
+.star-map-steps p:last-child {
     margin-bottom: 0;
 }
 
 .description-container .semi-title {
-    display: inline-block; /* Allow wrapping */
-    white-space: normal; /* Ensure semi-title wraps */
+    display: inline-block;
+    white-space: normal;
 }
 
 /* Responsive adjustments for Star Map */
@@ -1442,10 +1456,10 @@ body.popup-open .student-manager {
         left: 310px; /* Adjusted for 300px description-container width */
     }
     .description-container {
-        width: 240px; /* Reduced by 60px to hide from starting view */
-        padding: 20px 20px 30px 10px; /* Adjusted padding: 20px top, 20px right, 10px left */
-        margin-right: 80px; /* Increased by 40px to compensate for width reduction */
-        margin-bottom: 20px; /* Added 20px margin-bottom */
+        width: 240px;
+        padding: 30px; /* Equal padding on all sides, matching desktop */
+        margin-right: 80px;
+        margin-bottom: 20px;
     }
     .description-container h3 {
         font-size: 18px;
@@ -1475,11 +1489,11 @@ body.popup-open .student-manager {
 /* iPad Mini landscape adjustments */
 @media (min-width: 1000px) and (max-width: 1100px) and (orientation: landscape) {
     .description-container {
-        width: 430px; /* Further reduced to shrink space to SVG */
-        margin-right: 90px; /* Adjusted to compensate for width reduction */
+        width: 430px;
+        margin-right: 90px;
     }
     .info-overlay {
-        left: 540px; /* Positioned 40px from SVG (500px + 40px) */
+        left: 540px;
     }
 }
 
