@@ -1018,9 +1018,9 @@ waitForDOM().then(() => {
         const starMapContainer = document.querySelector('.star-map-container');
         const infoOverlay = document.querySelector('.info-overlay');
         if (starMapContainer && infoOverlay) {
-            // Determine scroll target based on device (300px desktop, 200px mobile)
+            // Determine scroll target based on device (500px desktop, 300px mobile)
             const isMobile = window.matchMedia("(max-width: 767px) and (orientation: portrait)").matches;
-            const scrollTarget = isMobile ? 200 : 300;
+            const scrollTarget = isMobile ? 300 : 500;
             const threshold = 50; // Threshold for showing info-overlay
 
             // Scroll to #svg-start anchor if present
@@ -1202,7 +1202,7 @@ waitForDOM().then(() => {
                     starMapSvg.style.width = 'auto';
                 } else {
                     starMapSvg.style.height = `${starMapContainer.clientHeight - totalBorderHeight}px`;
-                    starMapSvg.style.width = '2800px';
+                    starMapSvg.style.width = '2760px'; /* Matches cropped SVG */
                 }
             }
 
