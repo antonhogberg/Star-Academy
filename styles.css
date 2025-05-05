@@ -1327,7 +1327,7 @@ body.popup-open .student-manager {
 .info-overlay {
     position: absolute;
     top: 50%;
-    left: 10px;
+    left: 510px; /* Adjusted for 500px description-container width */
     transform: translateY(-50%);
     display: flex;
     align-items: center;
@@ -1335,7 +1335,7 @@ body.popup-open .student-manager {
     border: none;
     padding: 5px;
     cursor: pointer;
-    z-index: 10;
+    z-index: 100; /* Increased to avoid SVG overlap */
 }
 
 .info-overlay.hidden {
@@ -1348,6 +1348,7 @@ body.popup-open .student-manager {
     font-size: 24px;
     margin-right: 5px;
     line-height: 1;
+    font-family: sans-serif; /* Fallback for consistent rendering */
 }
 
 .description-container {
@@ -1381,6 +1382,11 @@ body.popup-open .student-manager {
     line-height: 1.4;
 }
 
+/* Bold the start of bullet points (e.g., "Börja med Stjärna 1:1:1:") */
+.description-container li strong {
+    font-weight: bold;
+}
+
 /* Responsive adjustments for Star Map */
 @media (max-width: 767px) and (orientation: portrait) {
     .star-map-container {
@@ -1392,6 +1398,9 @@ body.popup-open .student-manager {
         left: 300px; /* Smaller offset for smaller screens */
     }
 
+    .info-overlay {
+        left: 310px; /* Adjusted for 300px description-container width */
+    }
     .description-container {
         width: 300px;
     }
@@ -1400,11 +1409,6 @@ body.popup-open .student-manager {
     }
     .description-container li {
         font-size: 16px;
-    }
-
-    .info-overlay {
-        left: 5px;
-        padding: 5px;
     }
 
     .info-overlay .arrow {
