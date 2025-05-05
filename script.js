@@ -974,7 +974,8 @@ waitForDOM().then(() => {
                     // Determine scroll target based on device (500px desktop, 300px mobile)
                     const isMobile = window.matchMedia("(max-width: 767px) and (orientation: portrait)").matches;
                     const scrollTarget = isMobile ? 300 : 500;
-                    const threshold = 50; // Threshold for showing info-overlay
+                    const threshold = 50; // Threshold for showing info-overlay on left-scroll
+                    let hasHidden = false; // Flag to track if overlay has been hidden
             
                     // Scroll to #svg-start anchor if present
                     const svgStartAnchor = document.getElementById('svg-start');
@@ -989,11 +990,25 @@ waitForDOM().then(() => {
             
                     // Update info-overlay visibility on scroll
                     starMapContainer.addEventListener('scroll', () => {
+                        if (hasHidden) return; // Do not show again until page reload
+            
                         const scrollLeft = starMapContainer.scrollLeft;
-                        if (Math.abs(scrollLeft - scrollTarget) < threshold) {
-                            infoOverlay.classList.remove('hidden');
-                        } else {
+                        // Fade out immediately on right-scroll
+                        if (scrollLeft > scrollTarget) {
                             infoOverlay.classList.add('hidden');
+                            hasHidden = true;
+                            console.log('Info-overlay hidden on right-scroll');
+                        }
+                        // Fade out gradually on left-scroll
+                        else if (scrollLeft < scrollTarget - threshold) {
+                            infoOverlay.classList.add('hidden');
+                            hasHidden = true;
+                            console.log('Info-overlay hidden on left-scroll');
+                        }
+                        // Keep visible within threshold on initial load
+                        else {
+                            infoOverlay.classList.remove('hidden');
+                            console.log('Info-overlay visible within threshold');
                         }
                     });
             
@@ -1001,6 +1016,8 @@ waitForDOM().then(() => {
                     infoOverlay.addEventListener('click', () => {
                         starMapContainer.scrollTo({ left: 0, behavior: 'smooth' });
                         console.log('Info-overlay clicked, scrolling to scrollLeft = 0');
+                        hasHidden = true; // Hide after click
+                        infoOverlay.classList.add('hidden');
                     });
             
                     // Initial check for info-overlay visibility
@@ -1008,6 +1025,7 @@ waitForDOM().then(() => {
                         infoOverlay.classList.remove('hidden');
                     } else {
                         infoOverlay.classList.add('hidden');
+                        hasHidden = true;
                     }
                 }
             }
@@ -1220,7 +1238,7 @@ waitForDOM().then(() => {
                     starMapSvg.style.width = 'auto';
                 } else {
                     starMapSvg.style.height = `${starMapContainer.clientHeight - totalBorderHeight}px`;
-                    starMapSvg.style.width = '2760px'; /* Matches cropped SVG */
+                    starMapSvg.style.width = '2780px'; /* Matches cropped SVG */
                 }
             }
 
