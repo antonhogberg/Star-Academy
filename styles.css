@@ -1326,6 +1326,10 @@ body.popup-open .student-manager {
     transform: none;
 }
 
+.star-map-container.rubberband {
+    animation: rubberband 0.5s ease-out;
+}
+
 .info-overlay {
     position: absolute;
     top: 50%;
@@ -1369,6 +1373,13 @@ body.popup-open .student-manager {
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+@keyframes rubberband {
+    0% { transform: scaleX(1); }
+    30% { transform: scaleX(1.25); }
+    60% { transform: scaleX(0.75); }
+    100% { transform: scaleX(1); }
 }
 
 /* Pulsating animation */
@@ -1457,6 +1468,17 @@ body.popup-open .student-manager {
     .star-map-container {
         top: 70px;
         height: calc(100vh - 70px);
+    }
+}
+
+/* iPad Mini landscape adjustments */
+@media (min-width: 1000px) and (max-width: 1100px) and (orientation: landscape) {
+    .description-container {
+        width: 430px; /* Further reduced to shrink space to SVG */
+        margin-right: 90px; /* Adjusted to compensate for width reduction */
+    }
+    .info-overlay {
+        left: 540px; /* Positioned 40px from SVG (500px + 40px) */
     }
 }
 
