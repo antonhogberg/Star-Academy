@@ -998,10 +998,10 @@ body.popup-open .student-manager {
 #globalStudentSelect {
     height: 35px;
     width: 180px;
-    background: var(--grey) url('data:image/svg+xml;utf8,<svg fill="%23ffffff" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>') no-repeat right 10px center;
+    background: var(--semi-dark) url('data:image/svg+xml;utf8,<svg fill="%23ffffff" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>') no-repeat right 10px center;
     background-size: 16px;
-    color: #000;
-    border: 2px solid var(--orange);
+    color: #ffffff;
+    border: 2px solid var(--gold);
     border-radius: 5px;
     font-family: Cochin, Georgia, Arial, sans-serif;
     font-size: 16px;
@@ -1013,11 +1013,17 @@ body.popup-open .student-manager {
     -moz-appearance: none;
     position: relative;
     overflow: visible;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Added subtle shadow */
+    transition: filter 0.3s ease; /* For hover effect */
+}
+
+#globalStudentSelect:hover {
+    filter: brightness(1.2); /* Slightly lighten on hover */
 }
 
 #globalStudentSelect:focus {
     outline: none;
-    border-color: var(--orange);
+    border-color: var(--gold); /* Changed to gold for consistency */
     box-shadow: 0 0 5px rgba(255, 140, 0, 0.5);
 }
 
