@@ -1017,21 +1017,21 @@ waitForDOM().then(() => {
                 infoOverlay.removeEventListener('click', window.infoOverlayClickListener);
             }
 
-            // Determine scroll target based on device and anchor position
+            // Determine scroll target based on device (500px desktop, 300px mobile)
             const isMobile = window.matchMedia("(max-width: 767px) and (orientation: portrait)").matches;
-            const scrollTarget = 280; // Adjusted to match #svg-start position (~300 - 20 from viewBox)
+            const scrollTarget = isMobile ? 300 : 500; // End of description container
             const threshold = 50; // Threshold for showing info-overlay on left-scroll
 
             // Flag to disable scroll listener during initial scroll
             let isInitialScroll = true;
 
-            // Explicitly scroll to #svg-start anchor after DOM and styles are set
+            // Explicitly scroll to the stop point after DOM and styles are set
             setTimeout(() => {
-                const svgStartAnchor = document.getElementById('svg-start');
-                if (svgStartAnchor) {
-                    svgStartAnchor.scrollIntoView({ behavior: 'smooth', inline: 'start' });
-                    console.log('Scrolled to #svg-start anchor after delay');
-                }
+                starMapContainer.scrollTo({
+                    left: scrollTarget,
+                    behavior: 'smooth'
+                });
+                console.log('Scrolled to description container end after delay');
                 // Mark initial scroll as complete after animation
                 setTimeout(() => {
                     isInitialScroll = false;
@@ -1248,10 +1248,10 @@ waitForDOM().then(() => {
         }
     };
 
-    // Delay setStarMapHeight to allow anchor scrolling
+    // Delay setStarMapHeight to allow initial scroll
     setTimeout(() => {
         setStarMapHeight();
         window.addEventListener('resize', setStarMapHeight);
         window.addEventListener('orientationchange', setStarMapHeight);
-    }, 100);
+    }, 200); // Increased delay to ensure scroll position is set first
 });
