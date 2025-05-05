@@ -1382,19 +1382,19 @@ body.popup-open .student-manager {
     position: absolute;
     top: 0;
     left: 0;
-    width: 500px;
+    width: 440px; /* Reduced by 60px to hide from starting view */
     height: 100%;
     background: rgba(0, 0, 0, 0.8);
     color: #ffffff;
-    padding: 30px;
+    padding: 30px 30px 30px 10px; /* Reduced left padding by 20px */
     box-sizing: border-box;
     overflow-x: hidden;
     overflow-y: auto;
     border: 2px solid #FFD700; /* Gold border */
     border-radius: 10px;
     margin-left: 20px;
-    margin-right: 40px;
-    white-space: normal; /* Allow text wrapping */
+    margin-right: 80px; /* Increased by 40px to compensate for width reduction */
+    white-space: normal;
 }
 
 .description-container h3 {
@@ -1430,7 +1430,10 @@ body.popup-open .student-manager {
         left: 310px; /* Adjusted for 300px description-container width */
     }
     .description-container {
-        width: 300px;
+        width: 240px; /* Reduced by 60px to hide from starting view */
+        padding: 20px 20px 30px 10px; /* Adjusted padding: 20px top, 20px right, 10px left */
+        margin-right: 80px; /* Increased by 40px to compensate for width reduction */
+        margin-bottom: 20px; /* Added 20px margin-bottom */
     }
     .description-container h3 {
         font-size: 18px;
