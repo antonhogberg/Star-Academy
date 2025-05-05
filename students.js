@@ -152,6 +152,15 @@ function switchStudent(selectedValue) {
     if (typeof loadNotes === 'function') {
         loadNotes(false);
     }
+    if (window.location.pathname.toLowerCase().includes('chapter') && typeof window.initializeChapter === 'function') {
+        console.log('Re-initializing Chapter after student change');
+        window.initializeChapter();
+    }
+
+    const userNameDisplay = document.getElementById('userNameDisplay');
+    if (userNameDisplay) {
+        userNameDisplay.textContent = selectedValue || '';
+    }
 }
 
 function updateDropdown() {
