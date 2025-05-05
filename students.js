@@ -122,34 +122,35 @@ function showStudentPopup(message, duration) {
     }, duration - 1000);
 }
 
-function switchStudent() {
-    console.log('switchStudent called');
-    const select = document.getElementById('globalStudentSelect') || document.getElementById('studentSelect');
-    if (!select) {
-        console.error('No student select element found');
+function switchStudent(selectedValue) {
+    console.log('switchStudent called with value:', selectedValue);
+    if (!selectedValue) {
+        console.error('No selected value provided');
         return;
     }
-    const selectedValue = select.value;
-    if (selectedValue) {
-        // Refresh window.studentsData from localStorage to ensure latest data
-        window.studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || {
-            students: {},
-            currentStudent: ''
-        };
-        window.studentsData.currentStudent = selectedValue;
-        try {
-            localStorage.setItem('starAcademyStudents', JSON.stringify(window.studentsData));
-            console.log('Current student updated:', selectedValue);
-            if (typeof window.updateStarStates === 'function') {
-                window.updateStarStates();
-            }
-            if (typeof loadNotes === 'function') {
-                loadNotes(false);
-            }
-        } catch (e) {
-            console.error('Failed to save to localStorage:', e);
-            showStudentPopup(translations[localStorage.getItem('language') || 'sv'].addStudentNoName, 3000);
-        }
+
+    window.studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || {
+        students: {},
+        currentStudent: ''
+    };
+    window.studentsData.currentStudent = selectedValue;
+    try {
+        localStorage.setItem('starAcademyStudents', JSON.stringify(window.studentsData));
+        console.log('Current student updated:', selectedValue);
+    } catch (e) {
+        console.error('Failed to save to localStorage:', e);
+        const lang = localStorage.getItem('language') || 'sv';
+        showStudentPopup(translations[lang].addStudentNoName, 3000);
+        return;
+    }
+
+    updateDropdown();
+
+    if (typeof window.updateStarStates === 'function') {
+        window.updateStarStates();
+    }
+    if (typeof loadNotes === 'function') {
+        loadNotes(false);
     }
 }
 
@@ -164,7 +165,7 @@ function updateDropdown() {
     const selects = [
         document.getElementById('studentSelect'),
         document.getElementById('globalStudentSelect'),
-        document.getElementById('removeStudentSelect') // Add removeStudentSelect
+        document.getElementById('removeStudentSelect')
     ].filter(Boolean);
     if (selects.length === 0) {
         console.warn('No student select elements found');
@@ -186,13 +187,7 @@ function updateDropdown() {
                 ? window.studentsData.currentStudent
                 : studentNames[0];
             select.value = currentStudent;
-            window.studentsData.currentStudent = currentStudent;
-            try {
-                localStorage.setItem('starAcademyStudents', JSON.stringify(window.studentsData));
-                console.log('Dropdown updated, currentStudent:', currentStudent);
-            } catch (e) {
-                console.error('Failed to save to localStorage:', e);
-            }
+            console.log('Dropdown updated, currentStudent:', currentStudent);
         } else {
             console.log('No students available, dropdown cleared');
         }
