@@ -981,8 +981,7 @@ waitForDOM().then(() => {
         // Ensure initial scroll position and add scroll/click listeners for info overlay
         const starMapContainer = document.querySelector('.star-map-container');
         const infoOverlay = document.querySelector('.info-overlay');
-        const scrollStopPoint = document.getElementById('scroll-stop-point');
-        if (starMapContainer && infoOverlay && scrollStopPoint) {
+        if (starMapContainer && infoOverlay) {
             // Reset hidden state immediately on page load
             localStorage.setItem('infoOverlayHidden', 'false');
             console.log('Reset infoOverlayHidden to false on page load');
@@ -1005,24 +1004,24 @@ waitForDOM().then(() => {
                 infoOverlay.removeEventListener('click', window.infoOverlayClickListener);
             }
 
-            // Determine scroll target based on the scroll-stop-point position
+            // Determine scroll target based on device and anchor position
             const isMobile = window.matchMedia("(max-width: 767px) and (orientation: portrait)").matches;
-            const scrollTarget = scrollStopPoint.offsetLeft; // ~500px (desktop) or ~300px (mobile)
-            const threshold = 50; // Threshold for showing info-overlay and scroll stop
-
-            // Explicitly scroll to the stop point after DOM and styles are set
-            setTimeout(() => {
-                starMapContainer.scrollTo({
-                    left: scrollTarget,
-                    behavior: 'smooth'
-                });
-                console.log('Scrolled to scroll-stop-point after delay');
-            }, 100);
+            const scrollTarget = 280; // Adjusted to match #svg-start position (~300 - 20 from viewBox)
+            const threshold = 50; // Threshold for showing info-overlay on left-scroll
 
             // State for scroll stop
             let lastScrollLeft = scrollTarget;
-            let hasCrossedStopPoint = false; // Tracks if the user has crossed the stop point
+            let hasCrossedAnchor = false; // Tracks if the user has crossed the anchor point
             let isBouncing = false; // Prevents multiple bounce animations
+
+            // Explicitly scroll to #svg-start anchor after DOM and styles are set
+            setTimeout(() => {
+                const svgStartAnchor = document.getElementById('svg-start');
+                if (svgStartAnchor) {
+                    svgStartAnchor.scrollIntoView({ behavior: 'smooth', inline: 'start' });
+                    console.log('Scrolled to #svg-start anchor after delay');
+                }
+            }, 100);
 
             // Define the scroll handler
             window.starMapScrollListener = () => {
@@ -1051,49 +1050,47 @@ waitForDOM().then(() => {
                     console.log('Info-overlay visible within threshold');
                 }
 
-                // Handle scroll stop at the stop point
+                // Handle scroll stop at anchor point
                 if (isBouncing) return; // Prevent interference during bounce animation
 
                 // Determine scroll direction
                 const scrollingRight = scrollLeft > lastScrollLeft;
                 const scrollingLeft = scrollLeft < lastScrollLeft;
 
-                // Check if crossing the stop point
+                // Check if crossing the anchor point
                 if (scrollingRight && scrollLeft > scrollTarget && lastScrollLeft <= scrollTarget) {
-                    // Scrolling right past the stop point
-                    if (!hasCrossedStopPoint) {
-                        // First crossing: stop at the point with bouncy effect
+                    // Scrolling right past the anchor
+                    if (!hasCrossedAnchor) {
+                        // First crossing: stop at anchor with bouncy effect
                         isBouncing = true;
                         starMapContainer.scrollTo({
                             left: scrollTarget,
                             behavior: 'smooth'
                         });
-                        starMapContainer.classList.add('rubberband');
-                        console.log('Caught scroll at stop point (scrolling right)');
+                        console.log('Caught scroll at anchor (scrolling right)');
                         setTimeout(() => {
                             isBouncing = false;
-                            hasCrossedStopPoint = true; // Allow crossing on next scroll
+                            hasCrossedAnchor = true; // Allow crossing on next scroll
                         }, 500); // Duration of bounce animation
                     }
                 } else if (scrollingLeft && scrollLeft < scrollTarget && lastScrollLeft >= scrollTarget) {
-                    // Scrolling left past the stop point
-                    if (!hasCrossedStopPoint) {
-                        // First crossing: stop at the point with bouncy effect
+                    // Scrolling left past the anchor
+                    if (!hasCrossedAnchor) {
+                        // First crossing: stop at anchor with bouncy effect
                         isBouncing = true;
                         starMapContainer.scrollTo({
                             left: scrollTarget,
                             behavior: 'smooth'
                         });
-                        starMapContainer.classList.add('rubberband');
-                        console.log('Caught scroll at stop point (scrolling left)');
+                        console.log('Caught scroll at anchor (scrolling left)');
                         setTimeout(() => {
                             isBouncing = false;
-                            hasCrossedStopPoint = true; // Allow crossing on next scroll
+                            hasCrossedAnchor = true; // Allow crossing on next scroll
                         }, 500); // Duration of bounce animation
                     }
                 } else if (Math.abs(scrollLeft - scrollTarget) > threshold) {
-                    // If the user has scrolled significantly past the stop point, reset the crossing state
-                    hasCrossedStopPoint = false;
+                    // If the user has scrolled significantly past the anchor, reset the crossing state
+                    hasCrossedAnchor = false;
                 }
 
                 lastScrollLeft = scrollLeft;
@@ -1108,7 +1105,7 @@ waitForDOM().then(() => {
                 console.log('Info-overlay clicked, scrolling to scrollLeft = 0');
                 localStorage.setItem('infoOverlayHidden', 'true'); // Hide after click
                 infoOverlay.classList.add('hidden');
-                hasCrossedStopPoint = false; // Reset crossing state when clicking overlay
+                hasCrossedAnchor = false; // Reset crossing state when clicking overlay
             };
 
             // Attach the click listener
