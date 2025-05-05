@@ -76,7 +76,13 @@ const translations = {
         confirmRemoveButton: "Remove ", // Added trailing space
         removeCurrentStudent: "Remove current student: ",
         removeCurrentStudentNone: "Remove current student: None",
-        starMapDescription: "Welcome to the Star Map! Click on each star to track your progress in Star Academy. Earn up to six stars per exercise by practicing in the Piano School. Scroll to explore all chapters and exercises."
+        starMapDescription: "Welcome to the Star Map! Click on each star to track your progress in Star Academy. Earn up to six stars per exercise by practicing in the Piano School. Scroll to explore all chapters and exercises.",
+        starMapTitle: "Using the Star Map",
+        starMapBullet1: "Start with Star 1:1:1: In Star Academy Piano School, navigate to the corresponding exercise. Star codes are formatted as Chapter:Part:Exercise (e.g., 1:1:1 is Chapter 1, Part 1, Exercise 1).",
+        starMapBullet2: "Earn Stars: Follow the book’s instructions to complete the exercise and earn stars. Return to the Star Map, click Star 1:1:1 to claim your stars. If you over-click, keep clicking to reset.",
+        starMapBullet3: "Progress Gradually: Practice an exercise, then move to the next star on the map.",
+        starMapBullet4: "Daily Practice: Each day, revisit your active exercises, aiming for six stars in each.",
+        starMapBullet5: "Manage Active Exercises: Work on 4–6 exercises daily, but focus on completing each (six stars) before adding more."
     },
     sv: {
         menuFrontPage: "Stjärnöversikt",
@@ -155,7 +161,13 @@ const translations = {
         confirmRemoveButton: "Radera ", // Added trailing space
         removeCurrentStudent: "Radera aktuell elev: ",
         removeCurrentStudentNone: "Radera aktuell elev: Ingen",
-        starMapDescription: "Välkommen till Stjärnkartan! Klicka på varje stjärna för att följa dina framsteg i Stjärnakademien. Förtjäna upp till sex stjärnor per övning genom att öva i Pianoskolan. Scrolla för att utforska alla kapitel och övningar."
+        starMapDescription: "Välkommen till Stjärnkartan! Klicka på varje stjärna för att följa dina framsteg i Stjärnakademien. Förtjäna upp till sex stjärnor per övning genom att öva i Pianoskolan. Scrolla för att utforska alla kapitel och övningar.",
+        starMapTitle: "Såhär använder du Stjärnkartan",
+        starMapBullet1: "Börja med Stjärna 1:1:1: Navigera till övning 1:1:1 i Stjärnakademiens Pianoskola. Stjärnkoder anges som Kapitel:Del:Övning (t.ex. 1:1:1 är Kapitel 1, Del 1, Övning 1).",
+        starMapBullet2: "Förtjäna stjärnor: Följ bokens instruktioner för att slutföra övningen och få stjärnor. Återvänd till Stjärnkartan, klicka på Stjärna 1:1:1 för att få fram dina stjärnor. Klickar du för många, fortsätt klicka för att nollställa.",
+        starMapBullet3: "Öva lagom: Öva på en övning en stund, gå sedan vidare till nästa stjärna på kartan.",
+        starMapBullet4: "Daglig övning: Återkom till dina aktiva övningar varje dag och sikta på sex stjärnor i varje.",
+        starMapBullet5: "Hur många aktiva övningar?: Jobba på flera övningar dagligen, t.ex. 4–6 st, men se till att slutföra en övning (sex stjärnor) innan du lägger till fler."
     }
 };
 
@@ -556,10 +568,12 @@ function switchLanguage(lang) {
     }
 
     // Star Map description
-    const starMapDescription = document.querySelector('p[data-translate="starMapDescription"]');
-    if (starMapDescription) {
-        starMapDescription.textContent = translations[lang].starMapDescription;
-    }
+    const starMapTitle = document.querySelector('h3[data-translate="starMapTitle"]');
+    if (starMapTitle) starMapTitle.textContent = translations[lang].starMapTitle;
+    document.querySelectorAll('.description-container li[data-translate]').forEach(li => {
+        const key = li.getAttribute('data-translate');
+        if (translations[lang][key]) li.textContent = translations[lang][key];
+    });
 
     // Export section (students.html)
     const exportTitle = document.getElementById('exportTitle');
@@ -1000,7 +1014,7 @@ waitForDOM().then(() => {
             window.history.replaceState({}, document.title, cleanUrl);
         }
 
-        // Ensure initial scroll position and add scroll listener for info overlay
+        // Ensure initial scroll position and add scroll/click listeners for info overlay
         const starMapContainer = document.querySelector('.star-map-container');
         const infoOverlay = document.querySelector('.info-overlay');
         if (starMapContainer && infoOverlay) {
@@ -1028,6 +1042,12 @@ waitForDOM().then(() => {
                 } else {
                     infoOverlay.classList.add('hidden');
                 }
+            });
+
+            // Add click event to scroll to description
+            infoOverlay.addEventListener('click', () => {
+                starMapContainer.scrollTo({ left: 0, behavior: 'smooth' });
+                console.log('Info-overlay clicked, scrolling to scrollLeft = 0');
             });
 
             // Initial check for info-overlay visibility
