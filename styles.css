@@ -1553,10 +1553,19 @@ body.popup-open .student-manager {
     animation: pulse 2s infinite;
 }
 
+/* FAQ Page Scrolling */
 .faq-container {
+    height: calc(var(--vh, 1vh) * 100 - 70px); /* Adjust for title-container height */
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iPads */
+    padding: 10px;
+    box-sizing: border-box;
     max-width: 800px;
-    margin: 20px auto;
-    padding: 0 10px;
+}
+
+/* Add margin to the last FAQ answer */
+.faq-item:last-child .faq-answer {
+    margin-bottom: 20px;
 }
 
 .faq-item {
@@ -2162,6 +2171,11 @@ body.popup-open .student-manager {
         overflow: hidden !important;
         height: 100vh;
         overscroll-behavior: none;
+    }
+
+    body.faq-page {
+        overflow-y: auto !important;
+        overscroll-behavior: auto !important;
     }
 
     body.chapters {
