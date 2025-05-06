@@ -1392,7 +1392,7 @@ body.popup-open .student-manager {
     display: flex;
     align-items: center;
     justify-content: center;
-    transform: translateY(2px); /* Shift info icon downward slightly */
+    transform: translateY(1px); /* Shift info icon downward slightly */
 }
 
 @keyframes rubberband {
@@ -1483,9 +1483,9 @@ body.popup-open .student-manager {
         font-size: 24px; /* Larger than arrow on mobile */
         width: 28px; /* Match desktop size */
         height: 28px;
-        transform: translateY(2px); /* Maintain downward shift */
+        transform: translateY(1px); /* Maintain downward shift */
     }
-    
+
     .description-container {
         width: 240px;
         padding: 30px; /* Equal padding on all sides, matching desktop */
