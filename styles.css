@@ -105,9 +105,8 @@ body.popup-open .student-manager {
 .hamburger-nav .menu {
     position: fixed;
     top: 0;
-    left: -250px; /* Set initial position in CSS */
+    left: -250px;
     width: 250px;
-    height: calc(var(--vh, 1vh) * 100);
     background: #cccccc;
 }
 
@@ -138,14 +137,15 @@ body.popup-open .student-manager {
     top: 0;
     left: -250px;
     width: 200px;
-    height: calc(var(--vh, 1vh) * 100);
+    min-height: calc(var(--vh, 1vh) * 100); /* Ensure it at least fills the viewport */
+    max-height: calc(var(--vh, 1vh) * 100); /* Cap height at viewport height */
     background: #cccccc;
     padding: 20px 10px;
     border-radius: 0 5px 5px 0;
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
     flex-direction: column;
     align-items: flex-start;
-    overflow-y: auto;
+    overflow-y: auto; /* Scrollable if content overflows */
     border-right: 2px solid var(--gold);
     box-shadow: 2px 0 10px rgba(255, 215, 0, 0.2);
     gap: 0;
@@ -156,11 +156,9 @@ body.popup-open .student-manager {
     display: flex;
 }
 
+/* Remove the pseudo-element since we'll use padding for spacing */
 .menu::before {
-    content: '';
-    height: 60px;
-    display: block;
-    width: 100%;
+    display: none;
 }
 
 .menu.active {
@@ -985,16 +983,6 @@ body.popup-open .student-manager {
     overflow-y: auto;
 }
 
-.student-select-container {
-    position: absolute;
-    top: 18px;
-    left: 58px;
-    z-index: 999;
-    display: flex;
-    align-items: center;
-    opacity: 1;
-}
-
 #globalStudentSelect {
     height: 35px;
     width: 180px;
@@ -1011,19 +999,17 @@ body.popup-open .student-manager {
     appearance: none;
     -webkit-appearance: none;
     -moz-appearance: none;
-    position: relative;
-    overflow: visible;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Added subtle shadow */
-    transition: filter 0.3s ease; /* For hover effect */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    transition: filter 0.3s ease;
 }
 
 #globalStudentSelect:hover {
-    filter: brightness(1.2); /* Slightly lighten on hover */
+    filter: brightness(1.2);
 }
 
 #globalStudentSelect:focus {
     outline: none;
-    border-color: var(--gold); /* Changed to gold for consistency */
+    border-color: var(--gold);
     box-shadow: 0 0 5px rgba(255, 140, 0, 0.5);
 }
 
