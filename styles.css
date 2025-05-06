@@ -30,6 +30,11 @@ body {
     display: block;
 }
 
+body.faq-page {
+    height: auto;
+    overflow-y: auto !important;
+}
+
 body.chapters {
     overflow: hidden;
     height: 100vh;
@@ -1555,12 +1560,9 @@ body.popup-open .student-manager {
 
 /* FAQ Page Scrolling */
 .faq-container {
-    height: calc(var(--vh, 1vh) * 100 - 70px); /* Adjust for title-container height */
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iPads */
-    padding: 10px;
-    box-sizing: border-box;
     max-width: 800px;
+    margin: 20px auto;
+    padding: 0 10px;
 }
 
 /* Add margin to the last FAQ answer */
