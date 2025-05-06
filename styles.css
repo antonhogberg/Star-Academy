@@ -190,6 +190,13 @@ body.popup-open .student-manager {
     opacity: 1;
 }
 
+.menu-content {
+    flex-grow: 1;
+    width: 100%;
+    overflow-y: auto; /* Scrollable content */
+    padding-top: 40px; /* Ensure content starts below the dropdown (18px top + 35px height - some overlap) */
+}
+
 .menu-item {
     position: relative;
     width: 100%;
