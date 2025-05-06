@@ -1565,10 +1565,6 @@ body.popup-open .student-manager {
     padding: 0 10px;
 }
 
-/* Add margin to the last FAQ answer */
-.faq-item:last-child .faq-answer {
-    margin-bottom: 20px;
-}
 
 .faq-item {
     border: 1px solid #ccc;
