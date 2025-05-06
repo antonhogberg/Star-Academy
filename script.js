@@ -183,13 +183,13 @@ const menuHtml = `
                 <div class="menu-item">
                     <span class="chapters-toggle" data-translate="menuChapters"></span>
                     <ul class="submenu">
-                        <li><a href="chapter1.html" class="menu-link"><span data-translate="menuChapter">Chapter</span> 1</a></li>
-                        <li><a href="chapter2.html" class="menu-link"><span data-translate="menuChapter">Chapter</span> 2</a></li>
-                        <li><a href="chapter3.html" class="menu-link"><span data-translate="menuChapter">Chapter</span> 3</a></li>
-                        <li><a href="chapter4.html" class="menu-link"><span data-translate="menuChapter">Chapter</span> 4</a></li>
-                        <li><a href="chapter5.html" class="menu-link"><span data-translate="menuChapter">Chapter</span> 5</a></li>
-                        <li><a href="chapter6.html" class="menu-link"><span data-translate="menuChapter">Chapter</span> 6</a></li>
-                        <li><a href="chapter7.html" class="menu-link"><span data-translate="menuChapter">Chapter</span> 7</a></li>
+                        <li><a href="chapter1.html" class="menu-link"><span data-translate="menuChapter"></span></a></li>
+                        <li><a href="chapter2.html" class="menu-link"><span data-translate="menuChapter"></span></a></li>
+                        <li><a href="chapter3.html" class="menu-link"><span data-translate="menuChapter"></span></a></li>
+                        <li><a href="chapter4.html" class="menu-link"><span data-translate="menuChapter"></span></a></li>
+                        <li><a href="chapter5.html" class="menu-link"><span data-translate="menuChapter"></span></a></li>
+                        <li><a href="chapter6.html" class="menu-link"><span data-translate="menuChapter"></span></a></li>
+                        <li><a href="chapter7.html" class="menu-link"><span data-translate="menuChapter"></span></a></li>
                     </ul>
                 </div>
                 <a href="students.html" class="menu-link" data-translate="menuStudents"></a>
