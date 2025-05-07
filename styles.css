@@ -1475,15 +1475,15 @@ body.popup-open .student-manager {
         left: 310px;
     }
 
-    .info-overlay .arrow {
-        font-size: 24px; /* Increased by 10% from 22px */
+    .info-overlay .info-overlay .arrow { /* Increased specificity */
+        font-size: 24px;
     }
 
-    .info-overlay .info-icon {
-        font-size: 34px; /* Increased by 40% from 24px */
-        width: 40px; /* Adjusted proportionally */
-        height: 40px;
-        transform: translateY(1px); /* Adjusted downward shift */
+    .info-overlay .info-overlay .info-icon { /* Increased specificity */
+        font-size: 26px;
+        width: 30px;
+        height: 30px;
+        transform: translateY(1px);
     }
 
     .description-container {
