@@ -1025,17 +1025,17 @@ body.popup-open .student-manager {
     -moz-appearance: none;
     position: relative;
     overflow: visible;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Added subtle shadow */
-    transition: filter 0.3s ease; /* For hover effect */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    transition: filter 0.3s ease;
 }
 
 #globalStudentSelect:hover {
-    filter: brightness(1.2); /* Slightly lighten on hover */
+    filter: brightness(1.2);
 }
 
 #globalStudentSelect:focus {
     outline: none;
-    border-color: var(--gold); /* Changed to gold for consistency */
+    border-color: var(--gold);
     box-shadow: 0 0 5px rgba(255, 140, 0, 0.5);
 }
 
@@ -1349,66 +1349,6 @@ body.popup-open .student-manager {
     animation: rubberband 0.5s ease-out;
 }
 
-.info-overlay {
-    position: absolute;
-    top: 50%;
-    left: 510px;
-    transform: translateY(-50%);
-    display: flex;
-    align-items: center;
-    background: transparent;
-    border: none;
-    padding: 5px;
-    cursor: pointer;
-    z-index: 100;
-    animation: pulse 2s infinite ease-in-out;
-}
-
-.info-overlay.hidden {
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.3s ease, visibility 0.3s ease;
-}
-
-.info-overlay:not(.hidden) {
-    opacity: 1;
-    visibility: visible;
-    transition: opacity 0.3s ease, visibility 0.3s ease;
-}
-
-.info-overlay .arrow,
-.info-overlay .info-icon {
-    color: #ffffff;
-    font-size: 24px;
-    margin-right: 5px;
-    line-height: 1;
-    font-family: Arial, sans-serif; /* Ensures consistent rendering */
-}
-
-.info-overlay .info-icon {
-    border-radius: 50%;
-    width: 28px; /* Slightly larger for ℹ️ */
-    height: 28px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transform: translateY(1px); /* Shift info icon downward slightly */
-}
-
-@keyframes rubberband {
-    0% { transform: scaleX(1); }
-    30% { transform: scaleX(1.25); }
-    60% { transform: scaleX(0.75); }
-    100% { transform: scaleX(1); }
-}
-
-/* Pulsating animation */
-@keyframes pulse {
-    0% { transform: translateY(-50%) scale(1); }
-    50% { transform: translateY(-50%) scale(1.2); }
-    100% { transform: translateY(-50%) scale(1); }
-}
-
 .description-container {
     position: absolute;
     top: 0;
@@ -1460,115 +1400,11 @@ body.popup-open .student-manager {
     white-space: normal;
 }
 
-/* Responsive adjustments for Star Map */
-@media (max-width: 767px) and (orientation: portrait) {
-    .star-map-container {
-        top: 70px;
-        height: calc(100vh - 70px);
-    }
-
-    .star-map-container svg {
-        left: 300px; /* Smaller offset for smaller screens */
-    }
-
-    .info-overlay {
-        left: 310px;
-    }
-
-    .info-overlay .info-overlay .arrow { /* Increased specificity */
-        font-size: 24px;
-    }
-
-    .info-overlay .info-overlay .info-icon { /* Increased specificity */
-        font-size: 26px;
-        width: 30px;
-        height: 30px;
-        transform: translateY(1px);
-    }
-
-    .description-container {
-        width: 240px;
-        padding: 30px; /* Equal padding on all sides, matching desktop */
-        margin-right: 80px;
-        margin-bottom: 20px;
-    }
-    .description-container h3 {
-        font-size: 18px;
-    }
-    .description-container li {
-        font-size: 16px;
-    }
-
-    .info-overlay .arrow {
-        font-size: 20px;
-    }
-
-    .info-overlay .info-icon {
-        font-size: 16px;
-        width: 20px;
-        height: 20px;
-    }
-}
-
-@media (min-width: 768px) and (max-width: 1400px) and (orientation: landscape) {
-    .star-map-container {
-        top: 70px;
-        height: calc(100vh - 70px);
-    }
-}
-
-/* iPad Mini landscape adjustments */
-@media (min-width: 1000px) and (max-width: 1100px) and (orientation: landscape) {
-    .description-container {
-        width: 430px;
-        margin-right: 90px;
-    }
-    .info-overlay {
-        left: 540px;
-    }
-}
-
-@media (min-width: 1201px) and (max-width: 1400px) and (orientation: landscape) {
-    .star-map-container {
-        top: 50px;
-        height: calc(100vh - 50px);
-        max-height: 960px;
-    }
-}
-
-@media (min-width: 1401px) and (orientation: landscape) and (hover: hover) and (min-aspect-ratio: 16/10) {
-    .star-map-container {
-        height: calc(100vh - 70px);
-        top: 70px;
-    }
-}
-
-/* Miscellaneous Styles */
-.congratulations-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.8);
-    display: none;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-    animation: fadeIn 1s ease-in-out;
-}
-
-.congratulations-message {
-    background: var(--dark-bg);
-    border: 2px solid var(--gold);
-    border-radius: 10px;
-    padding: 20px;
-    text-align: center;
-    color: var(--gold);
-    font-family: Cochin, Georgia, Arial, sans-serif;
-    font-size: 24px;
-    box-shadow: 0 0 20px rgba(255, 215, 0, 0.7);
-    animation: pulse 2s infinite;
+@keyframes rubberband {
+    0% { transform: scaleX(1); }
+    30% { transform: scaleX(1.25); }
+    60% { transform: scaleX(0.75); }
+    100% { transform: scaleX(1); }
 }
 
 /* FAQ Page Scrolling */
@@ -1577,7 +1413,6 @@ body.popup-open .student-manager {
     margin: 20px auto;
     padding: 0 10px;
 }
-
 
 .faq-item {
     border: 1px solid #ccc;
@@ -1769,14 +1604,32 @@ body.popup-open .student-manager {
     line-height: normal;
 }
 
-/* Responsive widths for remove.html */
-@media (max-width: 767px) and (orientation: portrait) {
-    #removeStudentButton {
-        width: 72vw;
-    }
-    #confirmRemovePopup .student-popup-content button {
-        width: 72vw;
-    }
+/* Miscellaneous Styles */
+.congratulations-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    animation: fadeIn 1s ease-in-out;
+}
+
+.congratulations-message {
+    background: var(--dark-bg);
+    border: 2px solid var(--gold);
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    color: var(--gold);
+    font-family: Cochin, Georgia, Arial, sans-serif;
+    font-size: 24px;
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.7);
+    animation: pulse 2s infinite;
 }
 
 /* Media Queries */
@@ -2142,11 +1995,51 @@ body.popup-open .student-manager {
         height: calc(100vh - 70px);
     }
 
+    /* Responsive adjustments for Star Map */
+    .star-map-container {
+        top: 70px;
+        height: calc(100vh - 70px);
+    }
+
+    .star-map-container svg {
+        left: 300px;
+    }
+
+    .info-overlay {
+        left: 310px;
+    }
+
+    .info-overlay .info-overlay .arrow {
+        font-size: 24px;
+    }
+
+    .info-overlay .info-overlay .info-icon {
+        font-size: 26px;
+        width: 30px;
+        height: 30px;
+        transform: translateY(1px);
+    }
+
+    .description-container {
+        width: 240px;
+        padding: 30px;
+        margin-right: 80px;
+        margin-bottom: 20px;
+    }
+
+    .description-container h3 {
+        font-size: 18px;
+    }
+
+    .description-container li {
+        font-size: 16px;
+    }
+
     /* Responsive widths for remove.html */
-    #removeStudentSelect,
     #removeStudentButton {
         width: 72vw;
     }
+
     #confirmRemovePopup .student-popup-content button {
         width: 72vw;
     }
@@ -2433,6 +2326,18 @@ body.popup-open .student-manager {
 
     .export-button-container {
         margin-bottom: 10px;
+    }
+}
+
+/* iPad Mini landscape adjustments */
+@media (min-width: 1000px) and (max-width: 1100px) and (orientation: landscape) {
+    .description-container {
+        width: 430px;
+        margin-right: 90px;
+    }
+
+    .info-overlay {
+        left: 540px;
     }
 }
 
