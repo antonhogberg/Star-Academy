@@ -1054,6 +1054,7 @@ body.popup-open .student-manager {
 }
 
 /* Popup Styles */
+/* Popup Styles */
 #importLoaderOverlay {
     position: fixed;
     top: 50%;
@@ -1062,7 +1063,7 @@ body.popup-open .student-manager {
     width: 100%;
     max-width: 500px;
     background: rgba(0, 0, 0, 0.5);
-    z-index: 10000;
+    z-index: 999; /* Lowered from 10000 to appear under the menu */
     display: none;
     justify-content: center;
     align-items: center;
@@ -1100,7 +1101,7 @@ body.popup-open .student-manager {
     width: 100%;
     height: auto;
     background: rgba(0, 0, 0, 0.5);
-    z-index: 1000;
+    z-index: 999; /* Lowered from 1000 to appear under the menu */
     display: none;
     justify-content: center;
     align-items: center;
@@ -1230,13 +1231,17 @@ body.popup-open .student-manager {
     width: 100%;
     max-width: 500px;
     background: rgba(0, 0, 0, 0.5);
-    z-index: 10000;
+    z-index: 10000; /* Kept for other popups like success messages */
     display: none;
     justify-content: center;
     align-items: center;
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.3s ease;
+}
+
+#qrPopup.student-popup {
+    z-index: 999; /* Override for qrPopup to appear under the menu */
 }
 
 .student-popup.show {
@@ -1294,7 +1299,6 @@ body.popup-open .student-manager {
     flex-direction: column;
     align-items: center;
     box-sizing: border-box;
-    z-index: 900;
 }
 
 #qrPopup #qrCodeContainer {
@@ -1531,7 +1535,38 @@ body.popup-open .student-manager {
 
 @media (min-width: 1201px) and (max-width: 1400px) and (orientation: landscape) {
     .star-map-container {
-        top: 50px;
+        top: 50px;/* Miscellaneous Styles */
+        .congratulations-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 999; /* Lowered from 1000 to appear under the menu */
+            animation: fadeIn 1s ease-in-out;
+        }
+        
+        .congratulations-message {
+            background: var(--dark-bg);
+            border: 2px solid var(--gold);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            color: var(--gold);
+            font-family: Cochin, Georgia, Arial, sans-serif;
+            font-size: 24px;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.7);
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
         height: calc(100vh - 50px);
         max-height: 960px;
     }
@@ -1545,6 +1580,7 @@ body.popup-open .student-manager {
 }
 
 /* Miscellaneous Styles */
+/* Miscellaneous Styles */
 .congratulations-overlay {
     position: fixed;
     top: 0;
@@ -1555,7 +1591,7 @@ body.popup-open .student-manager {
     display: none;
     justify-content: center;
     align-items: center;
-    z-index: 1000;
+    z-index: 999; /* Lowered from 1000 to appear under the menu */
     animation: fadeIn 1s ease-in-out;
 }
 
@@ -1570,6 +1606,11 @@ body.popup-open .student-manager {
     font-size: 24px;
     box-shadow: 0 0 20px rgba(255, 215, 0, 0.7);
     animation: pulse 2s infinite;
+}
+
+@keyframes fadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
 }
 
 /* FAQ Page Scrolling */
