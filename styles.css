@@ -1231,7 +1231,7 @@ body.popup-open .student-manager {
     width: 100%;
     max-width: 500px;
     background: rgba(0, 0, 0, 0.5);
-    z-index: 10000; /* Kept for other popups like success messages */
+    z-index: 999; /* Lowered from 10000 to appear under the menu */
     display: none;
     justify-content: center;
     align-items: center;
@@ -1579,7 +1579,6 @@ body.popup-open .student-manager {
     }
 }
 
-/* Miscellaneous Styles */
 /* Miscellaneous Styles */
 .congratulations-overlay {
     position: fixed;
