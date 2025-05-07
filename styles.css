@@ -1650,7 +1650,7 @@ body.popup-open .student-manager {
 }
 
 .faq-item.active .faq-answer {
-    max-height: 1000px; /* Increased to allow full content visibility */
+    max-height: 1000px !important;/* Increased to allow full content visibility */
     padding: 10px;
     display: block;
 }
@@ -1844,7 +1844,7 @@ body.popup-open .student-manager {
     }
 
     .faq-item.active .faq-answer {
-        max-height: 1000px;
+        max-height: 1000px !important;
     }
 
     .title-container h1 {
