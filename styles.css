@@ -1476,14 +1476,14 @@ body.popup-open .student-manager {
     }
 
     .info-overlay .arrow {
-        font-size: 22px; /* Increased size on mobile */
+        font-size: 24px; /* Increased by 10% from 22px */
     }
 
     .info-overlay .info-icon {
-        font-size: 24px; /* Larger than arrow on mobile */
-        width: 28px; /* Match desktop size */
-        height: 28px;
-        transform: translateY(1px); /* Maintain downward shift */
+        font-size: 34px; /* Increased by 40% from 24px */
+        width: 40px; /* Adjusted proportionally */
+        height: 40px;
+        transform: translateY(1px); /* Adjusted downward shift */
     }
 
     .description-container {
