@@ -1294,6 +1294,7 @@ body.popup-open .student-manager {
     flex-direction: column;
     align-items: center;
     box-sizing: border-box;
+    z-index: 900;
 }
 
 #qrPopup #qrCodeContainer {
@@ -2151,7 +2152,7 @@ body.popup-open .student-manager {
         width: 72vw;
     }
     .congratulations-message {
-        max-width: 90vw;
+        max-width: 80vw;
         font-size: 18px;
         padding: 15px;
         overflow-wrap: break-word;
