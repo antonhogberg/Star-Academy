@@ -2150,6 +2150,13 @@ body.popup-open .student-manager {
     #confirmRemovePopup .student-popup-content button {
         width: 72vw;
     }
+    .congratulations-message {
+        max-width: 90vw;
+        font-size: 18px;
+        padding: 15px;
+        overflow-wrap: break-word;
+        box-sizing: border-box;
+    }
 }
 
 /* iPhone landscape (allow scrolling) */
