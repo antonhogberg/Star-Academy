@@ -442,6 +442,7 @@ body.popup-open .student-manager {
     background-repeat: repeat-y;
     background-position: center top;
     z-index: 100;
+    position: static; /* Ensures it follows document flow */
 }
 
 .students-title {
@@ -2132,6 +2133,7 @@ body.popup-open .student-manager {
         max-width: 90vw;
         padding: 20px 20px 35px 20px;
         box-sizing: border-box;
+        max-height: 80vh;
     }
 
     .popup-content p {
