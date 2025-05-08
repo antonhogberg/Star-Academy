@@ -1107,6 +1107,13 @@ body.popup-open .student-manager {
     align-items: center;
 }
 
+.popup-scrollable-content {
+    max-height: calc(100% - 60px); /* Adjust based on padding and other fixed elements */
+    overflow-y: auto; /* Enable vertical scrolling */
+    width: 100%;
+    box-sizing: border-box;
+}
+
 .popup-content {
     background-color: var(--dark-bg);
     background-image: url('background.jpg');
@@ -1124,7 +1131,7 @@ body.popup-open .student-manager {
     gap: 10px;
     box-sizing: border-box;
     width: 100%;
-    max-width: 100%;
+    max-width: 600px;
 }
 
 .popup-content h2,
@@ -1575,6 +1582,10 @@ body.popup-open .student-manager {
             box-shadow: 0 0 20px rgba(255, 215, 0, 0.7);
             animation: pulse 2s infinite;
         }
+
+        .popup-content {
+            max-width: 700px; /* Already looks good on iPad Pro 13" */
+        }
         
         @keyframes fadeIn {
             0% { opacity: 0; }
@@ -1583,6 +1594,7 @@ body.popup-open .student-manager {
         height: calc(100vh - 50px);
         max-height: 960px;
     }
+
 }
 
 @media (min-width: 1401px) and (orientation: landscape) and (hover: hover) and (min-aspect-ratio: 16/10) {
@@ -2475,6 +2487,11 @@ body.popup-open .student-manager {
         align-items: center;
     }
 
+    .popup-content {
+        max-width: 600px; /* Wider to prevent overflow */
+        max-height: 70vh; /* Prevent overflow on smaller iPads */
+    }
+
     .notes-container {
         margin: 2px auto;
     }
@@ -2572,5 +2589,9 @@ body.popup-open .student-manager {
 
     .popup {
         max-width: 40%;
+    }
+
+    .popup-content {
+        max-width: 600px;
     }
 }
