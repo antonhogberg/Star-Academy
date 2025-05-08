@@ -1223,6 +1223,19 @@ body.popup-open .student-manager {
     padding-right: 0;
 }
 
+.rank-badge-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 15px 0; /* Space between paragraphs */
+}
+
+.rank-badge-image {
+    max-width: 100px; /* Adjust size as needed */
+    height: auto;
+    display: block;
+}
+
 .student-popup {
     position: fixed;
     top: 50%;
