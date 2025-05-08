@@ -441,7 +441,7 @@ body.popup-open .student-manager {
     background-size: 100% auto;
     background-repeat: repeat-y;
     background-position: center top;
-    z-index: 1100;
+    z-index: 100;
 }
 
 .students-title {
