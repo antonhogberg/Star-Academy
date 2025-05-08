@@ -92,7 +92,7 @@ body.popup-open .student-manager {
     box-sizing: border-box;
     position: fixed;
     top: 0;
-    z-index: 1100;
+    z-index: 100;
     visibility: visible !important;
     will-change: transform;
 }
