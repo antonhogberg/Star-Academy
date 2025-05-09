@@ -442,7 +442,6 @@ body.popup-open .student-manager {
     background-repeat: repeat-y;
     background-position: center top;
     z-index: 100;
-    position: static; /* Ensures it follows document flow */
 }
 
 .students-title {
