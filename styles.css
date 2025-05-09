@@ -429,6 +429,8 @@ body.popup-open .student-manager {
 /* Content Styles */
 .chapter-title {
     position: fixed;
+    top: 0; /* Explicitly set to pin to the top */
+    left: 0; /* Pin to the left */
     text-align: center;
     margin: 0;
     padding: 10px 0;
