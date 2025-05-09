@@ -86,40 +86,51 @@
     
             // Handle keyboard appearance on mobile
             if (nameInput) {
-                let originalScrollY = 0;
+                let originalScrollY = window.scrollY;
+    
+                // Prevent browser from scrolling the page when the keyboard appears
+                const lockViewport = () => {
+                    window.scrollTo(0, 0); // Force scroll to top
+                    document.body.style.position = 'fixed';
+                    document.body.style.top = '0';
+                    document.body.style.width = '100%';
+                    document.body.style.overflow = 'hidden';
+                };
+    
+                // Restore viewport when keyboard dismisses
+                const unlockViewport = () => {
+                    document.body.style.position = '';
+                    document.body.style.top = '';
+                    document.body.style.width = '';
+                    document.body.style.overflow = '';
+                    window.scrollTo(0, originalScrollY);
+                };
     
                 // When the input is focused (keyboard appears)
                 nameInput.addEventListener('focus', () => {
                     originalScrollY = window.scrollY;
                     document.body.classList.add('keyboard-open');
+                    lockViewport();
     
-                    // Force the popup to stay centered by adjusting its position
-                    if ('visualViewport' in window) {
-                        const viewport = window.visualViewport;
-                        const updatePosition = () => {
-                            const offset = viewport.offsetTop;
-                            namePopup.style.top = `calc(50% + ${offset}px)`;
-                        };
-                        viewport.addEventListener('resize', updatePosition);
-                        viewport.addEventListener('scroll', updatePosition);
-                        window.keyboardResizeHandler = updatePosition;
-                    } else {
-                        // Fallback: Force scroll to top to prevent content shift
-                        window.scrollTo(0, 0);
-                    }
+                    // Ensure popup stays centered
+                    namePopup.style.top = '50%';
+                    namePopup.style.transform = 'translate(-50%, -50%)';
                 });
     
                 // When the input loses focus (keyboard dismisses)
                 nameInput.addEventListener('blur', () => {
                     document.body.classList.remove('keyboard-open');
-                    window.scrollTo(0, originalScrollY);
+                    unlockViewport();
     
-                    // Reset popup position
+                    // Ensure popup stays centered
                     namePopup.style.top = '50%';
-                    if ('visualViewport' in window) {
-                        const viewport = window.visualViewport;
-                        viewport.removeEventListener('resize', window.keyboardResizeHandler);
-                        viewport.removeEventListener('scroll', window.keyboardResizeHandler);
+                    namePopup.style.transform = 'translate(-50%, -50%)';
+                });
+    
+                // Handle viewport changes (e.g., iOS Safari address bar)
+                window.addEventListener('resize', () => {
+                    if (document.body.classList.contains('keyboard-open')) {
+                        lockViewport();
                     }
                 });
             }
