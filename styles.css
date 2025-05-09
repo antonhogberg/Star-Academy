@@ -1102,7 +1102,7 @@ body.popup-open .student-manager {
     width: 100%;
     height: auto;
     background: rgba(0, 0, 0, 0.5);
-    z-index: 999; /* Lowered from 1000 to appear under the menu */
+    z-index: 10001; /* Increased to be above the menu button (z-index: 10000) */
     display: none;
     justify-content: center;
     align-items: center;
