@@ -2133,7 +2133,7 @@ body.popup-open .student-manager {
         max-width: 90vw;
         padding: 20px 20px 35px 20px;
         box-sizing: border-box;
-        max-height: 80vh;
+        max-height: 90vh;
     }
 
     .popup-content p {
