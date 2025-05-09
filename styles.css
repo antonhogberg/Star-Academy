@@ -1102,7 +1102,7 @@ body.popup-open .student-manager {
     width: 100%;
     height: auto;
     background: rgba(0, 0, 0, 0.5);
-    z-index: 999; /* Lowered from 1000 to appear under the menu */
+    z-index: 10001; 
     display: none;
     justify-content: center;
     align-items: center;
@@ -2133,11 +2133,11 @@ body.popup-open .student-manager {
         max-width: 90vw;
         padding: 20px 20px 35px 20px;
         box-sizing: border-box;
-        max-height: 80vh;
+        max-height: 90vh;
     }
 
     .popup-content p {
-        font-size: 14px;
+        font-size: 14px;    
     }
 
     .popup-content .input-group {
@@ -2490,6 +2490,12 @@ body.popup-open .student-manager {
     }
 
     .popup-content {
+        max-width: 700px; /* Wider to prevent overflow */
+        max-height: 80vh; /* Prevent overflow on smaller iPads */
+    }
+
+    .popup-scrollable-content {
+        max-height: calc(90vh - 150px); /* Adjusted for new max-height */
         max-width: 600px; /* Wider to prevent overflow */
         max-height: 70vh; /* Prevent overflow on smaller iPads */
     }
