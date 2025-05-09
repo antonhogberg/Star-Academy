@@ -92,7 +92,7 @@ body.popup-open .student-manager {
     box-sizing: border-box;
     position: fixed;
     top: 0;
-    z-index: 1100;
+    z-index: 100;
     visibility: visible !important;
     will-change: transform;
 }
@@ -441,7 +441,8 @@ body.popup-open .student-manager {
     background-size: 100% auto;
     background-repeat: repeat-y;
     background-position: center top;
-    z-index: 1100;
+    z-index: 100;
+    position: static; /* Ensures it follows document flow */
 }
 
 .students-title {
@@ -1101,10 +1102,17 @@ body.popup-open .student-manager {
     width: 100%;
     height: auto;
     background: rgba(0, 0, 0, 0.5);
-    z-index: 999; /* Lowered from 1000 to appear under the menu */
+    z-index: 10001; 
     display: none;
     justify-content: center;
     align-items: center;
+}
+
+.popup-scrollable-content {
+    max-height: calc(100% - 60px); /* Adjust based on padding and other fixed elements */
+    overflow-y: auto; /* Enable vertical scrolling */
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .popup-content {
@@ -1124,7 +1132,7 @@ body.popup-open .student-manager {
     gap: 10px;
     box-sizing: border-box;
     width: 100%;
-    max-width: 100%;
+    max-width: 600px;
 }
 
 .popup-content h2,
@@ -1221,6 +1229,19 @@ body.popup-open .student-manager {
     padding-bottom: 0;
     padding-left: 0;
     padding-right: 0;
+}
+
+.rank-badge-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 15px 0; /* Space between paragraphs */
+}
+
+.rank-badge-image {
+    max-width: 100px; /* Adjust size as needed */
+    height: auto;
+    display: block;
 }
 
 .student-popup {
@@ -1562,6 +1583,10 @@ body.popup-open .student-manager {
             box-shadow: 0 0 20px rgba(255, 215, 0, 0.7);
             animation: pulse 2s infinite;
         }
+
+        .popup-content {
+            max-width: 700px; /* Already looks good on iPad Pro 13" */
+        }
         
         @keyframes fadeIn {
             0% { opacity: 0; }
@@ -1570,6 +1595,7 @@ body.popup-open .student-manager {
         height: calc(100vh - 50px);
         max-height: 960px;
     }
+
 }
 
 @media (min-width: 1401px) and (orientation: landscape) and (hover: hover) and (min-aspect-ratio: 16/10) {
@@ -2107,10 +2133,11 @@ body.popup-open .student-manager {
         max-width: 90vw;
         padding: 20px 20px 35px 20px;
         box-sizing: border-box;
+        max-height: 90vh;
     }
 
     .popup-content p {
-        font-size: 14px;
+        font-size: 14px;    
     }
 
     .popup-content .input-group {
@@ -2462,6 +2489,17 @@ body.popup-open .student-manager {
         align-items: center;
     }
 
+    .popup-content {
+        max-width: 700px; /* Wider to prevent overflow */
+        max-height: 80vh; /* Prevent overflow on smaller iPads */
+    }
+
+    .popup-scrollable-content {
+        max-height: calc(90vh - 150px); /* Adjusted for new max-height */
+        max-width: 600px; /* Wider to prevent overflow */
+        max-height: 70vh; /* Prevent overflow on smaller iPads */
+    }
+
     .notes-container {
         margin: 2px auto;
     }
@@ -2559,5 +2597,9 @@ body.popup-open .student-manager {
 
     .popup {
         max-width: 40%;
+    }
+
+    .popup-content {
+        max-width: 600px;
     }
 }
