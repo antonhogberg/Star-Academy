@@ -2490,8 +2490,12 @@ body.popup-open .student-manager {
     }
 
     .popup-content {
-        max-width: 600px; /* Wider to prevent overflow */
-        max-height: 70vh; /* Prevent overflow on smaller iPads */
+        max-width: 700px; /* Wider to prevent overflow */
+        max-height: 90vh; /* Prevent overflow on smaller iPads */
+    }
+
+    .popup-scrollable-content {
+        max-height: calc(90vh - 150px); /* Adjusted for new max-height */
     }
 
     .notes-container {
