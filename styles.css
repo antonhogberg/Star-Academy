@@ -2491,7 +2491,7 @@ body.popup-open .student-manager {
 
     .popup-content {
         max-width: 700px; /* Wider to prevent overflow */
-        max-height: 90vh; /* Prevent overflow on smaller iPads */
+        max-height: 80vh; /* Prevent overflow on smaller iPads */
     }
 
     .popup-scrollable-content {
