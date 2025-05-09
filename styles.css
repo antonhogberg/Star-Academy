@@ -419,6 +419,9 @@ body.popup-open .student-manager {
 
 /* Content Styles */
 .chapter-title {
+    position: fixed; /* Restore fixed positioning */
+    top: 0;
+    left: 0;
     text-align: center;
     margin: 0;
     padding: 10px 0;
@@ -432,7 +435,10 @@ body.popup-open .student-manager {
     background-size: 100% auto;
     background-repeat: repeat-y;
     background-position: center top;
-    /* Removed: position: fixed, top, left, z-index, white-space, overflow, text-overflow */
+    z-index: 100;
+    white-space: nowrap; /* Prevent wrapping */
+    overflow: hidden; /* Hide overflow if title is too long */
+    text-overflow: ellipsis; /* Add ellipsis if title overflows */
 }
 
 .chapter-container {
@@ -443,7 +449,7 @@ body.popup-open .student-manager {
     width: 100%;
     box-sizing: border-box;
     flex-grow: 1;
-    padding: 20px; /* Reduced since the title is not fixed */
+    padding: 80px 20px 20px 20px; /* Add top padding to account for fixed title */
 }
 
 .students-title {
@@ -1914,7 +1920,8 @@ body.popup-open .student-manager {
     }
 
     .chapter-container {
-        padding: 20px;
+        height: auto;
+        overflow: visible;
     }
 
     .layout-container {
@@ -1968,8 +1975,9 @@ body.popup-open .student-manager {
     }
 
     .chapter-title {
-        font-size: 20px;
-        margin: 10px 0; /* Adjusted for better spacing on mobile */
+        display: block;
+        margin: 5px 0;
+        margin-top: 0;
     }
 
     .chapter-number {

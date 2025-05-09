@@ -76,6 +76,35 @@
             const namePopup = document.getElementById('namePopup');
             const nameInput = document.getElementById('nameInput');
     
+            // Dynamically adjust padding for chapter-container based on chapter-title height
+            const chapterTitle = document.querySelector('.chapter-title');
+            const chapterContainer = document.querySelector('.chapter-container');
+            if (chapterTitle && chapterContainer) {
+                const adjustPadding = () => {
+                    requestAnimationFrame(() => {
+                        const titleHeight = chapterTitle.offsetHeight;
+                        chapterContainer.style.paddingTop = `${titleHeight + 20}px`; // Extra 20px for spacing
+                    });
+                };
+                adjustPadding();
+                window.addEventListener('load', adjustPadding);
+                window.addEventListener('resize', adjustPadding);
+                window.addEventListener('orientationchange', adjustPadding);
+    
+                // Observe changes to the chapter-title content (e.g., language switch)
+                const observer = new MutationObserver(() => {
+                    adjustPadding();
+                });
+                observer.observe(chapterTitle, {
+                    childList: true,
+                    subtree: true,
+                    characterData: true
+                });
+                window.addEventListener('unload', () => {
+                    observer.disconnect();
+                });
+            }
+    
             if (!studentsData.currentStudent) {
                 namePopup.style.display = 'flex';
                 document.body.classList.add('popup-open');
@@ -90,10 +119,16 @@
     
                 const lockViewport = () => {
                     window.scrollTo(0, 0);
+                    document.body.style.position = 'fixed';
+                    document.body.style.top = '0';
+                    document.body.style.width = '100%';
                     document.body.style.overflow = 'hidden';
                 };
     
                 const unlockViewport = () => {
+                    document.body.style.position = '';
+                    document.body.style.top = '';
+                    document.body.style.width = '';
                     document.body.style.overflow = '';
                     window.scrollTo(0, originalScrollY);
                 };
