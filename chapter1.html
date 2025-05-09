@@ -74,13 +74,55 @@
             document.body.style.touchAction = 'manipulation';
             let studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
             const namePopup = document.getElementById('namePopup');
+            const nameInput = document.getElementById('nameInput');
     
             if (!studentsData.currentStudent) {
                 namePopup.style.display = 'flex';
+                document.body.classList.add('popup-open');
             }
     
             const initialLang = localStorage.getItem('language') || 'sv';
             switchLanguage(initialLang);
+    
+            // Handle keyboard appearance on mobile
+            if (nameInput) {
+                let originalScrollY = 0;
+    
+                // When the input is focused (keyboard appears)
+                nameInput.addEventListener('focus', () => {
+                    originalScrollY = window.scrollY;
+                    document.body.classList.add('keyboard-open');
+    
+                    // Force the popup to stay centered by adjusting its position
+                    if ('visualViewport' in window) {
+                        const viewport = window.visualViewport;
+                        const updatePosition = () => {
+                            const offset = viewport.offsetTop;
+                            namePopup.style.top = `calc(50% + ${offset}px)`;
+                        };
+                        viewport.addEventListener('resize', updatePosition);
+                        viewport.addEventListener('scroll', updatePosition);
+                        window.keyboardResizeHandler = updatePosition;
+                    } else {
+                        // Fallback: Force scroll to top to prevent content shift
+                        window.scrollTo(0, 0);
+                    }
+                });
+    
+                // When the input loses focus (keyboard dismisses)
+                nameInput.addEventListener('blur', () => {
+                    document.body.classList.remove('keyboard-open');
+                    window.scrollTo(0, originalScrollY);
+    
+                    // Reset popup position
+                    namePopup.style.top = '50%';
+                    if ('visualViewport' in window) {
+                        const viewport = window.visualViewport;
+                        viewport.removeEventListener('resize', window.keyboardResizeHandler);
+                        viewport.removeEventListener('scroll', window.keyboardResizeHandler);
+                    }
+                });
+            }
         });
     </script>
     <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'93898aec2a83b0e8',t:'MTc0NjA0MjM1OS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
