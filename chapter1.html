@@ -81,12 +81,28 @@
             const chapterContainer = document.querySelector('.chapter-container');
             if (chapterTitle && chapterContainer) {
                 const adjustPadding = () => {
-                    const titleHeight = chapterTitle.offsetHeight;
-                    chapterContainer.style.paddingTop = `${titleHeight + 20}px`; // Add extra 20px for spacing
+                    requestAnimationFrame(() => {
+                        const titleHeight = chapterTitle.offsetHeight;
+                        chapterContainer.style.paddingTop = `${titleHeight + 20}px`; // Extra 20px for spacing
+                    });
                 };
                 adjustPadding();
+                window.addEventListener('load', adjustPadding);
                 window.addEventListener('resize', adjustPadding);
                 window.addEventListener('orientationchange', adjustPadding);
+    
+                // Observe changes to the chapter-title content (e.g., language switch)
+                const observer = new MutationObserver(() => {
+                    adjustPadding();
+                });
+                observer.observe(chapterTitle, {
+                    childList: true,
+                    subtree: true,
+                    characterData: true
+                });
+                window.addEventListener('unload', () => {
+                    observer.disconnect();
+                });
             }
     
             if (!studentsData.currentStudent) {
