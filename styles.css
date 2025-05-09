@@ -57,6 +57,7 @@ body.popup-open .student-manager {
     width: 100%;
     box-sizing: border-box;
     flex-grow: 1;
+    padding: 60px 20px 20px 20px; /* Increased top padding to account for chapter-title */
 }
 
 .layout-container {
