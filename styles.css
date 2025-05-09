@@ -49,15 +49,6 @@ body.popup-open .student-manager {
 }
 
 /* Layout Components */
-.chapter-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    width: 100%;
-    box-sizing: border-box;
-    flex-grow: 1;
-}
 
 .layout-container {
     position: relative;
@@ -428,6 +419,9 @@ body.popup-open .student-manager {
 
 /* Content Styles */
 .chapter-title {
+    position: fixed; /* Restore fixed positioning */
+    top: 0;
+    left: 0;
     text-align: center;
     margin: 0;
     padding: 10px 0;
@@ -442,7 +436,20 @@ body.popup-open .student-manager {
     background-repeat: repeat-y;
     background-position: center top;
     z-index: 100;
-    position: static; /* Ensures it follows document flow */
+    white-space: nowrap; /* Prevent wrapping */
+    overflow: hidden; /* Hide overflow if title is too long */
+    text-overflow: ellipsis; /* Add ellipsis if title overflows */
+}
+
+.chapter-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;
+    box-sizing: border-box;
+    flex-grow: 1;
+    padding: 80px 20px 20px 20px; /* Add top padding to account for fixed title */
 }
 
 .students-title {
