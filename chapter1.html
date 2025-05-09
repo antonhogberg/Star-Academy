@@ -76,6 +76,19 @@
             const namePopup = document.getElementById('namePopup');
             const nameInput = document.getElementById('nameInput');
     
+            // Dynamically adjust padding for chapter-container based on chapter-title height
+            const chapterTitle = document.querySelector('.chapter-title');
+            const chapterContainer = document.querySelector('.chapter-container');
+            if (chapterTitle && chapterContainer) {
+                const adjustPadding = () => {
+                    const titleHeight = chapterTitle.offsetHeight;
+                    chapterContainer.style.paddingTop = `${titleHeight + 20}px`; // Add extra 20px for spacing
+                };
+                adjustPadding();
+                window.addEventListener('resize', adjustPadding);
+                window.addEventListener('orientationchange', adjustPadding);
+            }
+    
             if (!studentsData.currentStudent) {
                 namePopup.style.display = 'flex';
                 document.body.classList.add('popup-open');
@@ -88,16 +101,14 @@
             if (nameInput) {
                 let originalScrollY = window.scrollY;
     
-                // Prevent browser from scrolling the page when the keyboard appears
                 const lockViewport = () => {
-                    window.scrollTo(0, 0); // Force scroll to top
+                    window.scrollTo(0, 0);
                     document.body.style.position = 'fixed';
                     document.body.style.top = '0';
                     document.body.style.width = '100%';
                     document.body.style.overflow = 'hidden';
                 };
     
-                // Restore viewport when keyboard dismisses
                 const unlockViewport = () => {
                     document.body.style.position = '';
                     document.body.style.top = '';
@@ -106,28 +117,21 @@
                     window.scrollTo(0, originalScrollY);
                 };
     
-                // When the input is focused (keyboard appears)
                 nameInput.addEventListener('focus', () => {
                     originalScrollY = window.scrollY;
                     document.body.classList.add('keyboard-open');
                     lockViewport();
-    
-                    // Ensure popup stays centered
                     namePopup.style.top = '50%';
                     namePopup.style.transform = 'translate(-50%, -50%)';
                 });
     
-                // When the input loses focus (keyboard dismisses)
                 nameInput.addEventListener('blur', () => {
                     document.body.classList.remove('keyboard-open');
                     unlockViewport();
-    
-                    // Ensure popup stays centered
                     namePopup.style.top = '50%';
                     namePopup.style.transform = 'translate(-50%, -50%)';
                 });
     
-                // Handle viewport changes (e.g., iOS Safari address bar)
                 window.addEventListener('resize', () => {
                     if (document.body.classList.contains('keyboard-open')) {
                         lockViewport();
