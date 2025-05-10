@@ -352,18 +352,13 @@ function checkAndShowRankAchievementPopup(sixStarCount) {
                 }
             };
             rankMessage.textContent = translations[language].rankAchievementMessage;
-            rankPopup.classList.add('show');
+            rankPopup.style.display = 'flex';
             document.body.classList.add('popup-open');
 
             setTimeout(() => {
-                rankPopup.style.transition = 'opacity 1s ease';
-                rankPopup.style.opacity = '0';
-                setTimeout(() => {
-                    rankPopup.classList.remove('show');
-                    rankPopup.style.opacity = '1';
-                    document.body.classList.remove('popup-open');
-                }, 1000);
-            }, 3000);
+                rankPopup.style.display = 'none';
+                document.body.classList.remove('popup-open');
+            }, 4000);
 
             student.starCadetPopupShown = true;
             studentsData.students[currentStudent] = student;
