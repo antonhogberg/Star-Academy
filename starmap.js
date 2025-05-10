@@ -131,21 +131,18 @@ function initializeSvg(doc) {
             const studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
             const progress = studentsData.students[studentsData.currentStudent]?.progress || {};
             let level = progress[exerciseKey] ? parseInt(progress[exerciseKey]) : 0;
-
-            // Sync display with localStorage value before incrementing
+        
             newStarElement.style.opacity = '0';
             setTimeout(() => {
                 newStarElement.setAttributeNS('http://www.w3.org/1999/xlink', 'href', starImages[level]);
                 newStarElement.style.opacity = '1';
             }, 300);
-
-            // Increment the level
+        
             level = (level + 1) % 7;
             progress[exerciseKey] = level.toString();
             studentsData.students[studentsData.currentStudent].progress = progress;
             localStorage.setItem('starAcademyStudents', JSON.stringify(studentsData));
-
-            // Update the star image after incrementing
+        
             newStarElement.style.opacity = '0';
             setTimeout(() => {
                 newStarElement.setAttributeNS('http://www.w3.org/1999/xlink', 'href', starImages[level]);
@@ -155,7 +152,7 @@ function initializeSvg(doc) {
                 };
                 newStarElement.style.opacity = '1';
             }, 300);
-
+        
             lineElements.forEach(lineElement => {
                 if (level === 6) {
                     lineElement.setAttribute('filter', 'url(#golden-glow)');
@@ -165,8 +162,9 @@ function initializeSvg(doc) {
                     lineElement.style.stroke = '#FFFFFF';
                 }
             });
-
+        
             checkCompletion(studentsData);
+            updateStarStates(); // Add this line to trigger the rank achievement popup check
         });
 
         // Remove existing storage listeners to prevent duplicates
