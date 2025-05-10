@@ -19,6 +19,8 @@ const translations = {
         rankStarCaptain: "Star Captain",
         rankStarCommander: "Star Commander",
         rankStarAdmiral: "Star Admiral",
+        rankAchievementMessage: "Congratulations [userName]!",
+        rankAchievementSubtitle: "You’ve achieved the rank of Star Cadet!",
         textboxExplorer: "You’re embarking on your piano adventure, learning notes, scales, chords, and arpeggios step by step. Complete 16 exercises to claim the Star Cadet rank!",
         textboxStarCadet: "You’ve displayed steadfast resolve, securing six stars over 16 exercises in the North Star Piano Academy. Complete Part 1 in all seven chapters to claim Star Officer!",
         textboxStarOfficer: "With thorough dedication, you’ve learned key names, scales, root chords, and several pieces. Stand proud as a Star Officer of the North Star Piano Academy—conquer Part 2 in every chapter for Star Captain!",
@@ -114,6 +116,8 @@ const translations = {
         rankStarCaptain: "Stjärnkapten",
         rankStarCommander: "Stjärnkommendör",
         rankStarAdmiral: "Stjärnamiral",
+        rankAchievementMessage: "Grattis [userName]!",
+        rankAchievementSubtitle: "Du har uppnått rangen Stjärnkadett!",
         textboxExplorer: "Ditt pianoäventyr har startat, och du upptäcker noter, skalor, ackord och arpeggion i din egen takt. Klarar du 16 övningar blir du Stjärnkadett!",
         textboxStarCadet: "Du har visat järnvilja och samlat sex stjärnor i 16 övningar i Nordstjärnans Pianoakademi. Klarar du del 1 i alla sju kapitel blir du Stjärnofficer!",
         textboxStarOfficer: "Med stort fokus och noggrannhet har du lärt dig tangentnamn, skalor, grundackord och flera stycken. Var stolt, för nu är du Stjärnofficer i Nordstjärnans Pianoakademi – klara av del 2 i alla kapitel och bli Stjärnkapten!",
@@ -340,22 +344,14 @@ function checkAndShowRankAchievementPopup(sixStarCount, previousSixStarCount) {
     if (sixStarCount === 16 && previousSixStarCount === 15) {
         const rankPopup = document.getElementById('rankAchievementPopup');
         const rankMessage = document.getElementById('rankAchievementMessage');
-        const rankDescription = document.getElementById('rankAchievementDescription');
+        const rankSubtitle = document.getElementById('rankAchievementSubtitle');
+        const rankPopupDescription = document.getElementById('rankAchievementDescription'); // Renamed for consistency
 
-        if (rankPopup && rankMessage && rankDescription) {
+        if (rankPopup && rankMessage && rankSubtitle && rankPopupDescription) {
             console.log('Showing rank achievement popup');
-            const translations = {
-                sv: {
-                    rankAchievementMessage: "Grattis! Du har uppnått rangen Stjärnkadett!",
-                    rankDescription: "Du har fått 16 sexstjärniga prestationer! Du är en Stjärnkadett som lyser starkt på din resa!"
-                },
-                en: {
-                    rankAchievementMessage: "Congratulations! You’ve achieved the rank of Star Cadet!",
-                    rankDescription: "You’ve earned 16 six-star achievements! You’re a Star Cadet, shining brightly on your journey!"
-                }
-            };
-            rankMessage.textContent = translations[language].rankAchievementMessage;
-            rankDescription.textContent = translations[language].rankDescription;
+            rankMessage.textContent = translations[language].rankAchievementMessage.replace('[userName]', currentStudent);
+            rankSubtitle.textContent = translations[language].rankAchievementSubtitle;
+            rankPopupDescription.textContent = translations[language].textboxStarCadet;
             setTimeout(() => {
                 rankPopup.style.display = 'flex';
                 document.body.classList.add('popup-open');
@@ -371,6 +367,7 @@ function checkAndShowRankAchievementPopup(sixStarCount, previousSixStarCount) {
                     closeButton.addEventListener('click', closePopup);
                 }
 
+                rankPopup.removeEventListener('click', closePopup);
                 rankPopup.addEventListener('click', (event) => {
                     if (event.target === rankPopup) {
                         closePopup();
@@ -378,7 +375,7 @@ function checkAndShowRankAchievementPopup(sixStarCount, previousSixStarCount) {
                 });
             }, 0);
         } else {
-            console.log('Popup elements not found:', { rankPopup: !!rankPopup, rankMessage: !!rankMessage, rankDescription: !!rankDescription });
+            console.log('Popup elements not found:', { rankPopup: !!rankPopup, rankMessage: !!rankMessage, rankSubtitle: !!rankSubtitle, rankPopupDescription: !!rankPopupDescription });
         }
     }
 }
@@ -536,7 +533,8 @@ function updateStarStates() {
     }
 }
 
-function switchLanguage(lang) {
+function switchLanguage() {
+    const lang = localStorage.getItem('language') === 'sv' ? 'en' : 'sv';
     localStorage.setItem('language', lang);
 
     document.querySelectorAll('.menu-link').forEach(link => {
@@ -660,15 +658,12 @@ function switchLanguage(lang) {
         const key = p.getAttribute('data-translate');
         if (translations[lang][key]) {
             const translatedText = translations[lang][key];
-            // Split the translated text to separate the semi-title (up to the last colon before the main text)
             const match = translatedText.match(/^(.*?)(?=\s[A-Z])/);
             if (match) {
                 const semiTitle = match[0];
                 const restOfText = translatedText.substring(semiTitle.length).trim();
-                // Reconstruct the HTML with the semi-title in <strong> and a wrapping span
                 p.innerHTML = `<span class="semi-title"><strong>${semiTitle}</strong></span> ${restOfText}`;
             } else {
-                // Fallback: if no match, just set the text
                 p.textContent = translatedText;
             }
         }
@@ -680,12 +675,23 @@ function switchLanguage(lang) {
     const shareExportButton = document.getElementById('shareExportButton');
     const shareButtonInQR = document.getElementById('shareButtonInQR');
     const exportStatus = document.getElementById('exportStatus');
-
     if (exportTitle) exportTitle.textContent = translations[lang].exportTitle;
     if (exportInfo) exportInfo.textContent = translations[lang].exportInfo;
     if (shareExportButton) shareExportButton.textContent = translations[lang].shareButtonExport;
     if (shareButtonInQR) shareButtonInQR.textContent = translations[lang].shareButtonQR;
     if (exportStatus) exportStatus.textContent = translations[lang].creatingLink;
+
+    // Update rank achievement popup if visible
+    const rankPopup = document.getElementById('rankAchievementPopup');
+    const rankMessage = document.getElementById('rankAchievementMessage');
+    const rankSubtitle = document.getElementById('rankAchievementSubtitle');
+    const rankPopupDescription = document.getElementById('rankAchievementDescription'); // Renamed to avoid conflict
+    const currentStudent = window.studentsData?.currentStudent || '';
+    if (rankPopup && rankMessage && rankSubtitle && rankPopupDescription && rankPopup.style.display === 'flex') {
+        rankMessage.textContent = translations[lang].rankAchievementMessage.replace('[userName]', currentStudent);
+        rankSubtitle.textContent = translations[lang].rankAchievementSubtitle;
+        rankPopupDescription.textContent = translations[lang].textboxStarCadet;
+    }
 }
 
 function setInitialLanguage() {
