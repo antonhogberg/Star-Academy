@@ -1978,7 +1978,7 @@ body.popup-open .student-manager {
     .chapter-title {
         position: static; /* Scroll with content on mobile */
         font-size: 20px;
-        margin: 10px 0; /* Adjusted for better spacing */
+        margin: 0 0 10px 0; /* Adjusted for better spacing */
         white-space: normal; /* Allow wrapping on mobile */
         overflow: visible; /* Remove overflow constraints */
         text-overflow: clip; /* Remove ellipsis */
