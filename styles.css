@@ -1435,6 +1435,16 @@ body.popup-open .student-manager {
     100% { transform: scaleX(1); }
 }
 
+#rankAchievementPopup .popup-content h2#rankAchievementMessage {
+    color: #ffffff;
+    font-family: Cochin, Georgia, Arial, sans-serif;
+    font-size: 24px;
+    margin: 0 0 15px 0;
+    text-align: center;
+}
+
+
+
 /* Pulsating animation */
 @keyframes pulse {
     0% { transform: translateY(-50%) scale(1); }
@@ -2235,6 +2245,10 @@ body.popup-open .student-manager {
         padding: 15px;
         overflow-wrap: break-word;
         box-sizing: border-box;
+    }
+
+    #rankAchievementPopup .popup-content h2#rankAchievementMessage {
+        font-size: 20px;
     }
 }
 
