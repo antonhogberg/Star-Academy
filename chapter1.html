@@ -69,22 +69,30 @@
     <script src="students.js"></script>
     <script src="chapter.js"></script>
     <script src="script.js"></script>
-    <script>
+    <<script>
         document.addEventListener('DOMContentLoaded', () => {
             document.body.style.touchAction = 'manipulation';
             let studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
             const namePopup = document.getElementById('namePopup');
             const nameInput = document.getElementById('nameInput');
     
-            // Dynamically adjust padding for chapter-container based on chapter-title height
+            // Dynamically adjust padding for chapter-container based on chapter-title height (only on larger screens)
             const chapterTitle = document.querySelector('.chapter-title');
             const chapterContainer = document.querySelector('.chapter-container');
             if (chapterTitle && chapterContainer) {
                 const adjustPadding = () => {
-                    requestAnimationFrame(() => {
-                        const titleHeight = chapterTitle.offsetHeight;
-                        chapterContainer.style.paddingTop = `${titleHeight + 20}px`; // Extra 20px for spacing
-                    });
+                    // Use matchMedia for a more reliable check of the mobile media query
+                    const isMobile = window.matchMedia("(max-width: 767px) and (orientation: portrait)").matches;
+                    if (!isMobile) {
+                        // Apply padding only on larger screens where the title is fixed
+                        requestAnimationFrame(() => {
+                            const titleHeight = chapterTitle.offsetHeight;
+                            chapterContainer.style.paddingTop = `${titleHeight + 20}px`;
+                        });
+                    } else {
+                        // Clear inline padding-top on mobile to let CSS take effect
+                        chapterContainer.style.paddingTop = '';
+                    }
                 };
                 adjustPadding();
                 window.addEventListener('load', adjustPadding);
