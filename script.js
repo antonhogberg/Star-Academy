@@ -334,11 +334,9 @@ function checkAndShowRankAchievementPopup(sixStarCount) {
     const student = studentsData.students[currentStudent];
     const language = localStorage.getItem('language') || 'sv';
 
-    // Check if the popup has already been shown for this milestone
     const popupShown = student.starCadetPopupShown || false;
     console.log('Checking rank achievement popup:', { sixStarCount, popupShown, currentStudent });
 
-    // Show the popup if the user has reached 16 or more six-star exercises and the popup hasn't been shown yet
     if (sixStarCount >= 16 && !popupShown) {
         const rankPopup = document.getElementById('rankAchievementPopup');
         const rankMessage = document.getElementById('rankAchievementMessage');
@@ -354,21 +352,19 @@ function checkAndShowRankAchievementPopup(sixStarCount) {
                 }
             };
             rankMessage.textContent = translations[language].rankAchievementMessage;
-            rankPopup.style.display = 'flex';
+            rankPopup.classList.add('show');
             document.body.classList.add('popup-open');
 
-            // Automatically close the popup after 3 seconds
             setTimeout(() => {
                 rankPopup.style.transition = 'opacity 1s ease';
                 rankPopup.style.opacity = '0';
                 setTimeout(() => {
-                    rankPopup.style.display = 'none';
+                    rankPopup.classList.remove('show');
                     rankPopup.style.opacity = '1';
                     document.body.classList.remove('popup-open');
                 }, 1000);
             }, 3000);
 
-            // Mark the popup as shown for this student
             student.starCadetPopupShown = true;
             studentsData.students[currentStudent] = student;
             localStorage.setItem('starAcademyStudents', JSON.stringify(studentsData));
