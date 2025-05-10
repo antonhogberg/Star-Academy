@@ -326,20 +326,25 @@ function checkAndShowRankAchievementPopup(sixStarCount) {
     let studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
     const currentStudent = studentsData.currentStudent;
 
-    if (!currentStudent || !studentsData.students[currentStudent]) return;
+    if (!currentStudent || !studentsData.students[currentStudent]) {
+        console.log('No current student or student data found:', { currentStudent, studentsData });
+        return;
+    }
 
     const student = studentsData.students[currentStudent];
     const language = localStorage.getItem('language') || 'sv';
 
     // Check if the popup has already been shown for this milestone
     const popupShown = student.starCadetPopupShown || false;
+    console.log('Checking rank achievement popup:', { sixStarCount, popupShown, currentStudent });
 
-    // Show the popup if the user has reached exactly 16 six-star exercises and the popup hasn't been shown yet
-    if (sixStarCount === 16 && !popupShown) {
+    // Show the popup if the user has reached 16 or more six-star exercises and the popup hasn't been shown yet
+    if (sixStarCount >= 16 && !popupShown) {
         const rankPopup = document.getElementById('rankAchievementPopup');
         const rankMessage = document.getElementById('rankAchievementMessage');
 
         if (rankPopup && rankMessage) {
+            console.log('Showing rank achievement popup');
             const translations = {
                 sv: {
                     rankAchievementMessage: "Grattis! Du har uppnått rangen Stjärnkadett!"
@@ -367,6 +372,8 @@ function checkAndShowRankAchievementPopup(sixStarCount) {
             student.starCadetPopupShown = true;
             studentsData.students[currentStudent] = student;
             localStorage.setItem('starAcademyStudents', JSON.stringify(studentsData));
+        } else {
+            console.log('Popup elements not found:', { rankPopup: !!rankPopup, rankMessage: !!rankMessage });
         }
     }
 }
