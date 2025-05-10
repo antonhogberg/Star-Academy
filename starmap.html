@@ -53,10 +53,12 @@
     <div class="popup-content">
         <div class="popup-scrollable-content">
             <h2 id="rankAchievementMessage"></h2>
+            <p id="rankAchievementDescription"></p> <!-- Add this for the description -->
             <div class="rank-badge-container">
-                <img src="rank-star-cadet.png" alt="Star Cadet Rank Badge" class="rank-badge-image">
+              <img src="rank0.png" alt="Star Cadet Rank Badge" class="rank-badge-image" onerror="this.src='rank-start.png';">
             </div>
         </div>
+        <button id="closeRankPopup" class="close-button">✖</button> <!-- Add close button -->
     </div>
 </div>
     <div class="star-map-container">

@@ -1,3 +1,5 @@
+let previousSixStarCount = 0; // Add this at the top of script.js
+
 const translations = {
     en: {
         menuFrontPage: "Star Overview",
@@ -322,7 +324,7 @@ function injectMenu() {
     setActivePage();
 }
 
-function checkAndShowRankAchievementPopup(sixStarCount) {
+function checkAndShowRankAchievementPopup(sixStarCount, previousSixStarCount) {
     let studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
     const currentStudent = studentsData.currentStudent;
 
@@ -331,40 +333,52 @@ function checkAndShowRankAchievementPopup(sixStarCount) {
         return;
     }
 
-    const student = studentsData.students[currentStudent];
     const language = localStorage.getItem('language') || 'sv';
 
-    const popupShown = student.starCadetPopupShown || false;
-    console.log('Checking rank achievement popup:', { sixStarCount, popupShown, currentStudent });
+    console.log('Checking rank achievement popup:', { sixStarCount, previousSixStarCount, currentStudent });
 
-    if (sixStarCount >= 16 && !popupShown) {
+    if (sixStarCount === 16 && previousSixStarCount === 15) {
         const rankPopup = document.getElementById('rankAchievementPopup');
         const rankMessage = document.getElementById('rankAchievementMessage');
+        const rankDescription = document.getElementById('rankAchievementDescription');
 
-        if (rankPopup && rankMessage) {
+        if (rankPopup && rankMessage && rankDescription) {
             console.log('Showing rank achievement popup');
             const translations = {
                 sv: {
-                    rankAchievementMessage: "Grattis! Du har uppnått rangen Stjärnkadett!"
+                    rankAchievementMessage: "Grattis! Du har uppnått rangen Stjärnkadett!",
+                    rankDescription: "Du har fått 16 sexstjärniga prestationer! Du är en Stjärnkadett som lyser starkt på din resa!"
                 },
                 en: {
-                    rankAchievementMessage: "Congratulations! You’ve achieved the rank of Star Cadet!"
+                    rankAchievementMessage: "Congratulations! You’ve achieved the rank of Star Cadet!",
+                    rankDescription: "You’ve earned 16 six-star achievements! You’re a Star Cadet, shining brightly on your journey!"
                 }
             };
             rankMessage.textContent = translations[language].rankAchievementMessage;
-            rankPopup.style.display = 'flex';
-            document.body.classList.add('popup-open');
-
+            rankDescription.textContent = translations[language].rankDescription;
             setTimeout(() => {
-                rankPopup.style.display = 'none';
-                document.body.classList.remove('popup-open');
-            }, 4000);
+                rankPopup.style.display = 'flex';
+                document.body.classList.add('popup-open');
+                console.log('Popup display set to flex, current display:', rankPopup.style.display);
 
-            student.starCadetPopupShown = true;
-            studentsData.students[currentStudent] = student;
-            localStorage.setItem('starAcademyStudents', JSON.stringify(studentsData));
+                const closeButton = document.getElementById('closeRankPopup');
+                const closePopup = () => {
+                    rankPopup.style.display = 'none';
+                    document.body.classList.remove('popup-open');
+                };
+
+                if (closeButton) {
+                    closeButton.addEventListener('click', closePopup);
+                }
+
+                rankPopup.addEventListener('click', (event) => {
+                    if (event.target === rankPopup) {
+                        closePopup();
+                    }
+                });
+            }, 0);
         } else {
-            console.log('Popup elements not found:', { rankPopup: !!rankPopup, rankMessage: !!rankMessage });
+            console.log('Popup elements not found:', { rankPopup: !!rankPopup, rankMessage: !!rankMessage, rankDescription: !!rankDescription });
         }
     }
 }
@@ -390,8 +404,8 @@ function updateStarStates() {
 
     console.log('Updating star states, sixStarCount:', sixStarCount);
 
-    // Trigger the rank achievement popup if the user hits 16 six-star exercises
-    checkAndShowRankAchievementPopup(sixStarCount);
+    checkAndShowRankAchievementPopup(sixStarCount, previousSixStarCount);
+    previousSixStarCount = sixStarCount;
 
     for (let i = 1; i <= 16; i++) {
         const bottomStar = document.getElementById(`bottom_star${i}`);
