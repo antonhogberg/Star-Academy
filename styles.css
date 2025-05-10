@@ -1922,7 +1922,7 @@ body.popup-open .student-manager {
     .chapter-container {
         height: auto;
         overflow: visible;
-        padding: 20px; /* Remove extra top padding since title is not fixed */
+        padding: 10px; /* Remove extra top padding since title is not fixed */
     }
 
     .layout-container {
