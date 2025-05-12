@@ -474,11 +474,10 @@ function updateStarStates() {
     }
 
     const rankImage = document.getElementById('rankImage');
-    const rankName = document.getElementById('rankName');
     const rankTitle = document.getElementById('rankTitle');
     const rankDescription = document.getElementById('rankDescription');
 
-    if (rankImage && rankName && rankTitle && rankDescription) {
+    if (rankImage && rankTitle && rankDescription) {
         const lang = localStorage.getItem('language') || 'sv';
         const chevron1Complete = [1, 2, 3, 4, 5, 6, 7].every(chapter => 
             chevronMappings[`chevron1_star${chapter}`].every(exercise => progress[exercise] === "6")
@@ -526,7 +525,6 @@ function updateStarStates() {
             rankDescription.textContent = translations[lang].textboxExplorer;
         }
 
-        rankName.textContent = newRank;
         if (studentsData.currentStudent) {
             studentsData.students[studentsData.currentStudent].rank = newRank;
             localStorage.setItem('starAcademyStudents', JSON.stringify(studentsData));
@@ -535,7 +533,6 @@ function updateStarStates() {
 }
 
 function switchLanguage(lang) {
-    // If lang is provided, use it; otherwise, toggle the language
     const newLang = lang || (localStorage.getItem('language') === 'sv' ? 'en' : 'sv');
     localStorage.setItem('language', newLang);
 
@@ -591,10 +588,9 @@ function switchLanguage(lang) {
         }
     }
 
-    const rankName = document.getElementById('rankName');
     const rankTitle = document.getElementById('rankTitle');
     const rankDescription = document.getElementById('rankDescription');
-    if (rankName && rankTitle && rankDescription) updateStarStates();
+    if (rankTitle && rankDescription) updateStarStates();
 
     const studentsPageTitle = document.getElementById('studentsPageTitle');
     const studentsLabel = document.getElementById('studentsLabel');
@@ -693,6 +689,12 @@ function switchLanguage(lang) {
         rankMessage.textContent = translations[newLang].rankAchievementMessage.replace('[userName]', currentStudent);
         rankSubtitle.textContent = translations[newLang].rankAchievementSubtitle;
         rankPopupDescription.textContent = translations[newLang].textboxStarCadet;
+    }
+
+    // Update user name display
+    const userNameDisplay = document.getElementById('userNameDisplay');
+    if (userNameDisplay) {
+        userNameDisplay.textContent = window.studentsData?.currentStudent || '';
     }
 }
 
@@ -1057,7 +1059,7 @@ waitForDOM().then(() => {
         globalSelect.addEventListener('change', (event) => {
             console.log('globalStudentSelect changed');
             const selectedValue = event.target.value;
-
+        
             if (window.location.pathname.toLowerCase().includes('starmap.html')) {
                 console.log('Reloading starmap.html with new user query parameter');
                 const url = new URL(window.location);
@@ -1065,10 +1067,6 @@ waitForDOM().then(() => {
                 window.location.href = url.toString();
             } else {
                 switchStudent(selectedValue);
-                if (userNameDisplay) {
-                    const studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
-                    userNameDisplay.textContent = studentsData.currentStudent || '';
-                }
             }
         });
     } else {
@@ -1085,15 +1083,12 @@ waitForDOM().then(() => {
             window.history.replaceState({}, document.title, cleanUrl);
         }
 
-        // Ensure initial scroll position and add scroll/click listeners for info overlay
         const starMapContainer = document.querySelector('.star-map-container');
         const infoOverlay = document.querySelector('.info-overlay');
         if (starMapContainer && infoOverlay) {
-            // Reset hidden state immediately on page load
             localStorage.setItem('infoOverlayHidden', 'false');
             console.log('Reset infoOverlayHidden to false on page load');
 
-            // Reset hidden state on full page load (not cache)
             window.addEventListener('pageshow', (event) => {
                 if (event.persisted) {
                     console.log('Page loaded from BFCache, forcing reload...');
@@ -1101,84 +1096,68 @@ waitForDOM().then(() => {
                 }
             });
 
-            // Remove any existing scroll listeners to prevent duplicates
             if (window.starMapScrollListener) {
                 starMapContainer.removeEventListener('scroll', window.starMapScrollListener);
             }
 
-            // Remove any existing click listeners to prevent duplicates
             if (window.infoOverlayClickListener) {
                 infoOverlay.removeEventListener('click', window.infoOverlayClickListener);
             }
 
-            // Determine scroll target based on device (500px desktop, 300px mobile)
             const isMobile = window.matchMedia("(max-width: 767px) and (orientation: portrait)").matches;
-            const scrollTarget = isMobile ? 300 : 500; // End of description container
-            const threshold = 50; // Threshold for showing info-overlay on left-scroll
+            const scrollTarget = isMobile ? 300 : 500;
+            const threshold = 50;
 
-            // Flag to disable scroll listener during initial scroll
             let isInitialScroll = true;
 
-            // Explicitly scroll to the stop point after DOM and styles are set
             setTimeout(() => {
                 starMapContainer.scrollTo({
                     left: scrollTarget,
                     behavior: 'smooth'
                 });
                 console.log('Scrolled to description container end after delay');
-                // Mark initial scroll as complete after animation
                 setTimeout(() => {
                     isInitialScroll = false;
                     console.log('Initial scroll complete, enabling scroll listener');
-                }, 500); // Approximate duration of smooth scroll animation
+                }, 500);
             }, 100);
 
-            // Define the scroll handler
             window.starMapScrollListener = () => {
                 if (isInitialScroll) {
                     console.log('Ignoring scroll event during initial scroll animation');
-                    return; // Ignore scroll events during initial animation
+                    return;
                 }
 
                 if (localStorage.getItem('infoOverlayHidden') === 'true') {
-                    return; // Do not show again until page reload
+                    return;
                 }
 
                 const scrollLeft = starMapContainer.scrollLeft;
-                // Fade out immediately on right-scroll
-                if (scrollLeft > scrollTarget + threshold) { // 280 + 50 = 330
+                if (scrollLeft > scrollTarget + threshold) {
                     infoOverlay.classList.add('hidden');
                     localStorage.setItem('infoOverlayHidden', 'true');
                     console.log('Info-overlay hidden on right-scroll');
-                }
-                // Fade out gradually on left-scroll
-                else if (scrollLeft < scrollTarget - threshold) { // 280 - 50 = 230
+                } else if (scrollLeft < scrollTarget - threshold) {
                     infoOverlay.classList.add('hidden');
                     localStorage.setItem('infoOverlayHidden', 'true');
                     console.log('Info-overlay hidden on left-scroll');
-                }
-                // Keep visible within threshold
-                else {
+                } else {
                     infoOverlay.classList.remove('hidden');
                     console.log('Info-overlay visible within threshold');
                 }
             };
 
-            // Attach the scroll listener
             starMapContainer.addEventListener('scroll', window.starMapScrollListener);
 
-            // Define the click handler
             window.infoOverlayClickListener = () => {
                 starMapContainer.scrollTo({ left: 0, behavior: 'smooth' });
                 console.log('Info-overlay clicked, scrolling to scrollLeft = 0');
-                localStorage.setItem('infoOverlayHidden', 'true'); // Hide after click
+                localStorage.setItem('infoOverlayHidden', 'true');
                 infoOverlay.classList.add('hidden');
             };
 
-            // Attach the click listener
             infoOverlay.addEventListener('click', window.infoOverlayClickListener);
 
-            // Initial check for info-overlay visibility (delayed to ensure scroll position is set)
             setTimeout(() => {
                 console.log('Initial scrollLeft:', starMapContainer.scrollLeft);
                 if (Math.abs(starMapContainer.scrollLeft - scrollTarget) < threshold && localStorage.getItem('infoOverlayHidden') === 'false') {
@@ -1187,7 +1166,7 @@ waitForDOM().then(() => {
                 } else {
                     console.log('Initial check: Info-overlay hidden');
                 }
-            }, 600); // Increased delay to ensure scroll animation completes
+            }, 600);
         }
     }
 
@@ -1334,7 +1313,7 @@ waitForDOM().then(() => {
                     starMapSvg.style.width = 'auto';
                 } else {
                     starMapSvg.style.height = `${starMapContainer.clientHeight - totalBorderHeight}px`;
-                    starMapSvg.style.width = '2780px'; /* Matches new SVG width */
+                    starMapSvg.style.width = '2780px';
                 }
             }
 
@@ -1342,10 +1321,9 @@ waitForDOM().then(() => {
         }
     };
 
-    // Delay setStarMapHeight to allow initial scroll
     setTimeout(() => {
         setStarMapHeight();
         window.addEventListener('resize', setStarMapHeight);
         window.addEventListener('orientationchange', setStarMapHeight);
-    }, 200); // Increased delay to ensure scroll position is set first
+    }, 200);
 });

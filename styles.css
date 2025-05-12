@@ -1742,6 +1742,19 @@ h2#popupWelcome {
     transform: rotate(180deg);
 }
 
+.user-name-box {
+    background-color: #4a4a4a; /* Dark-grey background */
+    border: 2px solid #ff8c00; /* Curved orange border */
+    border-radius: 20px; /* Curved border */
+    padding: 10px; /* Smaller padding for a tighter fit */
+    color: #ffffff; /* White text */
+    text-align: center;
+    font-family: Cochin, Georgia, Arial, sans-serif; /* Match page font */
+    font-size: 20px; /* Adjust font size */
+    margin: 10px auto; /* Center with smaller margin */
+    max-width: 300px; /* Smaller width for the user name */
+}
+
 /* Export Section */
 .export-section {
     margin-top: 2rem;
@@ -1975,6 +1988,12 @@ h2#popupWelcome {
         padding: 10px; /* Remove extra top padding since title is not fixed */
     }
 
+    .user-name-box {
+        font-size: 16px; /* Smaller font size on mobile */
+        padding: 8px; /* Smaller padding on mobile */
+        max-width: 200px; /* Smaller width on mobile */
+    }
+    
     .layout-container {
         height: auto;
         overflow-y: visible;
