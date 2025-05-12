@@ -355,11 +355,18 @@ function checkAndShowRankAchievementPopup(sixStarCount, previousSixStarCount) {
             rankPopupDescription.textContent = translations[language].textboxStarCadet;
             rankImage.src = 'rank0.png';
 
-            // Show popup with delay to ensure DOM readiness
+            // Show popup with delay
             setTimeout(() => {
                 rankPopup.style.display = 'flex';
                 document.body.classList.add('popup-open');
-                console.log('Rank popup display set to flex, current display:', rankPopup.style.display);
+                const rect = rankPopup.getBoundingClientRect();
+                console.log('Rank popup displayed:', {
+                    display: rankPopup.style.display,
+                    width: rect.width,
+                    height: rect.height,
+                    top: rect.top,
+                    left: rect.left
+                });
             }, 100);
 
             // Close popup logic
@@ -369,14 +376,14 @@ function checkAndShowRankAchievementPopup(sixStarCount, previousSixStarCount) {
                 document.body.classList.remove('popup-open');
             };
 
-            // Remove existing listeners to prevent duplicates
+            // Remove existing listeners
             const closeButton = document.getElementById('closeRankPopup');
             if (closeButton) {
                 closeButton.removeEventListener('click', closePopup);
                 closeButton.addEventListener('click', closePopup);
             }
 
-            // Remove existing popup click listener
+            // Overlay click listener
             rankPopup.removeEventListener('click', window.rankPopupClickListener);
             window.rankPopupClickListener = (event) => {
                 console.log('Click event on rankPopup, target:', event.target);
@@ -756,6 +763,14 @@ function handleUserNamePopup() {
             console.log('Showing namePopup for new user');
             namePopup.style.display = 'flex';
             document.body.classList.add('popup-open');
+            const rect = namePopup.getBoundingClientRect();
+            console.log('Name popup displayed:', {
+                display: namePopup.style.display,
+                width: rect.width,
+                height: rect.height,
+                top: rect.top,
+                left: rect.left
+            });
             updateMenuHeight();
         } else if (userNameDisplay) {
             userNameDisplay.textContent = studentsData.currentStudent;
@@ -832,6 +847,7 @@ function handleUserNamePopup() {
         if (submitBtn) {
             submitBtn.removeEventListener('click', window.saveName);
             submitBtn.addEventListener('click', window.saveName);
+            console.log('Submit button listener added');
         }
         if (nameInput) {
             nameInput.removeEventListener('keypress', handleEnterKey);
@@ -839,18 +855,20 @@ function handleUserNamePopup() {
             function handleEnterKey(e) {
                 if (e.key === 'Enter') window.saveName();
             }
+            console.log('Enter key listener added');
         }
 
-        // Add click listener for closing via overlay
+        // Overlay click listener (non-closing per design)
         namePopup.removeEventListener('click', window.namePopupClickListener);
         window.namePopupClickListener = (event) => {
             console.log('Click event on namePopup, target:', event.target);
             if (event.target === namePopup) {
                 console.log('Ignoring overlay click for namePopup to prevent accidental closure');
-                // Optionally, add close logic here if desired
             }
         };
         namePopup.addEventListener('click', window.namePopupClickListener);
+    } else {
+        console.error('namePopup or nameInput not found:', { namePopup: !!namePopup, nameInput: !!nameInput });
     }
 }
 

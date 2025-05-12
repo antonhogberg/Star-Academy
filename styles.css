@@ -1103,11 +1103,12 @@ body.popup-open .student-manager {
 
 .popup {
     position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    top: 0;
+    left: 0;
     width: 100vw;
     height: 100vh;
+    min-width: 100vw; /* Prevent clipping */
+    min-height: 100vh;
     background: rgba(0, 0, 0, 0.5);
     z-index: 10001;
     display: none;
@@ -1115,6 +1116,7 @@ body.popup-open .student-manager {
     align-items: center;
     pointer-events: none;
     will-change: opacity;
+    overflow: visible; /* Avoid clipping by parent */
 }
 
 .popup[style*="display: flex"] {
@@ -2365,6 +2367,7 @@ h2#popupWelcome {
         overscroll-behavior: auto !important;
     }
 
+
     body.chapters {
         overflow: hidden !important;
         height: 100vh;
@@ -2576,6 +2579,12 @@ h2#popupWelcome {
     .star-map-container {
         top: 70px;
         height: calc(100vh - 70px);
+    }
+}
+
+@media (min-width: 768px) {
+    body.popup-open {
+        overflow: visible !important; /* Ensure .popup isn’t clipped */
     }
 }
 
