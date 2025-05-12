@@ -1465,6 +1465,9 @@ body.popup-open .student-manager {
     padding: 20px !important;
 }
 
+h2#popupWelcome {
+    margin: 0;
+}
 .popup-content h3#rankAchievementSubtitle {
     color: #fff;
     font-family: Cochin, Georgia, Arial, sans-serif; /* Match the page's font */
