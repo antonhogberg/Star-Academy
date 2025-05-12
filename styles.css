@@ -1101,25 +1101,25 @@ body.popup-open .student-manager {
     font-size: 20px;
 }
 
-popup {
+.popup {
     position: fixed;
-    top: 0; /* Changed from 50% to cover full viewport */
-    left: 0; /* Changed from 50% */
-    transform: none; /* Remove transform */
-    width: 100vw; /* Full viewport width */
-    height: 100vh; /* Full viewport height */
-    background: rgba(0, 0, 0, 0.5); /* Darkened overlay */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
     z-index: 10001;
     display: none;
     justify-content: center;
     align-items: center;
-    pointer-events: none; /* Prevent clicks when hidden */
+    pointer-events: none;
+    will-change: opacity;
 }
 
 .popup[style*="display: flex"] {
-    pointer-events: auto; /* Allow clicks when shown */
+    pointer-events: auto;
 }
-
 /* Disable interactions with page content when popup is open */
 body.popup-open .layout-container,
 body.popup-open .star-map-container,

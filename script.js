@@ -355,17 +355,17 @@ function checkAndShowRankAchievementPopup(sixStarCount, previousSixStarCount) {
             rankPopupDescription.textContent = translations[language].textboxStarCadet;
             rankImage.src = 'rank0.png';
 
-            // Show popup with backdrop
-            rankPopup.style.display = 'flex';
-            rankPopup.classList.add('backdrop-active'); // Add class for styling
-            document.body.classList.add('popup-open');
-            console.log('Popup display set to flex, current display:', rankPopup.style.display);
+            // Show popup with delay to ensure DOM readiness
+            setTimeout(() => {
+                rankPopup.style.display = 'flex';
+                document.body.classList.add('popup-open');
+                console.log('Rank popup display set to flex, current display:', rankPopup.style.display);
+            }, 100);
 
             // Close popup logic
             const closePopup = () => {
                 console.log('Closing rank popup');
                 rankPopup.style.display = 'none';
-                rankPopup.classList.remove('backdrop-active');
                 document.body.classList.remove('popup-open');
             };
 
@@ -753,11 +753,13 @@ function handleUserNamePopup() {
         window.addEventListener('orientationchange', updateMenuHeight);
 
         if (!studentsData.currentStudent) {
+            console.log('Showing namePopup for new user');
             namePopup.style.display = 'flex';
             document.body.classList.add('popup-open');
             updateMenuHeight();
         } else if (userNameDisplay) {
             userNameDisplay.textContent = studentsData.currentStudent;
+            console.log('Set userNameDisplay to:', studentsData.currentStudent);
         }
 
         window.saveName = function() {
@@ -808,7 +810,6 @@ function handleUserNamePopup() {
                     }, 1000);
                 }, 2000);
 
-                // Update dropdown with new student
                 if (typeof updateDropdown === 'function') {
                     console.log('Calling updateDropdown after saving name');
                     updateDropdown();
@@ -826,11 +827,30 @@ function handleUserNamePopup() {
             }
         };
 
+        // Remove existing listeners to prevent duplicates
         const submitBtn = document.querySelector('button[onclick="saveName()"]');
-        if (submitBtn) submitBtn.addEventListener('click', window.saveName);
-        if (nameInput) nameInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') window.saveName();
-        });
+        if (submitBtn) {
+            submitBtn.removeEventListener('click', window.saveName);
+            submitBtn.addEventListener('click', window.saveName);
+        }
+        if (nameInput) {
+            nameInput.removeEventListener('keypress', handleEnterKey);
+            nameInput.addEventListener('keypress', handleEnterKey);
+            function handleEnterKey(e) {
+                if (e.key === 'Enter') window.saveName();
+            }
+        }
+
+        // Add click listener for closing via overlay
+        namePopup.removeEventListener('click', window.namePopupClickListener);
+        window.namePopupClickListener = (event) => {
+            console.log('Click event on namePopup, target:', event.target);
+            if (event.target === namePopup) {
+                console.log('Ignoring overlay click for namePopup to prevent accidental closure');
+                // Optionally, add close logic here if desired
+            }
+        };
+        namePopup.addEventListener('click', window.namePopupClickListener);
     }
 }
 
