@@ -1242,7 +1242,7 @@ body.popup-open .student-manager {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin: 15px 0; /* Space between paragraphs */
+    margin: 20px 0 15px 0;
 }
 
 .rank-badge-image {
