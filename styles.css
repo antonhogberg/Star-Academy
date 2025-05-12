@@ -1827,7 +1827,7 @@ h2#popupWelcome {
     background-size: 100% auto;
     background-repeat: repeat-y;
     background-position: center top;
-    padding: 20px;
+    padding: 20px 0 23px 0;
     border-radius: 10px;
     text-align: center;
     border: 3px solid #ff0000;
