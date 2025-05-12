@@ -1128,7 +1128,7 @@ body.popup-open .student-manager {
     background-size: 100% auto;
     background-repeat: repeat-y;
     background-position: center top;
-    padding: 20px;
+    padding: 30px;
     border-radius: 5px;
     text-align: center;
     border: 2px solid var(--gold);
