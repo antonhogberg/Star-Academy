@@ -1113,6 +1113,11 @@ body.popup-open .student-manager {
     display: none;
     justify-content: center;
     align-items: center;
+    pointer-events: none; /* Prevent clicks when hidden */
+}
+
+.popup[style*="display: flex"] {
+    pointer-events: auto; /* Allow clicks when shown */
 }
 
 .popup-scrollable-content {
@@ -1140,6 +1145,7 @@ body.popup-open .student-manager {
     box-sizing: border-box;
     width: 100%;
     max-width: 600px;
+    position: relative; /* Added to position close-button relative to popup-content */
 }
 
 .popup-content h2,
@@ -1385,7 +1391,7 @@ body.popup-open .student-manager {
 /*popup close button*/
 .popup-content .close-button {
     position: absolute;
-    top: 0px;
+    top: 0px; /* Adjusted for better spacing */
     right: 10px;
     background: none !important;
     border: none !important;
@@ -1398,6 +1404,7 @@ body.popup-open .student-manager {
     margin: 0;
     box-shadow: none;
     line-height: normal;
+    z-index: 10; /* Ensure above content */
 }
 
 .info-overlay {
@@ -2211,9 +2218,10 @@ h2#popupWelcome {
     .popup-content {
         width: 90vw !important;
         max-width: 90vw;
-        padding: 20px 20px 35px 20px;
+        padding: 20px !important; /* Adjusted to fit close button */
         box-sizing: border-box;
         max-height: 90vh;
+        position: relative; /* Reinforce positioning context */
     }
 
     .popup-content p {

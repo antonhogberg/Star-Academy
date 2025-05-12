@@ -341,42 +341,56 @@ function checkAndShowRankAchievementPopup(sixStarCount, previousSixStarCount) {
 
     console.log('Checking rank achievement popup:', { sixStarCount, previousSixStarCount, currentStudent });
 
-    if (sixStarCount === 16 && previousSixStarCount === 15) {
+    if (sixStarCount === 16 && previousSixStarCount < 16) { // Changed to < 16 to handle edge cases
         const rankPopup = document.getElementById('rankAchievementPopup');
         const rankMessage = document.getElementById('rankAchievementMessage');
         const rankSubtitle = document.getElementById('rankAchievementSubtitle');
         const rankPopupDescription = document.getElementById('rankAchievementDescription');
+        const rankImage = document.querySelector('#rankAchievementPopup .rank-badge-image');
 
-        if (rankPopup && rankMessage && rankSubtitle && rankPopupDescription) {
-            console.log('Showing rank achievement popup');
+        if (rankPopup && rankMessage && rankSubtitle && rankPopupDescription && rankImage) {
+            console.log('Showing rank achievement popup for Star Cadet');
             rankMessage.textContent = translations[language].rankAchievementMessage.replace('[userName]', currentStudent);
             rankSubtitle.textContent = translations[language].rankAchievementSubtitle;
             rankPopupDescription.textContent = translations[language].textboxStarCadet;
-            setTimeout(() => {
-                rankPopup.style.display = 'flex';
-                document.body.classList.add('popup-open');
-                console.log('Popup display set to flex, current display:', rankPopup.style.display);
+            rankImage.src = 'rank0.png';
 
-                const closeButton = document.getElementById('closeRankPopup');
-                const closePopup = () => {
-                    rankPopup.style.display = 'none';
-                    document.body.classList.remove('popup-open');
-                };
+            // Show popup
+            rankPopup.style.display = 'flex';
+            document.body.classList.add('popup-open');
+            console.log('Popup display set to flex, current display:', rankPopup.style.display);
 
-                if (closeButton) {
-                    closeButton.addEventListener('click', closePopup);
+            // Close popup logic
+            const closePopup = () => {
+                console.log('Closing rank popup');
+                rankPopup.style.display = 'none';
+                document.body.classList.remove('popup-open');
+            };
+
+            // Remove existing listeners to prevent duplicates
+            const closeButton = document.getElementById('closeRankPopup');
+            if (closeButton) {
+                closeButton.removeEventListener('click', closePopup);
+                closeButton.addEventListener('click', closePopup);
+            }
+
+            // Remove existing popup click listener
+            rankPopup.removeEventListener('click', window.rankPopupClickListener);
+            window.rankPopupClickListener = (event) => {
+                console.log('Click event on rankPopup, target:', event.target);
+                if (event.target === rankPopup) {
+                    closePopup();
                 }
-
-                rankPopup.removeEventListener('click', closePopup);
-                rankPopup.addEventListener('click', (event) => {
-                    console.log('Click event on rankPopup, target:', event.target);
-                    if (event.target === rankPopup) {
-                        closePopup();
-                    }
-                });
-            }, 0);
+            };
+            rankPopup.addEventListener('click', window.rankPopupClickListener);
         } else {
-            console.log('Popup elements not found:', { rankPopup: !!rankPopup, rankMessage: !!rankMessage, rankSubtitle: !!rankSubtitle, rankPopupDescription: !!rankPopupDescription });
+            console.log('Popup elements not found:', {
+                rankPopup: !!rankPopup,
+                rankMessage: !!rankMessage,
+                rankSubtitle: !!rankSubtitle,
+                rankPopupDescription: !!rankPopupDescription,
+                rankImage: !!rankImage
+            });
         }
     }
 }
