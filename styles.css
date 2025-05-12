@@ -1128,7 +1128,7 @@ body.popup-open .student-manager {
     background-size: 100% auto;
     background-repeat: repeat-y;
     background-position: center top;
-    padding: 20px 40px 50px 40px;
+    padding: 20px;
     border-radius: 5px;
     text-align: center;
     border: 2px solid var(--gold);
@@ -1459,6 +1459,10 @@ body.popup-open .student-manager {
     font-size: 24px;
     margin: 0 0 15px 0;
     text-align: center;
+}
+
+#rankAchievementPopup .popup-content {
+    padding: 20px !important;
 }
 
 .popup-content h3#rankAchievementSubtitle,
