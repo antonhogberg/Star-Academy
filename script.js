@@ -345,7 +345,7 @@ function checkAndShowRankAchievementPopup(sixStarCount, previousSixStarCount) {
         const rankPopup = document.getElementById('rankAchievementPopup');
         const rankMessage = document.getElementById('rankAchievementMessage');
         const rankSubtitle = document.getElementById('rankAchievementSubtitle');
-        const rankPopupDescription = document.getElementById('rankAchievementDescription'); // Renamed for consistency
+        const rankPopupDescription = document.getElementById('rankAchievementDescription');
 
         if (rankPopup && rankMessage && rankSubtitle && rankPopupDescription) {
             console.log('Showing rank achievement popup');
@@ -369,6 +369,7 @@ function checkAndShowRankAchievementPopup(sixStarCount, previousSixStarCount) {
 
                 rankPopup.removeEventListener('click', closePopup);
                 rankPopup.addEventListener('click', (event) => {
+                    console.log('Click event on rankPopup, target:', event.target);
                     if (event.target === rankPopup) {
                         closePopup();
                     }

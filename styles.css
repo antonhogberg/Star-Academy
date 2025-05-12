@@ -1382,6 +1382,24 @@ body.popup-open .student-manager {
     animation: rubberband 0.5s ease-out;
 }
 
+/*popup close button*/
+.popup-content .close-button {
+    position: absolute;
+    top: 0px;
+    right: 10px;
+    background: none !important;
+    border: none !important;
+    font-size: 24px;
+    color: #ffd700;
+    cursor: pointer;
+    width: auto;
+    height: auto;
+    padding: 0;
+    margin: 0;
+    box-shadow: none;
+    line-height: normal;
+}
+
 .info-overlay {
     position: absolute;
     top: 50%;
@@ -1443,6 +1461,14 @@ body.popup-open .student-manager {
     text-align: center;
 }
 
+.popup-content h3#rankAchievementSubtitle,
+.popup-content p#rankAchievementDescription {
+    color: #ffd700; /* Match the yellow theme */
+    font-family: Cochin, Georgia, Arial, sans-serif; /* Match the page's font */
+    font-size: 20px; /* Adjust as needed */
+    margin: 10px 0;
+    text-align: center;
+}
 
 
 /* Pulsating animation */

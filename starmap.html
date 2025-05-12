@@ -50,7 +50,7 @@
       </div>
   </div>
   <div id="rankAchievementPopup" class="popup" style="display: none;">
-    <div class="popup-content">
+    <div class="popup-content" onclick="event.stopPropagation();">
         <div class="popup-scrollable-content">
             <h2 id="rankAchievementMessage"></h2>
             <h3 id="rankAchievementSubtitle"></h3> <!-- Add for the second line -->
@@ -61,8 +61,8 @@
         </div>
         <button id="closeRankPopup" class="close-button">✖</button>
     </div>
-</div>
-    <div class="star-map-container">
+  </div>
+  <div class="star-map-container">
       <div class="description-container">
         <h3 data-translate="starMapTitle">Using the Star Map</h3>
         <div class="star-map-steps">
