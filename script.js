@@ -534,59 +534,60 @@ function updateStarStates() {
     }
 }
 
-function switchLanguage() {
-    const lang = localStorage.getItem('language') === 'sv' ? 'en' : 'sv';
-    localStorage.setItem('language', lang);
+function switchLanguage(lang) {
+    // If lang is provided, use it; otherwise, toggle the language
+    const newLang = lang || (localStorage.getItem('language') === 'sv' ? 'en' : 'sv');
+    localStorage.setItem('language', newLang);
 
     document.querySelectorAll('.menu-link').forEach(link => {
         const href = link.getAttribute('href')?.toLowerCase();
         if (href === 'index.html') {
-            link.textContent = translations[lang].menuFrontPage;
+            link.textContent = translations[newLang].menuFrontPage;
         } else if (href === 'students.html') {
-            link.textContent = translations[lang].menuStudents;
+            link.textContent = translations[newLang].menuStudents;
         } else if (href === 'starmap.html#svg-start') {
-            link.textContent = translations[lang].menuStarMap;
+            link.textContent = translations[newLang].menuStarMap;
         } else if (href === 'faq.html') {
-            link.textContent = translations[lang].menuFAQ;
+            link.textContent = translations[newLang].menuFAQ;
         } else if (href === 'remove.html') {
-            link.textContent = translations[lang].menuRemove;
+            link.textContent = translations[newLang].menuRemove;
         } else {
             const chapterNum = href?.match(/chapter(\d+)\.html/)?.[1];
             if (chapterNum) {
                 const span = link.querySelector('span');
-                if (span) span.textContent = `${translations[lang].menuChapter} ${chapterNum}`;
-                else link.textContent = `${translations[lang].menuChapter} ${chapterNum}`;
+                if (span) span.textContent = `${translations[newLang].menuChapter} ${chapterNum}`;
+                else link.textContent = `${translations[newLang].menuChapter} ${chapterNum}`;
             }
         }
     });
 
     const chaptersToggle = document.querySelector('.chapters-toggle');
-    if (chaptersToggle) chaptersToggle.textContent = translations[lang].menuChapters;
+    if (chaptersToggle) chaptersToggle.textContent = translations[newLang].menuChapters;
 
     const popupWelcome = document.getElementById('popupWelcome');
     const popupIntro = document.getElementById('popupIntro');
     const popupTeacherNote = document.getElementById('popupTeacherNote');
     const popupEnterName = document.getElementById('popupEnterName');
     const submitNameButton = document.getElementById('submitNameButton');
-    if (popupWelcome) popupWelcome.textContent = translations[lang].popupWelcome;
-    if (popupIntro) popupIntro.textContent = translations[lang].popupIntro;
-    if (popupTeacherNote) popupTeacherNote.textContent = translations[lang].popupTeacherNote;
-    if (popupEnterName) popupEnterName.textContent = translations[lang].popupEnterName;
-    if (submitNameButton) submitNameButton.textContent = translations[lang].addButton;
+    if (popupWelcome) popupWelcome.textContent = translations[newLang].popupWelcome;
+    if (popupIntro) popupIntro.textContent = translations[newLang].popupIntro;
+    if (popupTeacherNote) popupTeacherNote.textContent = translations[newLang].popupTeacherNote;
+    if (popupEnterName) popupEnterName.textContent = translations[newLang].popupEnterName;
+    if (submitNameButton) submitNameButton.textContent = translations[newLang].addButton;
 
     const congratsMessage = document.getElementById('congratsMessage');
-    if (congratsMessage) congratsMessage.textContent = translations[lang].congratsMessage;
+    if (congratsMessage) congratsMessage.textContent = translations[newLang].congratsMessage;
 
     const qrInstruction = document.getElementById('qrInstruction');
-    if (qrInstruction) qrInstruction.textContent = translations[lang].scanOrShare;
+    if (qrInstruction) qrInstruction.textContent = translations[newLang].scanOrShare;
 
     const chapterNumber = document.querySelector('.chapter-number');
     const chapterName = document.querySelector('.chapter-name');
     if (chapterNumber && chapterName) {
         const chapterNum = window.location.pathname.match(/chapter(\d+)\.html/)?.[1];
         if (chapterNum) {
-            chapterNumber.textContent = translations[lang][`chapter${chapterNum}`];
-            chapterName.textContent = translations[lang][`chapterName${chapterNum}`];
+            chapterNumber.textContent = translations[newLang][`chapter${chapterNum}`];
+            chapterName.textContent = translations[newLang][`chapterName${chapterNum}`];
         }
     }
 
@@ -604,61 +605,61 @@ function switchLanguage() {
     const studentNotes = document.getElementById('studentNotes');
     const saveNotesButton = document.getElementById('saveNotesButton');
     if (studentsPageTitle && studentsLabel) {
-        studentsPageTitle.textContent = translations[lang].menuStudents;
-        studentsLabel.textContent = translations[lang].studentsLabel;
-        newStudentInput.placeholder = translations[lang].studentNamePlaceholder;
-        addButton.textContent = translations[lang].addButton;
-        addStudentLabel.textContent = translations[lang].addNewStudent;
-        notesLabel.textContent = translations[lang].notesLabel;
-        studentNotes.placeholder = translations[lang].notesPlaceholder;
-        if (saveNotesButton) saveNotesButton.textContent = translations[lang].saveNotesButton;
+        studentsPageTitle.textContent = translations[newLang].menuStudents;
+        studentsLabel.textContent = translations[newLang].studentsLabel;
+        newStudentInput.placeholder = translations[newLang].studentNamePlaceholder;
+        addButton.textContent = translations[newLang].addButton;
+        addStudentLabel.textContent = translations[newLang].addNewStudent;
+        notesLabel.textContent = translations[newLang].notesLabel;
+        studentNotes.placeholder = translations[newLang].notesPlaceholder;
+        if (saveNotesButton) saveNotesButton.textContent = translations[newLang].saveNotesButton;
     }
 
     const faqTitle = document.querySelector('h1[data-translate="menuFAQ"]');
     const faqQuestions = document.querySelectorAll('.faq-question[data-translate]');
     const faqAnswers = document.querySelectorAll('.faq-answer[data-translate]');
-    if (faqTitle) faqTitle.textContent = translations[lang].menuFAQ;
+    if (faqTitle) faqTitle.textContent = translations[newLang].menuFAQ;
     faqQuestions.forEach(question => {
         const key = question.getAttribute('data-translate');
-        if (translations[lang][key]) question.childNodes[0].textContent = translations[lang][key];
+        if (translations[newLang][key]) question.childNodes[0].textContent = translations[newLang][key];
     });
     faqAnswers.forEach(answer => {
         const key = answer.getAttribute('data-translate');
-        if (translations[lang][key]) answer.textContent = translations[lang][key];
+        if (translations[newLang][key]) answer.textContent = translations[newLang][key];
     });
 
     const titleContainerH1 = document.querySelector('.title-container h1[data-translate]');
     if (titleContainerH1) {
         const key = titleContainerH1.getAttribute('data-translate');
-        if (translations[lang][key]) titleContainerH1.textContent = translations[lang][key];
+        if (translations[newLang][key]) titleContainerH1.textContent = translations[newLang][key];
     }
 
     // Remove page translations
     const removeStudentTitle = document.querySelector('h1[data-translate="removeStudentTitle"]');
     const confirmRemoveMessage = document.querySelector('p[data-translate="confirmRemoveMessage"]');
-    if (removeStudentTitle) removeStudentTitle.textContent = translations[lang].removeStudentTitle;
+    if (removeStudentTitle) removeStudentTitle.textContent = translations[newLang].removeStudentTitle;
     if (confirmRemoveMessage) {
         const selectedStudent = window.studentsData.currentStudent || '';
-        confirmRemoveMessage.textContent = `${translations[lang].confirmRemoveMessage}${selectedStudent ? ` ${selectedStudent}.` : '.'}`;
+        confirmRemoveMessage.textContent = `${translations[newLang].confirmRemoveMessage}${selectedStudent ? ` ${selectedStudent}.` : '.'}`;
     }
 
     // Update the removeStudentButton text dynamically
     const removeStudentButton = document.getElementById('removeStudentButton');
     if (removeStudentButton && window.studentsData) {
         if (window.studentsData.currentStudent) {
-            removeStudentButton.textContent = `${translations[lang].removeCurrentStudent}${window.studentsData.currentStudent}`;
+            removeStudentButton.textContent = `${translations[newLang].removeCurrentStudent}${window.studentsData.currentStudent}`;
         } else {
-            removeStudentButton.textContent = translations[lang].removeCurrentStudentNone;
+            removeStudentButton.textContent = translations[newLang].removeCurrentStudentNone;
         }
     }
 
     // Star Map description
     const starMapTitle = document.querySelector('h3[data-translate="starMapTitle"]');
-    if (starMapTitle) starMapTitle.textContent = translations[lang].starMapTitle;
+    if (starMapTitle) starMapTitle.textContent = translations[newLang].starMapTitle;
     document.querySelectorAll('.star-map-steps p[data-translate]').forEach(p => {
         const key = p.getAttribute('data-translate');
-        if (translations[lang][key]) {
-            const translatedText = translations[lang][key];
+        if (translations[newLang][key]) {
+            const translatedText = translations[newLang][key];
             const match = translatedText.match(/^(.*?)(?=\s[A-Z])/);
             if (match) {
                 const semiTitle = match[0];
@@ -676,22 +677,22 @@ function switchLanguage() {
     const shareExportButton = document.getElementById('shareExportButton');
     const shareButtonInQR = document.getElementById('shareButtonInQR');
     const exportStatus = document.getElementById('exportStatus');
-    if (exportTitle) exportTitle.textContent = translations[lang].exportTitle;
-    if (exportInfo) exportInfo.textContent = translations[lang].exportInfo;
-    if (shareExportButton) shareExportButton.textContent = translations[lang].shareButtonExport;
-    if (shareButtonInQR) shareButtonInQR.textContent = translations[lang].shareButtonQR;
-    if (exportStatus) exportStatus.textContent = translations[lang].creatingLink;
+    if (exportTitle) exportTitle.textContent = translations[newLang].exportTitle;
+    if (exportInfo) exportInfo.textContent = translations[newLang].exportInfo;
+    if (shareExportButton) shareExportButton.textContent = translations[newLang].shareButtonExport;
+    if (shareButtonInQR) shareButtonInQR.textContent = translations[newLang].shareButtonQR;
+    if (exportStatus) exportStatus.textContent = translations[newLang].creatingLink;
 
     // Update rank achievement popup if visible
     const rankPopup = document.getElementById('rankAchievementPopup');
     const rankMessage = document.getElementById('rankAchievementMessage');
     const rankSubtitle = document.getElementById('rankAchievementSubtitle');
-    const rankPopupDescription = document.getElementById('rankAchievementDescription'); // Renamed to avoid conflict
+    const rankPopupDescription = document.getElementById('rankAchievementDescription');
     const currentStudent = window.studentsData?.currentStudent || '';
     if (rankPopup && rankMessage && rankSubtitle && rankPopupDescription && rankPopup.style.display === 'flex') {
-        rankMessage.textContent = translations[lang].rankAchievementMessage.replace('[userName]', currentStudent);
-        rankSubtitle.textContent = translations[lang].rankAchievementSubtitle;
-        rankPopupDescription.textContent = translations[lang].textboxStarCadet;
+        rankMessage.textContent = translations[newLang].rankAchievementMessage.replace('[userName]', currentStudent);
+        rankSubtitle.textContent = translations[newLang].rankAchievementSubtitle;
+        rankPopupDescription.textContent = translations[newLang].textboxStarCadet;
     }
 }
 
