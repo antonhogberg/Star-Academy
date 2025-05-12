@@ -2524,7 +2524,7 @@ h2#popupWelcome {
     }
 
     .popup-content {
-        padding: 45px 40px;
+        padding: 35px 35px 40px 35px;
     }
 
     .popup-content input#nameInput {
