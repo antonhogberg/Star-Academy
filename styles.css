@@ -1744,8 +1744,8 @@ h2#popupWelcome {
 
 .user-name-box {
     background-color: #4a4a4a; /* Dark-grey background */
-    border: 2px solid #ff8c00; /* Curved orange border */
-    border-radius: 20px; /* Curved border */
+    border: 1px solid #ff8c00; /* Curved orange border */
+    border-radius: 5px; /* Curved border */
     padding: 10px; /* Smaller padding for a tighter fit */
     color: #ffffff; /* White text */
     text-align: center;
@@ -1993,7 +1993,7 @@ h2#popupWelcome {
         padding: 8px; /* Smaller padding on mobile */
         max-width: 200px; /* Smaller width on mobile */
     }
-    
+
     .layout-container {
         height: auto;
         overflow-y: visible;
