@@ -1465,12 +1465,19 @@ body.popup-open .student-manager {
     padding: 20px !important;
 }
 
-.popup-content h3#rankAchievementSubtitle,
-.popup-content p#rankAchievementDescription {
+.popup-content h3#rankAchievementSubtitle {
     color: #ffd700; /* Match the yellow theme */
     font-family: Cochin, Georgia, Arial, sans-serif; /* Match the page's font */
     font-size: 20px; /* Adjust as needed */
     margin: 10px 0;
+    text-align: center;
+}
+
+.popup-content p#rankAchievementDescription {
+    color: #ffd700; /* Match the yellow theme */
+    font-family: Cochin, Georgia, Arial, sans-serif; /* Match the page's font */
+    font-size: 20px; /* Adjust as needed */
+    margin: 10px 0 0 0;
     text-align: center;
 }
 
