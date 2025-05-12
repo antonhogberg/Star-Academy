@@ -341,7 +341,7 @@ function checkAndShowRankAchievementPopup(sixStarCount, previousSixStarCount) {
 
     console.log('Checking rank achievement popup:', { sixStarCount, previousSixStarCount, currentStudent });
 
-    if (sixStarCount === 16 && previousSixStarCount < 16) { // Changed to < 16 to handle edge cases
+    if (sixStarCount === 16 && previousSixStarCount < 16) {
         const rankPopup = document.getElementById('rankAchievementPopup');
         const rankMessage = document.getElementById('rankAchievementMessage');
         const rankSubtitle = document.getElementById('rankAchievementSubtitle');
@@ -355,8 +355,9 @@ function checkAndShowRankAchievementPopup(sixStarCount, previousSixStarCount) {
             rankPopupDescription.textContent = translations[language].textboxStarCadet;
             rankImage.src = 'rank0.png';
 
-            // Show popup
+            // Show popup with backdrop
             rankPopup.style.display = 'flex';
+            rankPopup.classList.add('backdrop-active'); // Add class for styling
             document.body.classList.add('popup-open');
             console.log('Popup display set to flex, current display:', rankPopup.style.display);
 
@@ -364,6 +365,7 @@ function checkAndShowRankAchievementPopup(sixStarCount, previousSixStarCount) {
             const closePopup = () => {
                 console.log('Closing rank popup');
                 rankPopup.style.display = 'none';
+                rankPopup.classList.remove('backdrop-active');
                 document.body.classList.remove('popup-open');
             };
 

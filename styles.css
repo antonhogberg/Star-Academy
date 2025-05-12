@@ -1101,15 +1101,15 @@ body.popup-open .student-manager {
     font-size: 20px;
 }
 
-.popup {
+popup {
     position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 100%;
-    height: auto;
-    background: rgba(0, 0, 0, 0.5);
-    z-index: 10001; 
+    top: 0; /* Changed from 50% to cover full viewport */
+    left: 0; /* Changed from 50% */
+    transform: none; /* Remove transform */
+    width: 100vw; /* Full viewport width */
+    height: 100vh; /* Full viewport height */
+    background: rgba(0, 0, 0, 0.5); /* Darkened overlay */
+    z-index: 10001;
     display: none;
     justify-content: center;
     align-items: center;
@@ -1118,6 +1118,15 @@ body.popup-open .student-manager {
 
 .popup[style*="display: flex"] {
     pointer-events: auto; /* Allow clicks when shown */
+}
+
+/* Disable interactions with page content when popup is open */
+body.popup-open .layout-container,
+body.popup-open .star-map-container,
+body.popup-open .chapter-container,
+body.popup-open .student-manager,
+body.popup-open .content {
+    pointer-events: none; /* Prevent clicking stars or other content */
 }
 
 .popup-scrollable-content {
@@ -1145,7 +1154,7 @@ body.popup-open .student-manager {
     box-sizing: border-box;
     width: 100%;
     max-width: 600px;
-    position: relative; /* Added to position close-button relative to popup-content */
+    position: relative;
 }
 
 .popup-content h2,
@@ -2218,10 +2227,10 @@ h2#popupWelcome {
     .popup-content {
         width: 90vw !important;
         max-width: 90vw;
-        padding: 20px !important; /* Adjusted to fit close button */
+        padding: 20px !important;
         box-sizing: border-box;
         max-height: 90vh;
-        position: relative; /* Reinforce positioning context */
+        position: relative;
     }
 
     .popup-content p {
