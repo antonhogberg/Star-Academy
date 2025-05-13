@@ -63,13 +63,26 @@
             <p id="studentPopupMessage"></p>
         </div>
     </div>
+    <div id="rankAchievementPopup" class="popup" style="display: none;">
+        <div class="popup-content" onclick="event.stopPropagation();">
+            <div class="popup-scrollable-content">
+                <h2 id="rankAchievementMessage"></h2>
+                <h3 id="rankAchievementSubtitle"></h3>
+                <div class="rank-badge-container">
+                    <img src="rank0.png" alt="Star Cadet Rank Badge" class="rank-badge-image" onerror="this.src='rank-start.png';">
+                </div>
+                <p id="rankAchievementDescription"></p>
+            </div>
+            <button id="closeRankPopup" class="close-button">×</button>
+        </div>
+    </div>  
     <div class="user-name-display">
         <span id="userNameDisplay"></span>
     </div>
     <script src="students.js"></script>
     <script src="chapter.js"></script>
     <script src="script.js"></script>
-    <<script>
+    <script>
         document.addEventListener('DOMContentLoaded', () => {
             document.body.style.touchAction = 'manipulation';
             let studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
