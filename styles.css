@@ -1770,7 +1770,11 @@ h2#popupWelcome {
     font-family: Cochin, Georgia, Arial, sans-serif; /* Match page font */
     font-size: 20px; /* Adjust font size */
     margin: 10px auto; /* Center with smaller margin */
-    max-width: 300px; /* Smaller width for the user name */
+    min-width: 200px; /* Fixed min-width for all devices */
+    max-width: 250px; /* 25% wider than min-width */
+    white-space: normal; /* Allow wrapping */
+    overflow-wrap: break-word; /* Wrap super long names */
+    box-sizing: border-box;
 }
 
 /* Export Section */
@@ -2007,9 +2011,10 @@ h2#popupWelcome {
     }
 
     .user-name-box {
-        font-size: 16px; /* Smaller font size on mobile */
-        padding: 8px; /* Smaller padding on mobile */
-        max-width: 200px; /* Smaller width on mobile */
+        font-size: 16px;
+        padding: 8px;
+        min-width: 200px; /* Consistent min-width */
+        max-width: 250px; /* Override 200px to 250px */
     }
 
     .layout-container {
@@ -2379,6 +2384,12 @@ h2#popupWelcome {
     .chapter-container {
         height: calc(var(--vh, 1vh) * 100);
         overflow: hidden;
+    }
+
+    .user-name-box {
+        min-width: 200px;
+        max-width: 250px;
+        font-size: 18px; /* Slightly smaller for iPad */
     }
 
     .chapter-title {
