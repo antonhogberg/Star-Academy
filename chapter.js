@@ -59,10 +59,10 @@ function initializeChapter() {
                     img.style.opacity = '1';
                 }, 300);
 
-                // Trigger rank achievement check with updated studentsData
+                // Trigger rank achievement check with updated studentsData and fromStarClick flag
                 if (typeof window.updateStarStates === 'function') {
                     console.log(`Star clicked on chapter ${chapterNum}, calling updateStarStates for exercise ${exerciseCode}`);
-                    window.updateStarStates(studentsData);
+                    window.updateStarStates(studentsData, true);
                 } else {
                     console.error('updateStarStates not defined');
                 }

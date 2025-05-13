@@ -164,7 +164,12 @@ function initializeSvg(doc) {
             });
         
             checkCompletion(studentsData);
-            updateStarStates(); // Add this line to trigger the rank achievement popup check
+            if (typeof window.updateStarStates === 'function') {
+                console.log(`Calling updateStarStates for star ${star} with fromStarClick`);
+                window.updateStarStates(studentsData, true);
+            } else {
+                console.error('updateStarStates not defined');
+            }
         });
 
         // Remove existing storage listeners to prevent duplicates

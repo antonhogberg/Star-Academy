@@ -1,4 +1,4 @@
-let previousSixStarCount = 0; // Add this at the top of script.js
+let previousSixStarCount = parseInt(localStorage.getItem('sixStarCount')) || 0;
 
 const translations = {
     en: {
@@ -328,7 +328,7 @@ function injectMenu() {
     setActivePage();
 }
 
-function checkAndShowRankAchievementPopup(sixStarCount, previousSixStarCount) {
+function checkAndShowRankAchievementPopup(sixStarCount, previousSixStarCount, fromStarClick) {
     let studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
     const currentStudent = studentsData.currentStudent;
 
@@ -339,9 +339,10 @@ function checkAndShowRankAchievementPopup(sixStarCount, previousSixStarCount) {
 
     const language = localStorage.getItem('language') || 'sv';
 
-    console.log('Checking rank achievement popup:', { sixStarCount, previousSixStarCount, currentStudent });
+    console.log('Checking rank achievement popup:', { sixStarCount, previousSixStarCount, fromStarClick });
 
-    if (sixStarCount === 16 && previousSixStarCount < 16) {
+    // Only show popup if triggered by a star click and transitioning to 16
+    if (fromStarClick && sixStarCount === 16 && previousSixStarCount < 16) {
         const rankPopup = document.getElementById('rankAchievementPopup');
         const rankMessage = document.getElementById('rankAchievementMessage');
         const rankSubtitle = document.getElementById('rankAchievementSubtitle');
@@ -355,7 +356,6 @@ function checkAndShowRankAchievementPopup(sixStarCount, previousSixStarCount) {
             rankPopupDescription.textContent = translations[language].textboxStarCadet;
             rankImage.src = 'rank0.png';
 
-            // Show popup with delay
             setTimeout(() => {
                 rankPopup.style.display = 'flex';
                 document.body.classList.add('popup-open');
@@ -369,21 +369,18 @@ function checkAndShowRankAchievementPopup(sixStarCount, previousSixStarCount) {
                 });
             }, 100);
 
-            // Close popup logic
             const closePopup = () => {
                 console.log('Closing rank popup');
                 rankPopup.style.display = 'none';
                 document.body.classList.remove('popup-open');
             };
 
-            // Remove existing listeners
             const closeButton = document.getElementById('closeRankPopup');
             if (closeButton) {
                 closeButton.removeEventListener('click', closePopup);
                 closeButton.addEventListener('click', closePopup);
             }
 
-            // Overlay click listener
             rankPopup.removeEventListener('click', window.rankPopupClickListener);
             window.rankPopupClickListener = (event) => {
                 console.log('Click event on rankPopup, target:', event.target);
@@ -401,10 +398,12 @@ function checkAndShowRankAchievementPopup(sixStarCount, previousSixStarCount) {
                 rankImage: !!rankImage
             });
         }
+    } else {
+        console.log('Popup not triggered:', { sixStarCount, previousSixStarCount, fromStarClick });
     }
 }
 
-function updateStarStates(studentsDataParam) {
+function updateStarStates(studentsDataParam, fromStarClick = false) {
     const studentsData = studentsDataParam || JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
     const progress = studentsData.students[studentsData.currentStudent]?.progress || {};
 
@@ -423,10 +422,11 @@ function updateStarStates(studentsDataParam) {
         if (state === "6") sixStarCount++;
     });
 
-    console.log('Updating star states, sixStarCount:', sixStarCount, 'previousSixStarCount:', previousSixStarCount);
+    console.log('Updating star states:', { sixStarCount, previousSixStarCount, fromStarClick });
 
-    checkAndShowRankAchievementPopup(sixStarCount, previousSixStarCount);
+    checkAndShowRankAchievementPopup(sixStarCount, previousSixStarCount, fromStarClick);
     previousSixStarCount = sixStarCount;
+    localStorage.setItem('sixStarCount', sixStarCount);
 
     for (let i = 1; i <= 16; i++) {
         const bottomStar = document.getElementById(`bottom_star${i}`);
@@ -1096,6 +1096,10 @@ window.initializeAppContent = function() {
 // Main initialization
 waitForDOM().then(() => {
     console.log('waitForDOM resolved');
+    // Initialize previousSixStarCount from localStorage
+    previousSixStarCount = parseInt(localStorage.getItem('sixStarCount')) || 0;
+    console.log('Initialized previousSixStarCount:', previousSixStarCount);
+
     injectMenu();
     handleUserNamePopup();
     setInitialLanguage();
