@@ -404,8 +404,8 @@ function checkAndShowRankAchievementPopup(sixStarCount, previousSixStarCount) {
     }
 }
 
-function updateStarStates() {
-    const studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
+function updateStarStates(studentsDataParam) {
+    const studentsData = studentsDataParam || JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
     const progress = studentsData.students[studentsData.currentStudent]?.progress || {};
 
     const allExercises = [];
@@ -423,7 +423,7 @@ function updateStarStates() {
         if (state === "6") sixStarCount++;
     });
 
-    console.log('Updating star states, sixStarCount:', sixStarCount);
+    console.log('Updating star states, sixStarCount:', sixStarCount, 'previousSixStarCount:', previousSixStarCount);
 
     checkAndShowRankAchievementPopup(sixStarCount, previousSixStarCount);
     previousSixStarCount = sixStarCount;
