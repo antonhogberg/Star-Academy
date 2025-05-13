@@ -1642,7 +1642,7 @@ h2#popupWelcome {
             display: none;
             justify-content: center;
             align-items: center;
-            z-index: 999; /* Lowered from 1000 to appear under the menu */
+            z-index: 10002; /* Lowered from 1000 to appear under the menu */
             animation: fadeIn 1s ease-in-out;
         }
         
@@ -1691,7 +1691,7 @@ h2#popupWelcome {
     display: none;
     justify-content: center;
     align-items: center;
-    z-index: 999; /* Lowered from 1000 to appear under the menu */
+    z-index: 10002; /* Lowered from 1000 to appear under the menu */
     animation: fadeIn 1s ease-in-out;
 }
 

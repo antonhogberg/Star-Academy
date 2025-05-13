@@ -1,4 +1,5 @@
 let previousSixStarCount = parseInt(localStorage.getItem('sixStarCount')) || 0;
+let previousPart1SixStarCount = parseInt(localStorage.getItem('part1SixStarCount')) || 0;
 
 const translations = {
     en: {
@@ -328,7 +329,7 @@ function injectMenu() {
     setActivePage();
 }
 
-function checkAndShowRankAchievementPopup(sixStarCount, previousSixStarCount, fromStarClick) {
+function checkAndShowRankAchievementPopup(sixStarCount, previousSixStarCount, part1SixStarCount, previousPart1SixStarCount, fromStarClick) {
     let studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
     const currentStudent = studentsData.currentStudent;
 
@@ -339,10 +340,10 @@ function checkAndShowRankAchievementPopup(sixStarCount, previousSixStarCount, fr
 
     const language = localStorage.getItem('language') || 'sv';
 
-    console.log('Checking rank achievement popup:', { sixStarCount, previousSixStarCount, fromStarClick });
+    console.log('Checking rank achievement popup:', { sixStarCount, previousSixStarCount, part1SixStarCount, previousPart1SixStarCount, fromStarClick });
 
-    // Only show popup if triggered by a star click and transitioning to 16
-    if (fromStarClick && sixStarCount === 16 && previousSixStarCount < 16) {
+    // Only show popup if triggered by a star click
+    if (fromStarClick) {
         const rankPopup = document.getElementById('rankAchievementPopup');
         const rankMessage = document.getElementById('rankAchievementMessage');
         const rankSubtitle = document.getElementById('rankAchievementSubtitle');
@@ -350,45 +351,90 @@ function checkAndShowRankAchievementPopup(sixStarCount, previousSixStarCount, fr
         const rankImage = document.querySelector('#rankAchievementPopup .rank-badge-image');
 
         if (rankPopup && rankMessage && rankSubtitle && rankPopupDescription && rankImage) {
-            console.log('Showing rank achievement popup for Star Cadet');
-            rankMessage.textContent = translations[language].rankAchievementMessage.replace('[userName]', currentStudent);
-            rankSubtitle.textContent = translations[language].rankAchievementSubtitle;
-            rankPopupDescription.textContent = translations[language].textboxStarCadet;
-            rankImage.src = 'rank0.png';
+            // Star Cadet (16 six-stars)
+            if (sixStarCount === 16 && previousSixStarCount < 16) {
+                console.log('Showing rank achievement popup for Star Cadet');
+                rankMessage.textContent = translations[language].rankAchievementMessage.replace('[userName]', currentStudent);
+                rankSubtitle.textContent = translations[language].rankAchievementSubtitle;
+                rankPopupDescription.textContent = translations[language].textboxStarCadet;
+                rankImage.src = 'rank0.png';
 
-            setTimeout(() => {
-                rankPopup.style.display = 'flex';
-                document.body.classList.add('popup-open');
-                const rect = rankPopup.getBoundingClientRect();
-                console.log('Rank popup displayed:', {
-                    display: rankPopup.style.display,
-                    width: rect.width,
-                    height: rect.height,
-                    top: rect.top,
-                    left: rect.left
-                });
-            }, 100);
+                setTimeout(() => {
+                    rankPopup.style.display = 'flex';
+                    document.body.classList.add('popup-open');
+                    const rect = rankPopup.getBoundingClientRect();
+                    console.log('Star Cadet popup displayed:', {
+                        display: rankPopup.style.display,
+                        width: rect.width,
+                        height: rect.height,
+                        top: rect.top,
+                        left: rect.left
+                    });
+                }, 100);
 
-            const closePopup = () => {
-                console.log('Closing rank popup');
-                rankPopup.style.display = 'none';
-                document.body.classList.remove('popup-open');
-            };
+                const closePopup = () => {
+                    console.log('Closing rank popup');
+                    rankPopup.style.display = 'none';
+                    document.body.classList.remove('popup-open');
+                };
 
-            const closeButton = document.getElementById('closeRankPopup');
-            if (closeButton) {
-                closeButton.removeEventListener('click', closePopup);
-                closeButton.addEventListener('click', closePopup);
-            }
-
-            rankPopup.removeEventListener('click', window.rankPopupClickListener);
-            window.rankPopupClickListener = (event) => {
-                console.log('Click event on rankPopup, target:', event.target);
-                if (event.target === rankPopup) {
-                    closePopup();
+                const closeButton = document.getElementById('closeRankPopup');
+                if (closeButton) {
+                    closeButton.removeEventListener('click', closePopup);
+                    closeButton.addEventListener('click', closePopup);
                 }
-            };
-            rankPopup.addEventListener('click', window.rankPopupClickListener);
+
+                rankPopup.removeEventListener('click', window.rankPopupClickListener);
+                window.rankPopupClickListener = (event) => {
+                    console.log('Click event on rankPopup, target:', event.target);
+                    if (event.target === rankPopup) {
+                        closePopup();
+                    }
+                };
+                rankPopup.addEventListener('click', window.rankPopupClickListener);
+            }
+            // Star Officer (all Part 1 stars at six stars)
+            else if (part1SixStarCount === 28 && previousPart1SixStarCount < 28) {
+                console.log('Showing rank achievement popup for Star Officer');
+                rankMessage.textContent = translations[language].rankAchievementMessage.replace('[userName]', currentStudent);
+                rankSubtitle.textContent = translations[language].rankStarOfficer;
+                rankPopupDescription.textContent = translations[language].textboxStarOfficer;
+                rankImage.src = 'rank1.png';
+
+                setTimeout(() => {
+                    rankPopup.style.display = 'flex';
+                    document.body.classList.add('popup-open');
+                    const rect = rankPopup.getBoundingClientRect();
+                    console.log('Star Officer popup displayed:', {
+                        display: rankPopup.style.display,
+                        width: rect.width,
+                        height: rect.height,
+                        top: rect.top,
+                        left: rect.left
+                    });
+                }, 100);
+
+                const closePopup = () => {
+                    console.log('Closing rank popup');
+                    rankPopup.style.display = 'none';
+                    document.body.classList.remove('popup-open');
+                };
+
+                const closeButton = document.getElementById('closeRankPopup');
+                if (closeButton) {
+                    closeButton.removeEventListener('click', closePopup);
+                    closeButton.addEventListener('click', closePopup);
+                }
+
+                rankPopup.removeEventListener('click', window.rankPopupClickListener);
+                window.rankPopupClickListener = (event) => {
+                    console.log('Click event on rankPopup, target:', event.target);
+                    if (event.target === rankPopup) {
+                        closePopup();
+                    }
+                };
+                rankPopup.addEventListener('click', window.rankPopupClickListener);
+            }
         } else {
             console.log('Popup elements not found:', {
                 rankPopup: !!rankPopup,
@@ -399,7 +445,7 @@ function checkAndShowRankAchievementPopup(sixStarCount, previousSixStarCount, fr
             });
         }
     } else {
-        console.log('Popup not triggered:', { sixStarCount, previousSixStarCount, fromStarClick });
+        console.log('Popup not triggered:', { sixStarCount, previousSixStarCount, part1SixStarCount, previousPart1SixStarCount, fromStarClick });
     }
 }
 
@@ -417,16 +463,24 @@ function updateStarStates(studentsDataParam, fromStarClick = false) {
     }
 
     let sixStarCount = 0;
+    let part1SixStarCount = 0;
     allExercises.forEach(exerciseKey => {
         const state = progress[exerciseKey] || "0";
-        if (state === "6") sixStarCount++;
+        if (state === "6") {
+            sixStarCount++;
+            if (exerciseKey.match(/exercise\d+:1:\d+/)) {
+                part1SixStarCount++;
+            }
+        }
     });
 
-    console.log('Updating star states:', { sixStarCount, previousSixStarCount, fromStarClick });
+    console.log('Updating star states:', { sixStarCount, previousSixStarCount, part1SixStarCount, previousPart1SixStarCount, fromStarClick });
 
-    checkAndShowRankAchievementPopup(sixStarCount, previousSixStarCount, fromStarClick);
+    checkAndShowRankAchievementPopup(sixStarCount, previousSixStarCount, part1SixStarCount, previousPart1SixStarCount, fromStarClick);
     previousSixStarCount = sixStarCount;
+    previousPart1SixStarCount = part1SixStarCount;
     localStorage.setItem('sixStarCount', sixStarCount);
+    localStorage.setItem('part1SixStarCount', part1SixStarCount);
 
     for (let i = 1; i <= 16; i++) {
         const bottomStar = document.getElementById(`bottom_star${i}`);
@@ -1096,9 +1150,10 @@ window.initializeAppContent = function() {
 // Main initialization
 waitForDOM().then(() => {
     console.log('waitForDOM resolved');
-    // Initialize previousSixStarCount from localStorage
+    // Initialize previous counts from localStorage
     previousSixStarCount = parseInt(localStorage.getItem('sixStarCount')) || 0;
-    console.log('Initialized previousSixStarCount:', previousSixStarCount);
+    previousPart1SixStarCount = parseInt(localStorage.getItem('part1SixStarCount')) || 0;
+    console.log('Initialized counts:', { previousSixStarCount, previousPart1SixStarCount });
 
     injectMenu();
     handleUserNamePopup();
