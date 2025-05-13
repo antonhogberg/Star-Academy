@@ -1,5 +1,8 @@
 let previousSixStarCount = parseInt(localStorage.getItem('sixStarCount')) || 0;
 let previousPart1SixStarCount = parseInt(localStorage.getItem('part1SixStarCount')) || 0;
+let previousPart2SixStarCount = parseInt(localStorage.getItem('part2SixStarCount')) || 0;
+let previousPart3SixStarCount = parseInt(localStorage.getItem('part3SixStarCount')) || 0;
+let previousPart4SixStarCount = parseInt(localStorage.getItem('part4SixStarCount')) || 0;
 
 const translations = {
     en: {
@@ -329,7 +332,19 @@ function injectMenu() {
     setActivePage();
 }
 
-function checkAndShowRankAchievementPopup(sixStarCount, previousSixStarCount, part1SixStarCount, previousPart1SixStarCount, fromStarClick) {
+function checkAndShowRankAchievementPopup(
+    sixStarCount, 
+    previousSixStarCount, 
+    part1SixStarCount, 
+    previousPart1SixStarCount, 
+    part2SixStarCount, 
+    previousPart2SixStarCount, 
+    part3SixStarCount, 
+    previousPart3SixStarCount, 
+    part4SixStarCount, 
+    previousPart4SixStarCount, 
+    fromStarClick
+) {
     let studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
     const currentStudent = studentsData.currentStudent;
 
@@ -340,7 +355,19 @@ function checkAndShowRankAchievementPopup(sixStarCount, previousSixStarCount, pa
 
     const language = localStorage.getItem('language') || 'sv';
 
-    console.log('Checking rank achievement popup:', { sixStarCount, previousSixStarCount, part1SixStarCount, previousPart1SixStarCount, fromStarClick });
+    console.log('Checking rank achievement popup:', { 
+        sixStarCount, 
+        previousSixStarCount, 
+        part1SixStarCount, 
+        previousPart1SixStarCount, 
+        part2SixStarCount, 
+        previousPart2SixStarCount, 
+        part3SixStarCount, 
+        previousPart3SixStarCount, 
+        part4SixStarCount, 
+        previousPart4SixStarCount, 
+        fromStarClick 
+    });
 
     // Only show popup if triggered by a star click
     if (fromStarClick) {
@@ -435,6 +462,132 @@ function checkAndShowRankAchievementPopup(sixStarCount, previousSixStarCount, pa
                 };
                 rankPopup.addEventListener('click', window.rankPopupClickListener);
             }
+            // Star Captain (all Part 2 stars at six stars)
+            else if (part2SixStarCount === 28 && previousPart2SixStarCount < 28) {
+                console.log('Showing rank achievement popup for Star Captain');
+                rankMessage.textContent = translations[language].rankAchievementMessage.replace('[userName]', currentStudent);
+                rankSubtitle.textContent = translations[language].rankStarCaptain;
+                rankPopupDescription.textContent = translations[language].textboxStarCaptain;
+                rankImage.src = 'rank2.png';
+
+                setTimeout(() => {
+                    rankPopup.style.display = 'flex';
+                    document.body.classList.add('popup-open');
+                    const rect = rankPopup.getBoundingClientRect();
+                    console.log('Star Captain popup displayed:', {
+                        display: rankPopup.style.display,
+                        width: rect.width,
+                        height: rect.height,
+                        top: rect.top,
+                        left: rect.left
+                    });
+                }, 100);
+
+                const closePopup = () => {
+                    console.log('Closing rank popup');
+                    rankPopup.style.display = 'none';
+                    document.body.classList.remove('popup-open');
+                };
+
+                const closeButton = document.getElementById('closeRankPopup');
+                if (closeButton) {
+                    closeButton.removeEventListener('click', closePopup);
+                    closeButton.addEventListener('click', closePopup);
+                }
+
+                rankPopup.removeEventListener('click', window.rankPopupClickListener);
+                window.rankPopupClickListener = (event) => {
+                    console.log('Click event on rankPopup, target:', event.target);
+                    if (event.target === rankPopup) {
+                        closePopup();
+                    }
+                };
+                rankPopup.addEventListener('click', window.rankPopupClickListener);
+            }
+            // Star Commander (all Part 3 stars at six stars)
+            else if (part3SixStarCount === 28 && previousPart3SixStarCount < 28) {
+                console.log('Showing rank achievement popup for Star Commander');
+                rankMessage.textContent = translations[language].rankAchievementMessage.replace('[userName]', currentStudent);
+                rankSubtitle.textContent = translations[language].rankStarCommander;
+                rankPopupDescription.textContent = translations[language].textboxStarCommander;
+                rankImage.src = 'rank3.png';
+
+                setTimeout(() => {
+                    rankPopup.style.display = 'flex';
+                    document.body.classList.add('popup-open');
+                    const rect = rankPopup.getBoundingClientRect();
+                    console.log('Star Commander popup displayed:', {
+                        display: rankPopup.style.display,
+                        width: rect.width,
+                        height: rect.height,
+                        top: rect.top,
+                        left: rect.left
+                    });
+                }, 100);
+
+                const closePopup = () => {
+                    console.log('Closing rank popup');
+                    rankPopup.style.display = 'none';
+                    document.body.classList.remove('popup-open');
+                };
+
+                const closeButton = document.getElementById('closeRankPopup');
+                if (closeButton) {
+                    closeButton.removeEventListener('click', closePopup);
+                    closeButton.addEventListener('click', closePopup);
+                }
+
+                rankPopup.removeEventListener('click', window.rankPopupClickListener);
+                window.rankPopupClickListener = (event) => {
+                    console.log('Click event on rankPopup, target:', event.target);
+                    if (event.target === rankPopup) {
+                        closePopup();
+                    }
+                };
+                rankPopup.addEventListener('click', window.rankPopupClickListener);
+            }
+            // Star Admiral (all Part 4 stars at six stars)
+            else if (part4SixStarCount === 28 && previousPart4SixStarCount < 28) {
+                console.log('Showing rank achievement popup for Star Admiral');
+                rankMessage.textContent = translations[language].rankAchievementMessage.replace('[userName]', currentStudent);
+                rankSubtitle.textContent = translations[language].rankStarAdmiral;
+                rankPopupDescription.textContent = translations[language].textboxStarAdmiral;
+                rankImage.src = 'rank4.png';
+
+                setTimeout(() => {
+                    rankPopup.style.display = 'flex';
+                    document.body.classList.add('popup-open');
+                    const rect = rankPopup.getBoundingClientRect();
+                    console.log('Star Admiral popup displayed:', {
+                        display: rankPopup.style.display,
+                        width: rect.width,
+                        height: rect.height,
+                        top: rect.top,
+                        left: rect.left
+                    });
+                }, 100);
+
+                const closePopup = () => {
+                    console.log('Closing rank popup');
+                    rankPopup.style.display = 'none';
+                    document.body.classList.remove('popup-open');
+                };
+
+                const closeButton = document.getElementById('closeRankPopup');
+                if (closeButton) {
+                    closeButton.removeEventListener('click', closePopup);
+                    closeButton.addEventListener('click', closePopup);
+                }
+
+                rankPopup.removeEventListener('click', window.rankPopupClickListener);
+                window.rankPopupClickListener = (event) => {
+                    console.log('Click event on rankPopup, target:', event.target);
+                    if (event.target === rankPopup) {
+                        closePopup();
+                    }
+                };
+                rankPopup.addEventListener('click', window.rankPopupClickListener);
+            }
         } else {
             console.log('Popup elements not found:', {
                 rankPopup: !!rankPopup,
@@ -445,7 +598,19 @@ function checkAndShowRankAchievementPopup(sixStarCount, previousSixStarCount, pa
             });
         }
     } else {
-        console.log('Popup not triggered:', { sixStarCount, previousSixStarCount, part1SixStarCount, previousPart1SixStarCount, fromStarClick });
+        console.log('Popup not triggered:', { 
+            sixStarCount, 
+            previousSixStarCount, 
+            part1SixStarCount, 
+            previousPart1SixStarCount, 
+            part2SixStarCount, 
+            previousPart2SixStarCount, 
+            part3SixStarCount, 
+            previousPart3SixStarCount, 
+            part4SixStarCount, 
+            previousPart4SixStarCount, 
+            fromStarClick 
+        });
     }
 }
 
@@ -464,23 +629,62 @@ function updateStarStates(studentsDataParam, fromStarClick = false) {
 
     let sixStarCount = 0;
     let part1SixStarCount = 0;
+    let part2SixStarCount = 0;
+    let part3SixStarCount = 0;
+    let part4SixStarCount = 0;
     allExercises.forEach(exerciseKey => {
         const state = progress[exerciseKey] || "0";
         if (state === "6") {
             sixStarCount++;
             if (exerciseKey.match(/exercise\d+:1:\d+/)) {
                 part1SixStarCount++;
+            } else if (exerciseKey.match(/exercise\d+:2:\d+/)) {
+                part2SixStarCount++;
+            } else if (exerciseKey.match(/exercise\d+:3:\d+/)) {
+                part3SixStarCount++;
+            } else if (exerciseKey.match(/exercise\d+:4:\d+/)) {
+                part4SixStarCount++;
             }
         }
     });
 
-    console.log('Updating star states:', { sixStarCount, previousSixStarCount, part1SixStarCount, previousPart1SixStarCount, fromStarClick });
+    console.log('Updating star states:', { 
+        sixStarCount, 
+        previousSixStarCount, 
+        part1SixStarCount, 
+        previousPart1SixStarCount, 
+        part2SixStarCount, 
+        previousPart2SixStarCount, 
+        part3SixStarCount, 
+        previousPart3SixStarCount, 
+        part4SixStarCount, 
+        previousPart4SixStarCount, 
+        fromStarClick 
+    });
 
-    checkAndShowRankAchievementPopup(sixStarCount, previousSixStarCount, part1SixStarCount, previousPart1SixStarCount, fromStarClick);
+    checkAndShowRankAchievementPopup(
+        sixStarCount, 
+        previousSixStarCount, 
+        part1SixStarCount, 
+        previousPart1SixStarCount, 
+        part2SixStarCount, 
+        previousPart2SixStarCount, 
+        part3SixStarCount, 
+        previousPart3SixStarCount, 
+        part4SixStarCount, 
+        previousPart4SixStarCount, 
+        fromStarClick
+    );
     previousSixStarCount = sixStarCount;
     previousPart1SixStarCount = part1SixStarCount;
+    previousPart2SixStarCount = part2SixStarCount;
+    previousPart3SixStarCount = part3SixStarCount;
+    previousPart4SixStarCount = part4SixStarCount;
     localStorage.setItem('sixStarCount', sixStarCount);
     localStorage.setItem('part1SixStarCount', part1SixStarCount);
+    localStorage.setItem('part2SixStarCount', part2SixStarCount);
+    localStorage.setItem('part3SixStarCount', part3SixStarCount);
+    localStorage.setItem('part4SixStarCount', part4SixStarCount);
 
     for (let i = 1; i <= 16; i++) {
         const bottomStar = document.getElementById(`bottom_star${i}`);
@@ -1153,7 +1357,16 @@ waitForDOM().then(() => {
     // Initialize previous counts from localStorage
     previousSixStarCount = parseInt(localStorage.getItem('sixStarCount')) || 0;
     previousPart1SixStarCount = parseInt(localStorage.getItem('part1SixStarCount')) || 0;
-    console.log('Initialized counts:', { previousSixStarCount, previousPart1SixStarCount });
+    previousPart2SixStarCount = parseInt(localStorage.getItem('part2SixStarCount')) || 0;
+    previousPart3SixStarCount = parseInt(localStorage.getItem('part3SixStarCount')) || 0;
+    previousPart4SixStarCount = parseInt(localStorage.getItem('part4SixStarCount')) || 0;
+    console.log('Initialized counts:', { 
+        previousSixStarCount, 
+        previousPart1SixStarCount, 
+        previousPart2SixStarCount, 
+        previousPart3SixStarCount, 
+        previousPart4SixStarCount 
+    });
 
     injectMenu();
     handleUserNamePopup();
