@@ -58,6 +58,14 @@ function initializeChapter() {
                     img.src = starImages[level];
                     img.style.opacity = '1';
                 }, 300);
+
+                // Trigger rank achievement check
+                if (typeof window.updateStarStates === 'function') {
+                    console.log(`Star clicked on chapter ${chapterNum}, calling updateStarStates for exercise ${exerciseCode}`);
+                    window.updateStarStates();
+                } else {
+                    console.error('updateStarStates not defined');
+                }
             });
 
             window.addEventListener('storage', (event) => {
