@@ -14,6 +14,7 @@
         window.addEventListener('orientationchange', setViewportHeight);
         setViewportHeight();
     </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lz-string/1.5.0/lz-string.min.js"></script>
 </head>
 <body>
     <div id="importLoaderOverlay" style="display: none;">
@@ -206,7 +207,6 @@
     import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore.js";
     
     const firebaseConfig = {
-        apiKey: "REDACTED",
         authDomain: "stjarnakademien-6b272.firebaseapp.com",
         projectId: "stjarnakademien-6b272",
         storageBucket: "stjarnakademien-6b272.appspot.com",
