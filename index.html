@@ -203,197 +203,130 @@
 <script src="script.js"></script>
 <script src="students.js"></script>
 <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
-    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore.js";
-    
-    const firebaseConfig = {
-        authDomain: "stjarnakademien-6b272.firebaseapp.com",
-        projectId: "stjarnakademien-6b272",
-        storageBucket: "stjarnakademien-6b272.appspot.com",
-        messagingSenderId: "773874793436",
-        appId: "1:773874793436:web:f7dc4307844e38709e2d19"
-    };
-    
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-    
-    const urlParams = new URLSearchParams(window.location.search);
-    const code = urlParams.get("code");
-    const overlay = document.getElementById("importLoaderOverlay");
-    const mainContent = document.getElementById("mainContent");
-    const loaderText = document.getElementById("loaderText");
-    
-    const translations = {
-        sv: {
-            loading: "Laddar elevdata...",
-            success: "Dina framgångar är uppdaterade, välkommen",
-            error: "Ogiltig länk. Ingen elev lades till."
-        },
-        en: {
-            loading: "Loading student data...",
-            success: "Your stars are updated, welcome",
-            error: "Invalid link. No student was added."
-        }
-    };
-    
-    async function handleImportFromLink(code) {
-        try {
-            window.isImporting = true;
-            overlay.style.display = "flex";
-            mainContent.style.display = "none";
-            const lang = localStorage.getItem('language') || 'sv';
-            loaderText.textContent = translations[lang].loading;
-            console.log('Import started, code:', code);
-    
-            const minDisplayTime = new Promise(resolve => setTimeout(resolve, 1000));
-            const docSnap = await getDoc(doc(db, "exports", code));
-            await minDisplayTime;
-    
-            if (!docSnap.exists()) throw new Error("Document not found.");
-    
-            const stored = JSON.parse(localStorage.getItem("starAcademyStudents")) || { students: {}, currentStudent: "" };
-            const { name, data } = docSnap.data();
-            const isNew = !stored.students[name];
-    
-            stored.students[name] = data;
-            stored.currentStudent = name;
-            localStorage.setItem("starAcademyStudents", JSON.stringify(stored));
-            console.log('localStorage updated, currentStudent:', name, 'students:', Object.keys(stored.students));
-    
-            setTimeout(() => {
-                console.log('Calling initializeAppContent after import');
-                if (typeof window.initializeAppContent === 'function') {
-                    window.initializeAppContent();
-                } else {
-                    console.error('initializeAppContent not defined');
-                }
-                // Explicitly update dropdown and username
-                if (typeof updateDropdown === 'function') {
-                    console.log('Calling updateDropdown after import');
-                    updateDropdown();
-                }
-                const userNameDisplay = document.getElementById('userNameDisplay');
-                if (userNameDisplay && name) {
-                    userNameDisplay.textContent = name;
-                    console.log('Set userNameDisplay to:', name);
-                }
-            }, 500); // Increased delay to ensure DOM readiness
-    
-            setTimeout(() => showStudentPopup(isNew, name), 100);
-    
-            const cleanUrl = window.location.origin + window.location.pathname;
-            window.history.replaceState({}, document.title, cleanUrl);
-        } catch (e) {
-            console.error("Import från kod misslyckades:", e);
-            setTimeout(() => showStudentPopup(false, null), 100);
-        } finally {
-            overlay.style.display = "none";
-            mainContent.style.display = "block";
-            window.isImporting = false;
-            console.log('Import completed, isImporting:', window.isImporting);
-        }
-    }
-    
-    function showStudentPopup(isNew, name) {
-        console.log('showStudentPopup called:', { isNew, name });
-        const popup = document.createElement("div");
-        popup.id = "studentPopup";
-        popup.className = "student-popup show";
+    // Handle import from QR code or URL
+    function handleImportFromLink(code) {
+      try {
+        const mainContent = document.getElementById('mainContent');
+        const importLoaderOverlay = document.getElementById('importLoaderOverlay');
+        const loaderText = document.getElementById('loaderText');
         const lang = localStorage.getItem('language') || 'sv';
-        const message = name
-            ? `${translations[lang].success} ${name}!`
-            : translations[lang].error;
-        popup.innerHTML = `
-            <div class="student-popup-content">
-                <p>${message}</p>
-            </div>
-        `;
-        document.body.appendChild(popup);
-    
-        setTimeout(() => {
-            popup.classList.remove("show");
-            setTimeout(() => {
-                if (popup.parentNode) popup.parentNode.removeChild(popup);
-            }, 500);
-        }, 4000);
-    }
-    
-    window.initializeAppContent = function() {
-        console.log('initializeAppContent called');
-        if (typeof window.studentsData !== 'undefined') {
-            window.studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || {
-                students: {},
-                currentStudent: ''
-            };
-            console.log('Refreshed window.studentsData:', window.studentsData);
+  
+        window.isImporting = true;
+        importLoaderOverlay.style.display = 'flex';
+        mainContent.style.display = 'none';
+        loaderText.textContent = window.translations[lang].loading;
+  
+        // Decompress data
+        if (!window.LZString) {
+          console.error('LZString not loaded');
+          alert('Error: Compression library missing.');
+          return;
         }
-    
-        const updateStarsWithRetry = (attempt = 1, maxAttempts = 5) => {
-            if (typeof updateStarStates !== 'function') {
-                console.error('updateStarStates not defined');
-                return;
+        const decompressed = LZString.decompressFromEncodedURIComponent(code);
+        if (!decompressed) {
+          throw new Error('Invalid code');
+        }
+        const dataToImport = JSON.parse(decompressed);
+        console.log('Imported JSON:', dataToImport);
+  
+        // Reconstruct progress object
+        const progress = {};
+        const digits = dataToImport.progress.split('');
+        let index = 0;
+        for (let chapter = 1; chapter <= 7; chapter++) {
+          for (let part = 1; part <= 4; part++) {
+            for (let exercise = 1; exercise <= 4; exercise++) {
+              if (index < digits.length) {
+                progress[`exercise${chapter}:${part}:${exercise}`] = digits[index];
+                index++;
+              }
             }
-            const testStar = document.getElementById('bottom_star1');
-            if (testStar) {
-                console.log('SVG elements found, updating stars');
-                updateStarStates();
-            } else if (attempt <= maxAttempts) {
-                console.warn(`SVG elements not found, retrying (${attempt}/${maxAttempts})`);
-                setTimeout(() => updateStarsWithRetry(attempt + 1, maxAttempts), 200);
-            } else {
-                console.error('Failed to find SVG elements after max retries');
-            }
+          }
+        }
+  
+        // Update localStorage
+        const studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
+        const isNew = !studentsData.students[dataToImport.name];
+        studentsData.students[dataToImport.name] = {
+          name: dataToImport.name,
+          progress: progress,
+          rank: dataToImport.rank,
+          notes: ''
         };
-    
-        const updateDropdownWithRetry = (attempt = 1, maxAttempts = 5) => {
-            if (typeof updateDropdown !== 'function') {
-                console.error('updateDropdown not defined');
-                return;
-            }
-            const select = document.getElementById('globalStudentSelect');
-            if (select) {
-                console.log('globalStudentSelect found, updating dropdown');
-                updateDropdown();
-            } else if (attempt <= maxAttempts) {
-                console.warn(`globalStudentSelect not found, retrying (${attempt}/${maxAttempts})`);
-                setTimeout(() => updateDropdownWithRetry(attempt + 1, maxAttempts), 200);
-            } else {
-                console.error('Failed to find globalStudentSelect after max retries');
-            }
-        };
-    
-        const updateUsernameWithRetry = (attempt = 1, maxAttempts = 5) => {
-            const userNameDisplay = document.getElementById('userNameDisplay');
-            const studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
-            if (userNameDisplay && studentsData.currentStudent) {
-                console.log('Setting userNameDisplay to:', studentsData.currentStudent);
-                userNameDisplay.textContent = studentsData.currentStudent;
-            } else if (attempt <= maxAttempts) {
-                console.warn(`userNameDisplay or currentStudent not ready, retrying (${attempt}/${maxAttempts})`);
-                setTimeout(() => updateUsernameWithRetry(attempt + 1, maxAttempts), 200);
-            } else {
-                console.error('Failed to set userNameDisplay after max retries');
-            }
-        };
-    
-        updateStarsWithRetry();
-        updateDropdownWithRetry();
-        updateUsernameWithRetry();
-    };
-    
-    if (code) {
-        handleImportFromLink(code);
-    } else {
-        overlay.style.display = "none";
-        mainContent.style.display = "block";
+        studentsData.currentStudent = dataToImport.name;
+        localStorage.setItem('starAcademyStudents', JSON.stringify(studentsData));
+        console.log('localStorage updated, currentStudent:', dataToImport.name, 'students:', Object.keys(studentsData.students));
+  
+        // Initialize UI
         setTimeout(() => {
-            console.log('Calling initializeAppContent on page load');
-            if (typeof window.initializeAppContent === 'function') {
-                window.initializeAppContent();
-            }
-        }, 200);
+          if (typeof window.initializeAppContent === 'function') {
+            window.initializeAppContent();
+          } else {
+            console.error('initializeAppContent not defined');
+          }
+          importLoaderOverlay.style.display = 'none';
+          mainContent.style.display = 'block';
+          window.isImporting = false;
+  
+          // Show popup
+          setTimeout(() => showStudentPopup(isNew, dataToImport.name), 100);
+        }, 500);
+  
+        // Clean URL
+        const cleanUrl = window.location.origin + window.location.pathname;
+        window.history.replaceState({}, document.title, cleanUrl);
+      } catch (error) {
+        console.error('Import failed:', error);
+        importLoaderOverlay.style.display = 'none';
+        mainContent.style.display = 'block';
+        window.isImporting = false;
+        showStudentPopup(false, null, window.translations[lang].error);
+      }
     }
-    </script>
+  
+    // Popup for import feedback
+    function showStudentPopup(isNew, name, errorMessage) {
+      console.log('showStudentPopup called:', { isNew, name, errorMessage });
+      const popup = document.createElement('div');
+      popup.id = 'studentPopup';
+      popup.className = 'student-popup show';
+      const lang = localStorage.getItem('language') || 'sv';
+      const starSVG = '<svg class="popup-star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>';
+      const message = errorMessage || (name
+        ? `${starSVG} ${window.translations[lang].success} ${name}! ${starSVG}`
+        : window.translations[lang].error);
+      popup.innerHTML = `
+        <div class="student-popup-content">
+          <p>${message}</p>
+        </div>
+      `;
+      document.body.appendChild(popup);
+  
+      setTimeout(() => {
+        popup.classList.remove('show');
+        setTimeout(() => {
+          if (popup.parentNode) popup.parentNode.removeChild(popup);
+        }, 500);
+      }, 4000);
+    }
+  
+    // Trigger import if code exists
+    document.addEventListener('DOMContentLoaded', () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const code = urlParams.get('code');
+      if (code) {
+        handleImportFromLink(code);
+      } else {
+        document.getElementById('importLoaderOverlay').style.display = 'none';
+        document.getElementById('mainContent').style.display = 'block';
+        setTimeout(() => {
+          if (typeof window.initializeAppContent === 'function') {
+            window.initializeAppContent();
+          }
+        }, 200);
+      }
+    });
+  </script>
 <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'92bbb6a45b62afb9',t:'MTc0Mzg4NDA4My4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
 <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'935543e18fdedd25',t:'MTc0NTQ5NDE5MC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
 <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9386569dd826b0ca',t:'MTc0NjAwODc2MC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
