@@ -76,7 +76,7 @@
   <script src="script.js"></script>
   <script src="students.js"></script>
 
-  <!-- Add Firebase SDKs -->
+  <!-- Firebase SDKs -->
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
@@ -93,13 +93,15 @@
     const db = firebase.firestore();
     const auth = firebase.auth();
 
-    // Sign in anonymously on app load
-    auth.signInAnonymously()
+    // Store the authentication promise to await it later
+    const authPromise = auth.signInAnonymously()
         .then((userCredential) => {
             console.log("Signed in anonymously:", userCredential.user.uid);
+            return userCredential;
         })
         .catch((error) => {
             console.error("Anonymous sign-in failed:", error.code, error.message);
+            throw error;
         });
 
     function debounce(func, wait) {
@@ -154,7 +156,10 @@
           data: studentsData.students[current]
         };
 
-        // Use Firestore SDK instead of REST API
+        // Wait for anonymous sign-in to complete
+        await authPromise;
+
+        // Use Firestore SDK to write the export data
         const studentId = Date.now().toString();
         await db.collection("exports").doc(studentId).set({
           name: dataToExport.name,
