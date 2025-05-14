@@ -204,6 +204,8 @@
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
     import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore.js";
+    // Add Firebase Authentication import
+    import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
     
     const firebaseConfig = {
         authDomain: "stjarnakademien-6b272.firebaseapp.com",
@@ -215,6 +217,17 @@
     
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
+    // Initialize Firebase Authentication
+    const auth = getAuth(app);
+
+    // Sign in anonymously on app load
+    signInAnonymously(auth)
+        .then((userCredential) => {
+            console.log("Signed in anonymously:", userCredential.user.uid);
+        })
+        .catch((error) => {
+            console.error("Anonymous sign-in failed:", error.code, error.message);
+        });
     
     const urlParams = new URLSearchParams(window.location.search);
     const code = urlParams.get("code");
