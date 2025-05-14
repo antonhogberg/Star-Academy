@@ -51,13 +51,17 @@
           return;
         }
   
-        // Create export data, excluding notes
-        const studentData = { ...studentsData.students[current] };
-        delete studentData.notes;
+        // Create export data, include only essential fields
         const dataToExport = {
           name: current,
-          data: studentData
+          progress: studentsData.students[current].progress,
+          rank: studentsData.students[current].rank
         };
+  
+        // Debug: Log JSON size
+        const jsonString = JSON.stringify(dataToExport);
+        console.log('Export JSON size:', jsonString.length, 'chars');
+        console.log('Export JSON:', jsonString);
   
         // Compress data
         if (!window.LZString) {
@@ -65,8 +69,8 @@
           alert('Error: Compression library missing.');
           return;
         }
-        const jsonString = JSON.stringify(dataToExport);
         const compressed = LZString.compressToEncodedURIComponent(jsonString);
+        console.log('Compressed code size:', compressed.length, 'chars');
         const importUrl = `${window.location.origin}/Star-Academy/index.html?code=${compressed}`;
   
         // Generate QR code
@@ -88,9 +92,10 @@
         qrPopup.classList.add('show');
         exportStatus.style.display = 'none';
   
-        // Handle sharing
+        // Handle sharing (QR code or AirDrop/file)
         shareButton.onclick = async () => {
           try {
+            // Try AirDrop/URL sharing
             if (navigator.share && navigator.canShare({ url: importUrl })) {
               await navigator.share({ title: 'Elevdata', url: importUrl });
             } else {
@@ -112,7 +117,7 @@
       } catch (error) {
         console.error('Export failed:', error);
         exportStatus.style.display = 'none';
-        alert(window.translations?.[localStorage.getItem('language') || 'sv']?.exportError || 'Could not export student data.');
+        alert(window.translations?.[lang]?.exportError || 'Could not export student data.');
       }
     }
   
