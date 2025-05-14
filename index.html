@@ -211,23 +211,38 @@
         const loaderText = document.getElementById('loaderText');
         const lang = localStorage.getItem('language') || 'sv';
   
+        if (!mainContent || !importLoaderOverlay || !loaderText) {
+          console.error('Missing UI elements:', {
+            mainContent: !!mainContent,
+            importLoaderOverlay: !!importLoaderOverlay,
+            loaderText: !!loaderText
+          });
+          throw new Error('UI elements not found');
+        }
+  
         window.isImporting = true;
         importLoaderOverlay.style.display = 'flex';
         mainContent.style.display = 'none';
-        loaderText.textContent = window.translations[lang].loading;
+        loaderText.textContent = window.translations?.[lang]?.loading || 'Loading…';
   
         // Decompress data
         if (!window.LZString) {
           console.error('LZString not loaded');
-          alert('Error: Compression library missing.');
-          return;
+          throw new Error('Compression library missing');
         }
         const decompressed = LZString.decompressFromEncodedURIComponent(code);
         if (!decompressed) {
+          console.error('Decompression failed, code:', code);
           throw new Error('Invalid code');
         }
         const dataToImport = JSON.parse(decompressed);
         console.log('Imported JSON:', dataToImport);
+  
+        // Validate data
+        if (!dataToImport.name || !dataToImport.progress || !dataToImport.rank || dataToImport.progress.length !== 112) {
+          console.error('Invalid data format:', dataToImport);
+          throw new Error('Invalid data format');
+        }
   
         // Reconstruct progress object
         const progress = {};
@@ -261,6 +276,7 @@
         setTimeout(() => {
           if (typeof window.initializeAppContent === 'function') {
             window.initializeAppContent();
+            console.log('initializeAppContent called');
           } else {
             console.error('initializeAppContent not defined');
           }
@@ -280,7 +296,7 @@
         importLoaderOverlay.style.display = 'none';
         mainContent.style.display = 'block';
         window.isImporting = false;
-        showStudentPopup(false, null, window.translations[lang].error);
+        showStudentPopup(false, null, window.translations?.[lang]?.error || 'Invalid link. No student was added.');
       }
     }
   
@@ -293,8 +309,8 @@
       const lang = localStorage.getItem('language') || 'sv';
       const starSVG = '<svg class="popup-star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>';
       const message = errorMessage || (name
-        ? `${starSVG} ${window.translations[lang].success} ${name}! ${starSVG}`
-        : window.translations[lang].error);
+        ? `${starSVG} ${window.translations?.[lang]?.success || 'Your stars are updated, welcome'} ${name}! ${starSVG}`
+        : window.translations?.[lang]?.error || 'Invalid link. No student was added.');
       popup.innerHTML = `
         <div class="student-popup-content">
           <p>${message}</p>
@@ -312,9 +328,11 @@
   
     // Trigger import if code exists
     document.addEventListener('DOMContentLoaded', () => {
+      console.log('DOMContentLoaded for import');
       const urlParams = new URLSearchParams(window.location.search);
       const code = urlParams.get('code');
       if (code) {
+        console.log('Import code detected:', code);
         handleImportFromLink(code);
       } else {
         document.getElementById('importLoaderOverlay').style.display = 'none';
@@ -322,6 +340,7 @@
         setTimeout(() => {
           if (typeof window.initializeAppContent === 'function') {
             window.initializeAppContent();
+            console.log('initializeAppContent called on page load');
           }
         }, 200);
       }
