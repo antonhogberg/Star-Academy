@@ -292,11 +292,11 @@
           name: dataToImport.name,
           progress: progress,
           rank: dataToImport.rank,
-          notes: ''
+          notes: dataToImport.notes || ''
         };
         studentsData.currentStudent = dataToImport.name;
         localStorage.setItem('starAcademyStudents', JSON.stringify(studentsData));
-        console.log('localStorage updated, currentStudent:', dataToImport.name, 'students:', Object.keys(studentsData.students));
+        console.log('localStorage updated, currentStudent:', dataToImport.name, 'students:', Object.keys(studentsData.students), 'notes:', dataToImport.notes);
   
         // Ensure loading popup is visible for at least 500ms
         await new Promise(resolve => setTimeout(resolve, 500));
