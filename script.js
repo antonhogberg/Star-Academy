@@ -978,6 +978,28 @@ function switchLanguage(lang) {
         rankPopupDescription.textContent = translations[newLang].textboxStarCadet;
     }
 
+    // Update import loader text
+    const loaderText = document.getElementById('loaderText');
+    if (loaderText && window.isImporting) {
+        loaderText.textContent = translations[newLang].loading;
+    }
+
+    // Update active import popup
+    const studentPopup = document.getElementById('studentPopup');
+    if (studentPopup && studentPopup.classList.contains('show')) {
+        const popupContent = studentPopup.querySelector('.student-popup-content p');
+        const currentMessage = popupContent.textContent;
+        const isError = currentMessage.includes(translations[lang].error);
+        const nameMatch = currentMessage.match(/welcome (\w+\s+\w+)/i) || currentMessage.match(/välkommen (\w+\s+\w+)/i);
+        const starSVG = '<svg class="popup-star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>';
+        if (nameMatch) {
+            const name = nameMatch[1];
+            popupContent.innerHTML = `${starSVG} ${translations[newLang].success} ${name}! ${starSVG}`;
+        } else if (isError) {
+            popupContent.textContent = translations[newLang].error;
+        }
+    }
+
     // Update user name display
     const userNameDisplay = document.getElementById('userNameDisplay');
     if (userNameDisplay) {
