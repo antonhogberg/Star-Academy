@@ -198,8 +198,18 @@
             <div id="userNameDisplay" class="user-name-box"></div>
         </div>
     </div>
-</div>
-</div>
+    </div>
+    <div id="namePopup" class="student-popup" style="display: none;">
+        <div class="student-popup-content">
+          <h2 id="popupWelcome"></h2>
+          <p id="popupIntro"></p>
+          <p id="popupTeacherNote"></p>
+          <p id="popupEnterName"></p>
+          <input id="nameInput" type="text" placeholder="Enter name">
+          <button id="submitNameButton" onclick="saveName()">Add</button>
+        </div>
+      </div>
+    </div>
 <script src="script.js"></script>
 <script src="students.js"></script>
 <script type="module">
@@ -315,27 +325,26 @@
         console.log('localStorage updated, currentStudent:', dataToImport.name, 'students:', Object.keys(studentsData.students));
   
         // Initialize UI and show popup
-        setTimeout(async () => {
-          if (typeof window.initializeAppContent === 'function') {
-            window.initializeAppContent();
-            console.log('initializeAppContent called');
-          } else {
-            console.error('initializeAppContent not defined');
-          }
-          importLoaderOverlay.style.display = 'none';
-          mainContent.style.display = 'block';
-          window.isImporting = false;
+        await new Promise(resolve => setTimeout(resolve, 500)); // Ensure DOM readiness
+        if (typeof window.initializeAppContent === 'function') {
+          window.initializeAppContent();
+          console.log('initializeAppContent called');
+        } else {
+          console.error('initializeAppContent not defined');
+        }
+        importLoaderOverlay.style.display = 'none';
+        mainContent.style.display = 'block';
+        window.isImporting = false;
   
-          // Wait for script.js to load
-          const translationsLoaded = await waitForScriptLoad('script.js');
-          if (translationsLoaded) {
-            console.log('Showing student popup after script load');
-            showStudentPopup(isNew, dataToImport.name);
-          } else {
-            console.error('Translations not loaded, showing fallback popup');
-            showStudentPopup(isNew, dataToImport.name, lang === 'sv' ? 'Dina framgångar är uppdaterade, välkommen ' + dataToImport.name + '!' : 'Your stars are updated, welcome ' + dataToImport.name + '!');
-          }
-        }, 500);
+        // Wait for script.js to load
+        const translationsLoaded = await waitForScriptLoad('script.js');
+        if (translationsLoaded) {
+          console.log('Showing student popup after script load');
+          showStudentPopup(isNew, dataToImport.name);
+        } else {
+          console.error('Translations not loaded, showing fallback popup');
+          showStudentPopup(isNew, dataToImport.name, lang === 'sv' ? 'Dina framgångar är uppdaterade, välkommen ' + dataToImport.name + '!' : 'Your stars are updated, welcome ' + dataToImport.name + '!');
+        }
   
         // Clean URL
         const cleanUrl = window.location.origin + window.location.pathname;
@@ -343,14 +352,11 @@
       } catch (error) {
         console.error('Import failed:', error);
         importLoaderOverlay.style.display = 'none';
-        mainContent.style.display = 'block';
+        const mainContent = document.getElementById('mainContent');
+        if (mainContent) mainContent.style.display = 'block';
         window.isImporting = false;
         const lang = localStorage.getItem('language') || 'sv';
-        if (window.translations) {
-          showStudentPopup(false, null, window.translations[lang].error);
-        } else {
-          showStudentPopup(false, null, lang === 'sv' ? 'Ogiltig länk. Ingen elev lades till.' : 'Invalid link. No student was added.');
-        }
+        showStudentPopup(false, null, window.translations?.[lang]?.error || (lang === 'sv' ? 'Ogiltig länk. Ingen elev lades till.' : 'Invalid link. No student was added.'));
       }
     }
   
@@ -368,7 +374,7 @@
       popup.id = 'studentPopup';
       popup.className = 'student-popup show';
       // Force visibility
-      popup.style.display = 'block';
+      popup.style.display = 'flex';
       popup.style.opacity = '1';
       popup.style.zIndex = '1000';
       const starSVG = '<svg class="popup-star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>';
@@ -414,7 +420,8 @@
         handleImportFromLink(code);
       } else {
         document.getElementById('importLoaderOverlay').style.display = 'none';
-        document.getElementById('mainContent').style.display = 'block';
+        const mainContent = document.getElementById('mainContent');
+        if (mainContent) mainContent.style.display = 'block';
         setTimeout(() => {
           if (typeof window.initializeAppContent === 'function') {
             window.initializeAppContent();
