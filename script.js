@@ -62,7 +62,7 @@ const translations = {
         faqQ2: "Can I add my students, and is there a limit to how many I can add?",
         faqA2: "Yes, you can add students in For Teachers: type the student’s name, press Add, and switch between students anytime in the menu—data is saved locally and automatically. There’s no limit to how many students you can add!",
         faqQ3: "Can I share a student’s progress with them, if they want to see the stars on their own iPad?",
-        faqA3: "Yes, you can share a student’s progress! On the For Teachers page, select the student and generate a share link or QR code. The student can scan the QR code using their iPad’s camera app to import their progress, or you can send the import link via SMS, email, or AirDrop for them to open on their device. Once imported, they can view their stars and progress on their own iPad and even click new stars independently—your accounts won’t be linked. At the next lesson, you can export the student’s data again to their iPad, and your version will overwrite their version, ensuring their progress stays up to date with your records.",
+        faqA3: "Yes, you can share a student’s progress! On the For Teachers page, select the student and generate a QR code. The student can scan the QR code using their iPad’s camera to import their progress, or you can share the link via AirDrop, SMS, or email for them to open on their device. The data stays on the iPads and is not stored online.",
         faqQ4: "Why can't I click the stars in Star Overview?",
         faqA4: "The stars on the Rank Badge in Star Overview are not clickable—they light up automatically as you earn stars on the Chapter pages and Star Map.",
         faqQ5: "How does the ranking system work in North Star Piano School?",
@@ -80,9 +80,9 @@ const translations = {
         faqQ11: "Can I send suggestions or questions?",
         faqA11: "Yes, feel free to email: northstarpianoacademy@gmail.com",
         faqQ12: "Why did my progress disappear?",
-        faqA12: "If you cleared your browser history, all star data was removed as it’s stored in the browser’s cache. If you imported a user with your name from another device via a link or QR code created on the For Teachers page, your user data was overwritten by the imported user.",
+        faqA12: "If you cleared your browser history, all star data was removed as it’s stored in the browser’s cache. If you imported a user with your name from another device via a QR code created on the For Teachers page, your user data was overwritten by the imported user.",
         exportTitle: "Export Student Data",
-        exportInfo: "Tap the button below to share the current student to another device. The recipient just needs to open the link – the student will be added automatically!",
+        exportInfo: "Tap the button below to share the current student to another device. The recipient just needs to scan the QR code or open the link to add the student automatically!",
         creatingLink: "Generating link, please wait…",
         copyLinkSuccess: "Link copied to clipboard! Paste to share.",
         scanOrShare: "Scan the QR code or...",
@@ -100,7 +100,10 @@ const translations = {
         starMapBullet2: "Earn Stars: Follow the book’s instructions to complete the exercise and earn stars. Return to the Star Map, click Star 1:1:1 to claim your stars. If you over-click, keep clicking to reset.",
         starMapBullet3: "Progress Gradually: Practice an exercise, then move to the next star on the map.",
         starMapBullet4: "Daily Practice: Each day, revisit your active exercises, aiming for six stars in each.",
-        starMapBullet5: "Manage Active Exercises: Work on 4–6 exercises daily, but focus on completing each (six stars) before adding more."
+        starMapBullet5: "Manage Active Exercises: Work on 4–6 exercises daily, but focus on completing each (six stars) before adding more.",
+        loading: "Loading student data...",
+        success: "Your stars are updated, welcome",
+        error: "Invalid link. No student was added."
     },
     sv: {
         menuFrontPage: "Stjärnöversikt",
@@ -197,7 +200,10 @@ const translations = {
         starMapBullet2: "Förtjäna stjärnor: Följ bokens instruktioner för att slutföra övningen och få stjärnor. Återvänd till Stjärnkartan, klicka på Stjärna 1:1:1 för att få fram dina stjärnor. Klickar du för många, fortsätt klicka för att nollställa.",
         starMapBullet3: "Öva lagom: Öva på en övning en stund, gå sedan vidare till nästa stjärna på kartan.",
         starMapBullet4: "Daglig övning: Återkom till dina aktiva övningar varje dag och sikta på sex stjärnor i varje.",
-        starMapBullet5: "Hur många aktiva övningar?: Jobba på flera övningar dagligen, t.ex. 4–6 st, men se till att slutföra en övning (sex stjärnor) innan du lägger till fler."
+        starMapBullet5: "Hur många aktiva övningar?: Jobba på flera övningar dagligen, t.ex. 4–6 st, men se till att slutföra en övning (sex stjärnor) innan du lägger till fler.",
+        loading: "Laddar elevdata...",
+        success: "Dina framgångar är uppdaterade, välkommen",
+        error: "Ogiltig länk. Ingen elev lades till."
     }
 };
 
