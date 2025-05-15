@@ -184,7 +184,7 @@
       </div>
     </div>
 
-    <div id="qrPopup" class="popup" style="display: none;">
+    <div id="qrPopup" class="popup" style="display: none;" onclick="document.getElementById('qrPopup').style.display='none'; document.getElementById('qrPopup').classList.remove('show');">
       <div class="student-popup-content" onclick="event.stopPropagation();" style="position: relative; flex-direction: column; align-items: center; padding: 25px;">
         <button id="closeQrPopup" style="position: absolute; top: 1px; right: 1px; background: none; border: none; font-size: 24px; color: #ffd700; cursor: pointer; font-weight: bold;">×</button>
         <div id="qrCodeContainer" style="margin: 0; padding-bottom: 15px; background: #000; border-radius: 10px;"></div>
