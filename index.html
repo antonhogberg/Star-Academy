@@ -203,155 +203,149 @@
 <script src="script.js"></script>
 <script src="students.js"></script>
 <script type="module">
-  // Handle import from QR code or URL
-  function handleImportFromLink(code) {
-    try {
-      const mainContent = document.getElementById('mainContent');
-      const importLoaderOverlay = document.getElementById('importLoaderOverlay');
-      const loaderText = document.getElementById('loaderText');
-      const lang = localStorage.getItem('language') || 'sv';
-
-      if (!mainContent || !importLoaderOverlay || !loaderText) {
-        console.error('Missing UI elements:', {
-          mainContent: !!mainContent,
-          importLoaderOverlay: !!importLoaderOverlay,
-          loaderText: !!loaderText
-        });
-        throw new Error('UI elements not found');
-      }
-
-      window.isImporting = true;
-      importLoaderOverlay.style.display = 'flex';
-      mainContent.style.display = 'none';
-      loaderText.textContent = window.translations?.[lang]?.loading || 'Laddar elevdata...';
-
-      // Decompress data
-      if (!window.LZString) {
-        console.error('LZString not loaded');
-        throw new Error('Compression library missing');
-      }
-      const decompressed = LZString.decompressFromEncodedURIComponent(code);
-      if (!decompressed) {
-        console.error('Decompression failed, code:', code);
-        throw new Error('Invalid code');
-      }
-      const dataToImport = JSON.parse(decompressed);
-      console.log('Imported JSON:', dataToImport);
-
-      // Validate data
-      if (!dataToImport.name || !dataToImport.progress || !dataToImport.rank || dataToImport.progress.length !== 112) {
-        console.error('Invalid data format:', dataToImport);
-        throw new Error('Invalid data format');
-      }
-
-      // Reconstruct progress object
-      const progress = {};
-      const digits = dataToImport.progress.split('');
-      let index = 0;
-      for (let chapter = 1; chapter <= 7; chapter++) {
-        for (let part = 1; part <= 4; part++) {
-          for (let exercise = 1; exercise <= 4; exercise++) {
-            if (index < digits.length) {
-              progress[`exercise${chapter}:${part}:${exercise}`] = digits[index];
-              index++;
+    // Handle import from QR code or URL
+    function handleImportFromLink(code) {
+      try {
+        const mainContent = document.getElementById('mainContent');
+        const importLoaderOverlay = document.getElementById('importLoaderOverlay');
+        const loaderText = document.getElementById('loaderText');
+        const lang = localStorage.getItem('language') || 'sv';
+  
+        if (!mainContent || !importLoaderOverlay || !loaderText) {
+          console.error('Missing UI elements:', {
+            mainContent: !!mainContent,
+            importLoaderOverlay: !!importLoaderOverlay,
+            loaderText: !!loaderText
+          });
+          throw new Error('UI elements not found');
+        }
+  
+        window.isImporting = true;
+        importLoaderOverlay.style.display = 'flex';
+        mainContent.style.display = 'none';
+        loaderText.textContent = window.translations?.[lang]?.loading || 'Loading…';
+  
+        // Decompress data
+        if (!window.LZString) {
+          console.error('LZString not loaded');
+          throw new Error('Compression library missing');
+        }
+        const decompressed = LZString.decompressFromEncodedURIComponent(code);
+        if (!decompressed) {
+          console.error('Decompression failed, code:', code);
+          throw new Error('Invalid code');
+        }
+        const dataToImport = JSON.parse(decompressed);
+        console.log('Imported JSON:', dataToImport);
+  
+        // Validate data
+        if (!dataToImport.name || !dataToImport.progress || !dataToImport.rank || dataToImport.progress.length !== 112) {
+          console.error('Invalid data format:', dataToImport);
+          throw new Error('Invalid data format');
+        }
+  
+        // Reconstruct progress object
+        const progress = {};
+        const digits = dataToImport.progress.split('');
+        let index = 0;
+        for (let chapter = 1; chapter <= 7; chapter++) {
+          for (let part = 1; part <= 4; part++) {
+            for (let exercise = 1; exercise <= 4; exercise++) {
+              if (index < digits.length) {
+                progress[`exercise${chapter}:${part}:${exercise}`] = digits[index];
+                index++;
+              }
             }
           }
         }
-      }
-
-      // Update localStorage
-      const studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
-      const isNew = !studentsData.students[dataToImport.name];
-      studentsData.students[dataToImport.name] = {
-        name: dataToImport.name,
-        progress: progress,
-        rank: dataToImport.rank,
-        notes: ''
-      };
-      studentsData.currentStudent = dataToImport.name;
-      localStorage.setItem('starAcademyStudents', JSON.stringify(studentsData));
-      console.log('localStorage updated, currentStudent:', dataToImport.name, 'students:', Object.keys(studentsData.students));
-
-      // Initialize UI
-      setTimeout(() => {
-        if (typeof window.initializeAppContent === 'function') {
-          window.initializeAppContent();
-          console.log('initializeAppContent called');
-        } else {
-          console.error('initializeAppContent not defined');
-        }
+  
+        // Update localStorage
+        const studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
+        const isNew = !studentsData.students[dataToImport.name];
+        studentsData.students[dataToImport.name] = {
+          name: dataToImport.name,
+          progress: progress,
+          rank: dataToImport.rank,
+          notes: ''
+        };
+        studentsData.currentStudent = dataToImport.name;
+        localStorage.setItem('starAcademyStudents', JSON.stringify(studentsData));
+        console.log('localStorage updated, currentStudent:', dataToImport.name, 'students:', Object.keys(studentsData.students));
+  
+        // Initialize UI
+        setTimeout(() => {
+          if (typeof window.initializeAppContent === 'function') {
+            window.initializeAppContent();
+            console.log('initializeAppContent called');
+          } else {
+            console.error('initializeAppContent not defined');
+          }
+          importLoaderOverlay.style.display = 'none';
+          mainContent.style.display = 'block';
+          window.isImporting = false;
+  
+          // Show popup
+          setTimeout(() => showStudentPopup(isNew, dataToImport.name), 100);
+        }, 500);
+  
+        // Clean URL
+        const cleanUrl = window.location.origin + window.location.pathname;
+        window.history.replaceState({}, document.title, cleanUrl);
+      } catch (error) {
+        console.error('Import failed:', error);
         importLoaderOverlay.style.display = 'none';
         mainContent.style.display = 'block';
         window.isImporting = false;
-
-        // Show popup
-        setTimeout(() => showStudentPopup(isNew, dataToImport.name), 100);
-      }, 500);
-
-      // Clean URL
-      const cleanUrl = window.location.origin + window.location.pathname;
-      window.history.replaceState({}, document.title, cleanUrl);
-    } catch (error) {
-      console.error('Import failed:', error);
-      importLoaderOverlay.style.display = 'none';
-      mainContent.style.display = 'block';
-      window.isImporting = false;
-      showStudentPopup(false, null, window.translations?.[lang]?.error || 'Ogiltig länk. Ingen elev lades till.');
-    }
-  }
-
-  // Popup for import feedback
-  function showStudentPopup(isNew, name, errorMessage) {
-    console.log('showStudentPopup called:', { isNew, name, errorMessage });
-    const popup = document.createElement('div');
-    popup.id = 'studentPopup';
-    popup.className = 'student-popup show';
-    const lang = localStorage.getItem('language') || 'sv';
-    const starSVG = '<svg class="popup-star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>';
-    const message = errorMessage || (name
-      ? `${starSVG} ${window.translations[lang].success} ${name}! ${starSVG}`
-      : window.translations[lang].error);
-    popup.innerHTML = `
-      <div class="student-popup-content">
-        <p>${message}</p>
-      </div>
-    `;
-    document.body.appendChild(popup);
-
-    setTimeout(() => {
-      popup.classList.remove('show');
-      setTimeout(() => {
-        if (popup.parentNode) popup.parentNode.removeChild(popup);
-      }, 500);
-    }, 4000);
-  }
-
-  // Trigger import if code exists
-  document.addEventListener('DOMContentLoaded', () => {
-    console.log('DOMContentLoaded for import');
-    // Wait for script.js to load translations
-    const checkTranslations = setInterval(() => {
-      if (window.translations) {
-        clearInterval(checkTranslations);
-        const urlParams = new URLSearchParams(window.location.search);
-        const code = urlParams.get('code');
-        if (code) {
-          console.log('Import code detected:', code);
-          handleImportFromLink(code);
-        } else {
-          document.getElementById('importLoaderOverlay').style.display = 'none';
-          document.getElementById('mainContent').style.display = 'block';
-          setTimeout(() => {
-            if (typeof window.initializeAppContent === 'function') {
-              window.initializeAppContent();
-              console.log('initializeAppContent called on page load');
-            }
-          }, 200);
-        }
+        showStudentPopup(false, null, window.translations?.[lang]?.error || 'Invalid link. No student was added.');
       }
-    }, 50);
-  });
-</script>
+    }
+  
+    // Popup for import feedback
+    function showStudentPopup(isNew, name, errorMessage) {
+      console.log('showStudentPopup called:', { isNew, name, errorMessage });
+      const popup = document.createElement('div');
+      popup.id = 'studentPopup';
+      popup.className = 'student-popup show';
+      const lang = localStorage.getItem('language') || 'sv';
+      const starSVG = '<svg class="popup-star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>';
+      const message = errorMessage || (name
+        ? `${starSVG} ${window.translations?.[lang]?.success || 'Your stars are updated, welcome'} ${name}! ${starSVG}`
+        : window.translations?.[lang]?.error || 'Invalid link. No student was added.');
+      popup.innerHTML = `
+        <div class="student-popup-content">
+          <p>${message}</p>
+        </div>
+      `;
+      document.body.appendChild(popup);
+  
+      setTimeout(() => {
+        popup.classList.remove('show');
+        setTimeout(() => {
+          if (popup.parentNode) popup.parentNode.removeChild(popup);
+        }, 500);
+      }, 4000);
+    }
+  
+    // Trigger import if code exists
+    document.addEventListener('DOMContentLoaded', () => {
+      console.log('DOMContentLoaded for import');
+      const urlParams = new URLSearchParams(window.location.search);
+      const code = urlParams.get('code');
+      if (code) {
+        console.log('Import code detected:', code);
+        handleImportFromLink(code);
+      } else {
+        document.getElementById('importLoaderOverlay').style.display = 'none';
+        document.getElementById('mainContent').style.display = 'block';
+        setTimeout(() => {
+          if (typeof window.initializeAppContent === 'function') {
+            window.initializeAppContent();
+            console.log('initializeAppContent called on page load');
+          }
+        }, 200);
+      }
+    });
+  </script>
 <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'92bbb6a45b62afb9',t:'MTc0Mzg4NDA4My4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
 <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'935543e18fdedd25',t:'MTc0NTQ5NDE5MC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
 <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9386569dd826b0ca',t:'MTc0NjAwODc2MC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
