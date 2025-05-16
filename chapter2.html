@@ -41,7 +41,7 @@
         </h1>
         <div class="parts"></div>
     </div>
-    <div id="namePopup" class="popup">
+    <div id="namePopup" class="popup" style="display: none;">
         <div class="popup-content">
             <div class="popup-scrollable-content">
                 <h2 id="popupWelcome"></h2>
@@ -53,7 +53,7 @@
                 <p id="popupEnterName"></p>
             </div>
             <div class="input-group">
-                <input type="text" id="nameInput" onkeypress="if(event.key === 'Enter') saveName()">
+                <input type="text" id="nameInput">
                 <button id="submitNameButton" onclick="saveName()"></button>
             </div>
         </div>
@@ -89,9 +89,9 @@
             const namePopup = document.getElementById('namePopup');
             const nameInput = document.getElementById('nameInput');
         
-            // Dynamically adjust padding for chapter-container based on chapter-title height (only on larger screens)
             const chapterTitle = document.querySelector('.chapter-title');
             const chapterContainer = document.querySelector('.chapter-container');
+        
             if (chapterTitle && chapterContainer) {
                 const adjustPadding = () => {
                     const isMobile = window.matchMedia("(max-width: 767px) and (orientation: portrait)").matches;
@@ -108,7 +108,6 @@
                 window.addEventListener('load', adjustPadding);
                 window.addEventListener('resize', adjustPadding);
                 window.addEventListener('orientationchange', adjustPadding);
-        
                 const observer = new MutationObserver(() => {
                     adjustPadding();
                 });
@@ -122,21 +121,56 @@
                 });
             }
         
+            // Visa namePopup om ingen student finns
             if (!studentsData.currentStudent) {
                 namePopup.style.display = 'flex';
                 document.body.classList.add('popup-open');
+        
+                // Centrera popupen
+                const popupContent = namePopup.querySelector('.popup-content');
+                popupContent.style.position = 'absolute';
+                popupContent.style.top = '50%';
+                popupContent.style.left = '50%';
+                popupContent.style.transform = 'translate(-50%, -50%)';
             }
         
             const initialLang = localStorage.getItem('language') || 'sv';
             switchLanguage(initialLang);
         
-            // Handle focus without viewport locking
+            // Hantera keyboard-beteende (iOS/iPad)
             if (nameInput) {
+                let originalScrollY = 0;
+        
+                const lockViewport = () => {
+                    originalScrollY = window.scrollY;
+                    document.body.style.position = 'fixed';
+                    document.body.style.top = `-${originalScrollY}px`;
+                    document.body.style.width = '100%';
+                    document.body.style.overflow = 'hidden';
+                };
+        
+                const unlockViewport = () => {
+                    document.body.style.position = '';
+                    document.body.style.top = '';
+                    document.body.style.width = '';
+                    document.body.style.overflow = '';
+                    window.scrollTo(0, originalScrollY);
+                };
+        
                 nameInput.addEventListener('focus', () => {
                     document.body.classList.add('keyboard-open');
+                    lockViewport();
                 });
+        
                 nameInput.addEventListener('blur', () => {
                     document.body.classList.remove('keyboard-open');
+                    unlockViewport();
+                });
+        
+                window.addEventListener('resize', () => {
+                    if (document.body.classList.contains('keyboard-open')) {
+                        lockViewport();
+                    }
                 });
             }
         });
