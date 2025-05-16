@@ -154,18 +154,21 @@
                     originalScrollY = window.scrollY;
                     document.body.classList.add('keyboard-open');
                     lockViewport();
-                    namePopup.style.top = '50%';
+                    namePopup.style.top = '30%'; // Move popup up to avoid keyboard
                 });
         
                 nameInput.addEventListener('blur', () => {
                     document.body.classList.remove('keyboard-open');
                     unlockViewport();
-                    namePopup.style.top = '50%';
+                    namePopup.style.top = '50%'; // Restore original position
                 });
         
                 window.addEventListener('resize', () => {
                     if (document.body.classList.contains('keyboard-open')) {
                         lockViewport();
+                        namePopup.style.top = '30%';
+                    } else {
+                        namePopup.style.top = '50%';
                     }
                 });
             }
