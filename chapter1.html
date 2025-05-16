@@ -130,13 +130,43 @@
             const initialLang = localStorage.getItem('language') || 'sv';
             switchLanguage(initialLang);
         
-            // Handle focus without viewport locking
+            // Handle keyboard appearance on mobile
             if (nameInput) {
+                let originalScrollY = window.scrollY;
+        
+                const lockViewport = () => {
+                    window.scrollTo(0, 0);
+                    document.body.style.position = 'fixed';
+                    document.body.style.top = '0';
+                    document.body.style.width = '100%';
+                    document.body.style.overflow = 'hidden';
+                };
+        
+                const unlockViewport = () => {
+                    document.body.style.position = '';
+                    document.body.style.top = '';
+                    document.body.style.width = '';
+                    document.body.style.overflow = '';
+                    window.scrollTo(0, originalScrollY);
+                };
+        
                 nameInput.addEventListener('focus', () => {
+                    originalScrollY = window.scrollY;
                     document.body.classList.add('keyboard-open');
+                    lockViewport();
+                    namePopup.style.top = '50%';
                 });
+        
                 nameInput.addEventListener('blur', () => {
                     document.body.classList.remove('keyboard-open');
+                    unlockViewport();
+                    namePopup.style.top = '50%';
+                });
+        
+                window.addEventListener('resize', () => {
+                    if (document.body.classList.contains('keyboard-open')) {
+                        lockViewport();
+                    }
                 });
             }
         });
