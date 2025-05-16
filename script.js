@@ -1111,25 +1111,12 @@ function handleUserNamePopup() {
               }
             }
           }
+          studentsData.currentStudent = name;
+          localStorage.setItem('starAcademyStudents', JSON.stringify(studentsData));
+          if (userNameDisplay) userNameDisplay.textContent = name;
           namePopup.style.display = 'none';
-
-            // Vänta lite så layouten hinner justera sig innan vi tar bort popup-open
-            setTimeout(() => {
-            document.body.classList.remove('popup-open');
-
-            // Scrolla upp och nollställ container-scroll
-            window.scrollTo(0, 0);
-            const container = document.querySelector('.chapter-container');
-            if (container) container.scrollTop = 0;
-
-            // Lås scroll igen kort efteråt
-            setTimeout(() => {
-                document.body.style.overflow = 'hidden';
-            }, 50);
-
-            updateMenuHeight();
-            }, 100);
-
+          document.body.classList.remove('popup-open');
+          updateMenuHeight();
   
           const successPopup = document.createElement('div');
           successPopup.id = 'studentPopup';
