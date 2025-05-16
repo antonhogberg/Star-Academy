@@ -1116,16 +1116,25 @@ function handleUserNamePopup() {
           if (userNameDisplay) userNameDisplay.textContent = name;
           namePopup.style.display = 'none';
 
-            // Fördröjd återställning av scroll och body-tillstånd
-            setTimeout(() => {
+          setTimeout(() => {
             document.body.classList.remove('popup-open');
-            window.scrollTo(0, 0);
-            const container = document.querySelector('.chapter-container');
-            if (container) container.scrollTop = 0;
-            setTimeout(() => {
+          
+            // Endast lås scroll om det inte är portrait på mobil
+            const isMobilePortrait = window.matchMedia('(max-width: 767px) and (orientation: portrait)').matches;
+          
+            if (!isMobilePortrait) {
+              window.scrollTo(0, 0);
+              const container = document.querySelector('.chapter-container');
+              if (container) container.scrollTop = 0;
+          
+              setTimeout(() => {
                 document.body.style.overflow = 'hidden';
-            }, 50);
-            }, 100);
+              }, 50);
+            } else {
+              // Se till att mobiler inte blir låsta av misstag
+              document.body.style.overflow = '';
+            }
+          }, 100);
 
             // Behåll direkt uppdatering av menyn
             updateMenuHeight();
