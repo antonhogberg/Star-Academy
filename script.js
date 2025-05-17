@@ -103,7 +103,7 @@ const translations = {
       starMapBullet2: "Earn Stars: Follow the book’s instructions to complete the exercise and earn stars. Return to the Star Map, click Star 1:1:1 to claim your stars. If you over-click, keep clicking to reset.",
       starMapBullet3: "Progress Gradually: Practice an exercise, then move to the next star on the map.",
       starMapBullet4: "Daily Practice: Each day, revisit your active exercises, aiming for six stars in each.",
-      starMapBullet5: "Manage Active Exercises: Work on 4–6 exercises daily, but focus on completing each (six stars) before adding more.",
+      starMapBullet5: "Manage Active Exercises: Work on 4-6 exercises daily, but try to complete exercise 1:1:1 (six stars) before starting 1:1:2, finish 2:1:1 before starting 2:1:2",
       loading: "Loading student data...",
       success: "Your stars are updated, welcome",
       error: "Invalid link. No student was added."
@@ -206,7 +206,7 @@ const translations = {
       starMapBullet2: "Förtjäna stjärnor: Följ bokens instruktioner för att slutföra övningen och få stjärnor. Återvänd till Stjärnkartan, klicka på Stjärna 1:1:1 för att få fram dina stjärnor. Klickar du för många, fortsätt klicka för att nollställa.",
       starMapBullet3: "Öva lagom: Öva på en övning en stund, gå sedan vidare till nästa stjärna på kartan.",
       starMapBullet4: "Daglig övning: Återkom till dina aktiva övningar varje dag och sikta på sex stjärnor i varje.",
-      starMapBullet5: "Hur många aktiva övningar?: Jobba på flera övningar dagligen, t.ex. 4–6 st, men se till att slutföra en övning (sex stjärnor) innan du lägger till fler.",
+      starMapBullet5: "Hur många aktiva övningar?: Jobba på flera övningar dagligen, t.ex. 4–6 st, men försök slutföra övning 1:1:1 (med sex stjärnor) innan du påbörjar övning 1:1:2; slutför övning 2:1:1 innan du påbörjar övning 2:1:2 o.s.v.",
       loading: "Laddar elevdata...",
       success: "Dina framgångar är uppdaterade, välkommen",
       error: "Ogiltig länk. Ingen elev lades till."
