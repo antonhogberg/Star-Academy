@@ -120,7 +120,7 @@ function initializeSvg(doc) {
     // Add styles directly to the SVG
     const styleElement = doc.createElementNS('http://www.w3.org/2000/svg', 'style');
     styleElement.textContent = `
-        image { pointer-events: all; transition: opacity 0.4s ease-in-out; } /* Step 4: Increased fade duration to 400ms */
+        image { pointer-events: all; transition: opacity 0.4s ease-in-out; } /* Step 4: 400ms fade duration */
         image.non-clickable { pointer-events: auto; } /* Step 4: Allow clicks for fade effect */
         path { transition: stroke 0.3s ease-in-out !important; }
     `;
@@ -174,7 +174,7 @@ function initializeSvg(doc) {
             }
         });
 
-        // Step 4: Mode-specific click handler
+        // Step 4: Mode-specific click handler with href update between fades
         newStarElement.addEventListener('click', () => {
             console.log(`Star ${star} clicked, studentMode=${studentMode}`);
             const studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
@@ -183,7 +183,7 @@ function initializeSvg(doc) {
             let goldLevel = progress[exerciseKey] ? parseInt(progress[exerciseKey]) : 0;
             let silverLevel = silverProgress[exerciseKey] ? parseInt(silverProgress[exerciseKey]) : 0;
 
-            // Step 4: Set new image immediately to avoid flicker
+            // Calculate new levels
             let newGoldLevel = goldLevel;
             let newSilverLevel = silverLevel;
             if (studentMode && goldLevel === 6) {
@@ -207,18 +207,18 @@ function initializeSvg(doc) {
                 console.log(`Normal mode: Updated goldLevel=${newGoldLevel}, silverLevel=0 for ${exerciseKey}`);
             }
 
-            // Update image immediately
-            newStarElement.setAttributeNS('http://www.w3.org/1999/xlink', 'href', starImages[newGoldLevel][newSilverLevel]);
-            newStarElement.onerror = () => {
-                console.error(`Failed to load image for star-${star}: ${starImages[newGoldLevel][newSilverLevel]}`);
-                newStarElement.setAttributeNS('http://www.w3.org/1999/xlink', 'href', starImages[0][0]);
-            };
-
-            // Apply fade animation
+            // Fade out current image
             newStarElement.style.opacity = '0';
+
+            // After fade-out, update href and fade in
             setTimeout(() => {
+                newStarElement.setAttributeNS('http://www.w3.org/1999/xlink', 'href', starImages[newGoldLevel][newSilverLevel]);
+                newStarElement.onerror = () => {
+                    console.error(`Failed to load image for star-${star}: ${starImages[newGoldLevel][newSilverLevel]}`);
+                    newStarElement.setAttributeNS('http://www.w3.org/1999/xlink', 'href', starImages[0][0]);
+                };
                 newStarElement.style.opacity = '1';
-            }, 400); // Step 4: Increased to 400ms
+            }, 400); // Step 4: Update href after 400ms fade-out
 
             // Update localStorage only if state changed
             if (!(studentMode && goldLevel === 6)) {
