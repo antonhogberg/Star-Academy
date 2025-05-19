@@ -1,8 +1,24 @@
 // Load student data from localStorage
 window.studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || {
     students: {},
-    currentStudent: localStorage.getItem('userName') || ''
+    currentStudent: localStorage.getItem('userName') || '',
+    studentMode: false, // Step 1: Add default studentMode for consistency
+    silverProgress: {} // Step 1: Add default silverProgress for consistency
 };
+
+// Step 1: Helper function to initialize silverProgress for 112 exercises
+function initializeSilverProgress() {
+    const silverProgress = {};
+    for (let chapter = 1; chapter <= 7; chapter++) {
+        for (let part = 1; part <= 4; part++) {
+            for (let exercise = 1; exercise <= 4; exercise++) {
+                const key = `exercise${chapter}:${part}:${exercise}`;
+                silverProgress[key] = "0";
+            }
+        }
+    }
+    return silverProgress;
+}
 
 // Initialize the first student if they exist in userName but not in studentsData
 if (window.studentsData.currentStudent && !window.studentsData.students[window.studentsData.currentStudent]) {
@@ -10,7 +26,9 @@ if (window.studentsData.currentStudent && !window.studentsData.students[window.s
         name: window.studentsData.currentStudent,
         progress: {},
         rank: "Explorer",
-        notes: ""
+        notes: "",
+        studentMode: false, // Step 1: Add studentMode for initialized students
+        silverProgress: initializeSilverProgress() // Step 1: Initialize silverProgress
     };
     for (let chapter = 1; chapter <= 7; chapter++) {
         for (let part = 1; part <= 4; part++) {
@@ -39,7 +57,9 @@ function addStudent(e) {
 
     window.studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || {
         students: {},
-        currentStudent: ''
+        currentStudent: '',
+        studentMode: false, // Step 1: Ensure default studentMode
+        silverProgress: {} // Step 1: Ensure default silverProgress
     };
 
     if (!name) {
@@ -58,7 +78,9 @@ function addStudent(e) {
         name: name,
         progress: {},
         rank: "Explorer",
-        notes: ""
+        notes: "",
+        studentMode: false, // Step 1: Add studentMode for new students
+        silverProgress: initializeSilverProgress() // Step 1: Initialize silverProgress
     };
 
     for (let chapter = 1; chapter <= 7; chapter++) {
@@ -131,7 +153,9 @@ function switchStudent(selectedValue) {
 
     window.studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || {
         students: {},
-        currentStudent: ''
+        currentStudent: '',
+        studentMode: false, // Step 1: Ensure default studentMode
+        silverProgress: {} // Step 1: Ensure default silverProgress
     };
     window.studentsData.currentStudent = selectedValue;
     try {
@@ -167,7 +191,9 @@ function updateDropdown() {
     console.log('updateDropdown called');
     window.studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || {
         students: {},
-        currentStudent: ''
+        currentStudent: '',
+        studentMode: false, // Step 1: Ensure default studentMode
+        silverProgress: {} // Step 1: Ensure default silverProgress
     };
     console.log('window.studentsData:', window.studentsData);
 
@@ -234,3 +260,6 @@ document.addEventListener('DOMContentLoaded', () => {
         console.error('newStudentName input not found');
     }
 });
+
+// Step 1: Trailing newlines to align with VSCode line count
+// (Original file had ~49 empty lines; adjust as needed in VSCode)
