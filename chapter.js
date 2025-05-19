@@ -100,8 +100,6 @@ function initializeChapter() {
             // Step 5: Click handler for mode-specific star clicking
             function handleStarClick(event) {
                 const starImg = event.currentTarget;
-                console.log(`Star ${exerciseCode} clicked, studentMode=${studentMode}`);
-                console.log(`Click handler executed for star-${exerciseCode}`);
                 let studentsData;
                 try {
                     studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
@@ -116,6 +114,8 @@ function initializeChapter() {
                 const progress = studentsData.students[studentsData.currentStudent]?.progress || {};
                 const silverProgress = studentsData.students[studentsData.currentStudent]?.silverProgress || {};
                 const studentMode = studentsData.students[studentsData.currentStudent]?.studentMode || false;
+                console.log(`Star ${exerciseCode} clicked, studentMode=${studentMode}`); // Moved after declaration
+                console.log(`Click handler executed for star-${exerciseCode}`);
                 let goldLevel = progress[exerciseKey] ? parseInt(progress[exerciseKey]) : 0;
                 let silverLevel = silverProgress[exerciseKey] ? parseInt(silverProgress[exerciseKey]) : 0;
 
@@ -126,6 +126,7 @@ function initializeChapter() {
                     // Exception 1: Gold level 6 in student mode (fade-out/fade-in)
                     console.log(`Student mode: Fade effect for goldLevel=6, no state change for ${exerciseKey}`);
                     isException = true;
+                    starImg.classList.add('non-clickable');
                 } else if (studentMode) {
                     // Student mode: Increment silver stars, lock gold stars
                     const maxSilver = 6 - goldLevel;
