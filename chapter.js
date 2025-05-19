@@ -53,11 +53,13 @@ function initializeChapter() {
     // Step 5: Preload images
     preloadImages();
 
-    // Step 5: Add inline styles for clickability
+    // Step 5: Add inline styles for clickability and positioning
     const styleElement = document.createElement('style');
     styleElement.textContent = `
-        .star { pointer-events: all; transition: opacity 0.4s ease-in-out; }
-        .star.non-clickable { pointer-events: auto; } /* Allow clicks for fade effect */
+        .star-container { position: relative; display: inline-block; }
+        .star { pointer-events: all; transition: opacity 0.4s ease-in-out; position: absolute; top: 0; left: 0; z-index: 1; }
+        .star.non-clickable { pointer-events: auto; }
+        .exercise-code { position: relative; top: 100%; z-index: 0; text-align: center; }
     `;
     document.head.appendChild(styleElement);
 
@@ -114,7 +116,7 @@ function initializeChapter() {
                 const progress = studentsData.students[studentsData.currentStudent]?.progress || {};
                 const silverProgress = studentsData.students[studentsData.currentStudent]?.silverProgress || {};
                 const studentMode = studentsData.students[studentsData.currentStudent]?.studentMode || false;
-                console.log(`Star ${exerciseCode} clicked, studentMode=${studentMode}`); // Moved after declaration
+                console.log(`Star ${exerciseCode} clicked, studentMode=${studentMode}`);
                 console.log(`Click handler executed for star-${exerciseCode}`);
                 let goldLevel = progress[exerciseKey] ? parseInt(progress[exerciseKey]) : 0;
                 let silverLevel = silverProgress[exerciseKey] ? parseInt(silverProgress[exerciseKey]) : 0;
