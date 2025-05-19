@@ -932,6 +932,30 @@ body.popup-open .student-manager {
     text-align: center;
 }
 
+.student-manager .input-group.checkbox-group {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background: none;
+    border: none;
+    padding: 0;
+}
+
+.student-manager input[type="checkbox"]#studentModeCheckbox {
+    width: 20px;
+    height: 20px;
+    margin: 0;
+    cursor: pointer;
+}
+
+.student-manager label#studentModeLabel {
+    color: #ffffff;
+    font-family: Cochin, Georgia, Arial, sans-serif;
+    font-size: 16px;
+    cursor: pointer;
+}
+
 .input-group {
     display: flex;
     align-items: center;
@@ -1581,6 +1605,10 @@ h2#popupWelcome {
 
     .star-map-container svg {
         left: 300px; /* Smaller offset for smaller screens */
+    }
+
+    .student-manager .input-group.checkbox-group {
+        width: 72vw;
     }
 
     .info-overlay {

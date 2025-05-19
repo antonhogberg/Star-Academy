@@ -1,9 +1,7 @@
 // Load student data from localStorage
 window.studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || {
     students: {},
-    currentStudent: localStorage.getItem('userName') || '',
-    studentMode: false, // Step 1: Add default studentMode for consistency
-    silverProgress: {} // Step 1: Add default silverProgress for consistency
+    currentStudent: localStorage.getItem('userName') || ''
 };
 
 // Step 1: Helper function to initialize silverProgress for 112 exercises
@@ -57,9 +55,7 @@ function addStudent(e) {
 
     window.studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || {
         students: {},
-        currentStudent: '',
-        studentMode: false, // Step 1: Ensure default studentMode
-        silverProgress: {} // Step 1: Ensure default silverProgress
+        currentStudent: ''
     };
 
     if (!name) {
@@ -79,8 +75,8 @@ function addStudent(e) {
         progress: {},
         rank: "Explorer",
         notes: "",
-        studentMode: false, // Step 1: Add studentMode for new students
-        silverProgress: initializeSilverProgress() // Step 1: Initialize silverProgress
+        studentMode: false,
+        silverProgress: initializeSilverProgress()
     };
 
     for (let chapter = 1; chapter <= 7; chapter++) {
@@ -153,9 +149,7 @@ function switchStudent(selectedValue) {
 
     window.studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || {
         students: {},
-        currentStudent: '',
-        studentMode: false, // Step 1: Ensure default studentMode
-        silverProgress: {} // Step 1: Ensure default silverProgress
+        currentStudent: ''
     };
     window.studentsData.currentStudent = selectedValue;
     try {
@@ -191,9 +185,7 @@ function updateDropdown() {
     console.log('updateDropdown called');
     window.studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || {
         students: {},
-        currentStudent: '',
-        studentMode: false, // Step 1: Ensure default studentMode
-        silverProgress: {} // Step 1: Ensure default silverProgress
+        currentStudent: ''
     };
     console.log('window.studentsData:', window.studentsData);
 

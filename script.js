@@ -106,7 +106,8 @@ const translations = {
       starMapBullet5: "Manage Active Exercises: Work on 4-6 exercises daily, but try to complete exercise 1:1:1 (six stars) before starting 1:1:2, finish 2:1:1 before starting 2:1:2",
       loading: "Loading student data...",
       success: "Your stars are updated, welcome",
-      error: "Invalid link. No student was added."
+      error: "Invalid link. No student was added.",
+      studentModeLabel: "Student Mode" // Step 2: Add translation for checkbox
     },
     sv: {
       menuFrontPage: "Stjärnöversikt",
@@ -209,9 +210,10 @@ const translations = {
       starMapBullet5: "Hur många aktiva övningar?: Jobba på flera övningar dagligen, t.ex. 4–6 st, men försök slutföra övning 1:1:1 (med sex stjärnor) innan du påbörjar övning 1:1:2; slutför övning 2:1:1 innan du påbörjar övning 2:1:2 o.s.v.",
       loading: "Laddar elevdata...",
       success: "Dina framgångar är uppdaterade, välkommen",
-      error: "Ogiltig länk. Ingen elev lades till."
+      error: "Ogiltig länk. Ingen elev lades till.",
+      studentModeLabel: "Studentläge" // Step 2: Add translation for checkbox
     }
-  };
+};
 
 const menuHtml = `
     <nav class="hamburger-nav">
@@ -893,6 +895,7 @@ function switchLanguage(lang) {
     const notesLabel = document.getElementById('notesLabel');
     const studentNotes = document.getElementById('studentNotes');
     const saveNotesButton = document.getElementById('saveNotesButton');
+    const studentModeLabel = document.getElementById('studentModeLabel'); // Step 2: Add student mode label
     if (studentsPageTitle && studentsLabel) {
       studentsPageTitle.textContent = translations[newLang].menuStudents;
       studentsLabel.textContent = translations[newLang].studentsLabel;
@@ -902,6 +905,7 @@ function switchLanguage(lang) {
       notesLabel.textContent = translations[newLang].notesLabel;
       studentNotes.placeholder = translations[newLang].notesPlaceholder;
       if (saveNotesButton) saveNotesButton.textContent = translations[newLang].saveNotesButton;
+      if (studentModeLabel) studentModeLabel.textContent = translations[newLang].studentModeLabel; // Step 2: Apply translation
     }
   
     const faqTitle = document.querySelector('h1[data-translate="menuFAQ"]');
@@ -1011,7 +1015,7 @@ function switchLanguage(lang) {
     if (userNameDisplay) {
       userNameDisplay.textContent = window.studentsData?.currentStudent || '';
     }
-  }
+}
 
 function setInitialLanguage() {
     const hash = window.location.hash.replace('#', '').toLowerCase();

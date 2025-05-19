@@ -25,15 +25,17 @@
         const qrCodeContainer = document.getElementById('qrCodeContainer');
         const shareButton = document.getElementById('shareButtonInQR');
         const closeQrPopup = document.getElementById('closeQrPopup');
+        const studentModeCheckbox = document.getElementById('studentModeCheckbox'); // Step 2: Get checkbox
         const lang = localStorage.getItem('language') || 'sv';
   
-        if (!exportStatus || !qrPopup || !qrCodeContainer || !shareButton || !closeQrPopup) {
+        if (!exportStatus || !qrPopup || !qrCodeContainer || !shareButton || !closeQrPopup || !studentModeCheckbox) {
           console.error('Missing elements:', {
             exportStatus: !!exportStatus,
             qrPopup: !!qrPopup,
             qrCodeContainer: !!qrCodeContainer,
             shareButton: !!shareButton,
-            closeQrPopup: !!closeQrPopup
+            closeQrPopup: !!closeQrPopup,
+            studentModeCheckbox: !!studentModeCheckbox
           });
           alert('Error: Page elements not found.');
           return;
@@ -65,7 +67,8 @@
           name: current,
           progress: progressDigits.join(''),
           rank: studentsData.students[current].rank,
-          notes: studentsData.students[current].notes || ''
+          notes: studentsData.students[current].notes || '',
+          studentMode: studentModeCheckbox.checked // Step 2: Include studentMode from checkbox
         };
   
         // Debug: Log JSON size
@@ -92,8 +95,8 @@
         qrCodeContainer.innerHTML = '';
         new QRCode(qrCodeContainer, {
           text: importUrl,
-          width: 270, // Increased by ~50% from 180
-          height: 270, // Increased by ~50% from 180
+          width: 270,
+          height: 270,
           correctLevel: QRCode.CorrectLevel.M
         });
   
@@ -178,6 +181,10 @@
     <div class="export-section" style="margin-bottom: 30px;">
       <h2 id="exportTitle" class="field-label" data-translate="exportTitle"></h2>
       <div class="export-button-container">
+        <div class="input-group" style="margin-bottom: 10px;">
+          <input type="checkbox" id="studentModeCheckbox">
+          <label for="studentModeCheckbox" id="studentModeLabel" data-translate="studentModeLabel"></label>
+        </div>
         <button id="shareExportButton" class="share-button" data-translate="shareButtonExport" onclick="shareExport()">Dela via AirDrop / Meddelande / QR-kod</button>
         <p class="info-text" data-translate="exportInfoText">Exporterar: Namn, Anteckningar & Stjärnor</p>
         <p id="exportStatus" class="info-text" data-translate="exportStatus" style="display: none;"></p>
@@ -277,5 +284,6 @@
       if (select && current) select.value = current;
     }
   </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'93afb610cfc4bf91',t:'MTc0NjQ0MjU4NS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'93afb610cfc4bf91',t:'MTc0NjQ0MjU4NS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
+</body>
 </html>
