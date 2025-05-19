@@ -215,193 +215,206 @@
 <script type="module">
     // Inline translations for import popups
     const inlineTranslations = {
-      sv: {
-        loading: "Laddar elevdata...",
-        success: "Dina framgångar är uppdaterade, välkommen",
-        error: "Ogiltig länk. Ingen elev lades till."
-      },
-      en: {
-        loading: "Loading student data...",
-        success: "Your stars are updated, welcome",
-        error: "Invalid link. No student was added."
-      }
+        sv: {
+            loading: "Laddar elevdata...",
+            success: "Dina framgångar är uppdaterade, välkommen",
+            error: "Ogiltig länk. Ingen elev lades till."
+        },
+        en: {
+            loading: "Loading student data...",
+            success: "Your stars are updated, welcome",
+            error: "Invalid link. No student was added."
+        }
     };
-  
+
     // Handle import from QR code or URL
     async function handleImportFromLink(code) {
-      try {
-        const mainContent = document.getElementById('mainContent');
-        const importLoaderOverlay = document.getElementById('importLoaderOverlay');
-        const loaderText = document.getElementById('loaderText');
-        const lang = localStorage.getItem('language') || 'sv';
-  
-        if (!mainContent || !importLoaderOverlay || !loaderText) {
-          console.error('Missing UI elements:', {
-            mainContent: !!mainContent,
-            importLoaderOverlay: !!importLoaderOverlay,
-            loaderText: !!loaderText
-          });
-          throw new Error('UI elements not found');
-        }
-  
-        window.isImporting = true;
-        importLoaderOverlay.style.display = 'flex';
-        importLoaderOverlay.style.zIndex = '2000';
-        mainContent.style.display = 'none';
-        loaderText.textContent = inlineTranslations[lang].loading;
-        console.log('Loading popup displayed:', { display: importLoaderOverlay.style.display, zIndex: importLoaderOverlay.style.zIndex });
-  
-        // Decompress data
-        if (!window.LZString) {
-          console.error('LZString not loaded');
-          throw new Error('Compression library missing');
-        }
-        const decompressed = LZString.decompressFromEncodedURIComponent(code);
-        if (!decompressed) {
-          console.error('Decompression failed, code:', code);
-          throw new Error('Invalid code');
-        }
-        const dataToImport = JSON.parse(decompressed);
-        console.log('Imported JSON:', dataToImport);
-  
-        // Validate data
-        if (!dataToImport.name || !dataToImport.progress || !dataToImport.rank || dataToImport.progress.length !== 112) {
-          console.error('Invalid data format:', dataToImport);
-          throw new Error('Invalid data format');
-        }
-  
-        // Reconstruct progress object
-        const progress = {};
-        const digits = dataToImport.progress.split('');
-        let index = 0;
-        for (let chapter = 1; chapter <= 7; chapter++) {
-          for (let part = 1; part <= 4; part++) {
-            for (let exercise = 1; exercise <= 4; exercise++) {
-              if (index < digits.length) {
-                progress[`exercise${chapter}:${part}:${exercise}`] = digits[index];
-                index++;
-              }
+        try {
+            const mainContent = document.getElementById('mainContent');
+            const importLoaderOverlay = document.getElementById('importLoaderOverlay');
+            const loaderText = document.getElementById('loaderText');
+            const lang = localStorage.getItem('language') || 'sv';
+
+            if (!mainContent || !importLoaderOverlay || !loaderText) {
+                console.error('Missing UI elements:', {
+                    mainContent: !!mainContent,
+                    importLoaderOverlay: !!importLoaderOverlay,
+                    loaderText: !!loaderText
+                });
+                throw new Error('UI elements not found');
             }
-          }
+
+            window.isImporting = true;
+            importLoaderOverlay.style.display = 'flex';
+            importLoaderOverlay.style.zIndex = '2000';
+            mainContent.style.display = 'none';
+            loaderText.textContent = inlineTranslations[lang].loading;
+            console.log('Loading popup displayed:', { display: importLoaderOverlay.style.display, zIndex: importLoaderOverlay.style.zIndex });
+
+            // Decompress data
+            if (!window.LZString) {
+                console.error('LZString not loaded');
+                throw new Error('Compression library missing');
+            }
+            const decompressed = LZString.decompressFromEncodedURIComponent(code);
+            if (!decompressed) {
+                console.error('Decompression failed, code:', code);
+                throw new Error('Invalid code');
+            }
+            const dataToImport = JSON.parse(decompressed);
+            console.log('Imported JSON:', dataToImport);
+
+            // Validate data
+            if (!dataToImport.name || !dataToImport.progress || !dataToImport.rank || dataToImport.progress.length !== 112) {
+                console.error('Invalid data format:', dataToImport);
+                throw new Error('Invalid data format');
+            }
+
+            // Reconstruct progress object
+            const progress = {};
+            const digits = dataToImport.progress.split('');
+            let index = 0;
+            for (let chapter = 1; chapter <= 7; chapter++) {
+                for (let part = 1; part <= 4; part++) {
+                    for (let exercise = 1; exercise <= 4; exercise++) {
+                        if (index < digits.length) {
+                            progress[`exercise${chapter}:${part}:${exercise}`] = digits[index];
+                            index++;
+                        }
+                    }
+                }
+            }
+
+            // Step 3: Initialize silverProgress for all imports
+            const silverProgress = {};
+            for (let chapter = 1; chapter <= 7; chapter++) {
+                for (let part = 1; part <= 4; part++) {
+                    for (let exercise = 1; exercise <= 4; exercise++) {
+                        const key = `exercise${chapter}:${part}:${exercise}`;
+                        silverProgress[key] = '0';
+                    }
+                }
+            }
+
+            // Update localStorage
+            const studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
+            const isNew = !studentsData.students[dataToImport.name];
+            studentsData.students[dataToImport.name] = {
+                name: dataToImport.name,
+                progress: progress,
+                rank: dataToImport.rank,
+                notes: dataToImport.notes || '',
+                studentMode: dataToImport.studentMode || false, // Step 3: Parse studentMode, default to false
+                silverProgress: silverProgress // Step 3: Include silverProgress
+            };
+            studentsData.currentStudent = dataToImport.name;
+            localStorage.setItem('starAcademyStudents', JSON.stringify(studentsData));
+            console.log('localStorage updated, currentStudent:', dataToImport.name, 'students:', Object.keys(studentsData.students), 'notes:', dataToImport.notes, 'studentMode:', dataToImport.studentMode);
+
+            // Ensure loading popup is visible for at least 500ms
+            await new Promise(resolve => setTimeout(resolve, 500));
+
+            // Hide loading popup and show success popup
+            importLoaderOverlay.style.display = 'none';
+            console.log('Loading popup hidden');
+
+            const starSVG = '<svg class="popup-star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>';
+            console.log('Showing student popup');
+            showStudentPopup(isNew, dataToImport.name, `${starSVG} ${inlineTranslations[lang].success} ${dataToImport.name}! ${starSVG}`);
+
+            // Initialize UI after popup
+            if (typeof window.initializeAppContent === 'function') {
+                window.initializeAppContent();
+                console.log('initializeAppContent called');
+            } else {
+                console.error('initializeAppContent not defined');
+            }
+            mainContent.style.display = 'block';
+            window.isImporting = false;
+
+            // Clean URL
+            const cleanUrl = window.location.origin + window.location.pathname;
+            window.history.replaceState({}, document.title, cleanUrl);
+        } catch (error) {
+            console.error('Import failed:', error);
+            importLoaderOverlay.style.display = 'none';
+            const mainContent = document.getElementById('mainContent');
+            if (mainContent) mainContent.style.display = 'block';
+            window.isImporting = false;
+            const lang = localStorage.getItem('language') || 'sv';
+            const starSVG = '<svg class="popup-star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>';
+            showStudentPopup(false, null, `${starSVG} ${inlineTranslations[lang].error} ${starSVG}`);
         }
-  
-        // Update localStorage
-        const studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
-        const isNew = !studentsData.students[dataToImport.name];
-        studentsData.students[dataToImport.name] = {
-          name: dataToImport.name,
-          progress: progress,
-          rank: dataToImport.rank,
-          notes: dataToImport.notes || ''
-        };
-        studentsData.currentStudent = dataToImport.name;
-        localStorage.setItem('starAcademyStudents', JSON.stringify(studentsData));
-        console.log('localStorage updated, currentStudent:', dataToImport.name, 'students:', Object.keys(studentsData.students), 'notes:', dataToImport.notes);
-  
-        // Ensure loading popup is visible for at least 500ms
-        await new Promise(resolve => setTimeout(resolve, 500));
-  
-        // Hide loading popup and show success popup
-        importLoaderOverlay.style.display = 'none';
-        console.log('Loading popup hidden');
-  
-        const starSVG = '<svg class="popup-star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>';
-        console.log('Showing student popup');
-        showStudentPopup(isNew, dataToImport.name, `${starSVG} ${inlineTranslations[lang].success} ${dataToImport.name}! ${starSVG}`);
-  
-        // Initialize UI after popup
-        if (typeof window.initializeAppContent === 'function') {
-          window.initializeAppContent();
-          console.log('initializeAppContent called');
-        } else {
-          console.error('initializeAppContent not defined');
-        }
-        mainContent.style.display = 'block';
-        window.isImporting = false;
-  
-        // Clean URL
-        const cleanUrl = window.location.origin + window.location.pathname;
-        window.history.replaceState({}, document.title, cleanUrl);
-      } catch (error) {
-        console.error('Import failed:', error);
-        importLoaderOverlay.style.display = 'none';
-        const mainContent = document.getElementById('mainContent');
-        if (mainContent) mainContent.style.display = 'block';
-        window.isImporting = false;
-        const lang = localStorage.getItem('language') || 'sv';
-        const starSVG = '<svg class="popup-star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>';
-        showStudentPopup(false, null, `${starSVG} ${inlineTranslations[lang].error} ${starSVG}`);
-      }
     }
-  
+
     // Popup for import feedback
     function showStudentPopup(isNew, name, errorMessage) {
-      console.log('showStudentPopup called:', { isNew, name, errorMessage });
-      const lang = localStorage.getItem('language') || 'sv';
-      // Remove existing popup if present
-      const existingPopup = document.getElementById('studentPopup');
-      if (existingPopup) {
-        console.log('Removing existing studentPopup');
-        existingPopup.remove();
-      }
-      const popup = document.createElement('div');
-      popup.id = 'studentPopup';
-      popup.className = 'student-popup show';
-      // Force visibility
-      popup.style.display = 'flex';
-      popup.style.opacity = '1';
-      popup.style.zIndex = '1000';
-      const message = errorMessage || (name
-        ? `${inlineTranslations[lang].success} ${name}!`
-        : inlineTranslations[lang].error);
-      popup.innerHTML = `
-        <div class="student-popup-content">
-          <p>${message}</p>
-        </div>
-      `;
-      // Store popup state for language switching
-      popup.dataset.name = name || '';
-      popup.dataset.isError = errorMessage ? 'true' : 'false';
-      document.body.appendChild(popup);
-      console.log('Popup appended to body:', {
-        id: popup.id,
-        className: popup.className,
-        style: popup.style.cssText,
-        message: message
-      });
-  
-      setTimeout(() => {
-        console.log('Fading out studentPopup');
-        popup.classList.remove('show');
-        popup.style.opacity = '0';
+        console.log('showStudentPopup called:', { isNew, name, errorMessage });
+        const lang = localStorage.getItem('language') || 'sv';
+        // Remove existing popup if present
+        const existingPopup = document.getElementById('studentPopup');
+        if (existingPopup) {
+            console.log('Removing existing studentPopup');
+            existingPopup.remove();
+        }
+        const popup = document.createElement('div');
+        popup.id = 'studentPopup';
+        popup.className = 'student-popup show';
+        // Force visibility
+        popup.style.display = 'flex';
+        popup.style.opacity = '1';
+        popup.style.zIndex = '1000';
+        const message = errorMessage || (name
+            ? `${inlineTranslations[lang].success} ${name}!`
+            : inlineTranslations[lang].error);
+        popup.innerHTML = `
+            <div class="student-popup-content">
+                <p>${message}</p>
+            </div>
+        `;
+        // Store popup state for language switching
+        popup.dataset.name = name || '';
+        popup.dataset.isError = errorMessage ? 'true' : 'false';
+        document.body.appendChild(popup);
+        console.log('Popup appended to body:', {
+            id: popup.id,
+            className: popup.className,
+            style: popup.style.cssText,
+            message: message
+        });
+
         setTimeout(() => {
-          if (popup.parentNode) {
-            console.log('Removing studentPopup from DOM');
-            popup.parentNode.removeChild(popup);
-          }
-        }, 500);
-      }, 4000);
+            console.log('Fading out studentPopup');
+            popup.classList.remove('show');
+            popup.style.opacity = '0';
+            setTimeout(() => {
+                if (popup.parentNode) {
+                    console.log('Removing studentPopup from DOM');
+                    popup.parentNode.removeChild(popup);
+                }
+            }, 500);
+        }, 4000);
     }
-  
+
     // Trigger import if code exists
     document.addEventListener('DOMContentLoaded', () => {
-      console.log('DOMContentLoaded for import');
-      const urlParams = new URLSearchParams(window.location.search);
-      const code = urlParams.get('code');
-      if (code) {
-        console.log('Import code detected:', code);
-        handleImportFromLink(code);
-      } else {
-        document.getElementById('importLoaderOverlay').style.display = 'none';
-        const mainContent = document.getElementById('mainContent');
-        if (mainContent) mainContent.style.display = 'block';
-        if (typeof window.initializeAppContent === 'function') {
-          window.initializeAppContent();
-          console.log('initializeAppContent called on page load');
+        console.log('DOMContentLoaded for import');
+        const urlParams = new URLSearchParams(window.location.search);
+        const code = urlParams.get('code');
+        if (code) {
+            console.log('Import code detected:', code);
+            handleImportFromLink(code);
+        } else {
+            document.getElementById('importLoaderOverlay').style.display = 'none';
+            const mainContent = document.getElementById('mainContent');
+            if (mainContent) mainContent.style.display = 'block';
+            if (typeof window.initializeAppContent === 'function') {
+                window.initializeAppContent();
+                console.log('initializeAppContent called on page load');
+            }
         }
-      }
     });
-  </script>
+</script>
 <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'92bbb6a45b62afb9',t:'MTc0Mzg4NDA4My4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
 <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'935543e18fdedd25',t:'MTc0NTQ5NDE5MC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
 <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9386569dd826b0ca',t:'MTc0NjAwODc2MC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
