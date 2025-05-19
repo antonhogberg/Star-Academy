@@ -23,6 +23,29 @@
         }
         window.addEventListener('load', detectMobile);
         detectMobile();
+
+        // Step 5: Preload images early
+        function preloadImages() {
+            const starImages = [
+                ['gold0_silver0.png', 'gold0_silver1.png', 'gold0_silver2.png', 'gold0_silver3.png', 'gold0_silver4.png', 'gold0_silver5.png', 'gold0_silver6.png'],
+                ['gold1_silver0.png', 'gold1_silver1.png', 'gold1_silver2.png', 'gold1_silver3.png', 'gold1_silver4.png', 'gold1_silver5.png'],
+                ['gold2_silver0.png', 'gold2_silver1.png', 'gold2_silver2.png', 'gold2_silver3.png', 'gold2_silver4.png'],
+                ['gold3_silver0.png', 'gold3_silver1.png', 'gold3_silver2.png', 'gold3_silver3.png'],
+                ['gold4_silver0.png', 'gold4_silver1.png', 'gold4_silver2.png'],
+                ['gold5_silver0.png', 'gold5_silver1.png'],
+                ['gold6_silver0.png']
+            ];
+            console.log('Preloading star images for chapter');
+            starImages.forEach((goldLevelImages) => {
+                goldLevelImages.forEach((image) => {
+                    const img = new Image();
+                    img.src = image;
+                    img.onload = () => console.log(`Loaded image: ${image}`);
+                    img.onerror = () => console.error(`Failed to preload image: ${image}`);
+                });
+            });
+        }
+        preloadImages();
     </script>
 </head>
 <body class="chapters">
@@ -121,12 +144,12 @@
                 });
             }
         
-            // Visa namePopup om ingen student finns
+            // Show namePopup if no student exists
             if (!studentsData.currentStudent) {
                 namePopup.style.display = 'flex';
                 document.body.classList.add('popup-open');
         
-                // Centrera popupen
+                // Center popup
                 const popupContent = namePopup.querySelector('.popup-content');
                 popupContent.style.position = 'absolute';
                 popupContent.style.top = '50%';
@@ -137,7 +160,7 @@
             const initialLang = localStorage.getItem('language') || 'sv';
             switchLanguage(initialLang);
         
-            // Hantera keyboard-beteende (iOS/iPad)
+            // Handle keyboard behavior (iOS/iPad)
             if (nameInput) {
                 let originalScrollY = 0;
         
@@ -174,7 +197,7 @@
                 });
             }
         });
-        </script>
+    </script>
     <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'93898aec2a83b0e8',t:'MTc0NjA0MjM1OS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
 </body>
 </html>
