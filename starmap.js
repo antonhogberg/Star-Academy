@@ -1,11 +1,19 @@
+// Step 4: Updated starImages for normal and student modes (28 images)
 const starImages = [
-    'white-star.png',  // 0
-    'one-star.png',    // 1
-    'two-stars.png',   // 2
-    'three-stars.png', // 3
-    'four-stars.png',  // 4
-    'five-stars.png',  // 5
-    'six-stars.png'    // 6
+    // Gold 0: 0-6 silver stars
+    ['gold0_silver0.png', 'gold0_silver1.png', 'gold0_silver2.png', 'gold0_silver3.png', 'gold0_silver4.png', 'gold0_silver5.png', 'gold0_silver6.png'],
+    // Gold 1: 0-5 silver stars
+    ['gold1_silver0.png', 'gold1_silver1.png', 'gold1_silver2.png', 'gold1_silver3.png', 'gold1_silver4.png', 'gold1_silver5.png'],
+    // Gold 2: 0-4 silver stars
+    ['gold2_silver0.png', 'gold2_silver1.png', 'gold2_silver2.png', 'gold2_silver3.png', 'gold2_silver4.png'],
+    // Gold 3: 0-3 silver stars
+    ['gold3_silver0.png', 'gold3_silver1.png', 'gold3_silver2.png', 'gold3_silver3.png'],
+    // Gold 4: 0-2 silver stars
+    ['gold4_silver0.png', 'gold4_silver1.png', 'gold4_silver2.png'],
+    // Gold 5: 0-1 silver stars
+    ['gold5_silver0.png', 'gold5_silver1.png'],
+    // Gold 6: 0 silver stars
+    ['gold6_silver0.png']
 ];
 
 const progressionPath = [
@@ -41,6 +49,19 @@ const progressionPath = [
     { star: '2:1:4', nextStar: null, lines: [] }
 ];
 
+// Step 4: Preload images for performance
+function preloadImages() {
+    console.log('Preloading star images');
+    starImages.forEach((goldLevelImages, goldLevel) => {
+        goldLevelImages.forEach((image, silverLevel) => {
+            const img = new Image();
+            img.src = image;
+            img.onload = () => console.log(`Loaded image: ${image}`);
+            img.onerror = () => console.error(`Failed to preload image: ${image}`);
+        });
+    });
+}
+
 function initializeStarMap() {
     console.log('initializeStarMap called');
     const svgElement = document.getElementById('starMap');
@@ -49,21 +70,27 @@ function initializeStarMap() {
         return;
     }
 
+    // Step 4: Preload images before initialization
+    preloadImages();
+
     // Since the SVG is inline, we can directly pass the document context
     initializeSvg(document);
 }
 
-function createStarElement(doc, starId, level, x, y, width, height) {
+// Step 4: Modified to accept gold and silver levels for image selection
+function createStarElement(doc, starId, goldLevel, silverLevel, x, y, width, height) {
     const starElement = doc.createElementNS('http://www.w3.org/2000/svg', 'image');
     starElement.setAttribute('id', `star-${starId.replace(/:/g, '-')}`);
     starElement.setAttribute('x', x);
     starElement.setAttribute('y', y);
     starElement.setAttribute('width', width);
     starElement.setAttribute('height', height);
-    starElement.setAttributeNS('http://www.w3.org/1999/xlink', 'href', starImages[level]);
+    // Select image based on gold and silver levels
+    const image = starImages[goldLevel][silverLevel] || starImages[0][0];
+    starElement.setAttributeNS('http://www.w3.org/1999/xlink', 'href', image);
     starElement.onerror = () => {
-        console.error(`Failed to load image for star-${starId}: ${starImages[level]}`);
-        starElement.setAttributeNS('http://www.w3.org/1999/xlink', 'href', starImages[0]);
+        console.error(`Failed to load image for star-${starId}: ${image}`);
+        starElement.setAttributeNS('http://www.w3.org/1999/xlink', 'href', starImages[0][0]);
     };
     starElement.style.cursor = 'pointer';
     return starElement;
@@ -81,6 +108,7 @@ function initializeSvg(doc) {
     const styleElement = doc.createElementNS('http://www.w3.org/2000/svg', 'style');
     styleElement.textContent = `
         image { pointer-events: all; transition: opacity 0.3s ease-in-out; }
+        image.non-clickable { pointer-events: none; } /* Step 4: Disable clicking */
         path { transition: stroke 0.3s ease-in-out !important; }
     `;
     const starMapSvg = doc.getElementById('starMap');
@@ -100,8 +128,11 @@ function initializeSvg(doc) {
 
         const exerciseKey = `exercise${star}`;
         const progress = studentsData.students[studentsData.currentStudent]?.progress || {};
-        const currentLevel = progress[exerciseKey] ? parseInt(progress[exerciseKey]) : 0;
-        console.log(`Star-${star}: currentLevel=${currentLevel}, image=${starImages[currentLevel]}`);
+        const silverProgress = studentsData.students[studentsData.currentStudent]?.silverProgress || {};
+        const studentMode = studentsData.students[studentsData.currentStudent]?.studentMode || false;
+        const goldLevel = progress[exerciseKey] ? parseInt(progress[exerciseKey]) : 0;
+        const silverLevel = silverProgress[exerciseKey] ? parseInt(silverProgress[exerciseKey]) : 0;
+        console.log(`Star-${star}: goldLevel=${goldLevel}, silverLevel=${silverLevel}, studentMode=${studentMode}, image=${starImages[goldLevel][silverLevel]}`);
 
         // Store original attributes to recreate the element
         const x = starElement.getAttribute('x');
@@ -111,50 +142,75 @@ function initializeSvg(doc) {
 
         // Remove the existing star element and create a new one
         const parent = starElement.parentNode;
-        const newStarElement = createStarElement(doc, star, currentLevel, x, y, width, height);
+        const newStarElement = createStarElement(doc, star, goldLevel, silverLevel, x, y, width, height);
+        // Step 4: Disable clicking for goldLevel 6 in student mode
+        if (studentMode && goldLevel === 6) {
+            newStarElement.classList.add('non-clickable');
+        }
         parent.replaceChild(newStarElement, starElement);
 
         lineElements.forEach(lineElement => {
             const currentStyle = lineElement.getAttribute('style') || '';
             const newStyle = currentStyle.replace(/stroke\s*:\s*[^;]+;?/, '').trim();
             lineElement.setAttribute('style', newStyle);
-            lineElement.style.stroke = currentLevel === 6 ? '#FFD700' : '#FFFFFF';
-            if (currentLevel === 6) {
+            lineElement.style.stroke = goldLevel === 6 ? '#FFD700' : '#FFFFFF';
+            if (goldLevel === 6) {
                 lineElement.setAttribute('filter', 'url(#golden-glow)');
             } else {
                 lineElement.removeAttribute('filter');
             }
         });
 
+        // Step 4: Mode-specific click handler
         newStarElement.addEventListener('click', () => {
-            console.log(`Star ${star} clicked`);
+            console.log(`Star ${star} clicked, studentMode=${studentMode}`);
             const studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
             const progress = studentsData.students[studentsData.currentStudent]?.progress || {};
-            let level = progress[exerciseKey] ? parseInt(progress[exerciseKey]) : 0;
-        
+            const silverProgress = studentsData.students[studentsData.currentStudent]?.silverProgress || {};
+            let goldLevel = progress[exerciseKey] ? parseInt(progress[exerciseKey]) : 0;
+            let silverLevel = silverProgress[exerciseKey] ? parseInt(silverProgress[exerciseKey]) : 0;
+
             newStarElement.style.opacity = '0';
-            setTimeout(() => {
-                newStarElement.setAttributeNS('http://www.w3.org/1999/xlink', 'href', starImages[level]);
-                newStarElement.style.opacity = '1';
-            }, 300);
-        
-            level = (level + 1) % 7;
-            progress[exerciseKey] = level.toString();
-            studentsData.students[studentsData.currentStudent].progress = progress;
+            if (studentMode && goldLevel === 6) {
+                // Step 4: Fade effect for non-clickable stars in student mode
+                setTimeout(() => {
+                    newStarElement.setAttributeNS('http://www.w3.org/1999/xlink', 'href', starImages[goldLevel][0]);
+                    newStarElement.style.opacity = '1';
+                }, 300);
+                return; // No state change
+            }
+
+            if (studentMode) {
+                // Student mode: Increment silver stars, lock gold stars
+                const maxSilver = 6 - goldLevel;
+                silverLevel = (silverLevel + 1) % (maxSilver + 1);
+                silverProgress[exerciseKey] = silverLevel.toString();
+                studentsData.students[studentsData.currentStudent].silverProgress = silverProgress;
+                console.log(`Student mode: Updated silverLevel=${silverLevel} for ${exerciseKey}`);
+            } else {
+                // Normal mode: Increment gold stars, reset silver stars
+                goldLevel = (goldLevel + 1) % 7;
+                silverLevel = 0;
+                progress[exerciseKey] = goldLevel.toString();
+                silverProgress[exerciseKey] = '0';
+                studentsData.students[studentsData.currentStudent].progress = progress;
+                studentsData.students[studentsData.currentStudent].silverProgress = silverProgress;
+                console.log(`Normal mode: Updated goldLevel=${goldLevel}, silverLevel=0 for ${exerciseKey}`);
+            }
+
             localStorage.setItem('starAcademyStudents', JSON.stringify(studentsData));
-        
-            newStarElement.style.opacity = '0';
+
             setTimeout(() => {
-                newStarElement.setAttributeNS('http://www.w3.org/1999/xlink', 'href', starImages[level]);
+                newStarElement.setAttributeNS('http://www.w3.org/1999/xlink', 'href', starImages[goldLevel][silverLevel]);
                 newStarElement.onerror = () => {
-                    console.error(`Failed to load image for star-${star}: ${starImages[level]}`);
-                    newStarElement.setAttributeNS('http://www.w3.org/1999/xlink', 'href', starImages[0]);
+                    console.error(`Failed to load image for star-${star}: ${starImages[goldLevel][silverLevel]}`);
+                    newStarElement.setAttributeNS('http://www.w3.org/1999/xlink', 'href', starImages[0][0]);
                 };
                 newStarElement.style.opacity = '1';
             }, 300);
-        
+
             lineElements.forEach(lineElement => {
-                if (level === 6) {
+                if (goldLevel === 6) {
                     lineElement.setAttribute('filter', 'url(#golden-glow)');
                     lineElement.style.stroke = '#FFD700';
                 } else {
@@ -162,7 +218,7 @@ function initializeSvg(doc) {
                     lineElement.style.stroke = '#FFFFFF';
                 }
             });
-        
+
             checkCompletion(studentsData);
             if (typeof window.updateStarStates === 'function') {
                 console.log(`Calling updateStarStates for star ${star} with fromStarClick`);
@@ -178,14 +234,21 @@ function initializeSvg(doc) {
             if (event.key === 'starAcademyStudents') {
                 const updatedStudentsData = JSON.parse(event.newValue) || { students: {}, currentStudent: '' };
                 const updatedProgress = updatedStudentsData.students[updatedStudentsData.currentStudent]?.progress || {};
-                const updatedLevel = updatedProgress[exerciseKey] ? parseInt(updatedProgress[exerciseKey]) : 0;
+                const updatedSilverProgress = updatedStudentsData.students[updatedStudentsData.currentStudent]?.silverProgress || {};
+                const updatedStudentMode = updatedStudentsData.students[updatedStudentsData.currentStudent]?.studentMode || false;
+                const updatedGoldLevel = updatedProgress[exerciseKey] ? parseInt(updatedProgress[exerciseKey]) : 0;
+                const updatedSilverLevel = updatedSilverProgress[exerciseKey] ? parseInt(updatedSilverProgress[exerciseKey]) : 0;
 
                 // Remove and recreate the star element to force re-render
-                const newStarElementUpdate = createStarElement(doc, star, updatedLevel, x, y, width, height);
+                const newStarElementUpdate = createStarElement(doc, star, updatedGoldLevel, updatedSilverLevel, x, y, width, height);
+                // Step 4: Disable clicking for goldLevel 6 in student mode
+                if (updatedStudentMode && updatedGoldLevel === 6) {
+                    newStarElementUpdate.classList.add('non-clickable');
+                }
                 parent.replaceChild(newStarElementUpdate, newStarElement);
 
                 lineElements.forEach(lineElement => {
-                    if (updatedLevel === 6) {
+                    if (updatedGoldLevel === 6) {
                         lineElement.setAttribute('filter', 'url(#golden-glow)');
                         lineElement.style.stroke = '#FFD700';
                     } else {
