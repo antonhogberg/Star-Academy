@@ -108,7 +108,7 @@ function initializeSvg(doc) {
     const styleElement = doc.createElementNS('http://www.w3.org/2000/svg', 'style');
     styleElement.textContent = `
         image { pointer-events: all; transition: opacity 0.3s ease-in-out; }
-        image.non-clickable { pointer-events: none; } /* Step 4: Disable clicking */
+        image.non-clickable { pointer-events: auto; } /* Step 4: Allow clicks for fade effect */
         path { transition: stroke 0.3s ease-in-out !important; }
     `;
     const starMapSvg = doc.getElementById('starMap');
@@ -143,7 +143,7 @@ function initializeSvg(doc) {
         // Remove the existing star element and create a new one
         const parent = starElement.parentNode;
         const newStarElement = createStarElement(doc, star, goldLevel, silverLevel, x, y, width, height);
-        // Step 4: Disable clicking for goldLevel 6 in student mode
+        // Step 4: Mark goldLevel 6 stars as non-clickable in student mode (for state changes)
         if (studentMode && goldLevel === 6) {
             newStarElement.classList.add('non-clickable');
         }
@@ -172,12 +172,13 @@ function initializeSvg(doc) {
 
             newStarElement.style.opacity = '0';
             if (studentMode && goldLevel === 6) {
-                // Step 4: Fade effect for non-clickable stars in student mode
+                // Step 4: Fade effect for goldLevel 6 in student mode, no state change
                 setTimeout(() => {
                     newStarElement.setAttributeNS('http://www.w3.org/1999/xlink', 'href', starImages[goldLevel][0]);
                     newStarElement.style.opacity = '1';
+                    console.log(`Student mode: Fade effect for goldLevel=6, no state change for ${exerciseKey}`);
                 }, 300);
-                return; // No state change
+                return; // No localStorage update
             }
 
             if (studentMode) {
@@ -241,7 +242,7 @@ function initializeSvg(doc) {
 
                 // Remove and recreate the star element to force re-render
                 const newStarElementUpdate = createStarElement(doc, star, updatedGoldLevel, updatedSilverLevel, x, y, width, height);
-                // Step 4: Disable clicking for goldLevel 6 in student mode
+                // Step 4: Mark goldLevel 6 stars as non-clickable in student mode
                 if (updatedStudentMode && updatedGoldLevel === 6) {
                     newStarElementUpdate.classList.add('non-clickable');
                 }
