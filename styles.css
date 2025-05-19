@@ -601,6 +601,10 @@ body.popup-open .student-manager {
     flex-direction: column;
     align-items: center;
     gap: 7px;
+    position: relative;
+    height: 140px; /* Match max star height (140px on iPhone, 120px on iPad/desktop) */
+    width: auto;
+    box-sizing: border-box;
 }
 
 .star {
@@ -623,9 +627,10 @@ body.popup-open .student-manager {
     font-size: 16px;
     color: #999999;
     padding: 0;
-    margin: 0;
+    margin: 5px 0 0 0; /* Small top margin for spacing */
     line-height: 16px;
     text-align: center;
+    width: 100%; /* Ensure full width for centering */
 }
 
 .gold-star {
@@ -2141,11 +2146,12 @@ h2#popupWelcome {
 
     .exercises {
         flex-wrap: wrap;
-        gap: 10px;
+        gap: 20px 10px; /* Vertical gap 20px, horizontal 10px */
         max-width: 300px;
-        justify-content: space-between;
+        justify-content: center; /* Center stars */
         flex-direction: row;
     }
+    
 
     .part {
         margin-bottom: 10px;
@@ -2173,7 +2179,8 @@ h2#popupWelcome {
     }
 
     .star-container {
-        width: calc(50% - 5px);
+        width: 140px; /* Match star width */
+        height: 140px; /* Match star height */
         box-sizing: border-box;
     }
 
@@ -2468,7 +2475,8 @@ h2#popupWelcome {
     }
 
     body.chapters .star-container {
-        width: auto !important;
+        width: auto;
+        height: 120px; /* Match star width */
         box-sizing: border-box;
     }
 
@@ -2485,6 +2493,9 @@ h2#popupWelcome {
             width: 150px;
             min-width: 150px;
             max-width: 150px;
+        }
+        body.chapters .star-container {
+            height: 150px;
         }
     }
 

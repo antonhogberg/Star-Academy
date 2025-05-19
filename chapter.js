@@ -53,13 +53,11 @@ function initializeChapter() {
     // Step 5: Preload images
     preloadImages();
 
-    // Step 5: Add inline styles for stacking and text positioning
+    // Step 5: Add inline styles for star stacking
     const styleElement = document.createElement('style');
     styleElement.textContent = `
-        .star-container { position: relative; display: block; min-width: 120px; }
         .star { pointer-events: all; transition: opacity 0.4s ease-in-out; position: absolute; top: 0; left: 0; z-index: 1; width: 100%; height: 100%; }
         .star.non-clickable { pointer-events: auto; }
-        .exercise-code { position: relative; margin-top: 100%; z-index: 0; text-align: center; }
     `;
     document.head.appendChild(styleElement);
 
