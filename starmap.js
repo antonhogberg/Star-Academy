@@ -113,11 +113,13 @@ function createStarElement(doc, starId, goldLevel, silverLevel, x, y, width, hei
 // Step 4: Click handler function to ensure reattachment
 function handleStarClick(event, star, exerciseKey, lineElements, doc, parent, x, y, width, height) {
     const starElement = event.currentTarget;
-    console.log(`Star ${star} clicked, studentMode=${studentsData.studentMode}`);
     const studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
     const progress = studentsData.students[studentsData.currentStudent]?.progress || {};
     const silverProgress = studentsData.students[studentsData.currentStudent]?.silverProgress || {};
     const studentMode = studentsData.students[studentsData.currentStudent]?.studentMode || false;
+    console.log(`Star ${star} clicked, studentMode=${studentMode}`); // Step 4: Fixed scoping issue
+    console.log(`Click handler attached for star-${star}`);
+
     let goldLevel = progress[exerciseKey] ? parseInt(progress[exerciseKey]) : 0;
     let silverLevel = silverProgress[exerciseKey] ? parseInt(silverProgress[exerciseKey]) : 0;
 
@@ -178,6 +180,7 @@ function handleStarClick(event, star, exerciseKey, lineElements, doc, parent, x,
             overlayStarElement.setAttribute('id', `star-${star.replace(/:/g, '-')}`);
             // Reattach click listener to new element
             overlayStarElement.addEventListener('click', (e) => handleStarClick(e, star, exerciseKey, lineElements, doc, parent, x, y, width, height));
+            console.log(`Reattached click handler for star-${star}`);
         }, 400); // Step 4: Remove old image and reattach listener after 400ms fade-in
     }
 
@@ -272,6 +275,7 @@ function initializeSvg(doc) {
 
         // Step 4: Attach click handler
         newStarElement.addEventListener('click', (e) => handleStarClick(e, star, exerciseKey, lineElements, doc, parent, x, y, width, height));
+        console.log(`Attached click handler for star-${star} during initialization`);
 
         // Remove existing storage listeners to prevent duplicates
         window.removeEventListener('storage', window.storageListener);
@@ -294,6 +298,7 @@ function initializeSvg(doc) {
 
                 // Reattach click listener to updated element
                 newStarElementUpdate.addEventListener('click', (e) => handleStarClick(e, star, exerciseKey, lineElements, doc, parent, x, y, width, height));
+                console.log(`Reattached click handler for star-${star} in storage listener`);
 
                 lineElements.forEach(lineElement => {
                     if (updatedGoldLevel === 6) {
