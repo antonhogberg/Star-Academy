@@ -49,17 +49,30 @@ const progressionPath = [
     { star: '2:1:4', nextStar: null, lines: [] }
 ];
 
-// Step 4: Preload images for performance
+// Step 4: Preload images with Promise-based approach for performance
 function preloadImages() {
     console.log('Preloading star images');
+    const preloadPromises = [];
     starImages.forEach((goldLevelImages, goldLevel) => {
         goldLevelImages.forEach((image, silverLevel) => {
             const img = new Image();
-            img.src = image;
-            img.onload = () => console.log(`Loaded image: ${image}`);
-            img.onerror = () => console.error(`Failed to preload image: ${image}`);
+            preloadPromises.push(
+                new Promise((resolve, reject) => {
+                    img.src = image;
+                    img.onload = () => {
+                        console.log(`Loaded image: ${image}`);
+                        resolve();
+                    };
+                    img.onerror = () => {
+                        console.error(`Failed to preload image: ${image}`);
+                        reject();
+                    };
+                })
+            );
         });
     });
+    // Log completion but don't block rendering
+    Promise.all(preloadPromises).then(() => console.log('All images preloaded')).catch(err => console.error('Some images failed to preload', err));
 }
 
 function initializeStarMap() {
@@ -70,7 +83,7 @@ function initializeStarMap() {
         return;
     }
 
-    // Step 4: Preload images before initialization
+    // Step 4: Start preloading images (async, non-blocking)
     preloadImages();
 
     // Since the SVG is inline, we can directly pass the document context
@@ -107,7 +120,7 @@ function initializeSvg(doc) {
     // Add styles directly to the SVG
     const styleElement = doc.createElementNS('http://www.w3.org/2000/svg', 'style');
     styleElement.textContent = `
-        image { pointer-events: all; transition: opacity 0.3s ease-in-out; }
+        image { pointer-events: all; transition: opacity 0.4s ease-in-out; } /* Step 4: Increased fade duration to 400ms */
         image.non-clickable { pointer-events: auto; } /* Step 4: Allow clicks for fade effect */
         path { transition: stroke 0.3s ease-in-out !important; }
     `;
@@ -170,48 +183,50 @@ function initializeSvg(doc) {
             let goldLevel = progress[exerciseKey] ? parseInt(progress[exerciseKey]) : 0;
             let silverLevel = silverProgress[exerciseKey] ? parseInt(silverProgress[exerciseKey]) : 0;
 
-            newStarElement.style.opacity = '0';
+            // Step 4: Set new image immediately to avoid flicker
+            let newGoldLevel = goldLevel;
+            let newSilverLevel = silverLevel;
             if (studentMode && goldLevel === 6) {
-                // Step 4: Fade effect for goldLevel 6 in student mode, no state change
-                setTimeout(() => {
-                    newStarElement.setAttributeNS('http://www.w3.org/1999/xlink', 'href', starImages[goldLevel][0]);
-                    newStarElement.style.opacity = '1';
-                    console.log(`Student mode: Fade effect for goldLevel=6, no state change for ${exerciseKey}`);
-                }, 300);
-                return; // No localStorage update
-            }
-
-            if (studentMode) {
+                // Student mode, goldLevel 6: Fade effect, no state change
+                console.log(`Student mode: Fade effect for goldLevel=6, no state change for ${exerciseKey}`);
+            } else if (studentMode) {
                 // Student mode: Increment silver stars, lock gold stars
                 const maxSilver = 6 - goldLevel;
-                silverLevel = (silverLevel + 1) % (maxSilver + 1);
-                silverProgress[exerciseKey] = silverLevel.toString();
+                newSilverLevel = (silverLevel + 1) % (maxSilver + 1);
+                silverProgress[exerciseKey] = newSilverLevel.toString();
                 studentsData.students[studentsData.currentStudent].silverProgress = silverProgress;
-                console.log(`Student mode: Updated silverLevel=${silverLevel} for ${exerciseKey}`);
+                console.log(`Student mode: Updated silverLevel=${newSilverLevel} for ${exerciseKey}`);
             } else {
                 // Normal mode: Increment gold stars, reset silver stars
-                goldLevel = (goldLevel + 1) % 7;
-                silverLevel = 0;
-                progress[exerciseKey] = goldLevel.toString();
+                newGoldLevel = (goldLevel + 1) % 7;
+                newSilverLevel = 0;
+                progress[exerciseKey] = newGoldLevel.toString();
                 silverProgress[exerciseKey] = '0';
                 studentsData.students[studentsData.currentStudent].progress = progress;
                 studentsData.students[studentsData.currentStudent].silverProgress = silverProgress;
-                console.log(`Normal mode: Updated goldLevel=${goldLevel}, silverLevel=0 for ${exerciseKey}`);
+                console.log(`Normal mode: Updated goldLevel=${newGoldLevel}, silverLevel=0 for ${exerciseKey}`);
             }
 
-            localStorage.setItem('starAcademyStudents', JSON.stringify(studentsData));
+            // Update image immediately
+            newStarElement.setAttributeNS('http://www.w3.org/1999/xlink', 'href', starImages[newGoldLevel][newSilverLevel]);
+            newStarElement.onerror = () => {
+                console.error(`Failed to load image for star-${star}: ${starImages[newGoldLevel][newSilverLevel]}`);
+                newStarElement.setAttributeNS('http://www.w3.org/1999/xlink', 'href', starImages[0][0]);
+            };
 
+            // Apply fade animation
+            newStarElement.style.opacity = '0';
             setTimeout(() => {
-                newStarElement.setAttributeNS('http://www.w3.org/1999/xlink', 'href', starImages[goldLevel][silverLevel]);
-                newStarElement.onerror = () => {
-                    console.error(`Failed to load image for star-${star}: ${starImages[goldLevel][silverLevel]}`);
-                    newStarElement.setAttributeNS('http://www.w3.org/1999/xlink', 'href', starImages[0][0]);
-                };
                 newStarElement.style.opacity = '1';
-            }, 300);
+            }, 400); // Step 4: Increased to 400ms
+
+            // Update localStorage only if state changed
+            if (!(studentMode && goldLevel === 6)) {
+                localStorage.setItem('starAcademyStudents', JSON.stringify(studentsData));
+            }
 
             lineElements.forEach(lineElement => {
-                if (goldLevel === 6) {
+                if (newGoldLevel === 6) {
                     lineElement.setAttribute('filter', 'url(#golden-glow)');
                     lineElement.style.stroke = '#FFD700';
                 } else {
