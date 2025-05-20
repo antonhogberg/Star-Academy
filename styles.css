@@ -521,7 +521,7 @@ body.popup-open .student-manager {
     width: 100%;
     padding: 0 15px;
     box-sizing: border-box;
-    margin-bottom: 20px;
+    /* margin-bottom: 20px; */
     justify-content: center;
 }
 
@@ -611,7 +611,8 @@ body.popup-open .student-manager {
     font-size: 16px;
     color: #999999;
     padding: 0;
-    margin: 120px 0 0 0; /* Match star height (120px) */
+    margin-top: 125px;
+    margin-right: 2px;
     line-height: 16px;
     text-align: center;
     width: 100%;
@@ -2163,7 +2164,8 @@ h2#popupWelcome {
         object-fit: contain;
     }
     .exercise-code {
-        margin: 140px 0 0 0; /* Match star height (140px) */
+        margin-top: 145px;
+        margin-right: 3px;  
     }
 
     .part {
@@ -2670,7 +2672,8 @@ h2#popupWelcome {
         object-fit: contain;
     }
     .exercise-code {
-        margin: 100px 0 0 0; /* Match star height (100px) */
+        margin-top: 105px;
+        margin-right: 2px;
         font-size: 14px;
     }
 
@@ -2744,7 +2747,8 @@ h2#popupWelcome {
         object-fit: contain;
     }
     .exercise-code {
-        margin: 150px 0 0 0; /* Match star height (150px) */
+        margin-top: 155px;
+        margin-right: 2px;
     }
 }
 
@@ -2806,7 +2810,8 @@ h2#popupWelcome {
         object-fit: contain;
     }
     .exercise-code {
-        margin: 120px 0 0 0; /* Match star height (120px) */
+        margin-top: 125px;
+        margin-right: 3px;
     }
 
     .star-map-container {
