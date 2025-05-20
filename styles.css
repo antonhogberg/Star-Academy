@@ -602,8 +602,8 @@ body.popup-open .student-manager {
     align-items: center;
     gap: 7px;
     position: relative;
-    height: 140px; /* Match max star height (140px on iPhone, 120px on iPad/desktop) */
-    width: auto;
+    width: 120px; /* Match star width for desktop */
+    height: 140px; /* Match max star height */
     box-sizing: border-box;
 }
 
@@ -627,10 +627,10 @@ body.popup-open .student-manager {
     font-size: 16px;
     color: #999999;
     padding: 0;
-    margin: 5px 0 0 0; /* Small top margin for spacing */
+    margin: 10px 0 0 0; /* Increased margin for clear separation */
     line-height: 16px;
     text-align: center;
-    width: 100%; /* Ensure full width for centering */
+    width: 100%;
 }
 
 .gold-star {
@@ -2148,10 +2148,13 @@ h2#popupWelcome {
         flex-wrap: wrap;
         gap: 20px 10px; /* Vertical gap 20px, horizontal 10px */
         max-width: 300px;
-        justify-content: center; /* Center stars */
+        justify-content: center;
         flex-direction: row;
     }
-    
+
+    .exercise-code {
+        margin: 10px 0 0 0;
+    }
 
     .part {
         margin-bottom: 10px;
@@ -2179,11 +2182,10 @@ h2#popupWelcome {
     }
 
     .star-container {
-        width: 140px; /* Match star width */
-        height: 140px; /* Match star height */
+        width: 140px;
+        height: 160px; /* Increased to ensure text clearance */
         box-sizing: border-box;
     }
-
     .star {
         width: 140px;
         min-width: 140px;
@@ -2651,6 +2653,30 @@ h2#popupWelcome {
 
 /* Smaller iPads in landscape (768px to 1024px) */
 @media (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
+    body.chapters .exercises {
+        gap: 20px;
+        max-width: 80vw;
+        flex-wrap: wrap;
+        justify-content: center;
+        flex-direction: row;
+    }
+    body.chapters .star-container {
+        width: 100px; /* Smaller stars for smaller iPads */
+        height: 120px;
+        box-sizing: border-box;
+    }
+    .star {
+        width: 100px;
+        min-width: 100px;
+        max-width: 100px;
+        height: auto;
+        object-fit: contain;
+    }
+    .exercise-code {
+        margin: 8px 0 0 0;
+        font-size: 14px; /* Slightly smaller for compact screens */
+    }
+
     .student-manager {
         padding: 0px 10px 10px 10px;
         overflow-y: visible;
@@ -2694,11 +2720,34 @@ h2#popupWelcome {
 }
 
 /* iPad Pro 13" in landscape (1201px to 1400px) */
-@media (min-width: 1201px) and (max-width: 1400px) and (orientation: landscape) {
+@media (min-width: 1025px) and (max-width: 1400px) and (orientation: landscape) {
     .star-map-container {
         top: 50px;
         height: calc(100vh - 50px);
         max-height: 960px;
+    }
+
+    body.chapters .exercises {
+        gap: 30px;
+        max-width: 80vw;
+        flex-wrap: wrap;
+        justify-content: center;
+        flex-direction: row;
+    }
+    body.chapters .star-container {
+        width: 150px; /* Larger for iPad Pro 1366px */
+        height: 170px;
+        box-sizing: border-box;
+    }
+    .star {
+        width: 150px;
+        min-width: 150px;
+        max-width: 150px;
+        height: auto;
+        object-fit: contain;
+    }
+    .exercise-code {
+        margin: 10px 0 0 0;
     }
 }
 
@@ -2748,11 +2797,11 @@ h2#popupWelcome {
         justify-content: center;
         margin: 0 auto;
     }
-
     .star-container {
-        width: auto !important;
+        width: 120px;
+        height: 140px;
+        box-sizing: border-box;
     }
-
     .star {
         width: 120px;
         min-width: 120px;
