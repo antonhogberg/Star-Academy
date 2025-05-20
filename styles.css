@@ -180,6 +180,10 @@ body.popup-open .student-manager {
     width: 48px;
     height: 48px;
     line-height: 1;
+    z-index: 1199;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    user-select: none;
 }
 
 .menu.active .close-btn {
@@ -362,6 +366,9 @@ body.popup-open .student-manager {
     left: 15px;
     z-index: 1202;
     background: transparent;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    user-select: none;
 }
 
 .white-key,
