@@ -457,6 +457,7 @@ body.popup-open .student-manager {
     box-sizing: border-box;
     flex-grow: 1;
     padding: 80px 20px 20px 20px; /* Add top padding to account for fixed title */
+    overflow-y: auto; /* Ensure no overflow */
 }
 
 .students-title {
@@ -611,7 +612,9 @@ body.popup-open .student-manager {
     position: relative;
     width: 120px;
     height: 140px;
+    width: clamp(100px, 10vw, 150px); /* Smooth scaling */
     box-sizing: border-box;
+    
 }
 .exercise-code {
     font-family: Cochin, Georgia, Arial, sans-serif;
@@ -2062,6 +2065,7 @@ h2#popupWelcome {
         height: auto;
         overflow: visible;
         padding: 10px; /* Remove extra top padding since title is not fixed */
+        overflow-y: auto;
     }
 
     .user-name-box {
