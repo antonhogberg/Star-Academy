@@ -1856,9 +1856,8 @@ h2#popupWelcome {
 
 #removeStudentButton {
     width: 320px;
-    height: 42px;
-    box-sizing: border-box;
-    padding: 0;
+    min-height: 42px; /* Allow expansion for multi-row text */
+    padding: 10px 15px; /* Add padding for text spacing */
     margin: 0;
     background: var(--semi-dark);
     border: 1px solid var(--orange);
@@ -1866,7 +1865,7 @@ h2#popupWelcome {
     color: var(--gold);
     font-family: Cochin, Georgia, Arial, sans-serif;
     font-size: 16px;
-    line-height: 19.2px;
+    line-height: 1.5; /* Improve multi-row readability */
     cursor: pointer;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     display: flex;
@@ -1874,6 +1873,7 @@ h2#popupWelcome {
     align-items: center;
     text-align: center;
     -webkit-tap-highlight-color: transparent;
+    white-space: normal; /* Ensure wrapping */
 }
 
 #removeStudentButton:hover {
@@ -1975,6 +1975,10 @@ h2#popupWelcome {
 @media (max-width: 767px) and (orientation: portrait) {
     #removeStudentButton {
         width: 72vw;
+        min-height: 42px; /* Allow expansion for multi-row text */
+        padding: 10px 15px; /* Add padding for text spacing */
+        line-height: 1.5; /* Improve multi-row readability */
+        white-space: normal; /* Ensure wrapping */
     }
     #confirmRemovePopup .student-popup-content button {
         width: 72vw;
