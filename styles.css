@@ -951,7 +951,6 @@ body.popup-open .student-manager {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 8px;
     width: auto;
     margin-bottom: 10px;
     border: 1px solid var(--orange) !important;
@@ -968,7 +967,7 @@ body.popup-open .student-manager {
 .student-manager label#studentModeLabel {
     display: inline-block;
     width: auto;
-    margin: 8px;
+    margin: 8px 8px 8px 0;
     color: #ffffff;
     font-family: Cochin, Georgia, Arial, sans-serif;
     font-size: 16px;
