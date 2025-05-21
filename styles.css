@@ -2024,15 +2024,12 @@ h2#popupWelcome {
     .faq-answer {
         font-size: 14px;
     }
-
     .faq-item.active .faq-answer {
         max-height: 1000px !important;
     }
-
     .title-container h1 {
         font-size: 24px;
     }
-
     .title-star {
         width: 40px;
     }
@@ -2045,7 +2042,7 @@ h2#popupWelcome {
     }
 }
 
-/* iPhone (portrait screens, target phones only) */
+/* iPhone portrait */
 @media (max-width: 767px) and (orientation: portrait) {
     body {
         height: auto;
@@ -2053,7 +2050,6 @@ h2#popupWelcome {
         overflow-y: auto;
         display: block;
     }
-
     body.no-scroll {
         height: 100vh;
         overflow-y: hidden !important;
@@ -2062,32 +2058,27 @@ h2#popupWelcome {
         justify-content: center;
         align-items: center;
     }
-
     body.chapters {
         overflow: auto;
         height: auto;
     }
-
     .chapter-container {
         height: auto;
         overflow: visible;
-        padding: 10px; /* Remove extra top padding since title is not fixed */
+        padding: 10px;
         overflow-y: auto;
     }
-
     .user-name-box {
         font-size: 16px;
         padding: 8px;
-        min-width: 200px; /* Consistent min-width */
-        max-width: 250px; /* Override 200px to 250px */
+        min-width: 200px;
+        max-width: 250px;
         margin: 10px 0;
     }
-
     .layout-container {
         height: auto;
         overflow-y: visible;
     }
-
     .progress-container {
         width: 100%;
         height: auto;
@@ -2095,7 +2086,6 @@ h2#popupWelcome {
         overflow-x: hidden;
         overflow-y: auto;
     }
-
     .progress-svg {
         width: 200%;
         max-width: none;
@@ -2108,7 +2098,6 @@ h2#popupWelcome {
         overflow-x: hidden;
         display: block;
     }
-
     .rank-badge {
         position: static;
         transform: none;
@@ -2116,11 +2105,10 @@ h2#popupWelcome {
         max-width: 250px;
         margin: 10px auto;
         padding-top: 35px;
-        display: flex; /* Keep flex for centering */
+        display: flex;
         justify-content: center;
         align-items: center;
     }
-
     .logo-badge {
         position: static;
         width: 100%;
@@ -2128,28 +2116,23 @@ h2#popupWelcome {
         margin: 20px 0;
         display: block;
     }
-
     .logo-badge img {
         display: none;
     }
-
     .chapter-title {
-        position: static; /* Scroll with content on mobile */
+        position: static;
         font-size: 20px;
-        margin: 0 0 10px 0; /* Adjusted for better spacing */
-        white-space: normal; /* Allow wrapping on mobile */
-        overflow: visible; /* Remove overflow constraints */
-        text-overflow: clip; /* Remove ellipsis */
+        margin: 0 0 10px 0;
+        white-space: normal;
+        overflow: visible;
+        text-overflow: clip;
     }
-
     .chapter-number {
         font-size: 24px;
     }
-
     .chapter-name {
         font-size: 20px;
     }
-
     .parts {
         max-width: 744px;
         min-width: 0;
@@ -2164,7 +2147,6 @@ h2#popupWelcome {
         align-items: center;
         flex-grow: 1;
     }
-
     .exercises {
         flex-wrap: wrap;
         gap: 20px 10px;
@@ -2186,17 +2168,14 @@ h2#popupWelcome {
     }
     .exercise-code {
         margin-top: 145px;
-        margin-right: 3px;  
+        margin-right: 3px;
     }
-
     .part {
         margin-bottom: 10px;
     }
-
     .part:nth-child(-n+3) {
         margin-bottom: 50px;
     }
-
     .text-box {
         position: static;
         transform: none;
@@ -2205,42 +2184,40 @@ h2#popupWelcome {
         margin: 10px auto 20px auto;
         display: block;
     }
-
     .text-box #rankTitle {
         font-size: 24px !important;
     }
-
     .text-box #rankDescription {
         font-size: 16px !important;
     }
-
     .student-manager {
         padding: 0px 10px;
     }
-
     .export-section {
         margin-top: 1rem;
         margin-bottom: 20px;
     }
-
     .export-button-container {
         margin-bottom: 10px;
     }
-
+    .student-manager .checkbox-group {
+        width: auto;
+        margin-bottom: 10px;
+        border: 1px solid var(--orange) !important;
+        border-radius: 5px !important;
+        background: var(--semi-dark) !important;
+    }
     .student-manager button#shareButton,
     .student-manager button#shareExportButton {
         width: 72vw;
         font-size: 15px;
     }
-
     .student-manager #exportStatus {
         margin-bottom: 10px;
     }
-
     .students-title {
         margin-top: 0;
     }
-
     .input-button-container {
         display: inline-flex;
         align-items: center;
@@ -2250,11 +2227,9 @@ h2#popupWelcome {
         background: none;
         margin: 0px auto;
     }
-
     .input-group {
         width: 72vw;
     }
-
     .dropdown-container {
         display: inline-flex;
         align-items: center;
@@ -2265,11 +2240,9 @@ h2#popupWelcome {
         background: none;
         margin: 0px auto;
     }
-
     .notes-container {
         margin: 2px auto;
     }
-
     .notes-button-container {
         flex-direction: column;
         align-items: center;
@@ -2277,20 +2250,17 @@ h2#popupWelcome {
         border: none;
         background: none;
     }
-
     #studentNotes {
         width: 72vw;
         height: 360px;
         font-size: 18px !important;
     }
-
     .student-manager input#newStudentName {
         width: auto;
         font-size: 18px !important;
         padding: 8px 10px;
         line-height: 24px;
     }
-
     .student-manager select#studentSelect {
         width: 72vw;
         font-size: 18px !important;
@@ -2299,38 +2269,32 @@ h2#popupWelcome {
         background-position: right 10px center;
         background-size: 24px;
     }
-
     .popup-content {
         width: 90vw !important;
         max-width: 90vw;
-        padding: 15px !important; /* Reduced for smaller screens */
+        padding: 15px !important;
         box-sizing: border-box;
-        max-height: 80vh; /* Adjusted to ensure input visibility */
+        max-height: 80vh;
         position: absolute;
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
     }
-
     .popup-content p {
-        font-size: 14px;    
+        font-size: 14px;
     }
-
     .popup-content .input-group {
         width: 72vw;
     }
-
     .popup-content input#nameInput {
         width: auto;
         font-size: 18px !important;
         padding: 8px 10px;
         line-height: 24px;
     }
-
     .student-popup {
         max-width: 80%;
     }
-
     .student-popup-content {
         width: 90vw;
         max-width: 90vw;
@@ -2339,54 +2303,42 @@ h2#popupWelcome {
         border: 2px solid var(--gold);
         box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
     }
-
     .student-popup-content .popup-star {
         width: 16px;
         height: 16px;
     }
-
     .student-popup-content p {
         font-size: 18px;
     }
-
     .title-container h1 {
         font-size: 24px;
     }
-
     .title-star {
         width: 40px;
     }
-
     .content h1 {
         font-size: 30px;
         margin: 20px 0 40px 0;
     }
-
     .faq-container {
         width: 70vw;
         max-width: none;
     }
-
     #userNameDisplay {
         margin: 10px auto;
     }
-
     #importLoaderOverlay {
         max-width: 80%;
     }
-
     .loader-content {
         width: 90vw;
         max-width: 90vw;
         padding: 15px 20px;
     }
-
     .star-map-container {
         top: 70px;
         height: calc(100vh - 70px);
     }
-
-    /* Responsive widths for remove.html */
     #removeStudentSelect,
     #removeStudentButton {
         width: 72vw;
@@ -2401,13 +2353,12 @@ h2#popupWelcome {
         overflow-wrap: break-word;
         box-sizing: border-box;
     }
-
     #rankAchievementPopup .popup-content h2#rankAchievementMessage {
         font-size: 20px;
     }
 }
 
-/* iPhone landscape (allow scrolling) */
+/* iPhone landscape */
 @media (orientation: landscape) and (max-width: 767px),
        (orientation: landscape) and (hover: none) and (pointer: coarse) {
     body.is-mobile,
@@ -2417,12 +2368,10 @@ h2#popupWelcome {
         -webkit-overflow-scrolling: none;
         height: calc(var(--vh, 1vh) * 100);
     }
-
     body.is-mobile:after,
     body:after {
         display: none;
     }
-
     .layout-container.is-mobile,
     .layout-container {
         overflow-y: hidden !important;
@@ -2431,26 +2380,22 @@ h2#popupWelcome {
     }
 }
 
-/* All iPads in landscape (768px to 1400px) */
+/* Catch-all iPads in landscape */
 @media (min-width: 768px) and (max-width: 1400px) and (orientation: landscape) {
     body {
         overflow: hidden !important;
         height: 100vh;
         overscroll-behavior: none;
     }
-
     body.student-manager-page {
         overflow-y: auto !important;
         height: auto;
         min-height: 100vh;
     }
-
     body.faq-page {
         overflow-y: auto !important;
         overscroll-behavior: auto !important;
     }
-
-
     body.chapters {
         overflow: hidden !important;
         height: 100vh;
@@ -2458,88 +2403,34 @@ h2#popupWelcome {
         display: flex;
         flex-direction: column;
     }
-
     .chapter-container {
         height: calc(var(--vh, 1vh) * 100);
         overflow: hidden;
     }
-
     .user-name-box {
         min-width: 200px;
         max-width: 250px;
-        font-size: 18px; /* Slightly smaller for iPad */
+        font-size: 18px;
     }
-
     .chapter-title {
         padding: 10px 0;
         flex-shrink: 0;
     }
-
     .chapter-number {
         font-size: 32px;
         margin-top: 0;
     }
-
     .chapter-name {
         font-size: 28px;
     }
-
-    body.chapters .parts {
-        max-width: 1024px;
-        min-width: 580px;
-        margin: 0 auto;
-        padding-top: 0;
-        padding-bottom: 10px;
-        height: auto;
-        overflow-y: auto;
-        box-sizing: border-box;
-        justify-content: flex-start;
-        flex-grow: 1;
-    }
-
-    body.chapters .exercises {
-        gap: 30px;
-        max-width: 80vw;
-        flex-wrap: wrap;
-        justify-content: center;
-        flex-direction: row;
-    }
-
-    body.chapters .star-container {
-        width: auto;
-        height: 120px; /* Match star width */
-        box-sizing: border-box;
-    }
-
-    .star {
-        width: 120px;
-        min-width: 120px;
-        max-width: 120px;
-        height: auto;
-        object-fit: contain;
-    }
-
-    @media (width: 1366px) {
-        .star {
-            width: 150px;
-            min-width: 150px;
-            max-width: 150px;
-        }
-        body.chapters .star-container {
-            height: 150px;
-        }
-    }
-
     .layout-container {
         overflow-y: auto !important;
         height: auto;
         min-height: calc(var(--vh, 1vh) * 100);
     }
-
     .layout-container:not(.is-mobile) {
         overflow-y: auto !important;
     }
-
     .progress-container {
         width: 100%;
         max-width: 1366px;
@@ -2551,21 +2442,19 @@ h2#popupWelcome {
         height: calc(var(--vh, 1vh) * 100);
         overflow-y: hidden !important;
     }
-
     .progress-svg {
         width: 85%;
         max-width: 1161.1px;
         height: auto;
         max-height: 100%;
     }
-
     .rank-badge {
         position: absolute;
         left: 75%;
         top: calc(50% + 20px);
         transform: translateY(-50%);
-        min-width: 200px; /* Match .user-name-box min-width */
-        max-width: 250px; /* Match .user-name-box max-width */
+        min-width: 200px;
+        max-width: 250px;
         height: auto;
         display: flex;
         flex-direction: column;
@@ -2576,50 +2465,41 @@ h2#popupWelcome {
         padding-top: 35px;
         z-index: 10;
     }
-
     .logo-badge {
         position: absolute;
         left: 20px;
         top: 50%;
     }
-
     .logo-badge img {
         width: 150px;
         height: auto;
     }
-
     .notes-container {
         width: 100%;
         max-width: 100vw;
         margin: 2px auto;
     }
-
     .notes-button-container {
         padding: 10px;
         margin: 5px auto;
     }
-
     .input-button-container {
         padding: 0px;
     }
-
     .dropdown-container {
         padding: 0px;
     }
-
     #studentNotes {
         width: 320px;
         height: 360px;
         padding: 10px;
         font-size: 18px !important;
     }
-
     .student-manager input#newStudentName {
         font-size: 18px !important;
         padding: 8px 10px;
         line-height: 24px;
     }
-
     .student-manager select#studentSelect {
         font-size: 18px !important;
         padding: 8px 40px 8px 10px;
@@ -2627,7 +2507,6 @@ h2#popupWelcome {
         background-position: right 10px center;
         background-size: 24px;
     }
-
     .student-manager {
         padding: 0px 10px;
         overflow-y: visible;
@@ -2636,52 +2515,68 @@ h2#popupWelcome {
         flex-direction: column;
         align-items: center;
     }
-
     .student-manager h1 {
         margin-bottom: 10px;
     }
-
     .export-section {
         margin-top: 1rem;
         margin-bottom: 20px;
     }
-
     .export-button-container {
         margin-bottom: 10px;
     }
-
     .popup {
         max-width: 40%;
     }
-
     .popup-content {
         padding: 35px 35px 40px 35px;
+        max-width: 700px;
     }
-
     .popup-content input#nameInput {
         font-size: 18px !important;
         padding: 8px 10px;
         line-height: 24px;
     }
-
     .student-popup {
         max-width: 40%;
     }
-
     .star-map-container {
         top: 70px;
         height: calc(100vh - 70px);
     }
-}
-
-@media (min-width: 768px) {
-    body.popup-open {
-        overflow: visible !important; /* Ensure .popup isn’t clipped */
+    .congratulations-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.8);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        z-index: 10002;
+        animation: fadeIn 1s ease-in-out;
+    }
+    .congratulations-message {
+        background: var(--dark-bg);
+        border: 2px solid var(--gold);
+        border-radius: 10px;
+        padding: 20px;
+        text-align: center;
+        color: var(--gold);
+        font-family: Cochin, Georgia, Arial, sans-serif;
+        font-size: 24px;
+        box-shadow: 0 0 20px rgba(255, 215, 0, 0.7);
+        animation: pulse 2s infinite;
+    }
+    @keyframes fadeIn {
+        0% { opacity: 0; }
+        100% { opacity: 1; }
     }
 }
 
-/* Smaller iPads in landscape (768px to 1024px) */
-@media (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
+/* iPad 1, 2, Mini, Air landscape (768x1024, pixel ratio 1) */
+@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 1) {
     body.chapters .exercises {
         gap: 20px;
         max-width: 80vw;
@@ -2706,57 +2601,73 @@ h2#popupWelcome {
         margin-right: 2px;
         font-size: 14px;
     }
-
-    .student-manager {
-        padding: 0px 10px;
-        overflow-y: visible;
-        height: auto;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
+    /* From iPad Mini 1000px–1100px query */
+    .description-container {
+        width: 430px;
+        margin-right: 90px;
     }
-
-    .popup-content {
-        max-width: 700px; /* Wider to prevent overflow */
-        max-height: 80vh; /* Prevent overflow on smaller iPads */
-    }
-
-    .popup-scrollable-content {
-        max-height: calc(90vh - 150px); /* Adjusted for new max-height */
-        max-width: 600px; /* Wider to prevent overflow */
-        max-height: 70vh; /* Prevent overflow on smaller iPads */
-    }
-
-    .notes-container {
-        margin: 2px auto;
-    }
-
-    #studentNotes {
-        width: 320px;
-        height: min(calc(100vh - 580px), 360px);
-        min-height: 150px;
-        padding: 10px;
-        font-size: 18px !important;
-    }
-
-    .export-section {
-        margin-top: 1rem;
-        margin-bottom: 20px;
-    }
-
-    .export-button-container {
-        margin-bottom: 10px;
+    .info-overlay {
+        left: 540px;
     }
 }
 
-/* iPad Pro 13" in landscape (1201px to 1400px) */
-@media (min-width: 1025px) and (max-width: 1400px) and (orientation: landscape) {
-    .star-map-container {
-        top: 50px;
-        height: calc(100vh - 50px);
-        max-height: 960px;
+/* iPad 3, 4, Pro 9.7" landscape (768x1024, pixel ratio 2) */
+@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
+    body.chapters .exercises {
+        gap: 20px;
+        max-width: 80vw;
+        flex-wrap: wrap;
+        justify-content: center;
+        flex-direction: row;
     }
+    body.chapters .star-container {
+        width: 100px;
+        height: 120px;
+        box-sizing: border-box;
+    }
+    .star {
+        width: 100px;
+        min-width: 100px;
+        max-width: 100px;
+        height: auto;
+        object-fit: contain;
+    }
+    .exercise-code {
+        margin-top: 105px;
+        margin-right: 2px;
+        font-size: 14px;
+    }
+}
 
+/* iPad Pro 10.5" landscape (1112x834, pixel ratio 2) */
+@media only screen and (min-device-width: 1112px) and (max-device-width: 1112px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
+    body.chapters .exercises {
+        gap: 30px;
+        max-width: 80vw;
+        flex-wrap: wrap;
+        justify-content: center;
+        flex-direction: row;
+    }
+    body.chapters .star-container {
+        width: 120px;
+        height: 140px;
+        box-sizing: border-box;
+    }
+    .star {
+        width: 120px;
+        min-width: 120px;
+        max-width: 120px;
+        height: auto;
+        object-fit: contain;
+    }
+    .exercise-code {
+        margin-top: 125px;
+        margin-right: 2px;
+    }
+}
+
+/* iPad Pro 12.9" landscape (1366x1024, pixel ratio 2) */
+@media only screen and (min-device-width: 1366px) and (max-device-width: 1366px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
     body.chapters .exercises {
         gap: 30px;
         max-width: 80vw;
@@ -2780,9 +2691,15 @@ h2#popupWelcome {
         margin-top: 155px;
         margin-right: 4px;
     }
+    /* From 1366px query */
+    .star-map-container {
+        top: 50px;
+        height: calc(100vh - 50px);
+        max-height: 960px;
+    }
 }
 
-/* Desktop (min-width: 1401px) */
+/* Desktop */
 @media (min-width: 1401px) and (orientation: landscape) and (hover: hover) and (min-aspect-ratio: 16/10) {
     body.chapters {
         overflow: hidden !important;
@@ -2790,25 +2707,20 @@ h2#popupWelcome {
         display: flex;
         flex-direction: column;
     }
-
     .chapter-container {
         height: calc(var(--vh, 1vh) * 100);
         overflow: hidden;
     }
-
     .chapter-title {
         padding: 10px 0;
         flex-shrink: 0;
     }
-
     .chapter-number {
         font-size: 32px;
     }
-
     .chapter-name {
         font-size: 28px;
     }
-
     .parts {
         max-width: 1024px;
         min-width: 580px;
@@ -2843,17 +2755,21 @@ h2#popupWelcome {
         margin-top: 125px;
         margin-right: 2px;
     }
-
     .star-map-container {
         height: calc(100vh - 70px);
         top: 70px;
     }
-
     .popup {
         max-width: 40%;
     }
-
     .popup-content {
         max-width: 600px;
+    }
+}
+
+/* General popup adjustment */
+@media (min-width: 768px) {
+    body.popup-open {
+        overflow: visible !important;
     }
 }
