@@ -947,10 +947,12 @@ body.popup-open .student-manager {
     text-align: center;
 }
 
-.student-manager .info-button-container {
-    margin-left: 10px;
+.student-manager .checkbox-info-wrapper {
     display: flex;
+    flex-direction: row;
     align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
 }
 
 .student-manager .checkbox-group {
@@ -958,12 +960,37 @@ body.popup-open .student-manager {
     justify-content: center;
     align-items: center;
     width: auto;
-    margin-bottom: 10px;
     border: 1px solid var(--orange) !important;
     border-radius: 5px !important;
     background: var(--semi-dark) !important;
     box-sizing: border-box;
     padding: 0 10px;
+}
+
+.student-manager .info-button-container {
+    margin: 0 0 0 10px;
+    display: flex;
+    align-items: center;
+}
+
+.student-manager .info-button {
+    width: 24px;
+    height: 24px;
+    box-sizing: border-box;
+    padding: 0;
+    margin: 8px;
+    background: var(--semi-dark);
+    border: 1px solid var(--orange);
+    border-radius: 5px;
+    color: var(--gold);
+    font-size: 16px;
+    line-height: 1;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    -webkit-tap-highlight-color: transparent;
 }
 .student-manager input[type="checkbox"]#studentModeCheckbox {
     width: 20px;
