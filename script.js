@@ -54,7 +54,6 @@ const translations = {
       addStudentNoName: "Please enter a name!",
       notesLabel: "Notes",
       notesPlaceholder: "Add notes about planned homework, progress, or other details here—they’re saved automatically.",
-      saveNotesButton: "Save notes",
       congratsMessage: "🌟 Congratulations! You’ve completed the Star Map! 🌟",
       faqTitle: "Frequently Asked Questions",
       faqQ1: "How do I use the Star Map to earn stars?",
@@ -86,6 +85,7 @@ const translations = {
       exportTitle: "Export Student Data",
       exportInfo: "Tap the button below to share the current student to another device. The recipient just needs to scan the QR code or open the link to add the student automatically!",
       exportInfoText: "(Exports: Name, Notes & Stars)",
+      studentModeInfoText: "When you enable 'Export with fixed gold stars', a student-mode version of the export is created. The student’s earned gold stars are locked and cannot be modified on their iPad or device. Instead, new progress is marked with silver stars when the student clicks on stars. This allows the student to practice at home, mark levels they believe they’ve mastered with silver stars, and display their progress at the next lesson. As a teacher, you can review the silver stars to assess which exercises the student has practiced and confirm their progress with gold stars. The export does not affect your device, where you can continue adding gold stars. At the next lesson, you can export again with fixed gold stars to update the student’s data.",
       creatingLink: "Generating link, please wait…",
       copyLinkSuccess: "Link copied to clipboard! Paste to share.",
       scanOrShare: "Scan the QR code or...",
@@ -190,6 +190,7 @@ const translations = {
       exportTitle: "Exportera elevdata",
       exportInfo: "Genom att trycka på knappen nedan kan du dela den aktuella eleven till en annan enhet. Mottagaren behöver bara öppna länken – eleven läggs automatiskt till!",
       exportInfoText: "(Exporterar: Namn, Anteckningar & Stjärnor)",
+      studentModeInfoText: "När du aktiverar 'Exportera med låsta guldstjärnor' skapas en elevversion av exporten. Elevens intjänade guldstjärnor låses och kan inte ändras på deras iPad eller enhet. Istället markeras nya framsteg med silverstjärnor när eleven klickar på stjärnorna. Detta gör det möjligt för eleven att öva hemma, markera nivåer de anser sig ha klarat med silverstjärnor, och visa sina framsteg vid nästa lektion. Som lärare kan du granska silverstjärnorna för att bedöma vilka övningar eleven har övat på och bekräfta deras framsteg med guldstjärnor. Exporten påverkar inte din enhet, där du kan fortsätta lägga till guldstjärnor. Vid nästa lektion kan du exportera igen med låsta guldstjärnor för att uppdatera elevens data.",
       creatingLink: "Skapar länk, vänta…",
       copyLinkSuccess: "Länk kopierad till urklipp! Klistra in för att dela.",
       scanOrShare: "Skanna QR-koden eller...",
@@ -831,6 +832,20 @@ function switchLanguage(lang) {
     const newLang = lang || (localStorage.getItem('language') === 'sv' ? 'en' : 'sv');
     localStorage.setItem('language', newLang);
   
+    // Handle all data-translate elements (including studentModeInfoText)
+    document.querySelectorAll('[data-translate]').forEach(element => {
+      const key = element.getAttribute('data-translate');
+      if (translations[newLang][key]) {
+        // Special handling for title to avoid innerHTML
+        if (element.tagName === 'TITLE') {
+          element.textContent = translations[newLang][key];
+        } else {
+          element.textContent = translations[newLang][key];
+        }
+      }
+    });
+  
+    // Menu links
     document.querySelectorAll('.menu-link').forEach(link => {
       const href = link.getAttribute('href')?.toLowerCase();
       if (href === 'index.html') {
@@ -853,9 +868,11 @@ function switchLanguage(lang) {
       }
     });
   
+    // Chapters toggle
     const chaptersToggle = document.querySelector('.chapters-toggle');
     if (chaptersToggle) chaptersToggle.textContent = translations[newLang].menuChapters;
   
+    // Popups
     const popupWelcome = document.getElementById('popupWelcome');
     const popupIntro = document.getElementById('popupIntro');
     const popupTeacherNote = document.getElementById('popupTeacherNote');
@@ -867,12 +884,15 @@ function switchLanguage(lang) {
     if (popupEnterName) popupEnterName.textContent = translations[newLang].popupEnterName;
     if (submitNameButton) submitNameButton.textContent = translations[newLang].addButton;
   
+    // Congratulations message
     const congratsMessage = document.getElementById('congratsMessage');
     if (congratsMessage) congratsMessage.textContent = translations[newLang].congratsMessage;
   
+    // QR instruction
     const qrInstruction = document.getElementById('qrInstruction');
     if (qrInstruction) qrInstruction.textContent = translations[newLang].scanOrShare;
   
+    // Chapter titles
     const chapterNumber = document.querySelector('.chapter-number');
     const chapterName = document.querySelector('.chapter-name');
     if (chapterNumber && chapterName) {
@@ -883,10 +903,12 @@ function switchLanguage(lang) {
       }
     }
   
+    // Rank display
     const rankTitle = document.getElementById('rankTitle');
     const rankDescription = document.getElementById('rankDescription');
     if (rankTitle && rankDescription) updateStarStates();
   
+    // Students page
     const studentsPageTitle = document.getElementById('studentsPageTitle');
     const studentsLabel = document.getElementById('studentsLabel');
     const newStudentInput = document.getElementById('newStudentName');
@@ -895,7 +917,7 @@ function switchLanguage(lang) {
     const notesLabel = document.getElementById('notesLabel');
     const studentNotes = document.getElementById('studentNotes');
     const saveNotesButton = document.getElementById('saveNotesButton');
-    const studentModeLabel = document.getElementById('studentModeLabel'); // Step 2: Add student mode label
+    const studentModeLabel = document.getElementById('studentModeLabel');
     if (studentsPageTitle && studentsLabel) {
       studentsPageTitle.textContent = translations[newLang].menuStudents;
       studentsLabel.textContent = translations[newLang].studentsLabel;
@@ -905,9 +927,10 @@ function switchLanguage(lang) {
       notesLabel.textContent = translations[newLang].notesLabel;
       studentNotes.placeholder = translations[newLang].notesPlaceholder;
       if (saveNotesButton) saveNotesButton.textContent = translations[newLang].saveNotesButton;
-      if (studentModeLabel) studentModeLabel.textContent = translations[newLang].studentModeLabel; // Step 2: Apply translation
+      if (studentModeLabel) studentModeLabel.textContent = translations[newLang].studentModeLabel;
     }
   
+    // FAQ page
     const faqTitle = document.querySelector('h1[data-translate="menuFAQ"]');
     const faqQuestions = document.querySelectorAll('.faq-question[data-translate]');
     const faqAnswers = document.querySelectorAll('.faq-answer[data-translate]');
@@ -921,13 +944,14 @@ function switchLanguage(lang) {
       if (translations[newLang][key]) answer.textContent = translations[newLang][key];
     });
   
+    // Title container
     const titleContainerH1 = document.querySelector('.title-container h1[data-translate]');
     if (titleContainerH1) {
       const key = titleContainerH1.getAttribute('data-translate');
       if (translations[newLang][key]) titleContainerH1.textContent = translations[newLang][key];
     }
   
-    // Remove page translations
+    // Remove page
     const removeStudentTitle = document.querySelector('h1[data-translate="removeStudentTitle"]');
     const confirmRemoveMessage = document.querySelector('p[data-translate="confirmRemoveMessage"]');
     if (removeStudentTitle) removeStudentTitle.textContent = translations[newLang].removeStudentTitle;
@@ -936,7 +960,7 @@ function switchLanguage(lang) {
       confirmRemoveMessage.textContent = `${translations[newLang].confirmRemoveMessage}${selectedStudent ? ` ${selectedStudent}.` : '.'}`;
     }
   
-    // Update the removeStudentButton text dynamically
+    // Remove button
     const removeStudentButton = document.getElementById('removeStudentButton');
     if (removeStudentButton && window.studentsData) {
       if (window.studentsData.currentStudent) {
@@ -964,7 +988,7 @@ function switchLanguage(lang) {
       }
     });
   
-    // Export section (students.html)
+    // Export section
     const exportTitle = document.getElementById('exportTitle');
     const exportInfo = document.getElementById('exportInfo');
     const exportInfoText = document.querySelector('p[data-translate="exportInfoText"]');
@@ -978,7 +1002,7 @@ function switchLanguage(lang) {
     if (shareButtonInQR) shareButtonInQR.textContent = translations[newLang].shareButtonQR;
     if (exportStatus) exportStatus.textContent = translations[newLang].creatingLink;
   
-    // Update rank achievement popup if visible
+    // Rank achievement popup
     const rankPopup = document.getElementById('rankAchievementPopup');
     const rankMessage = document.getElementById('rankAchievementMessage');
     const rankSubtitle = document.getElementById('rankAchievementSubtitle');
@@ -990,13 +1014,13 @@ function switchLanguage(lang) {
       rankPopupDescription.textContent = translations[newLang].textboxStarCadet;
     }
   
-    // Update import loader text
+    // Import loader
     const loaderText = document.getElementById('loaderText');
     if (loaderText) {
       loaderText.textContent = translations[newLang].loading;
     }
   
-    // Update active import popup
+    // Student popup
     const studentPopup = document.getElementById('studentPopup');
     if (studentPopup && studentPopup.classList.contains('show')) {
       const popupContent = studentPopup.querySelector('.student-popup-content p');
@@ -1010,12 +1034,12 @@ function switchLanguage(lang) {
       }
     }
   
-    // Update user name display
+    // User name display
     const userNameDisplay = document.getElementById('userNameDisplay');
     if (userNameDisplay) {
       userNameDisplay.textContent = window.studentsData?.currentStudent || '';
     }
-}
+  }
 
 function setInitialLanguage() {
     const hash = window.location.hash.replace('#', '').toLowerCase();

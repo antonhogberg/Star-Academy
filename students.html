@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-  <title>Nordstjärnans Pianoskola</title>
+  <title data-translate="menuStudents">Nordstjärnans Pianoskola - Elever</title>
   <link rel="stylesheet" href="styles.css" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" defer></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/lz-string/1.5.0/lz-string.min.js"></script>
@@ -184,10 +184,18 @@
         <div class="checkbox-group">
           <input type="checkbox" id="studentModeCheckbox">
           <label for="studentModeCheckbox" id="studentModeLabel" data-translate="studentModeLabel">Exportera med låsta guldstjärnor</label>
+          <button id="studentModeInfoButton" class="info-button" aria-label="Student Mode Info">ⓘ</button>
         </div>
         <button id="shareExportButton" class="share-button" data-translate="shareButtonExport" onclick="shareExport()">Dela via AirDrop / Meddelande / QR-kod</button>
         <p class="info-text" data-translate="exportInfoText">Exporterar: Namn, Anteckningar & Stjärnor</p>
         <p id="exportStatus" class="info-text" data-translate="exportStatus" style="display: none;"></p>
+      </div>
+    </div>
+
+    <div id="studentModeInfoPopup" class="popup" style="display: none;">
+      <div class="student-popup-content" onclick="event.stopPropagation();">
+        <button id="closeStudentModeInfoPopup" style="position: absolute; top: 1px; right: 1px; background: none; border: none; font-size: 24px; color: #ffd700; cursor: pointer; font-weight: bold;">×</button>
+        <p id="studentModeInfoText" data-translate="studentModeInfoText"></p>
       </div>
     </div>
 
@@ -218,27 +226,27 @@
         timeout = setTimeout(() => func.apply(this, args), wait);
       };
     }
-
+  
     function saveNotes(silent = false) {
       const studentNotes = document.getElementById('studentNotes');
       const currentStudent = window.studentsData.currentStudent;
-
+  
       if (!currentStudent || !window.studentsData.students[currentStudent]) {
         if (!silent) alert('Välj en elev först');
         return;
       }
-
+  
       window.studentsData.students[currentStudent].notes = studentNotes.value;
       localStorage.setItem('starAcademyStudents', JSON.stringify(window.studentsData));
       if (!silent) alert('Sparat!');
     }
-
+  
     const debouncedSaveNotes = debounce(() => saveNotes(true), 500);
-
+  
     document.addEventListener('DOMContentLoaded', () => {
       const lang = localStorage.getItem('language') || 'sv';
       switchLanguage(lang);
-
+  
       const newStudentInput = document.getElementById('newStudentName');
       if (newStudentInput) {
         newStudentInput.addEventListener('keydown', (e) => {
@@ -248,16 +256,15 @@
           }
         });
       }
-
+  
       loadNotes();
-
+  
       const notes = document.getElementById('studentNotes');
       if (notes) {
         notes.addEventListener('input', () => debouncedSaveNotes());
         notes.addEventListener('blur', () => saveNotes(true));
       }
-
-      // Bind switchStudent to studentSelect
+  
       const studentSelect = document.getElementById('studentSelect');
       if (studentSelect) {
         studentSelect.addEventListener('change', (event) => {
@@ -265,22 +272,40 @@
           switchStudent(selectedValue);
         });
       }
+  
+      const infoButton = document.getElementById('studentModeInfoButton');
+      const infoPopup = document.getElementById('studentModeInfoPopup');
+      const closeInfoPopup = document.getElementById('closeStudentModeInfoPopup');
+      if (infoButton && infoPopup && closeInfoPopup) {
+        infoButton.addEventListener('click', () => {
+          infoPopup.style.display = 'flex';
+          infoPopup.classList.add('show');
+        });
+        closeInfoPopup.addEventListener('click', () => {
+          infoPopup.style.display = 'none';
+          infoPopup.classList.remove('show');
+        });
+        infoPopup.addEventListener('click', () => {
+          infoPopup.style.display = 'none';
+          infoPopup.classList.remove('show');
+        });
+      }
     });
-
+  
     function loadNotes() {
       const select = document.getElementById('studentSelect');
       const notes = document.getElementById('studentNotes');
       const data = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
-
+  
       updateDropdown();
-
+  
       const current = data.currentStudent;
       if (current && data.students[current] && data.students[current].notes) {
         notes.value = data.students[current].notes;
       } else {
         notes.value = '';
       }
-
+  
       if (select && current) select.value = current;
     }
   </script>

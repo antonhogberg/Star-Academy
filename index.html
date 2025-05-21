@@ -3,7 +3,7 @@
 <head>      
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta charset="UTF-8">
-    <title>Nordstjärnans Pianoskola</title>
+    <title data-translate="menuFrontPage"></title>
     <link rel="stylesheet" href="styles.css">
     <script>
         function setViewportHeight() {
@@ -352,13 +352,13 @@
         console.log('showStudentPopup called:', { isNew, name, errorMessage });
         const lang = localStorage.getItem('language') || 'sv';
         // Remove existing popup if present
-        const existingPopup = document.getElementById('studentPopup');
+        const existingPopup = document.getElementById('namePopup');
         if (existingPopup) {
-            console.log('Removing existing studentPopup');
+            console.log('Removing existing namePopup');
             existingPopup.remove();
         }
         const popup = document.createElement('div');
-        popup.id = 'studentPopup';
+        popup.id = 'namePopup';
         popup.className = 'student-popup show';
         // Force visibility
         popup.style.display = 'flex';
@@ -384,12 +384,12 @@
         });
 
         setTimeout(() => {
-            console.log('Fading out studentPopup');
+            console.log('Fading out namePopup');
             popup.classList.remove('show');
             popup.style.opacity = '0';
             setTimeout(() => {
                 if (popup.parentNode) {
-                    console.log('Removing studentPopup from DOM');
+                    console.log('Removing namePopup from DOM');
                     popup.parentNode.removeChild(popup);
                 }
             }, 500);
