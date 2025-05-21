@@ -2215,7 +2215,7 @@ h2#popupWelcome {
     }
 
     .student-manager {
-        padding: 0px 10px 20px 10px;
+        padding: 0px 10px;
     }
 
     .export-section {
@@ -2629,7 +2629,7 @@ h2#popupWelcome {
     }
 
     .student-manager {
-        padding: 0px 10px 10px 10px;
+        padding: 0px 10px;
         overflow-y: visible;
         height: auto;
         display: flex;
@@ -2708,7 +2708,7 @@ h2#popupWelcome {
     }
 
     .student-manager {
-        padding: 0px 10px 10px 10px;
+        padding: 0px 10px;
         overflow-y: visible;
         height: auto;
         display: flex;
