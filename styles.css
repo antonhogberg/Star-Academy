@@ -2439,6 +2439,12 @@ h2#popupWelcome {
         overscroll-behavior: none;
     }
 
+    body.student-manager-page {
+        overflow-y: auto !important;
+        height: auto;
+        min-height: 100vh;
+    }
+
     body.faq-page {
         overflow-y: auto !important;
         overscroll-behavior: auto !important;
