@@ -947,6 +947,12 @@ body.popup-open .student-manager {
     text-align: center;
 }
 
+.student-manager .info-button-container {
+    margin-left: 10px;
+    display: flex;
+    align-items: center;
+}
+
 .student-manager .checkbox-group {
     display: flex;
     justify-content: center;
@@ -957,6 +963,7 @@ body.popup-open .student-manager {
     border-radius: 5px !important;
     background: var(--semi-dark) !important;
     box-sizing: border-box;
+    padding: 0 10px;
 }
 .student-manager input[type="checkbox"]#studentModeCheckbox {
     width: 20px;
