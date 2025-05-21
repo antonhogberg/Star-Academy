@@ -107,7 +107,7 @@ const translations = {
       loading: "Loading student data...",
       success: "Your stars are updated, welcome",
       error: "Invalid link. No student was added.",
-      studentModeLabel: "Student Mode" // Step 2: Add translation for checkbox
+      studentModeLabel: "Export with fixed gold stars" // Step 2: Add translation for checkbox
     },
     sv: {
       menuFrontPage: "Stjärnöversikt",
@@ -211,7 +211,7 @@ const translations = {
       loading: "Laddar elevdata...",
       success: "Dina framgångar är uppdaterade, välkommen",
       error: "Ogiltig länk. Ingen elev lades till.",
-      studentModeLabel: "Studentläge" // Step 2: Add translation for checkbox
+      studentModeLabel: "Exportera med låsta guldstjärnor" // Step 2: Add translation for checkbox
     }
 };
 
