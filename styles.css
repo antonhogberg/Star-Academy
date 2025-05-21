@@ -2575,8 +2575,36 @@ h2#popupWelcome {
     }
 }
 
-/* iPad 1, 2, Mini, Air (768x1024, pixel ratio 1) */
-@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (-webkit-min-device-pixel-ratio: 1) {
+/* iPad 1, 2, Mini, Air portrait (768x1024, pixel ratio 1) */
+@media only screen and (min-width: 768px) and (max-width: 1024px) and (orientation: portrait) and (-webkit-min-device-pixel-ratio: 1) {
+    body.chapters .exercises {
+        gap: 20px;
+        max-width: 80vw;
+        flex-wrap: wrap;
+        justify-content: center;
+        flex-direction: row;
+    }
+    body.chapters .star-container {
+        width: 100px;
+        height: 120px;
+        box-sizing: border-box;
+    }
+    .star {
+        width: 100px;
+        min-width: 100px;
+        max-width: 100px;
+        height: auto;
+        object-fit: contain;
+    }
+    .exercise-code {
+        margin-top: 105px;
+        margin-right: 2px;
+        font-size: 14px;
+    }
+}
+
+/* iPad 1, 2, Mini, Air landscape (768x1024, pixel ratio 1) */
+@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 1) {
     body.chapters .exercises {
         gap: 20px;
         max-width: 80vw;
@@ -2610,8 +2638,8 @@ h2#popupWelcome {
     }
 }
 
-/* iPad 3, 4, Pro 9.7" (768x1024, pixel ratio 2) */
-@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (-webkit-min-device-pixel-ratio: 2) {
+/* iPad 3, 4, Pro 9.7" portrait (768x1024, pixel ratio 2) */
+@media only screen and (min-width: 768px) and (max-width: 1024px) and (orientation: portrait) and (-webkit-min-device-pixel-ratio: 2) {
     body.chapters .exercises {
         gap: 20px;
         max-width: 80vw;
@@ -2638,35 +2666,36 @@ h2#popupWelcome {
     }
 }
 
-/* iPad Pro 10.5" landscape (1112x834, pixel ratio 2) */
-@media only screen and (min-device-width: 1112px) and (max-device-width: 1112px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
+/* iPad 3, 4, Pro 9.7" landscape (768x1024, pixel ratio 2) */
+@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
     body.chapters .exercises {
-        gap: 30px;
+        gap: 20px;
         max-width: 80vw;
         flex-wrap: wrap;
         justify-content: center;
         flex-direction: row;
     }
     body.chapters .star-container {
-        width: 120px;
-        height: 140px;
+        width: 100px;
+        height: 120px;
         box-sizing: border-box;
     }
     .star {
-        width: 120px;
-        min-width: 120px;
-        max-width: 120px;
+        width: 100px;
+        min-width: 100px;
+        max-width: 100px;
         height: auto;
         object-fit: contain;
     }
     .exercise-code {
-        margin-top: 125px;
+        margin-top: 105px;
         margin-right: 2px;
+        font-size: 14px;
     }
 }
 
-/* iPad Pro 12.9" landscape (1366x1024, pixel ratio 2) */
-@media only screen and (min-device-width: 1366px) and (max-device-width: 1366px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
+/* iPad Pro 10.5" and 12.9" (1024x1366 or 1366x1024, pixel ratio 2) */
+@media only screen and (min-device-width: 834px) and (max-device-width: 1366px) and (-webkit-min-device-pixel-ratio: 2) {
     body.chapters .exercises {
         gap: 30px;
         max-width: 80vw;
@@ -2690,7 +2719,6 @@ h2#popupWelcome {
         margin-top: 155px;
         margin-right: 4px;
     }
-    /* From 1366px query */
     .star-map-container {
         top: 50px;
         height: calc(100vh - 50px);
