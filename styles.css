@@ -947,13 +947,14 @@ body.popup-open .student-manager {
     text-align: center;
 }
 
-.student-manager .input-group.checkbox-group {
+.student-manager .checkbox-group {
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 8px;
-    width: auto !important;
+    width: auto;
     padding: 8px;
+    margin-bottom: 10px;
     border: 1px solid var(--orange);
     border-radius: 5px;
     background: var(--semi-dark);
@@ -1625,9 +1626,10 @@ h2#popupWelcome {
         left: 300px; /* Smaller offset for smaller screens */
     }
 
-    .student-manager .input-group.checkbox-group {
-        width: auto !important;
+    .student-manager .checkbox-group {
+        width: auto;
         padding: 8px;
+        margin-bottom: 10px;
     }
 
     .info-overlay {
