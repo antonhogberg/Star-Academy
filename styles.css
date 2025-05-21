@@ -952,7 +952,7 @@ body.popup-open .student-manager {
     justify-content: center;
     align-items: center;
     gap: 8px;
-    width: auto;
+    width: auto !important;
     padding: 8px;
     border: 1px solid var(--orange);
     border-radius: 5px;
@@ -1626,7 +1626,7 @@ h2#popupWelcome {
     }
 
     .student-manager .input-group.checkbox-group {
-        width: auto;
+        width: auto !important;
         padding: 8px;
     }
 
