@@ -2575,8 +2575,8 @@ h2#popupWelcome {
     }
 }
 
-/* iPad 1, 2, Mini, Air landscape (768x1024, pixel ratio 1) */
-@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 1) {
+/* iPad 1, 2, Mini, Air (768x1024, pixel ratio 1) */
+@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (-webkit-min-device-pixel-ratio: 1) {
     body.chapters .exercises {
         gap: 20px;
         max-width: 80vw;
@@ -2601,7 +2601,6 @@ h2#popupWelcome {
         margin-right: 2px;
         font-size: 14px;
     }
-    /* From iPad Mini 1000px–1100px query */
     .description-container {
         width: 430px;
         margin-right: 90px;
@@ -2611,8 +2610,8 @@ h2#popupWelcome {
     }
 }
 
-/* iPad 3, 4, Pro 9.7" landscape (768x1024, pixel ratio 2) */
-@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
+/* iPad 3, 4, Pro 9.7" (768x1024, pixel ratio 2) */
+@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (-webkit-min-device-pixel-ratio: 2) {
     body.chapters .exercises {
         gap: 20px;
         max-width: 80vw;
