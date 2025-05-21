@@ -184,8 +184,8 @@
         <div class="checkbox-group">
           <input type="checkbox" id="studentModeCheckbox">
           <label for="studentModeCheckbox" id="studentModeLabel" data-translate="studentModeLabel">Exportera med låsta guldstjärnor</label>
-          <button id="studentModeInfoButton" class="info-button" aria-label="Student Mode Info">ⓘ</button>
         </div>
+        <button id="studentModeInfoButton" class="info-button" aria-label="Student Mode Info">ⓘ</button>
         <button id="shareExportButton" class="share-button" data-translate="shareButtonExport" onclick="shareExport()">Dela via AirDrop / Meddelande / QR-kod</button>
         <p class="info-text" data-translate="exportInfoText">Exporterar: Namn, Anteckningar & Stjärnor</p>
         <p id="exportStatus" class="info-text" data-translate="exportStatus" style="display: none;"></p>
@@ -195,7 +195,7 @@
     <div id="studentModeInfoPopup" class="popup" style="display: none;">
       <div class="student-popup-content" onclick="event.stopPropagation();">
         <button id="closeStudentModeInfoPopup" style="position: absolute; top: 1px; right: 1px; background: none; border: none; font-size: 24px; color: #ffd700; cursor: pointer; font-weight: bold;">×</button>
-        <p id="studentModeInfoText" data-translate="studentModeInfoText"></p>
+        <p id="studentModeInfoText" data-translate="studentModeInfoText" style="padding: 10px;"></p>
       </div>
     </div>
 
