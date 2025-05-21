@@ -955,9 +955,9 @@ body.popup-open .student-manager {
     width: auto;
     padding: 8px;
     margin-bottom: 10px;
-    border: 1px solid var(--orange);
-    border-radius: 5px;
-    background: var(--semi-dark);
+    border: 1px solid var(--orange) !important;
+    border-radius: 5px !important;
+    background: var(--semi-dark) !important;
     box-sizing: border-box;
 }
 .student-manager input[type="checkbox"]#studentModeCheckbox {
@@ -970,7 +970,7 @@ body.popup-open .student-manager {
     display: inline-block;
     width: auto;
     margin: 8px;
-    color: var(--gold);
+    color: #ffffff;
     font-family: Cochin, Georgia, Arial, sans-serif;
     font-size: 16px;
     cursor: pointer;
@@ -1630,6 +1630,9 @@ h2#popupWelcome {
         width: auto;
         padding: 8px;
         margin-bottom: 10px;
+        border: 1px solid var(--orange) !important;
+        border-radius: 5px !important;
+        background: var(--semi-dark) !important;
     }
 
     .info-overlay {
