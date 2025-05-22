@@ -960,7 +960,7 @@ body.popup-open .student-manager {
     border-radius: 5px !important;
     background: var(--semi-dark) !important;
     box-sizing: border-box;
-    padding: 0 10px;
+    padding: 0 8px;
     margin-bottom: 10px;
 }
 
@@ -981,10 +981,10 @@ body.popup-open .student-manager {
 }
 
 .student-manager .info-button {
-    width: 32px;
+    width: 20px;
     height: 32px;
     box-sizing: border-box;
-    padding: 0;
+    padding: 3px 0 0 0;
     margin: 0;
     background: none;
     border: none;
@@ -996,6 +996,7 @@ body.popup-open .student-manager {
     justify-content: center;
     align-items: center;
     -webkit-tap-highlight-color: transparent;
+    box-shadow: none;
 }
 
 .student-manager input[type="checkbox"]#studentModeCheckbox {
