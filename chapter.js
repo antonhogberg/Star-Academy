@@ -59,8 +59,9 @@ function initializeChapter() {
         .star { pointer-events: all; transition: opacity 0.4s ease-in-out; position: absolute; top: 0; left: 0; z-index: 1; width: 100%; height: 100%; }
         .star.no-transition { transition: none; }
         .star.non-clickable { pointer-events: auto; }
-        .star.active { pointer-events: all; z-index: 2; }
         .star.base { pointer-events: none; z-index: 0; }
+        .star.active { pointer-events: all; z-index: 2; }
+        .star.overlay { z-index: 3; }
     `;
     document.head.appendChild(styleElement);
 
@@ -177,6 +178,8 @@ function initializeChapter() {
                 if (!(studentMode && goldLevel === 6)) {
                     activeStar.dataset.goldLevel = newGoldLevel;
                     activeStar.dataset.silverLevel = newSilverLevel;
+                    baseImg.dataset.goldLevel = newGoldLevel;
+                    baseImg.dataset.silverLevel = newSilverLevel;
                     try {
                         localStorage.setItem('starAcademyStudents', JSON.stringify(studentsData));
                     } catch (e) {
@@ -191,13 +194,10 @@ function initializeChapter() {
 
                     const queuedGoldLevel = parseInt(activeStar.dataset.queuedGoldLevel, 10);
                     const queuedSilverLevel = parseInt(activeStar.dataset.queuedSilverLevel, 10);
-                    const currentGoldLevel = parseInt(activeStar.dataset.goldLevel, 10);
-                    const currentSilverLevel = parseInt(activeStar.dataset.silverLevel, 10);
 
-                    // Determine if this is an exception case
-                    const maxSilver = studentMode ? 6 - goldLevel : 0;
+                    // Use the previous state for exception check
                     const isExceptionNow = (studentMode && goldLevel === 6) || 
-                                          (studentMode && silverLevel === maxSilver && queuedSilverLevel === 0) ||
+                                          (studentMode && silverLevel === (6 - goldLevel) && queuedSilverLevel === 0) ||
                                           (!studentMode && goldLevel === 6 && queuedGoldLevel === 0);
 
                     if (isAnimating) {
@@ -242,8 +242,7 @@ function initializeChapter() {
                         baseImg.classList.add('no-transition'); // Prevent fade-out of base star
                         baseImg.src = starImages[queuedGoldLevel][queuedSilverLevel];
                         baseImg.alt = `Exercise ${exerciseCode} - ${queuedGoldLevel === 0 && queuedSilverLevel === 0 ? 'Outlined Star' : `${queuedGoldLevel} Golden Stars, ${queuedSilverLevel} Silver Stars`}`;
-                        baseImg.dataset.goldLevel = queuedGoldLevel;
-                        baseImg.dataset.silverLevel = queuedSilverLevel;
+                        baseImg.style.opacity = '1'; // Ensure baseImg is fully visible
 
                         overlayImg = document.createElement('img');
                         overlayImg.src = starImages[queuedGoldLevel][queuedSilverLevel];
@@ -257,14 +256,15 @@ function initializeChapter() {
                         overlayImg.dataset.isException = 'false';
                         overlayImg.style.opacity = '0';
                         starContainer.appendChild(overlayImg);
-                        setTimeout(() => {
-                            overlayImg.style.opacity = '1';
-                        }, 10);
+                        overlayImg.style.opacity = '1'; // Trigger the fade-in transition
+
                         setTimeout(() => {
                             const existingOverlay = starContainer.querySelector('.star.overlay');
                             if (existingOverlay && existingOverlay !== overlayImg) {
                                 starContainer.removeChild(existingOverlay);
                             }
+                            activeStar.src = starImages[queuedGoldLevel][queuedSilverLevel];
+                            activeStar.alt = `Exercise ${exerciseCode} - ${queuedGoldLevel === 0 && queuedSilverLevel === 0 ? 'Outlined Star' : `${queuedGoldLevel} Golden Stars, ${queuedSilverLevel} Silver Stars`}`;
                             activeStar.dataset.isAnimating = 'false';
 
                             // Check if another state change is queued
@@ -273,6 +273,8 @@ function initializeChapter() {
                             if (nextGoldLevel !== queuedGoldLevel || nextSilverLevel !== queuedSilverLevel) {
                                 activeStar.dataset.goldLevel = nextGoldLevel;
                                 activeStar.dataset.silverLevel = nextSilverLevel;
+                                baseImg.dataset.goldLevel = nextGoldLevel;
+                                baseImg.dataset.silverLevel = nextSilverLevel;
                                 applyAnimation();
                             }
                         }, 400);
