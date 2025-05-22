@@ -57,7 +57,6 @@ function initializeChapter() {
     const styleElement = document.createElement('style');
     styleElement.textContent = `
         .star { pointer-events: all; transition: opacity 0.4s ease-in-out; position: absolute; top: 0; left: 0; z-index: 1; width: 100%; height: 100%; }
-        .star.no-transition { transition: none; }
         .star.non-clickable { pointer-events: auto; }
         .star.active { pointer-events: all; z-index: 2; }
     `;
@@ -219,7 +218,6 @@ function initializeChapter() {
                         }, 400);
                     } else {
                         // Fade-in overlay for general case
-                        starImg.classList.add('no-transition'); // Prevent fade-out of old star
                         overlayImg = document.createElement('img');
                         overlayImg.src = starImages[queuedGoldLevel][queuedSilverLevel];
                         overlayImg.alt = `Exercise ${exerciseCode} - ${queuedGoldLevel === 0 && queuedSilverLevel === 0 ? 'Outlined Star' : `${queuedGoldLevel} Golden Stars, ${queuedSilverLevel} Silver Stars`}`;
