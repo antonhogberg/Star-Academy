@@ -2279,6 +2279,9 @@ h2#popupWelcome {
     .student-manager .info-button-container {
         margin: 10px 0 0 0;
     }
+    .student-manager .info-button-container::before {
+        display: none;
+    }
     .student-manager button#shareButton,
     .student-manager button#shareExportButton {
         width: 72vw;
