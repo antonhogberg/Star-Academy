@@ -947,11 +947,20 @@ body.popup-open .student-manager {
     text-align: center;
 }
 
+.student-manager .export-button-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
 .student-manager .checkbox-info-wrapper {
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: center;
+    flex-wrap: nowrap;
+    min-width: 350px; /* Ensures enough space for checkbox-group and info button */
     margin-bottom: 10px;
 }
 
@@ -992,6 +1001,7 @@ body.popup-open .student-manager {
     align-items: center;
     -webkit-tap-highlight-color: transparent;
 }
+
 .student-manager input[type="checkbox"]#studentModeCheckbox {
     width: 20px;
     height: 20px;
