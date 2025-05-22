@@ -961,6 +961,7 @@ body.popup-open .student-manager {
     background: var(--semi-dark) !important;
     box-sizing: border-box;
     padding: 0 10px;
+    margin-bottom: 10px;
 }
 
 .student-manager .checkbox-text-wrapper {
