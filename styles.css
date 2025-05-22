@@ -958,10 +958,11 @@ body.popup-open .student-manager {
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
     width: 100%;
-    max-width: 350px;
+    max-width: 320px;
     margin-bottom: 10px;
+    overflow-x: auto;
 }
 
 .student-manager .checkbox-group {
@@ -998,16 +999,16 @@ body.popup-open .student-manager {
 }
 
 .student-manager .info-button {
-    width: 24px;
-    height: 24px;
+    width: 42px;
+    height: 42px;
     box-sizing: border-box;
     padding: 0;
-    margin: 0 9px;
+    margin: 0;
     background: var(--semi-dark);
     border: 1px solid var(--orange);
     border-radius: 5px;
     color: var(--gold);
-    font-size: 16px;
+    font-size: 20px;
     line-height: 1;
     cursor: pointer;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
@@ -2068,6 +2069,19 @@ h2#popupWelcome {
 }
 
 /* Media Queries */
+
+@media (max-width: 320px) {
+    .student-manager .checkbox-info-wrapper {
+        flex-direction: column;
+        align-items: center;
+    }
+    .student-manager .info-button-container {
+        margin: 10px 0 0 0;
+    }
+    .student-manager .info-button-container::before {
+        display: none;
+    }
+}
 
 /* General min-width: 1001px */
 @media (min-width: 1001px) {
