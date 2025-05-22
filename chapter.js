@@ -92,12 +92,16 @@ function initializeChapter() {
             img.alt = `Exercise ${exerciseCode} - ${goldLevel === 0 && silverLevel === 0 ? 'Outlined Star' : `${goldLevel} Golden Stars, ${silverLevel} Silver Stars`}`;
             img.className = 'star';
             img.dataset.exercise = exerciseKey;
+            img.dataset.goldLevel = goldLevel;
+            img.dataset.silverLevel = silverLevel;
+            img.dataset.queuedGoldLevel = goldLevel;
+            img.dataset.queuedSilverLevel = silverLevel;
 
             const codeLabel = document.createElement('div');
             codeLabel.textContent = exerciseCode;
             codeLabel.className = 'exercise-code';
 
-            // Step 5: Click handler for mode-specific star clicking
+            // Click handler for mode-specific star clicking
             function handleStarClick(event) {
                 const starImg = event.currentTarget;
                 let studentsData;
@@ -115,26 +119,20 @@ function initializeChapter() {
                 const silverProgress = studentsData.students[studentsData.currentStudent]?.silverProgress || {};
                 const studentMode = studentsData.students[studentsData.currentStudent]?.studentMode || false;
                 console.log(`Star ${exerciseCode} clicked, studentMode=${studentMode}`);
-                console.log(`Click handler executed for star-${exerciseCode}`);
-                let goldLevel = progress[exerciseKey] ? parseInt(progress[exerciseKey]) : 0;
-                let silverLevel = silverProgress[exerciseKey] ? parseInt(silverProgress[exerciseKey]) : 0;
 
+                let goldLevel = parseInt(starImg.dataset.goldLevel, 10);
+                let silverLevel = parseInt(starImg.dataset.silverLevel, 10);
                 let newGoldLevel = goldLevel;
                 let newSilverLevel = silverLevel;
-                let isException = false;
+
                 if (studentMode && goldLevel === 6) {
                     // Exception 1: Gold level 6 in student mode (fade-out/fade-in)
                     console.log(`Student mode: Fade effect for goldLevel=6, no state change for ${exerciseKey}`);
-                    isException = true;
                     starImg.classList.add('non-clickable');
                 } else if (studentMode) {
                     // Student mode: Increment silver stars, lock gold stars
                     const maxSilver = 6 - goldLevel;
                     newSilverLevel = (silverLevel + 1) % (maxSilver + 1);
-                    // Exception 2: Transition to goldX_silver0 in student mode
-                    if (newSilverLevel === 0 && silverLevel === maxSilver) {
-                        isException = true;
-                    }
                     silverProgress[exerciseKey] = newSilverLevel.toString();
                     studentsData.students[studentsData.currentStudent].silverProgress = silverProgress;
                     console.log(`Student mode: Updated silverLevel=${newSilverLevel} for ${exerciseKey}`);
@@ -142,10 +140,6 @@ function initializeChapter() {
                     // Normal mode: Increment gold stars, reset silver stars
                     newGoldLevel = (goldLevel + 1) % 7;
                     newSilverLevel = 0;
-                    // Exception 2: Transition from gold6_silver0 to gold0_silver0
-                    if (goldLevel === 6 && newGoldLevel === 0) {
-                        isException = true;
-                    }
                     progress[exerciseKey] = newGoldLevel.toString();
                     silverProgress[exerciseKey] = '0';
                     studentsData.students[studentsData.currentStudent].progress = progress;
@@ -153,34 +147,13 @@ function initializeChapter() {
                     console.log(`Normal mode: Updated goldLevel=${newGoldLevel}, silverLevel=0 for ${exerciseKey}`);
                 }
 
-                if (isException) {
-                    // Fade-out/fade-in for exceptions
-                    starImg.style.opacity = '0';
-                    setTimeout(() => {
-                        starImg.src = starImages[newGoldLevel][newSilverLevel];
-                        starImg.alt = `Exercise ${exerciseCode} - ${newGoldLevel === 0 && newSilverLevel === 0 ? 'Outlined Star' : `${newGoldLevel} Golden Stars, ${newSilverLevel} Silver Stars`}`;
-                        starImg.style.opacity = '1';
-                    }, 400); // Update src after 400ms fade-out
-                } else {
-                    // Fade-in overlay for general case
-                    const overlayImg = document.createElement('img');
-                    overlayImg.src = starImages[newGoldLevel][newSilverLevel];
-                    overlayImg.alt = `Exercise ${exerciseCode} - ${newGoldLevel === 0 && newSilverLevel === 0 ? 'Outlined Star' : `${newGoldLevel} Golden Stars, ${newSilverLevel} Silver Stars`}`;
-                    overlayImg.className = 'star';
-                    overlayImg.dataset.exercise = exerciseKey;
-                    overlayImg.style.opacity = '0';
-                    starContainer.appendChild(overlayImg);
-                    setTimeout(() => {
-                        overlayImg.style.opacity = '1';
-                    }, 10); // Small delay to ensure rendering
-                    setTimeout(() => {
-                        starContainer.removeChild(starImg);
-                        overlayImg.addEventListener('click', handleStarClick);
-                        console.log(`Reattached click handler for star-${exerciseCode}`);
-                    }, 400); // Remove old image and reattach listener after 400ms fade-in
-                }
+                // Update state in memory
+                starImg.dataset.goldLevel = newGoldLevel;
+                starImg.dataset.silverLevel = newSilverLevel;
+                starImg.dataset.queuedGoldLevel = newGoldLevel;
+                starImg.dataset.queuedSilverLevel = newSilverLevel;
 
-                // Update localStorage only if state changed
+                // Save progress only if state changed
                 if (!(studentMode && goldLevel === 6)) {
                     try {
                         localStorage.setItem('starAcademyStudents', JSON.stringify(studentsData));
@@ -188,6 +161,38 @@ function initializeChapter() {
                         console.error(`Failed to save starAcademyStudents: ${e}`);
                     }
                 }
+
+                // Handle fade-in animation
+                const applyFadeIn = () => {
+                    const isAnimating = starImg.classList.contains('animating');
+                    if (isAnimating) {
+                        // Animation in progress, queue the state update
+                        return;
+                    }
+
+                    starImg.classList.add('animating');
+                    starImg.style.opacity = '0'; // Start fade-out
+                    starImg.src = starImages[newGoldLevel][newSilverLevel];
+                    starImg.alt = `Exercise ${exerciseCode} - ${newGoldLevel === 0 && newSilverLevel === 0 ? 'Outlined Star' : `${newGoldLevel} Golden Stars, ${newSilverLevel} Silver Stars`}`;
+                    setTimeout(() => {
+                        starImg.style.opacity = '1'; // Fade-in
+                        starImg.classList.remove('animating');
+                        starImg.classList.remove('non-clickable');
+
+                        // Check if another state change is queued
+                        const queuedGoldLevel = parseInt(starImg.dataset.queuedGoldLevel, 10);
+                        const queuedSilverLevel = parseInt(starImg.dataset.queuedSilverLevel, 10);
+                        if (queuedGoldLevel !== newGoldLevel || queuedSilverLevel !== newSilverLevel) {
+                            starImg.dataset.goldLevel = queuedGoldLevel;
+                            starImg.dataset.silverLevel = queuedSilverLevel;
+                            newGoldLevel = queuedGoldLevel;
+                            newSilverLevel = queuedSilverLevel;
+                            applyFadeIn();
+                        }
+                    }, 400); // Match CSS transition duration
+                };
+
+                applyFadeIn();
 
                 // Trigger rank achievement check
                 if (typeof window.updateStarStates === 'function') {
@@ -201,7 +206,7 @@ function initializeChapter() {
             img.addEventListener('click', handleStarClick);
             console.log(`Attached click handler for star-${exerciseCode} during initialization`);
 
-            // Step 5: Storage listener for updates
+            // Storage listener for updates
             window.addEventListener('storage', (event) => {
                 if (event.key === 'starAcademyStudents') {
                     let updatedStudentsData;
@@ -224,6 +229,10 @@ function initializeChapter() {
                         newImg.alt = `Exercise ${exerciseCode} - ${updatedGoldLevel === 0 && updatedSilverLevel === 0 ? 'Outlined Star' : `${updatedGoldLevel} Golden Stars, ${updatedSilverLevel} Silver Stars`}`;
                         newImg.className = 'star';
                         newImg.dataset.exercise = exerciseKey;
+                        newImg.dataset.goldLevel = updatedGoldLevel;
+                        newImg.dataset.silverLevel = updatedSilverLevel;
+                        newImg.dataset.queuedGoldLevel = updatedGoldLevel;
+                        newImg.dataset.queuedSilverLevel = updatedSilverLevel;
                         newImg.addEventListener('click', handleStarClick);
                         starContainer.appendChild(newImg);
                         starContainer.appendChild(codeLabel);
