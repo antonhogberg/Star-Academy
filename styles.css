@@ -2286,16 +2286,7 @@ h2#popupWelcome {
         border-radius: 5px !important;
         background: var(--semi-dark) !important;
     }
-    .student-manager .checkbox-info-wrapper {
-        flex-direction: column;
-        align-items: center;
-    }
-    .student-manager .info-button-container {
-        margin: 10px 0 0 0;
-    }
-    .student-manager .info-button-container::before {
-        display: none;
-    }
+    
     .student-manager button#shareButton,
     .student-manager button#shareExportButton {
         width: 72vw;
