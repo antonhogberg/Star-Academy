@@ -943,7 +943,6 @@ body.popup-open .student-manager {
     text-align: center;
 }
 
-css
 .student-manager .export-button-container {
     display: flex;
     flex-direction: column;
@@ -964,16 +963,20 @@ css
     padding: 0 10px;
 }
 
+.student-manager .checkbox-text-wrapper {
+    display: flex;
+    align-items: center;
+}
+
 .student-manager .checkbox-group input[type="checkbox"]#studentModeCheckbox {
     width: 16px;
     height: 16px;
-    margin: 0 8px 0 0;
+    margin: 0 5px 0 0;
 }
 
 .student-manager .checkbox-group label#studentModeLabel {
     margin: 0;
     line-height: 32px;
-    flex: 1;
 }
 
 .student-manager .info-button {
