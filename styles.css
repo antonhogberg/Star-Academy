@@ -943,6 +943,7 @@ body.popup-open .student-manager {
     text-align: center;
 }
 
+css
 .student-manager .export-button-container {
     display: flex;
     flex-direction: column;
@@ -950,74 +951,47 @@ body.popup-open .student-manager {
     margin-bottom: 20px;
 }
 
-.student-manager .checkbox-info-wrapper {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    max-width: 320px;
-    margin-bottom: 10px;
-    overflow-x: auto;
-}
-
 .student-manager .checkbox-group {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
-    width: auto;
-    max-width: 250px;
-    height: 42px;
+    width: 320px;
+    height: 32px;
     border: 1px solid var(--orange) !important;
     border-radius: 5px !important;
     background: var(--semi-dark) !important;
     box-sizing: border-box;
     padding: 0 10px;
-    flex: 1;
 }
 
 .student-manager .checkbox-group input[type="checkbox"]#studentModeCheckbox {
-    width: 20px;
-    height: 20px;
+    width: 16px;
+    height: 16px;
     margin: 0 8px 0 0;
 }
 
 .student-manager .checkbox-group label#studentModeLabel {
     margin: 0;
-    line-height: 42px;
-}
-
-.student-manager .info-button-container {
-    margin: 0 0 0 10px;
-    display: flex;
-    align-items: center;
-    flex: 0;
+    line-height: 32px;
+    flex: 1;
 }
 
 .student-manager .info-button {
-    width: 42px;
-    height: 42px;
+    width: 32px;
+    height: 32px;
     box-sizing: border-box;
-    padding: 3px 0 0 0;
+    padding: 0;
     margin: 0;
-    background: var(--semi-dark);
-    border: 1px solid var(--orange);
-    border-radius: 5px;
+    background: none;
+    border: none;
     color: var(--gold);
     font-size: 20px;
     line-height: 1;
     cursor: pointer;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     display: flex;
     justify-content: center;
     align-items: center;
     -webkit-tap-highlight-color: transparent;
-}
-
-.student-manager .info-button-container::before {
-    content: '';
-    display: block;
-    width: 9px;
 }
 
 .student-manager input[type="checkbox"]#studentModeCheckbox {
@@ -2066,19 +2040,6 @@ h2#popupWelcome {
 
 /* Media Queries */
 
-@media (max-width: 320px) {
-    .student-manager .checkbox-info-wrapper {
-        flex-direction: column;
-        align-items: center;
-    }
-    .student-manager .info-button-container {
-        margin: 10px 0 0 0;
-    }
-    .student-manager .info-button-container::before {
-        display: none;
-    }
-}
-
 /* General min-width: 1001px */
 @media (min-width: 1001px) {
     .text-box #rankTitle {
@@ -2276,11 +2237,7 @@ h2#popupWelcome {
         margin-bottom: 10px;
     }
     .student-manager .checkbox-group {
-        width: auto;
-        margin-bottom: 10px;
-        border: 1px solid var(--orange) !important;
-        border-radius: 5px !important;
-        background: var(--semi-dark) !important;
+        width: 72vw;
     }
     
     .student-manager button#shareButton,
