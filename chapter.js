@@ -57,7 +57,9 @@ function initializeChapter() {
     const styleElement = document.createElement('style');
     styleElement.textContent = `
         .star { pointer-events: all; transition: opacity 0.4s ease-in-out; position: absolute; top: 0; left: 0; z-index: 1; width: 100%; height: 100%; }
+        .star.no-transition { transition: none; }
         .star.non-clickable { pointer-events: auto; }
+        .star.active { pointer-events: all; z-index: 2; }
     `;
     document.head.appendChild(styleElement);
 
@@ -90,12 +92,13 @@ function initializeChapter() {
             const img = document.createElement('img');
             img.src = starImages[goldLevel][silverLevel] || starImages[0][0];
             img.alt = `Exercise ${exerciseCode} - ${goldLevel === 0 && silverLevel === 0 ? 'Outlined Star' : `${goldLevel} Golden Stars, ${silverLevel} Silver Stars`}`;
-            img.className = 'star';
+            img.className = 'star active';
             img.dataset.exercise = exerciseKey;
             img.dataset.goldLevel = goldLevel;
             img.dataset.silverLevel = silverLevel;
             img.dataset.queuedGoldLevel = goldLevel;
             img.dataset.queuedSilverLevel = silverLevel;
+            img.dataset.isAnimating = 'false';
 
             const codeLabel = document.createElement('div');
             codeLabel.textContent = exerciseCode;
@@ -124,15 +127,21 @@ function initializeChapter() {
                 let silverLevel = parseInt(starImg.dataset.silverLevel, 10);
                 let newGoldLevel = goldLevel;
                 let newSilverLevel = silverLevel;
+                let isException = false;
 
                 if (studentMode && goldLevel === 6) {
                     // Exception 1: Gold level 6 in student mode (fade-out/fade-in)
                     console.log(`Student mode: Fade effect for goldLevel=6, no state change for ${exerciseKey}`);
+                    isException = true;
                     starImg.classList.add('non-clickable');
                 } else if (studentMode) {
                     // Student mode: Increment silver stars, lock gold stars
                     const maxSilver = 6 - goldLevel;
                     newSilverLevel = (silverLevel + 1) % (maxSilver + 1);
+                    // Exception 2: Transition to goldX_silver0 in student mode
+                    if (newSilverLevel === 0 && silverLevel === maxSilver) {
+                        isException = true;
+                    }
                     silverProgress[exerciseKey] = newSilverLevel.toString();
                     studentsData.students[studentsData.currentStudent].silverProgress = silverProgress;
                     console.log(`Student mode: Updated silverLevel=${newSilverLevel} for ${exerciseKey}`);
@@ -140,6 +149,10 @@ function initializeChapter() {
                     // Normal mode: Increment gold stars, reset silver stars
                     newGoldLevel = (goldLevel + 1) % 7;
                     newSilverLevel = 0;
+                    // Exception 2: Transition from gold6_silver0 to gold0_silver0
+                    if (goldLevel === 6 && newGoldLevel === 0) {
+                        isException = true;
+                    }
                     progress[exerciseKey] = newGoldLevel.toString();
                     silverProgress[exerciseKey] = '0';
                     studentsData.students[studentsData.currentStudent].progress = progress;
@@ -147,14 +160,14 @@ function initializeChapter() {
                     console.log(`Normal mode: Updated goldLevel=${newGoldLevel}, silverLevel=0 for ${exerciseKey}`);
                 }
 
-                // Update state in memory
-                starImg.dataset.goldLevel = newGoldLevel;
-                starImg.dataset.silverLevel = newSilverLevel;
+                // Update queued state in memory
                 starImg.dataset.queuedGoldLevel = newGoldLevel;
                 starImg.dataset.queuedSilverLevel = newSilverLevel;
 
                 // Save progress only if state changed
                 if (!(studentMode && goldLevel === 6)) {
+                    starImg.dataset.goldLevel = newGoldLevel;
+                    starImg.dataset.silverLevel = newSilverLevel;
                     try {
                         localStorage.setItem('starAcademyStudents', JSON.stringify(studentsData));
                     } catch (e) {
@@ -162,45 +175,98 @@ function initializeChapter() {
                     }
                 }
 
-                // Handle fade-in animation
-                const applyFadeIn = () => {
-                    const isAnimating = starImg.classList.contains('animating');
+                // Handle animation
+                const applyAnimation = () => {
+                    const isAnimating = starImg.dataset.isAnimating === 'true';
+                    let overlayImg = starContainer.querySelector('.star.overlay');
+
+                    const queuedGoldLevel = parseInt(starImg.dataset.queuedGoldLevel, 10);
+                    const queuedSilverLevel = parseInt(starImg.dataset.queuedSilverLevel, 10);
+                    const isExceptionNow = (studentMode && queuedGoldLevel === 6) || 
+                                          (queuedSilverLevel === 0 && parseInt(starImg.dataset.silverLevel, 10) === (6 - parseInt(starImg.dataset.goldLevel, 10))) ||
+                                          (queuedGoldLevel === 0 && parseInt(starImg.dataset.goldLevel, 10) === 6);
+
                     if (isAnimating) {
-                        // Animation in progress, queue the state update
+                        // Animation in progress, update the existing overlay's queued state
+                        if (overlayImg) {
+                            overlayImg.dataset.queuedGoldLevel = queuedGoldLevel;
+                            overlayImg.dataset.queuedSilverLevel = queuedSilverLevel;
+                            overlayImg.dataset.isException = isExceptionNow ? 'true' : 'false';
+                        }
                         return;
                     }
 
-                    starImg.classList.add('animating');
-                    starImg.style.opacity = '0'; // Start fade-out
-                    starImg.src = starImages[newGoldLevel][newSilverLevel];
-                    starImg.alt = `Exercise ${exerciseCode} - ${newGoldLevel === 0 && newSilverLevel === 0 ? 'Outlined Star' : `${newGoldLevel} Golden Stars, ${newSilverLevel} Silver Stars`}`;
-                    setTimeout(() => {
-                        starImg.style.opacity = '1'; // Fade-in
-                        starImg.classList.remove('animating');
-                        starImg.classList.remove('non-clickable');
+                    starImg.dataset.isAnimating = 'true';
 
-                        // Check if another state change is queued
-                        const queuedGoldLevel = parseInt(starImg.dataset.queuedGoldLevel, 10);
-                        const queuedSilverLevel = parseInt(starImg.dataset.queuedSilverLevel, 10);
-                        if (queuedGoldLevel !== newGoldLevel || queuedSilverLevel !== newSilverLevel) {
-                            starImg.dataset.goldLevel = queuedGoldLevel;
-                            starImg.dataset.silverLevel = queuedSilverLevel;
-                            newGoldLevel = queuedGoldLevel;
-                            newSilverLevel = queuedSilverLevel;
-                            applyFadeIn();
-                        }
-                    }, 400); // Match CSS transition duration
+                    if (isExceptionNow) {
+                        // Fade-out/fade-in for exceptions
+                        starImg.style.opacity = '0';
+                        setTimeout(() => {
+                            starImg.src = starImages[queuedGoldLevel][queuedSilverLevel];
+                            starImg.alt = `Exercise ${exerciseCode} - ${queuedGoldLevel === 0 && queuedSilverLevel === 0 ? 'Outlined Star' : `${queuedGoldLevel} Golden Stars, ${queuedSilverLevel} Silver Stars`}`;
+                            starImg.style.opacity = '1';
+                            starImg.dataset.isAnimating = 'false';
+                            starImg.classList.remove('non-clickable');
+
+                            // Check if another state change is queued
+                            const nextGoldLevel = parseInt(starImg.dataset.queuedGoldLevel, 10);
+                            const nextSilverLevel = parseInt(starImg.dataset.queuedSilverLevel, 10);
+                            if (nextGoldLevel !== queuedGoldLevel || nextSilverLevel !== queuedSilverLevel) {
+                                starImg.dataset.goldLevel = nextGoldLevel;
+                                starImg.dataset.silverLevel = nextSilverLevel;
+                                applyAnimation();
+                            }
+                        }, 400);
+                    } else {
+                        // Fade-in overlay for general case
+                        starImg.classList.add('no-transition'); // Prevent fade-out of old star
+                        overlayImg = document.createElement('img');
+                        overlayImg.src = starImages[queuedGoldLevel][queuedSilverLevel];
+                        overlayImg.alt = `Exercise ${exerciseCode} - ${queuedGoldLevel === 0 && queuedSilverLevel === 0 ? 'Outlined Star' : `${queuedGoldLevel} Golden Stars, ${queuedSilverLevel} Silver Stars`}`;
+                        overlayImg.className = 'star overlay active';
+                        overlayImg.dataset.exercise = exerciseKey;
+                        overlayImg.dataset.goldLevel = queuedGoldLevel;
+                        overlayImg.dataset.silverLevel = queuedSilverLevel;
+                        overlayImg.dataset.queuedGoldLevel = queuedGoldLevel;
+                        overlayImg.dataset.queuedSilverLevel = queuedSilverLevel;
+                        overlayImg.dataset.isException = 'false';
+                        overlayImg.style.opacity = '0';
+                        starContainer.appendChild(overlayImg);
+                        setTimeout(() => {
+                            overlayImg.style.opacity = '1';
+                        }, 10);
+                        setTimeout(() => {
+                            const existingOverlay = starContainer.querySelector('.star.overlay');
+                            if (existingOverlay && existingOverlay !== overlayImg) {
+                                starContainer.removeChild(existingOverlay);
+                            }
+                            starContainer.removeChild(starImg);
+                            overlayImg.className = 'star active'; // Remove overlay class
+                            overlayImg.dataset.isAnimating = 'false';
+                            overlayImg.addEventListener('click', handleStarClick);
+                            console.log(`Reattached click handler for star-${exerciseCode}`);
+
+                            // Check if another state change is queued
+                            const nextGoldLevel = parseInt(overlayImg.dataset.queuedGoldLevel, 10);
+                            const nextSilverLevel = parseInt(overlayImg.dataset.queuedSilverLevel, 10);
+                            if (nextGoldLevel !== queuedGoldLevel || nextSilverLevel !== queuedSilverLevel) {
+                                overlayImg.dataset.goldLevel = nextGoldLevel;
+                                overlayImg.dataset.silverLevel = nextSilverLevel;
+                                applyAnimation();
+                            }
+                        }, 400);
+                    }
+
+                    // Trigger rank achievement check
+                    if (typeof window.updateStarStates === 'function') {
+                        console.log(`Star clicked on chapter ${chapterNum}, calling updateStarStates for exercise ${exerciseCode}`);
+                        window.updateStarStates(studentsData, true);
+                    } else {
+                        console.error('updateStarStates not defined');
+                    }
                 };
 
-                applyFadeIn();
-
-                // Trigger rank achievement check
-                if (typeof window.updateStarStates === 'function') {
-                    console.log(`Star clicked on chapter ${chapterNum}, calling updateStarStates for exercise ${exerciseCode}`);
-                    window.updateStarStates(studentsData, true);
-                } else {
-                    console.error('updateStarStates not defined');
-                }
+                applyAnimation();
             }
 
             img.addEventListener('click', handleStarClick);
@@ -227,12 +293,13 @@ function initializeChapter() {
                         const newImg = document.createElement('img');
                         newImg.src = starImages[updatedGoldLevel][updatedSilverLevel];
                         newImg.alt = `Exercise ${exerciseCode} - ${updatedGoldLevel === 0 && updatedSilverLevel === 0 ? 'Outlined Star' : `${updatedGoldLevel} Golden Stars, ${updatedSilverLevel} Silver Stars`}`;
-                        newImg.className = 'star';
+                        newImg.className = 'star active';
                         newImg.dataset.exercise = exerciseKey;
                         newImg.dataset.goldLevel = updatedGoldLevel;
                         newImg.dataset.silverLevel = updatedSilverLevel;
                         newImg.dataset.queuedGoldLevel = updatedGoldLevel;
                         newImg.dataset.queuedSilverLevel = updatedSilverLevel;
+                        newImg.dataset.isAnimating = 'false';
                         newImg.addEventListener('click', handleStarClick);
                         starContainer.appendChild(newImg);
                         starContainer.appendChild(codeLabel);
