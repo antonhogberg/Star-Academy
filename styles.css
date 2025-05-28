@@ -2084,7 +2084,7 @@ h2#popupWelcome {
 }
 
 /* iPhone portrait */
-@media (max-width: 767px) and (orientation: portrait) {
+@media (max-width: 767px) and (orientation: portrait) and (max-device-width: 767px) {
     body {
         height: auto;
         min-height: 100vh;
@@ -2102,6 +2102,18 @@ h2#popupWelcome {
     body.chapters {
         overflow: auto;
         height: auto;
+    }
+    body.chapters .exercises {
+        flex-wrap: wrap;
+        gap: 20px 10px;
+        max-width: 300px;
+        justify-content: center;
+        flex-direction: row;
+    }
+    body.chapters .star-container {
+        width: 140px;
+        height: 160px;
+        box-sizing: border-box;
     }
     .chapter-container {
         height: auto;
@@ -2441,9 +2453,16 @@ h2#popupWelcome {
         display: flex;
         flex-direction: column;
     }
+    body.chapters .exercises {
+        gap: 30px;
+        max-width: 1000px; /* Ensure enough width for 4 stars (4 * 150px + 3 * 30px = 690px) */
+        flex-wrap: nowrap; /* Prevent wrapping */
+        justify-content: center;
+        flex-direction: row;
+    }
     .chapter-container {
         height: calc(var(--vh, 1vh) * 100);
-        overflow: hidden;
+        overflow-y: auto; /* Changed from hidden to auto to allow scrolling */
     }
     .user-name-box {
         min-width: 200px;
@@ -2617,8 +2636,8 @@ h2#popupWelcome {
 @media only screen and (min-width: 768px) and (max-width: 1024px) and (orientation: portrait) and (-webkit-min-device-pixel-ratio: 1) {
     body.chapters .exercises {
         gap: 20px;
-        max-width: 80vw;
-        flex-wrap: wrap;
+        max-width: 1000px; /* Increased to ensure 4 stars (4 * 100px + 3 * 20px = 460px) fit in a single row */
+        flex-wrap: nowrap; /* Prevent wrapping */
         justify-content: center;
         flex-direction: row;
     }
