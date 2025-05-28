@@ -1513,7 +1513,7 @@ body.popup-open .content {
 
 .info-overlay {
     position: absolute;
-    top: 50%;
+    top: 40%;
     left: 510px;
     transform: translateY(-50%);
     display: flex;
