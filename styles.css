@@ -1719,6 +1719,33 @@ h2#popupWelcome {
     }
 }
 
+/* iPad Mini (newer models), iPad Pro 11", etc. */
+@media only screen and (min-device-width: 834px) and (max-device-width: 1366px) and (-webkit-min-device-pixel-ratio: 2) {
+    body.chapters .exercises {
+        gap: 15px; /* Reduced gap */
+        max-width: 80vw;
+        flex-wrap: nowrap; /* Ensure single row */
+        justify-content: center;
+        flex-direction: row;
+    }
+    body.chapters .star-container {
+        width: clamp(80px, 10vw, 120px); /* Responsive scaling, max 120px */
+        height: clamp(100px, 12vw, 140px); /* Responsive scaling, max 140px */
+        box-sizing: border-box;
+    }
+    .star {
+        width: clamp(80px, 10vw, 120px);
+        min-width: clamp(80px, 10vw, 120px);
+        max-width: clamp(80px, 10vw, 120px);
+        height: auto;
+        object-fit: contain;
+    }
+    .exercise-code {
+        margin-top: clamp(85px, 10vw, 125px); /* Adjusted for smaller star size */
+        margin-right: 2px;
+    }
+}
+
 /* iPad Mini landscape adjustments */
 @media (min-width: 1000px) and (max-width: 1100px) and (orientation: landscape) {
     .description-container {
@@ -2698,28 +2725,28 @@ h2#popupWelcome {
 /* iPad 3, 4, Pro 9.7" portrait (768x1024, pixel ratio 2) */
 @media only screen and (min-width: 768px) and (max-width: 1024px) and (orientation: portrait) and (-webkit-min-device-pixel-ratio: 2) {
     body.chapters .exercises {
-        gap: 20px;
-        max-width: 80vw;
-        flex-wrap: wrap;
+        gap: 10px; /* Reduced gap to fit better */
+        max-width: 1000px;
+        flex-wrap: nowrap;
         justify-content: center;
         flex-direction: row;
     }
     body.chapters .star-container {
-        width: 100px;
-        height: 120px;
+        width: 80px; /* Reduced from 100px */
+        height: 100px; /* Reduced from 120px */
         box-sizing: border-box;
     }
     .star {
-        width: 100px;
-        min-width: 100px;
-        max-width: 100px;
+        width: 80px;
+        min-width: 80px;
+        max-width: 80px;
         height: auto;
         object-fit: contain;
     }
     .exercise-code {
-        margin-top: 105px;
+        margin-top: 85px; /* Adjusted for smaller star size */
         margin-right: 2px;
-        font-size: 14px;
+        font-size: 12px; /* Slightly smaller text */
     }
 }
 
