@@ -2778,8 +2778,8 @@ h2#popupWelcome {
     }
 }
 
-/* iPad 11" and Similar Tablets (834px–1199px, Pixel Ratio 2) */
-@media only screen and (min-device-width: 834px) and (max-device-width: 1199px) and (-webkit-min-device-pixel-ratio: 2) {
+/* iPad 11" and Similar Tablets (834px–1193px, Pixel Ratio 2) */
+@media only screen and (min-device-width: 834px) and (max-device-width: 1193px) and (-webkit-min-device-pixel-ratio: 2) {
     body.chapters .exercises {
         gap: 15px;
         max-width: 80vw;
@@ -2809,8 +2809,8 @@ h2#popupWelcome {
     }
 }
 
-/* iPad Pro 12.9" (1200px–1366px, Pixel Ratio 2) */
-@media only screen and (min-device-width: 1200px) and (max-device-width: 1366px) and (-webkit-min-device-pixel-ratio: 2) {
+/* iPad Pro 12.9" (1194px–1366px, Pixel Ratio 2) */
+@media only screen and (min-device-width: 1194px) and (max-device-width: 1366px) and (-webkit-min-device-pixel-ratio: 2) {
     body.chapters .exercises {
         gap: 20px;
         max-width: 80vw;
