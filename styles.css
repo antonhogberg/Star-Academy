@@ -2778,14 +2778,44 @@ h2#popupWelcome {
     }
 }
 
-/* iPad Pro 10.5" and 12.9" (1024x1366 or 1366x1024, pixel ratio 2) */
-@media only screen and (min-device-width: 834px) and (max-device-width: 1366px) and (-webkit-min-device-pixel-ratio: 2) {
+/* iPad 11" and Similar Tablets (834px–1199px, Pixel Ratio 2) */
+@media only screen and (min-device-width: 834px) and (max-device-width: 1199px) and (-webkit-min-device-pixel-ratio: 2) {
     body.chapters .exercises {
-        gap: 30px;
+        gap: 15px;
         max-width: 80vw;
-        flex-wrap: wrap;
-        justify-content: center;
-        flex-direction: row;
+        flex-wrap: nowrap;
+        justify-content: space-between;
+    }
+    body.chapters .star-container {
+        width: 120px;
+        height: 140px;
+        box-sizing: border-box;
+    }
+    .star {
+        width: 120px;
+        min-width: 120px;
+        max-width: 120px;
+        height: auto;
+        object-fit: contain;
+    }
+    .exercise-code {
+        margin-top: 125px;
+        margin-right: 4px;
+    }
+    .star-map-container {
+        top: 50px;
+        height: calc(100vh - 50px);
+        max-height: 960px;
+    }
+}
+
+/* iPad Pro 12.9" (1200px–1366px, Pixel Ratio 2) */
+@media only screen and (min-device-width: 1200px) and (max-device-width: 1366px) and (-webkit-min-device-pixel-ratio: 2) {
+    body.chapters .exercises {
+        gap: 20px;
+        max-width: 80vw;
+        flex-wrap: nowrap;
+        justify-content: space-between;
     }
     body.chapters .star-container {
         width: 150px;
