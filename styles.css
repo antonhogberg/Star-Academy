@@ -456,8 +456,8 @@ body.popup-open .student-manager {
     width: 100%;
     box-sizing: border-box;
     flex-grow: 1;
-    padding: 80px 20px 20px 20px; /* Add top padding to account for fixed title */
-    overflow-y: auto; /* Ensure no overflow */
+    padding: 80px 20px 20px 20px;
+    overflow-y: auto;
 }
 
 .students-title {
@@ -517,7 +517,7 @@ body.popup-open .student-manager {
     display: flex;
     flex-direction: column;
     align-items: center;
-    height: auto;
+    height: auto; /* Default for mobile */
     overflow-y: visible;
     justify-content: flex-start;
     flex-grow: 1;
@@ -525,11 +525,10 @@ body.popup-open .student-manager {
 
 .part {
     display: flex;
-    align-items: flex-start;
+    align-items: center; /* Center stars vertically */
     width: 100%;
     padding: 0 15px;
     box-sizing: border-box;
-    /* margin-bottom: 20px; */
     justify-content: center;
 }
 
@@ -541,7 +540,7 @@ body.popup-open .student-manager {
     display: flex;
     justify-content: center;
     width: 100%;
-    flex-wrap: wrap;
+    flex-wrap: wrap; /* Default for mobile */
     gap: 20px;
     max-width: 300px;
     margin: 0 auto;
@@ -610,19 +609,17 @@ body.popup-open .student-manager {
     align-items: center;
     gap: 7px;
     position: relative;
-    width: 120px;
-    height: 140px;
-    width: clamp(100px, 10vw, 150px); /* Smooth scaling */
+    width: 140px; /* Default for mobile */
+    height: 160px;
     box-sizing: border-box;
-    
 }
+
 .exercise-code {
     font-family: Cochin, Georgia, Arial, sans-serif;
     font-size: 16px;
     color: #999999;
     padding: 0;
-    margin-top: 125px;
-    margin-right: 2px;
+    margin-top: auto; /* Push to bottom of star-container */
     line-height: 16px;
     text-align: center;
     width: 100%;
@@ -633,9 +630,10 @@ body.popup-open .student-manager {
     transition: opacity 0.3s ease;
     padding: 0;
     margin: 0;
-    width: clamp(80px, 12vw, 120px);
+    width: 140px; /* Default for mobile */
+    min-width: 140px;
+    max-width: 140px;
     height: auto;
-    max-width: 100%;
     object-fit: contain;
 }
 
@@ -1719,33 +1717,6 @@ h2#popupWelcome {
     }
 }
 
-/* iPad Mini (newer models), iPad Pro 11", etc. */
-@media only screen and (min-device-width: 834px) and (max-device-width: 1366px) and (-webkit-min-device-pixel-ratio: 2) {
-    body.chapters .exercises {
-        gap: 15px; /* Reduced gap */
-        max-width: 80vw;
-        flex-wrap: nowrap; /* Ensure single row */
-        justify-content: center;
-        flex-direction: row;
-    }
-    body.chapters .star-container {
-        width: clamp(80px, 10vw, 120px); /* Responsive scaling, max 120px */
-        height: clamp(100px, 12vw, 140px); /* Responsive scaling, max 140px */
-        box-sizing: border-box;
-    }
-    .star {
-        width: clamp(80px, 10vw, 120px);
-        min-width: clamp(80px, 10vw, 120px);
-        max-width: clamp(80px, 10vw, 120px);
-        height: auto;
-        object-fit: contain;
-    }
-    .exercise-code {
-        margin-top: clamp(85px, 10vw, 125px); /* Adjusted for smaller star size */
-        margin-right: 2px;
-    }
-}
-
 /* iPad Mini landscape adjustments */
 @media (min-width: 1000px) and (max-width: 1100px) and (orientation: landscape) {
     .description-container {
@@ -2137,11 +2108,6 @@ h2#popupWelcome {
         justify-content: center;
         flex-direction: row;
     }
-    body.chapters .star-container {
-        width: 140px;
-        height: 160px;
-        box-sizing: border-box;
-    }
     .chapter-container {
         height: auto;
         overflow: visible;
@@ -2480,16 +2446,35 @@ h2#popupWelcome {
         display: flex;
         flex-direction: column;
     }
-    body.chapters .exercises {
-        gap: 30px;
-        max-width: 1000px;
-        flex-wrap: nowrap;
-        justify-content: center;
-        flex-direction: row;
-    }
     .chapter-container {
-        height: calc(var(--vh, 1vh) * 100);
+        height: 100vh; /* Fill viewport */
         overflow-y: auto;
+    }
+    .parts {
+        height: calc(100% - 20px); /* Fill chapter-container minus padding */
+        flex-grow: 0; /* Prevent growing */
+        justify-content: space-between; /* Distribute parts evenly */
+    }
+    .part {
+        height: 25%; /* 4 parts = 25% each */
+    }
+    .exercises {
+        height: 100%; /* Fill part */
+        flex-wrap: nowrap; /* 4 stars in a row */
+        max-width: none; /* Allow full width */
+        gap: 2vw; /* Responsive gap */
+    }
+    .star-container {
+        width: 20%; /* Scale within part */
+        height: 80%;
+        max-width: 140px; /* Cap size */
+        max-height: 160px;
+    }
+    .star {
+        width: 100%; /* Scale within star-container */
+        height: 70%; /* Leave space for exercise-code */
+        min-width: 0; /* Allow scaling */
+        max-width: 140px;
     }
     .user-name-box {
         min-width: 200px;
@@ -2625,8 +2610,9 @@ h2#popupWelcome {
         max-width: 40%;
     }
     .star-map-container {
-        top: 70px;
-        height: calc(100vh - 70px);
+        top: 50px;
+        height: calc(100vh - 50px);
+        max-height: 960px;
     }
     .congratulations-overlay {
         position: fixed;
@@ -2656,187 +2642,6 @@ h2#popupWelcome {
     @keyframes fadeIn {
         0% { opacity: 0; }
         100% { opacity: 1; }
-    }
-}
-
-/* iPad 1, 2, Mini, Air portrait (768x1024, pixel ratio 1) */
-@media only screen and (min-width: 768px) and (max-width: 1024px) and (orientation: portrait) and (-webkit-min-device-pixel-ratio: 1) {
-    body.chapters .exercises {
-        gap: 20px;
-        max-width: 1000px;
-        flex-wrap: nowrap;
-        justify-content: center;
-        flex-direction: row;
-    }
-    body.chapters .star-container {
-        width: 100px;
-        height: 120px;
-        box-sizing: border-box;
-    }
-    .star {
-        width: 100px;
-        min-width: 100px;
-        max-width: 100px;
-        height: auto;
-        object-fit: contain;
-    }
-    .exercise-code {
-        margin-top: 105px;
-        margin-right: 2px;
-        font-size: 14px;
-    }
-}
-
-/* iPad 1, 2, Mini, Air landscape (768x1024, pixel ratio 1) */
-@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 1) {
-    body.chapters .exercises {
-        gap: 20px;
-        max-width: 80vw;
-        flex-wrap: nowrap;
-        justify-content: center;
-        flex-direction: row;
-    }
-    body.chapters .star-container {
-        width: 100px;
-        height: 120px;
-        box-sizing: border-box;
-    }
-    .star {
-        width: 100px;
-        min-width: 100px;
-        max-width: 100px;
-        height: auto;
-        object-fit: contain;
-    }
-    .exercise-code {
-        margin-top: 105px;
-        margin-right: 2px;
-        font-size: 14px;
-    }
-    .description-container {
-        width: 430px;
-        margin-right: 90px;
-    }
-    .info-overlay {
-        left: 540px;
-    }
-}
-
-/* iPad 3, 4, Pro 9.7" portrait (768x1024, pixel ratio 2) */
-@media only screen and (min-width: 768px) and (max-width: 1024px) and (orientation: portrait) and (-webkit-min-device-pixel-ratio: 2) {
-    body.chapters .exercises {
-        gap: 10px;
-        max-width: 1000px;
-        flex-wrap: nowrap;
-        justify-content: center;
-        flex-direction: row;
-    }
-    body.chapters .star-container {
-        width: 80px;
-        height: 100px;
-        box-sizing: border-box;
-    }
-    .star {
-        width: 80px;
-        min-width: 80px;
-        max-width: 80px;
-        height: auto;
-        object-fit: contain;
-    }
-    .exercise-code {
-        margin-top: 85px;
-        margin-right: 2px;
-        font-size: 12px;
-    }
-}
-
-/* iPad 3, 4, Pro 9.7" landscape (768x1024, pixel ratio 2) */
-@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
-    body.chapters .exercises {
-        gap: 20px;
-        max-width: 80vw;
-        flex-wrap: nowrap;
-        justify-content: center;
-        flex-direction: row;
-    }
-    body.chapters .star-container {
-        width: 100px;
-        height: 120px;
-        box-sizing: border-box;
-    }
-    .star {
-        width: 100px;
-        min-width: 100px;
-        max-width: 100px;
-        height: auto;
-        object-fit: contain;
-    }
-    .exercise-code {
-        margin-top: 105px;
-        margin-right: 2px;
-        font-size: 14px;
-    }
-}
-
-/* iPad 11" and Similar Tablets (834px–1193px, Pixel Ratio 2) */
-@media only screen and (min-device-width: 834px) and (max-device-width: 1193px) and (-webkit-min-device-pixel-ratio: 2) {
-    body.chapters .exercises {
-        gap: 15px;
-        max-width: 80vw;
-        flex-wrap: nowrap;
-        justify-content: space-between;
-    }
-    body.chapters .star-container {
-        width: 120px;
-        height: 140px;
-        box-sizing: border-box;
-    }
-    .star {
-        width: 120px;
-        min-width: 120px;
-        max-width: 120px;
-        height: auto;
-        object-fit: contain;
-    }
-    .exercise-code {
-        margin-top: 125px;
-        margin-right: 4px;
-    }
-    .star-map-container {
-        top: 50px;
-        height: calc(100vh - 50px);
-        max-height: 960px;
-    }
-}
-
-/* iPad Pro 12.9" (1194px–1366px, Pixel Ratio 2) */
-@media only screen and (min-device-width: 1194px) and (max-device-width: 1366px) and (-webkit-min-device-pixel-ratio: 2) {
-    body.chapters .exercises {
-        gap: 20px;
-        max-width: 80vw;
-        flex-wrap: nowrap;
-        justify-content: space-between;
-    }
-    body.chapters .star-container {
-        width: 150px;
-        height: 170px;
-        box-sizing: border-box;
-    }
-    .star {
-        width: 150px;
-        min-width: 150px;
-        max-width: 150px;
-        height: auto;
-        object-fit: contain;
-    }
-    .exercise-code {
-        margin-top: 155px;
-        margin-right: 4px;
-    }
-    .star-map-container {
-        top: 50px;
-        height: calc(100vh - 50px);
-        max-height: 960px;
     }
 }
 
@@ -2901,7 +2706,7 @@ h2#popupWelcome {
         flex-direction: column;
     }
     .chapter-container {
-        height: calc(var(--vh, 1vh) * 100);
+        height: 100vh; /* Fill viewport */
         overflow: hidden;
     }
     .chapter-title {
@@ -2920,33 +2725,33 @@ h2#popupWelcome {
         margin: 0 auto;
         padding-top: 0;
         padding-bottom: 10px;
-        height: auto;
+        height: calc(100% - 20px); /* Fill chapter-container minus padding */
         overflow-y: auto;
         box-sizing: border-box;
-        justify-content: flex-start;
-        flex-grow: 1;
+        justify-content: space-between; /* Distribute parts evenly */
+        flex-grow: 0; /* Prevent growing */
     }
     .exercises {
-        gap: 20px;
-        max-width: 800px;
-        justify-content: center;
+        height: 100%; /* Fill part */
+        flex-wrap: nowrap; /* 4 stars in a row */
+        max-width: none; /* Allow full width */
+        gap: 2vw; /* Responsive gap */
         margin: 0 auto;
     }
+    .part {
+        height: 25%; /* 4 parts = 25% each */
+    }
     .star-container {
-        width: 120px;
-        height: 140px;
-        box-sizing: border-box;
+        width: 20%; /* Scale within part */
+        height: 80%;
+        max-width: 140px; /* Cap size */
+        max-height: 160px;
     }
     .star {
-        width: 120px;
-        min-width: 120px;
-        max-width: 120px;
-        height: auto;
-        object-fit: contain;
-    }
-    .exercise-code {
-        margin-top: 125px;
-        margin-right: 2px;
+        width: 100%; /* Scale within star-container */
+        height: 70%; /* Leave space for exercise-code */
+        min-width: 0; /* Allow scaling */
+        max-width: 140px;
     }
     .star-map-container {
         height: calc(100vh - 70px);
