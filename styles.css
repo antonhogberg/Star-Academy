@@ -607,20 +607,20 @@ body.popup-open .student-manager {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 7px;
     position: relative;
     width: 140px; /* Default for mobile */
     height: 160px;
     box-sizing: border-box;
+    min-height: 120px; /* Prevent overlap when shrinking */
 }
 
 .exercise-code {
     font-family: Cochin, Georgia, Arial, sans-serif;
-    font-size: 16px;
+    font-size: clamp(12px, 1.5vw, 16px); /* Scale font size */
     color: #999999;
     padding: 0;
     margin-top: auto; /* Push to bottom of star-container */
-    line-height: 16px;
+    line-height: 1;
     text-align: center;
     width: 100%;
 }
@@ -635,6 +635,7 @@ body.popup-open .student-manager {
     max-width: 140px;
     height: auto;
     object-fit: contain;
+    aspect-ratio: 1 / 1; /* Maintain square proportions */
 }
 
 .star:hover {
@@ -2467,14 +2468,14 @@ h2#popupWelcome {
     .star-container {
         width: 20%; /* Scale within part */
         height: 80%;
-        max-width: 140px; /* Cap size */
-        max-height: 160px;
+        min-width: 104px; /* Prevent shrinking below current size */
+        min-height: 120px;
     }
     .star {
         width: 100%; /* Scale within star-container */
-        height: 70%; /* Leave space for exercise-code */
+        height: auto; /* Let aspect-ratio control height */
         min-width: 0; /* Allow scaling */
-        max-width: 140px;
+        aspect-ratio: 1 / 1; /* Maintain square proportions */
     }
     .user-name-box {
         min-width: 200px;
@@ -2744,14 +2745,14 @@ h2#popupWelcome {
     .star-container {
         width: 20%; /* Scale within part */
         height: 80%;
-        max-width: 140px; /* Cap size */
-        max-height: 160px;
+        min-width: 104px; /* Prevent shrinking below current size */
+        min-height: 120px;
     }
     .star {
         width: 100%; /* Scale within star-container */
-        height: 70%; /* Leave space for exercise-code */
+        height: auto; /* Let aspect-ratio control height */
         min-width: 0; /* Allow scaling */
-        max-width: 140px;
+        aspect-ratio: 1 / 1; /* Maintain square proportions */
     }
     .star-map-container {
         height: calc(100vh - 70px);
