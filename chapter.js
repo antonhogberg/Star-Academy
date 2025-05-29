@@ -170,7 +170,7 @@ function initializeChapter() {
                     setTimeout(() => {
                         overlayImg.style.opacity = '1';
                         starImg.style.opacity = '0';
-                    }, 10);
+                    }, 0); // Start fade immediately
                     setTimeout(() => {
                         starWrapper.removeChild(starImg);
                         overlayImg.addEventListener('click', handleStarClick);

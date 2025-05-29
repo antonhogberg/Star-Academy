@@ -609,7 +609,7 @@ body.popup-open .student-manager {
     align-items: center;
     position: relative;
     width: 140px;
-    height: 124.27px; /* Star rendered height (119.27px) + 5px gap */
+    height: 140.27px; /* Star (119.27px) + gap (5px) + exercise-code (16px) */
     gap: 5px; /* Fixed gap between star and exercise-code */
     box-sizing: border-box;
 }
@@ -632,15 +632,16 @@ body.popup-open .student-manager {
 
 .star {
     cursor: pointer;
-    transition: opacity 0.3s ease;
+    transition: opacity 0.4s ease-in-out; /* Match 400ms duration */
     padding: 0;
     margin: 0;
     width: 140px;
-    height: 119.27px; /* Adjusted to rendered height */
+    height: 119.27px;
     object-fit: contain;
-    position: absolute; /* Stack within star-wrapper */
+    position: absolute;
     top: 0;
     left: 0;
+    -webkit-tap-highlight-color: transparent; /* Remove click shadowing */
 }
 
 .star:hover {
@@ -2208,19 +2209,15 @@ h2#popupWelcome {
     }
     .star-container {
         width: 140px;
-        height: 160px;
         box-sizing: border-box;
     }
     .star {
         width: 140px;
-        min-width: 140px;
-        max-width: 140px;
-        height: auto;
-        object-fit: contain;
-    }
-    .exercise-code {
-        margin-top: 145px;
-        margin-right: 3px;
+        height: 119.27px;
+        position: absolute;
+        top: 0;
+        left: 0;
+        -webkit-tap-highlight-color: transparent;
     }
     .part {
         margin-bottom: 10px;
@@ -2479,6 +2476,7 @@ h2#popupWelcome {
         position: absolute;
         top: 0;
         left: 0;
+        -webkit-tap-highlight-color: transparent;
     }
     .user-name-box {
         min-width: 200px;
@@ -2754,6 +2752,7 @@ h2#popupWelcome {
         position: absolute;
         top: 0;
         left: 0;
+        -webkit-tap-highlight-color: transparent;
     }
     .star-map-container {
         height: calc(100vh - 70px);
