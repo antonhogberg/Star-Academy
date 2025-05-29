@@ -636,6 +636,7 @@ body.popup-open .student-manager {
     height: auto;
     object-fit: contain;
     aspect-ratio: 1 / 1; /* Maintain square proportions */
+    position: static !important; /* Override chapter.js inline style */
 }
 
 .star:hover {
@@ -2466,9 +2467,8 @@ h2#popupWelcome {
         gap: 2vw; /* Responsive gap */
     }
     .star-container {
-        width: 20%; /* Scale within part */
+        width: calc(20.23296px + 11.696vw); /* Linear scaling: 140px at 1024px, 180px at 1366px */
         height: 80%;
-        min-width: 104px; /* Prevent shrinking below current size */
         min-height: 120px;
     }
     .star {
@@ -2476,6 +2476,7 @@ h2#popupWelcome {
         height: auto; /* Let aspect-ratio control height */
         min-width: 0; /* Allow scaling */
         aspect-ratio: 1 / 1; /* Maintain square proportions */
+        position: static !important; /* Override chapter.js inline style */
     }
     .user-name-box {
         min-width: 200px;
