@@ -636,7 +636,6 @@ body.popup-open .student-manager {
     height: auto;
     object-fit: contain;
     aspect-ratio: 1 / 1; /* Maintain square proportions */
-    position: static !important; /* Override chapter.js inline style */
 }
 
 .star:hover {
@@ -2467,16 +2466,16 @@ h2#popupWelcome {
         gap: 2vw; /* Responsive gap */
     }
     .star-container {
-        width: calc(20.23296px + 11.696vw); /* Linear scaling: 140px at 1024px, 180px at 1366px */
+        width: 20%; /* Scale within part */
         height: 80%;
-        min-height: 120px;
+        max-width: 140px; /* Cap size */
+        max-height: 160px;
     }
     .star {
         width: 100%; /* Scale within star-container */
-        height: auto; /* Let aspect-ratio control height */
+        height: 70%; /* Leave space for exercise-code */
         min-width: 0; /* Allow scaling */
-        aspect-ratio: 1 / 1; /* Maintain square proportions */
-        position: static !important; /* Override chapter.js inline style */
+        max-width: 140px;
     }
     .user-name-box {
         min-width: 200px;
