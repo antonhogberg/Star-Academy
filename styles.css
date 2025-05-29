@@ -607,7 +607,6 @@ body.popup-open .student-manager {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 7px;
     position: relative;
     width: 140px; /* Default for mobile */
     height: 160px;
@@ -616,11 +615,11 @@ body.popup-open .student-manager {
 
 .exercise-code {
     font-family: Cochin, Georgia, Arial, sans-serif;
-    font-size: 16px;
+    font-size: clamp(12px, 1.5vw, 16px); /* Scale font size */
     color: #999999;
     padding: 0;
     margin-top: auto; /* Push to bottom of star-container */
-    line-height: 16px;
+    line-height: 1;
     text-align: center;
     width: 100%;
 }
@@ -635,6 +634,7 @@ body.popup-open .student-manager {
     max-width: 140px;
     height: auto;
     object-fit: contain;
+    position: static !important; /* Override chapter.js inline style */
 }
 
 .star:hover {
@@ -2465,16 +2465,14 @@ h2#popupWelcome {
         gap: 2vw; /* Responsive gap */
     }
     .star-container {
-        width: 20%; /* Scale within part */
+        width: calc(20.23296px + 11.696vw); /* 140px at 1024px, 180px at 1366px */
         height: 80%;
-        max-width: 140px; /* Cap size */
-        max-height: 160px;
     }
     .star {
         width: 100%; /* Scale within star-container */
-        height: 70%; /* Leave space for exercise-code */
+        height: auto; /* Let natural proportions apply */
         min-width: 0; /* Allow scaling */
-        max-width: 140px;
+        position: static !important; /* Override chapter.js inline style */
     }
     .user-name-box {
         min-width: 200px;
@@ -2742,16 +2740,14 @@ h2#popupWelcome {
         height: 25%; /* 4 parts = 25% each */
     }
     .star-container {
-        width: 20%; /* Scale within part */
+        width: calc(20.23296px + 11.696vw); /* Continue scaling for consistency */
         height: 80%;
-        max-width: 140px; /* Cap size */
-        max-height: 160px;
     }
     .star {
         width: 100%; /* Scale within star-container */
-        height: 70%; /* Leave space for exercise-code */
+        height: auto; /* Let natural proportions apply */
         min-width: 0; /* Allow scaling */
-        max-width: 140px;
+        position: static !important; /* Override chapter.js inline style */
     }
     .star-map-container {
         height: calc(100vh - 70px);
