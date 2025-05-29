@@ -609,7 +609,7 @@ body.popup-open .student-manager {
     align-items: center;
     position: relative;
     width: 140px; /* Default for mobile */
-    height: 160px;
+    height: 145px; /* Star height (140px) + 5px gap */
     box-sizing: border-box;
 }
 
@@ -618,7 +618,7 @@ body.popup-open .student-manager {
     font-size: clamp(12px, 1.5vw, 16px); /* Scale font size */
     color: #999999;
     padding: 0;
-    margin-top: auto; /* Push to bottom of star-container */
+    margin-top: 140px; /* Position directly below 140px star */
     line-height: 1;
     text-align: center;
     width: 100%;
@@ -631,7 +631,6 @@ body.popup-open .student-manager {
     margin: 0;
     width: 140px; /* Default for mobile */
     min-width: 140px;
-    max-width: 140px;
     height: auto;
     object-fit: contain;
     position: static !important; /* Override chapter.js inline style */
@@ -2465,8 +2464,9 @@ h2#popupWelcome {
         gap: 2vw; /* Responsive gap */
     }
     .star-container {
-        width: calc(20.23296px + 11.696vw); /* 140px at 1024px, 180px at 1366px */
-        height: 80%;
+        width: 140px; /* Fixed width */
+        height: 145px; /* Star height (140px) + 5px gap */
+        max-height: 20vh; /* Scale with viewport height */
     }
     .star {
         width: 100%; /* Scale within star-container */
@@ -2721,9 +2721,9 @@ h2#popupWelcome {
         max-width: 1024px;
         min-width: 580px;
         margin: 0 auto;
-        padding-top: 0;
+        padding-top: 15px; /* Add space to prevent overflow under header */
         padding-bottom: 10px;
-        height: calc(100% - 20px); /* Fill chapter-container minus padding */
+        height: calc(100% - 35px); /* Adjust for padding-top */
         overflow-y: auto;
         box-sizing: border-box;
         justify-content: space-between; /* Distribute parts evenly */
@@ -2740,8 +2740,9 @@ h2#popupWelcome {
         height: 25%; /* 4 parts = 25% each */
     }
     .star-container {
-        width: calc(20.23296px + 11.696vw); /* Continue scaling for consistency */
-        height: 80%;
+        width: 140px; /* Fixed width */
+        height: 145px; /* Star height (140px) + 5px gap */
+        max-height: 20vh; /* Scale with viewport height */
     }
     .star {
         width: 100%; /* Scale within star-container */

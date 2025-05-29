@@ -100,7 +100,6 @@ function initializeChapter() {
             function handleStarClick(event) {
                 const starImg = event.currentTarget;
                 const starContainer = starImg.parentElement;
-                const codeLabel = starContainer.querySelector('.exercise-code'); // Reference to existing code label
                 let studentsData;
                 try {
                     studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
@@ -163,8 +162,7 @@ function initializeChapter() {
                     overlayImg.className = 'star';
                     overlayImg.dataset.exercise = exerciseKey;
                     overlayImg.style.opacity = '0';
-                    starContainer.appendChild(overlayImg);
-                    starContainer.appendChild(codeLabel); // Re-append codeLabel to maintain DOM order
+                    starContainer.insertBefore(overlayImg, starContainer.querySelector('.exercise-code')); // Insert before exercise-code
                     setTimeout(() => {
                         overlayImg.style.opacity = '1';
                     }, 10);
