@@ -120,8 +120,7 @@
                     const isMobile = window.matchMedia("(max-width: 767px) and (orientation: portrait)").matches;
                     if (!isMobile) {
                         requestAnimationFrame(() => {
-                            const titleHeight = chapterTitle.offsetHeight;
-                            chapterContainer.style.paddingTop = `${titleHeight + 20}px`;
+                            chapterContainer.style.paddingTop = '80px'; // Modified to fixed 80px
                         });
                     } else {
                         chapterContainer.style.paddingTop = '';
