@@ -53,10 +53,10 @@ function initializeChapter() {
     // Step 5: Preload images
     preloadImages();
 
-    // Step 5: Add inline styles for star stacking
+    // Step 5: Add inline styles for star transition
     const styleElement = document.createElement('style');
     styleElement.textContent = `
-        .star { pointer-events: all; transition: opacity 0.4s ease-in-out; z-index: 1; width: 100%; }
+        .star { pointer-events: all; transition: opacity 0.4s ease-in-out; width: 100%; }
         .star.non-clickable { pointer-events: auto; }
     `;
     document.head.appendChild(styleElement);
@@ -87,6 +87,9 @@ function initializeChapter() {
             const starContainer = document.createElement('div');
             starContainer.className = 'star-container';
 
+            const starWrapper = document.createElement('div');
+            starWrapper.className = 'star-wrapper';
+
             const img = document.createElement('img');
             img.src = starImages[goldLevel][silverLevel] || starImages[0][0];
             img.alt = `Exercise ${exerciseCode} - ${goldLevel === 0 && silverLevel === 0 ? 'Outlined Star' : `${goldLevel} Golden Stars, ${silverLevel} Silver Stars`}`;
@@ -99,7 +102,8 @@ function initializeChapter() {
 
             function handleStarClick(event) {
                 const starImg = event.currentTarget;
-                const starContainer = starImg.parentElement;
+                const starWrapper = starImg.parentElement;
+                const starContainer = starWrapper.parentElement;
                 let studentsData;
                 try {
                     studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
@@ -162,13 +166,13 @@ function initializeChapter() {
                     overlayImg.className = 'star';
                     overlayImg.dataset.exercise = exerciseKey;
                     overlayImg.style.opacity = '0';
-                    starContainer.insertBefore(overlayImg, starImg); // Insert new star before the current star
+                    starWrapper.appendChild(overlayImg);
                     setTimeout(() => {
                         overlayImg.style.opacity = '1';
                         starImg.style.opacity = '0';
                     }, 10);
                     setTimeout(() => {
-                        starContainer.removeChild(starImg);
+                        starWrapper.removeChild(starImg);
                         overlayImg.addEventListener('click', handleStarClick);
                         console.log(`Reattached click handler for star-${exerciseCode}`);
                     }, 400);
@@ -210,13 +214,16 @@ function initializeChapter() {
 
                     if (updatedGoldLevel !== goldLevel || updatedSilverLevel !== silverLevel) {
                         starContainer.innerHTML = '';
+                        const newStarWrapper = document.createElement('div');
+                        newStarWrapper.className = 'star-wrapper';
                         const newImg = document.createElement('img');
                         newImg.src = starImages[updatedGoldLevel][updatedSilverLevel];
                         newImg.alt = `Exercise ${exerciseCode} - ${updatedGoldLevel === 0 && updatedSilverLevel === 0 ? 'Outlined Star' : `${updatedGoldLevel} Golden Stars, ${updatedSilverLevel} Silver Stars`}`;
                         newImg.className = 'star';
                         newImg.dataset.exercise = exerciseKey;
                         newImg.addEventListener('click', handleStarClick);
-                        starContainer.appendChild(newImg);
+                        newStarWrapper.appendChild(newImg);
+                        starContainer.appendChild(newStarWrapper);
                         starContainer.appendChild(codeLabel);
                         console.log(`Star ${exerciseCode} updated via storage event, goldLevel: ${updatedGoldLevel}, silverLevel: ${updatedSilverLevel}`);
                     }
@@ -234,7 +241,8 @@ function initializeChapter() {
                 }
             });
 
-            starContainer.appendChild(img);
+            starWrapper.appendChild(img);
+            starContainer.appendChild(starWrapper);
             starContainer.appendChild(codeLabel);
             exerciseDiv.appendChild(starContainer);
         }

@@ -608,16 +608,23 @@ body.popup-open .student-manager {
     flex-direction: column;
     align-items: center;
     position: relative;
-    width: 140px; /* Default for mobile */
+    width: 140px;
+    height: 124.27px; /* Star rendered height (119.27px) + 5px gap */
+    gap: 5px; /* Fixed gap between star and exercise-code */
     box-sizing: border-box;
+}
+
+.star-wrapper {
+    position: relative;
+    width: 140px;
+    height: 119.27px; /* Star rendered height */
 }
 
 .exercise-code {
     font-family: Cochin, Georgia, Arial, sans-serif;
-    font-size: 16px; /* Fixed size for consistency */
+    font-size: 16px;
     color: #999999;
     padding: 0;
-    margin-top: 145px; /* 140px star height + 5px gap */
     line-height: 1;
     text-align: center;
     width: 100%;
@@ -628,10 +635,12 @@ body.popup-open .student-manager {
     transition: opacity 0.3s ease;
     padding: 0;
     margin: 0;
-    width: 140px; /* Default for mobile */
-    height: 140px; /* Fixed height to match width */
+    width: 140px;
+    height: 119.27px; /* Adjusted to rendered height */
     object-fit: contain;
-    position: static !important; /* Ensure normal flow */
+    position: absolute; /* Stack within star-wrapper */
+    top: 0;
+    left: 0;
 }
 
 .star:hover {
@@ -2444,30 +2453,32 @@ h2#popupWelcome {
         flex-direction: column;
     }
     .chapter-container {
-        height: 100vh; /* Fill viewport */
+        height: 100vh;
         overflow-y: auto;
     }
     .parts {
-        height: calc(100% - 20px); /* Fill chapter-container minus padding */
-        flex-grow: 0; /* Prevent growing */
-        justify-content: space-between; /* Distribute parts evenly */
+        height: calc(100% - 20px);
+        flex-grow: 0;
+        justify-content: space-between;
     }
     .part {
-        height: 25%; /* 4 parts = 25% each */
+        height: 25%;
     }
     .exercises {
-        height: 100%; /* Fill part */
-        flex-wrap: nowrap; /* 4 stars in a row */
-        max-width: none; /* Allow full width */
-        gap: 2vw; /* Responsive gap */
+        height: 100%;
+        flex-wrap: nowrap;
+        max-width: none;
+        gap: 2vw;
     }
     .star-container {
-        width: 140px; /* Fixed width */
+        width: 140px;
     }
     .star {
-        width: 100%; /* Scale within star-container */
-        height: 140px; /* Fixed height */
-        position: static !important; /* Ensure normal flow */
+        width: 100%;
+        height: 119.27px;
+        position: absolute;
+        top: 0;
+        left: 0;
     }
     .user-name-box {
         min-width: 200px;
@@ -2699,7 +2710,7 @@ h2#popupWelcome {
         flex-direction: column;
     }
     .chapter-container {
-        height: 100vh; /* Fill viewport */
+        height: 100vh;
         overflow: hidden;
     }
     .chapter-title {
@@ -2716,31 +2727,33 @@ h2#popupWelcome {
         max-width: 1024px;
         min-width: 580px;
         margin: 0 auto;
-        padding-top: 15px; /* Add space to prevent overflow under header */
+        padding-top: 15px;
         padding-bottom: 10px;
-        height: calc(100% - 35px); /* Adjust for padding-top */
+        height: calc(100% - 35px);
         overflow-y: auto;
         box-sizing: border-box;
-        justify-content: space-between; /* Distribute parts evenly */
-        flex-grow: 0; /* Prevent growing */
+        justify-content: space-between;
+        flex-grow: 0;
     }
     .exercises {
-        height: 100%; /* Fill part */
-        flex-wrap: nowrap; /* 4 stars in a row */
-        max-width: none; /* Allow full width */
-        gap: 2vw; /* Responsive gap */
+        height: 100%;
+        flex-wrap: nowrap;
+        max-width: none;
+        gap: 2vw;
         margin: 0 auto;
     }
     .part {
-        height: 25%; /* 4 parts = 25% each */
+        height: 25%;
     }
     .star-container {
-        width: 140px; /* Fixed width */
+        width: 140px;
     }
     .star {
-        width: 100%; /* Scale within star-container */
-        height: 140px; /* Fixed height */
-        position: static !important; /* Ensure normal flow */
+        width: 100%;
+        height: 119.27px;
+        position: absolute;
+        top: 0;
+        left: 0;
     }
     .star-map-container {
         height: calc(100vh - 70px);
