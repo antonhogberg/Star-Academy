@@ -2580,9 +2580,9 @@ h2#popupWelcome {
         max-width: 40%;
     }
     .star-map-container {
-        top: 50px; /* Adjusted for consistency */
+        top: 50px;
         height: calc(100vh - 50px);
-        max-height: 960px; /* Added for consistency */
+        max-height: 960px;
     }
     .congratulations-overlay {
         position: fixed;
@@ -2681,6 +2681,18 @@ h2#popupWelcome {
     .parts {
         max-width: 1024px;
         margin: 0 auto;
+    }
+    .exercises {
+        flex-wrap: nowrap; /* Ensure stars stay in a row */
+        justify-content: space-between;
+    }
+    .star-container {
+        width: 120px; /* Fixed width for consistency */
+        height: 140px;
+    }
+    .star {
+        max-width: 100px; /* Slightly smaller to fit */
+        max-height: 100px;
     }
     .star-map-container {
         height: calc(100vh - 70px);
