@@ -609,16 +609,15 @@ body.popup-open .student-manager {
     align-items: center;
     position: relative;
     width: 140px; /* Default for mobile */
-    height: 145px; /* Star height (140px) + 5px gap */
     box-sizing: border-box;
 }
 
 .exercise-code {
     font-family: Cochin, Georgia, Arial, sans-serif;
-    font-size: clamp(12px, 1.5vw, 16px); /* Scale font size */
+    font-size: 16px; /* Fixed size for consistency */
     color: #999999;
     padding: 0;
-    margin-top: 140px; /* Position directly below 140px star */
+    margin-top: 145px; /* 140px star height + 5px gap */
     line-height: 1;
     text-align: center;
     width: 100%;
@@ -630,10 +629,9 @@ body.popup-open .student-manager {
     padding: 0;
     margin: 0;
     width: 140px; /* Default for mobile */
-    min-width: 140px;
-    height: auto;
+    height: 140px; /* Fixed height to match width */
     object-fit: contain;
-    position: static !important; /* Override chapter.js inline style */
+    position: static !important; /* Ensure normal flow */
 }
 
 .star:hover {
@@ -2465,14 +2463,11 @@ h2#popupWelcome {
     }
     .star-container {
         width: 140px; /* Fixed width */
-        height: 145px; /* Star height (140px) + 5px gap */
-        max-height: 20vh; /* Scale with viewport height */
     }
     .star {
         width: 100%; /* Scale within star-container */
-        height: auto; /* Let natural proportions apply */
-        min-width: 0; /* Allow scaling */
-        position: static !important; /* Override chapter.js inline style */
+        height: 140px; /* Fixed height */
+        position: static !important; /* Ensure normal flow */
     }
     .user-name-box {
         min-width: 200px;
@@ -2741,14 +2736,11 @@ h2#popupWelcome {
     }
     .star-container {
         width: 140px; /* Fixed width */
-        height: 145px; /* Star height (140px) + 5px gap */
-        max-height: 20vh; /* Scale with viewport height */
     }
     .star {
         width: 100%; /* Scale within star-container */
-        height: auto; /* Let natural proportions apply */
-        min-width: 0; /* Allow scaling */
-        position: static !important; /* Override chapter.js inline style */
+        height: 140px; /* Fixed height */
+        position: static !important; /* Ensure normal flow */
     }
     .star-map-container {
         height: calc(100vh - 70px);

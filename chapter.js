@@ -56,7 +56,7 @@ function initializeChapter() {
     // Step 5: Add inline styles for star stacking
     const styleElement = document.createElement('style');
     styleElement.textContent = `
-        .star { pointer-events: all; transition: opacity 0.4s ease-in-out; position: absolute; top: 0; left: 0; z-index: 1; width: 100%; }
+        .star { pointer-events: all; transition: opacity 0.4s ease-in-out; z-index: 1; width: 100%; }
         .star.non-clickable { pointer-events: auto; }
     `;
     document.head.appendChild(styleElement);
@@ -162,9 +162,10 @@ function initializeChapter() {
                     overlayImg.className = 'star';
                     overlayImg.dataset.exercise = exerciseKey;
                     overlayImg.style.opacity = '0';
-                    starContainer.insertBefore(overlayImg, starContainer.querySelector('.exercise-code')); // Insert before exercise-code
+                    starContainer.insertBefore(overlayImg, starImg); // Insert new star before the current star
                     setTimeout(() => {
                         overlayImg.style.opacity = '1';
+                        starImg.style.opacity = '0';
                     }, 10);
                     setTimeout(() => {
                         starContainer.removeChild(starImg);
