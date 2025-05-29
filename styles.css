@@ -2482,14 +2482,14 @@ h2#popupWelcome {
     }
     body.chapters .exercises {
         gap: 30px;
-        max-width: 1000px; /* Ensure enough width for 4 stars (4 * 150px + 3 * 30px = 690px) */
-        flex-wrap: nowrap; /* Prevent wrapping */
+        max-width: 1000px;
+        flex-wrap: nowrap;
         justify-content: center;
         flex-direction: row;
     }
     .chapter-container {
         height: calc(var(--vh, 1vh) * 100);
-        overflow-y: auto; /* Changed from hidden to auto to allow scrolling */
+        overflow-y: auto;
     }
     .user-name-box {
         min-width: 200px;
@@ -2663,8 +2663,8 @@ h2#popupWelcome {
 @media only screen and (min-width: 768px) and (max-width: 1024px) and (orientation: portrait) and (-webkit-min-device-pixel-ratio: 1) {
     body.chapters .exercises {
         gap: 20px;
-        max-width: 1000px; /* Increased to ensure 4 stars (4 * 100px + 3 * 20px = 460px) fit in a single row */
-        flex-wrap: nowrap; /* Prevent wrapping */
+        max-width: 1000px;
+        flex-wrap: nowrap;
         justify-content: center;
         flex-direction: row;
     }
@@ -2692,7 +2692,7 @@ h2#popupWelcome {
     body.chapters .exercises {
         gap: 20px;
         max-width: 80vw;
-        flex-wrap: wrap;
+        flex-wrap: nowrap;
         justify-content: center;
         flex-direction: row;
     }
@@ -2725,15 +2725,15 @@ h2#popupWelcome {
 /* iPad 3, 4, Pro 9.7" portrait (768x1024, pixel ratio 2) */
 @media only screen and (min-width: 768px) and (max-width: 1024px) and (orientation: portrait) and (-webkit-min-device-pixel-ratio: 2) {
     body.chapters .exercises {
-        gap: 10px; /* Reduced gap to fit better */
+        gap: 10px;
         max-width: 1000px;
         flex-wrap: nowrap;
         justify-content: center;
         flex-direction: row;
     }
     body.chapters .star-container {
-        width: 80px; /* Reduced from 100px */
-        height: 100px; /* Reduced from 120px */
+        width: 80px;
+        height: 100px;
         box-sizing: border-box;
     }
     .star {
@@ -2744,9 +2744,9 @@ h2#popupWelcome {
         object-fit: contain;
     }
     .exercise-code {
-        margin-top: 85px; /* Adjusted for smaller star size */
+        margin-top: 85px;
         margin-right: 2px;
-        font-size: 12px; /* Slightly smaller text */
+        font-size: 12px;
     }
 }
 
@@ -2755,7 +2755,7 @@ h2#popupWelcome {
     body.chapters .exercises {
         gap: 20px;
         max-width: 80vw;
-        flex-wrap: wrap;
+        flex-wrap: nowrap;
         justify-content: center;
         flex-direction: row;
     }
@@ -2837,6 +2837,58 @@ h2#popupWelcome {
         top: 50px;
         height: calc(100vh - 50px);
         max-height: 960px;
+    }
+}
+
+/* iPad Mini landscape adjustments */
+@media (min-width: 1000px) and (max-width: 1100px) and (orientation: landscape) {
+    .description-container {
+        width: 430px;
+        margin-right: 90px;
+    }
+    .info-overlay {
+        left: 540px;
+    }
+}
+
+/* General Tablet Landscape (1201px–1400px) */
+@media (min-width: 1201px) and (max-width: 1400px) and (orientation: landscape) {
+    .star-map-container {
+        top: 50px;
+        height: calc(100vh - 50px);
+        max-height: 960px;
+    }
+    .congratulations-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.8);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        z-index: 10002;
+        animation: fadeIn 1s ease-in-out;
+    }
+    .congratulations-message {
+        background: var(--dark-bg);
+        border: 2px solid var(--gold);
+        border-radius: 10px;
+        padding: 20px;
+        text-align: center;
+        color: var(--gold);
+        font-family: Cochin, Georgia, Arial, sans-serif;
+        font-size: 24px;
+        box-shadow: 0 0 20px rgba(255, 215, 0, 0.7);
+        animation: pulse 2s infinite;
+    }
+    .popup-content {
+        max-width: 700px;
+    }
+    @keyframes fadeIn {
+        0% { opacity: 0; }
+        100% { opacity: 1; }
     }
 }
 
