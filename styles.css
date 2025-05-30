@@ -2519,20 +2519,17 @@ h2#popupWelcome {
         max-width: 650px;
         height: calc(var(--vh, 1vh) * 85);
         position: absolute;
-        bottom: 0;
+        top: 50%;
         left: 50%;
-        transform: translateX(-50%);
+        transform: translate(-50%, -50%);
     }
     body.chapters .stars-svg#stars-2x2x4 {
         display: none;
     }
     body.chapters .chapter-container {
         position: relative;
-        padding-bottom: calc(var(--vh, 1vh) * 85 + 20px);
-    }
-    .chapter-container {
-        height: calc(var(--vh, 1vh) * 100);
-        overflow-y: auto; /* Changed from hidden to auto to allow scrolling */
+        padding: 20px;
+        min-height: calc(var(--vh, 1vh) * 100);
     }
     .user-name-box {
         min-width: 200px;
@@ -2943,20 +2940,17 @@ h2#popupWelcome {
         max-width: 650px;
         height: calc(var(--vh, 1vh) * 85);
         position: absolute;
-        bottom: 0;
+        top: 50%;
         left: 50%;
-        transform: translateX(-50%);
+        transform: translate(-50%, -50%);
     }
     body.chapters .stars-svg#stars-2x2x4 {
         display: none;
     }
     body.chapters .chapter-container {
         position: relative;
-        padding-bottom: calc(var(--vh, 1vh) * 85 + 20px);
-    }
-    .chapter-container {
-        height: calc(var(--vh, 1vh) * 100);
-        overflow: hidden;
+        padding: 20px;
+        min-height: calc(var(--vh, 1vh) * 100);
     }
     .chapter-title {
         padding: 10px 0;
