@@ -1752,27 +1752,6 @@ h2#popupWelcome {
     }
 }
 
-/* iPad Mini (newer models), iPad Pro 11", etc. */
-@media only screen and (min-device-width: 834px) and (max-device-width: 1366px) and (-webkit-min-device-pixel-ratio: 2) {
-    body.chapters .stars-svg#stars-4x4 {
-        display: block;
-        width: 100%;
-        max-width: 650px;
-        height: calc(var(--vh, 1vh) * 85);
-        position: absolute;
-        bottom: 0;
-        left: 50%;
-        transform: translateX(-50%);
-    }
-    body.chapters .stars-svg#stars-2x2x4 {
-        display: none;
-    }
-    body.chapters .chapter-container {
-        position: relative;
-        padding-bottom: calc(var(--vh, 1vh) * 85 + 20px);
-    }
-}
-
 /* iPad Mini landscape adjustments */
 @media (min-width: 1000px) and (max-width: 1100px) and (orientation: landscape) {
     .description-container {
@@ -2715,23 +2694,7 @@ h2#popupWelcome {
 
 /* iPad 1, 2, Mini, Air portrait (768x1024, pixel ratio 1) */
 @media only screen and (min-width: 768px) and (max-width: 1024px) and (orientation: portrait) and (-webkit-min-device-pixel-ratio: 1) {
-    body.chapters .stars-svg#stars-4x4 {
-        display: block;
-        width: 100%;
-        max-width: 650px;
-        height: calc(var(--vh, 1vh) * 85);
-        position: absolute;
-        bottom: 0;
-        left: 50%;
-        transform: translateX(-50%);
-    }
-    body.chapters .stars-svg#stars-2x2x4 {
-        display: none;
-    }
-    body.chapters .chapter-container {
-        position: relative;
-        padding-bottom: calc(var(--vh, 1vh) * 85 + 20px);
-    }
+    
     .star {
         width: 100px;
         min-width: 100px;
@@ -2748,23 +2711,7 @@ h2#popupWelcome {
 
 /* iPad 1, 2, Mini, Air landscape (768x1024, pixel ratio 1) */
 @media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 1) {
-    body.chapters .stars-svg#stars-4x4 {
-        display: block;
-        width: 100%;
-        max-width: 650px;
-        height: calc(var(--vh, 1vh) * 85);
-        position: absolute;
-        bottom: 0;
-        left: 50%;
-        transform: translateX(-50%);
-    }
-    body.chapters .stars-svg#stars-2x2x4 {
-        display: none;
-    }
-    body.chapters .chapter-container {
-        position: relative;
-        padding-bottom: calc(var(--vh, 1vh) * 85 + 20px);
-    }
+    
     .star {
         width: 100px;
         min-width: 100px;
@@ -2788,23 +2735,6 @@ h2#popupWelcome {
 
 /* iPad 3, 4, Pro 9.7" portrait (768x1024, pixel ratio 2) */
 @media only screen and (min-width: 768px) and (max-width: 1024px) and (orientation: portrait) and (-webkit-min-device-pixel-ratio: 2) {
-    body.chapters .stars-svg#stars-4x4 {
-        display: block;
-        width: 100%;
-        max-width: 650px;
-        height: calc(var(--vh, 1vh) * 85);
-        position: absolute;
-        bottom: 0;
-        left: 50%;
-        transform: translateX(-50%);
-    }
-    body.chapters .stars-svg#stars-2x2x4 {
-        display: none;
-    }
-    body.chapters .chapter-container {
-        position: relative;
-        padding-bottom: calc(var(--vh, 1vh) * 85 + 20px);
-    }
     .star {
         width: 80px;
         min-width: 80px;
@@ -2821,23 +2751,7 @@ h2#popupWelcome {
 
 /* iPad 3, 4, Pro 9.7" landscape (768x1024, pixel ratio 2) */
 @media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
-    body.chapters .stars-svg#stars-4x4 {
-        display: block;
-        width: 100%;
-        max-width: 650px;
-        height: calc(var(--vh, 1vh) * 85);
-        position: absolute;
-        bottom: 0;
-        left: 50%;
-        transform: translateX(-50%);
-    }
-    body.chapters .stars-svg#stars-2x2x4 {
-        display: none;
-    }
-    body.chapters .chapter-container {
-        position: relative;
-        padding-bottom: calc(var(--vh, 1vh) * 85 + 20px);
-    }
+    
     .star {
         width: 100px;
         min-width: 100px;
@@ -2854,23 +2768,6 @@ h2#popupWelcome {
 
 /* iPad 11" and Similar Tablets (834px–1193px, Pixel Ratio 2) */
 @media only screen and (min-device-width: 834px) and (max-device-width: 1193px) and (-webkit-min-device-pixel-ratio: 2) {
-    body.chapters .stars-svg#stars-4x4 {
-        display: block;
-        width: 100%;
-        max-width: 650px;
-        height: calc(var(--vh, 1vh) * 85);
-        position: absolute;
-        bottom: 0;
-        left: 50%;
-        transform: translateX(-50%);
-    }
-    body.chapters .stars-svg#stars-2x2x4 {
-        display: none;
-    }
-    body.chapters .chapter-container {
-        position: relative;
-        padding-bottom: calc(var(--vh, 1vh) * 85 + 20px);
-    }
     .star {
         width: 120px;
         min-width: 120px;
@@ -2891,23 +2788,7 @@ h2#popupWelcome {
 
 /* iPad Pro 12.9" (1194px–1366px, Pixel Ratio 2) */
 @media only screen and (min-device-width: 1194px) and (max-device-width: 1366px) and (-webkit-min-device-pixel-ratio: 2) {
-    body.chapters .stars-svg#stars-4x4 {
-        display: block;
-        width: 100%;
-        max-width: 650px;
-        height: calc(var(--vh, 1vh) * 85);
-        position: absolute;
-        bottom: 0;
-        left: 50%;
-        transform: translateX(-50%);
-    }
-    body.chapters .stars-svg#stars-2x2x4 {
-        display: none;
-    }
-    body.chapters .chapter-container {
-        position: relative;
-        padding-bottom: calc(var(--vh, 1vh) * 85 + 20px);
-    }
+    
     .star {
         width: 150px;
         min-width: 150px;
