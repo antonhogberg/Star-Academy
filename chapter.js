@@ -44,211 +44,268 @@ function initializeChapter() {
 
     const chapterNumMatch = document.location.pathname.match(/chapter(\d+)/);
     const chapterNum = chapterNumMatch ? parseInt(chapterNumMatch[1]) : 1;
-    const exercisesPerPart = 4;
-    const parts = 4;
-
-    // Clear existing parts to re-render
-    partsContainer.innerHTML = '';
 
     // Step 5: Preload images
     preloadImages();
 
-    // Step 5: Add inline styles for star transition
-    const styleElement = document.createElement('style');
+    // Load SVGs
+    const svg4x4Object = document.getElementById('stars-4x4');
+    const svg2x2x4Object = document.getElementById('stars-2x2x4');
+
+    // Wait for SVGs to load
+    Promise.all([
+        new Promise(resolve => {
+            svg4x4Object.addEventListener('load', () => resolve(svg4x4Object.contentDocument));
+        }),
+        new Promise(resolve => {
+            svg2x2x4Object.addEventListener('load', () => resolve(svg2x2x4Object.contentDocument));
+        })
+    ]).then(([svg4x4Doc, svg2x2x4Doc]) => {
+        initializeSvg(svg4x4Doc, chapterNum);
+        initializeSvg(svg2x2x4Doc, chapterNum);
+    }).catch(err => {
+        console.error('Failed to load SVGs:', err);
+    });
+}
+
+function initializeSvg(doc, chapterNum) {
+    console.log('initializeSvg called');
+    const studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
+    if (!studentsData.currentStudent) {
+        console.warn('No current student set; chapter initialization aborted');
+        return;
+    }
+
+    // Add styles to SVG (matching starmap.js)
+    const styleElement = doc.createElementNS('http://www.w3.org/2000/svg', 'style');
     styleElement.textContent = `
-        .star { pointer-events: all; transition: opacity 0.4s ease-in-out; width: 100%; }
-        .star.non-clickable { pointer-events: auto; }
+        image { pointer-events: all; transition: opacity 0.4s ease-in-out; }
+        image.non-clickable { pointer-events: auto; }
     `;
-    document.head.appendChild(styleElement);
+    const svgRoot = doc.querySelector('svg');
+    const existingStyles = svgRoot.querySelectorAll('style');
+    existingStyles.forEach(style => style.remove());
+    svgRoot.appendChild(styleElement);
 
-    for (let part = 0; part < parts; part++) {
-        const partDiv = document.createElement('div');
-        partDiv.className = 'part';
+    // Update star IDs and exercise codes
+    const stars = doc.querySelectorAll('image[id^="star-"]');
+    const codes = doc.querySelectorAll('text[id^="code-"]');
+    stars.forEach(star => {
+        const oldId = star.getAttribute('id'); // e.g., star-X-1-1
+        const [_, part, starNum] = oldId.split('-').slice(1); // ['X', '1', '1']
+        const newId = `star-${chapterNum}-${part}-${starNum}`;
+        star.setAttribute('id', newId);
+        star.setAttribute('data-exercise', `exercise${chapterNum}:${part}:${starNum}`);
+    });
+    codes.forEach(code => {
+        const oldId = code.getAttribute('id'); // e.g., code-X-1-1
+        const [_, part, starNum] = oldId.split('-').slice(1);
+        const newId = `code-${chapterNum}-${part}-${starNum}`;
+        code.setAttribute('id', newId);
+        code.textContent = `${chapterNum}:${part}:${starNum}`;
+    });
 
-        const exerciseDiv = document.createElement('div');
-        exerciseDiv.className = 'exercises';
+    // Initialize stars
+    stars.forEach(star => {
+        const exerciseKey = star.dataset.exercise;
+        const progress = studentsData.students[studentsData.currentStudent]?.progress || {};
+        const silverProgress = studentsData.students[studentsData.currentStudent]?.silverProgress || {};
+        const studentMode = studentsData.students[studentsData.currentStudent]?.studentMode || false;
+        const goldLevel = progress[exerciseKey] ? parseInt(progress[exerciseKey]) : 0;
+        const silverLevel = silverProgress[exerciseKey] ? parseInt(silverProgress[exerciseKey]) : 0;
 
-        for (let i = 0; i < exercisesPerPart; i++) {
-            const exerciseCode = `${chapterNum}:${part + 1}:${i + 1}`;
-            const exerciseKey = `exercise${exerciseCode}`;
-            let studentsData;
-            try {
-                studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
-            } catch (e) {
-                console.error(`Failed to parse starAcademyStudents: ${e}`);
-                studentsData = { students: {}, currentStudent: '' };
-            }
-            const progress = studentsData.students[studentsData.currentStudent]?.progress || {};
-            const silverProgress = studentsData.students[studentsData.currentStudent]?.silverProgress || {};
-            const studentMode = studentsData.students[studentsData.currentStudent]?.studentMode || false;
-            const goldLevel = progress[exerciseKey] ? parseInt(progress[exerciseKey]) : 0;
-            const silverLevel = silverProgress[exerciseKey] ? parseInt(silverProgress[exerciseKey]) : 0;
-
-            const starContainer = document.createElement('div');
-            starContainer.className = 'star-container';
-
-            const starWrapper = document.createElement('div');
-            starWrapper.className = 'star-wrapper';
-
-            const img = document.createElement('img');
-            img.src = starImages[goldLevel][silverLevel] || starImages[0][0];
-            img.alt = `Exercise ${exerciseCode} - ${goldLevel === 0 && silverLevel === 0 ? 'Outlined Star' : `${goldLevel} Golden Stars, ${silverLevel} Silver Stars`}`;
-            img.className = 'star';
-            img.dataset.exercise = exerciseKey;
-
-            const codeLabel = document.createElement('div');
-            codeLabel.textContent = exerciseCode;
-            codeLabel.className = 'exercise-code';
-
-            function handleStarClick(event) {
-                const starImg = event.currentTarget;
-                const starWrapper = starImg.parentElement;
-                const starContainer = starWrapper.parentElement;
-                let studentsData;
-                try {
-                    studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
-                } catch (e) {
-                    console.error(`Failed to parse starAcademyStudents in click handler: ${e}`);
-                    return;
-                }
-                if (!studentsData.currentStudent) {
-                    console.warn(`No current student set, ignoring click for ${exerciseCode}`);
-                    return;
-                }
-                const progress = studentsData.students[studentsData.currentStudent]?.progress || {};
-                const silverProgress = studentsData.students[studentsData.currentStudent]?.silverProgress || {};
-                const studentMode = studentsData.students[studentsData.currentStudent]?.studentMode || false;
-                console.log(`Star ${exerciseCode} clicked, studentMode=${studentMode}`);
-                console.log(`Click handler executed for star-${exerciseCode}`);
-                let goldLevel = progress[exerciseKey] ? parseInt(progress[exerciseKey]) : 0;
-                let silverLevel = silverProgress[exerciseKey] ? parseInt(silverProgress[exerciseKey]) : 0;
-
-                let newGoldLevel = goldLevel;
-                let newSilverLevel = silverLevel;
-                let isException = false;
-                if (studentMode && goldLevel === 6) {
-                    console.log(`Student mode: Fade effect for goldLevel=6, no state change for ${exerciseKey}`);
-                    isException = true;
-                    starImg.classList.add('non-clickable');
-                } else if (studentMode) {
-                    const maxSilver = 6 - goldLevel;
-                    newSilverLevel = (silverLevel + 1) % (maxSilver + 1);
-                    if (newSilverLevel === 0 && silverLevel === maxSilver) {
-                        isException = true;
-                    }
-                    silverProgress[exerciseKey] = newSilverLevel.toString();
-                    studentsData.students[studentsData.currentStudent].silverProgress = silverProgress;
-                    console.log(`Student mode: Updated silverLevel=${newSilverLevel} for ${exerciseKey}`);
-                } else {
-                    newGoldLevel = (goldLevel + 1) % 7;
-                    newSilverLevel = 0;
-                    if (goldLevel === 6 && newGoldLevel === 0) {
-                        isException = true;
-                    }
-                    progress[exerciseKey] = newGoldLevel.toString();
-                    silverProgress[exerciseKey] = '0';
-                    studentsData.students[studentsData.currentStudent].progress = progress;
-                    studentsData.students[studentsData.currentStudent].silverProgress = silverProgress;
-                    console.log(`Normal mode: Updated goldLevel=${newGoldLevel}, silverLevel=0 for ${exerciseKey}`);
-                }
-
-                if (isException) {
-                    starImg.style.opacity = '0';
-                    setTimeout(() => {
-                        starImg.src = starImages[newGoldLevel][newSilverLevel];
-                        starImg.alt = `Exercise ${exerciseCode} - ${newGoldLevel === 0 && newSilverLevel === 0 ? 'Outlined Star' : `${newGoldLevel} Golden Stars, ${newSilverLevel} Silver Stars`}`;
-                        starImg.style.opacity = '1';
-                    }, 400);
-                } else {
-                    const overlayImg = document.createElement('img');
-                    overlayImg.src = starImages[newGoldLevel][newSilverLevel];
-                    overlayImg.alt = `Exercise ${exerciseCode} - ${newGoldLevel === 0 && newSilverLevel === 0 ? 'Outlined Star' : `${newGoldLevel} Golden Stars, ${newSilverLevel} Silver Stars`}`;
-                    overlayImg.className = 'star';
-                    overlayImg.dataset.exercise = exerciseKey;
-                    overlayImg.style.opacity = '0';
-                    starWrapper.appendChild(overlayImg);
-                    setTimeout(() => {
-                        overlayImg.style.opacity = '1';
-                        starImg.style.opacity = '0';
-                    }, 0); // Start fade immediately
-                    setTimeout(() => {
-                        starWrapper.removeChild(starImg);
-                        overlayImg.addEventListener('click', handleStarClick);
-                        console.log(`Reattached click handler for star-${exerciseCode}`);
-                    }, 400);
-                }
-
-                if (!(studentMode && goldLevel === 6)) {
-                    try {
-                        localStorage.setItem('starAcademyStudents', JSON.stringify(studentsData));
-                    } catch (e) {
-                        console.error(`Failed to save starAcademyStudents: ${e}`);
-                    }
-                }
-
-                if (typeof window.updateStarStates === 'function') {
-                    console.log(`Star clicked on chapter ${chapterNum}, calling updateStarStates for exercise ${exerciseCode}`);
-                    window.updateStarStates(studentsData, true);
-                } else {
-                    console.error('updateStarStates not defined');
-                }
-            }
-
-            img.addEventListener('click', handleStarClick);
-            console.log(`Attached click handler for star-${exerciseCode} during initialization`);
-
-            window.addEventListener('storage', (event) => {
-                if (event.key === 'starAcademyStudents') {
-                    let updatedStudentsData;
-                    try {
-                        updatedStudentsData = JSON.parse(event.newValue) || { students: {}, currentStudent: '' };
-                    } catch (e) {
-                        console.error(`Failed to parse starAcademyStudents in storage listener: ${e}`);
-                        return;
-                    }
-                    const updatedProgress = updatedStudentsData.students[updatedStudentsData.currentStudent]?.progress || {};
-                    const updatedSilverProgress = updatedStudentsData.students[updatedStudentsData.currentStudent]?.silverProgress || {};
-                    const updatedStudentMode = updatedStudentsData.students[updatedStudentsData.currentStudent]?.studentMode || false;
-                    const updatedGoldLevel = updatedProgress[exerciseKey] ? parseInt(updatedProgress[exerciseKey]) : 0;
-                    const updatedSilverLevel = updatedSilverProgress[exerciseKey] ? parseInt(updatedSilverProgress[exerciseKey]) : 0;
-
-                    if (updatedGoldLevel !== goldLevel || updatedSilverLevel !== silverLevel) {
-                        starContainer.innerHTML = '';
-                        const newStarWrapper = document.createElement('div');
-                        newStarWrapper.className = 'star-wrapper';
-                        const newImg = document.createElement('img');
-                        newImg.src = starImages[updatedGoldLevel][updatedSilverLevel];
-                        newImg.alt = `Exercise ${exerciseCode} - ${updatedGoldLevel === 0 && updatedSilverLevel === 0 ? 'Outlined Star' : `${updatedGoldLevel} Golden Stars, ${updatedSilverLevel} Silver Stars`}`;
-                        newImg.className = 'star';
-                        newImg.dataset.exercise = exerciseKey;
-                        newImg.addEventListener('click', handleStarClick);
-                        newStarWrapper.appendChild(newImg);
-                        starContainer.appendChild(newStarWrapper);
-                        starContainer.appendChild(codeLabel);
-                        console.log(`Star ${exerciseCode} updated via storage event, goldLevel: ${updatedGoldLevel}, silverLevel: ${updatedSilverLevel}`);
-                    }
-
-                    const globalSelect = document.getElementById('globalStudentSelect');
-                    const userNameDisplay = document.getElementById('userNameDisplay');
-                    if (globalSelect && typeof updateDropdown === 'function') {
-                        console.log('Storage event: Updating dropdown');
-                        updateDropdown();
-                    }
-                    if (userNameDisplay) {
-                        console.log('Storage event: Updating userNameDisplay');
-                        userNameDisplay.textContent = updatedStudentsData.currentStudent || '';
-                    }
-                }
-            });
-
-            starWrapper.appendChild(img);
-            starContainer.appendChild(starWrapper);
-            starContainer.appendChild(codeLabel);
-            exerciseDiv.appendChild(starContainer);
+        star.setAttributeNS('http://www.w3.org/1999/xlink', 'href', starImages[goldLevel][silverLevel]);
+        star.setAttribute('alt', `Exercise ${exerciseKey.replace('exercise', '')} - ${goldLevel === 0 && silverLevel === 0 ? 'Outlined Star' : `${goldLevel} Golden Stars, ${silverLevel} Silver Stars`}`);
+        if (studentMode && goldLevel === 6) {
+            star.classList.add('non-clickable');
         }
 
-        partDiv.appendChild(exerciseDiv);
-        partsContainer.appendChild(partDiv);
+        // Attach click handler
+        const parent = star.parentNode;
+        const x = star.getAttribute('x');
+        const y = star.getAttribute('y');
+        const width = star.getAttribute('width');
+        const height = star.getAttribute('height');
+        star.addEventListener('click', (e) => handleStarClick(e, star, exerciseKey, doc, parent, x, y, width, height));
+        console.log(`Attached click handler for star-${exerciseKey}`);
+    });
+
+    // Handle storage updates
+    window.removeEventListener('storage', window.storageListener);
+    window.storageListener = (event) => {
+        if (event.key === 'starAcademyStudents') {
+            let updatedStudentsData;
+            try {
+                updatedStudentsData = JSON.parse(event.newValue) || { students: {}, currentStudent: '' };
+            } catch (e) {
+                console.error(`Failed to parse starAcademyStudents in storage listener: ${e}`);
+                return;
+            }
+            stars.forEach(star => {
+                const exerciseKey = star.dataset.exercise;
+                const parent = star.parentNode;
+                const x = star.getAttribute('x');
+                const y = star.getAttribute('y');
+                const width = star.getAttribute('width');
+                const height = star.getAttribute('height');
+                const updatedProgress = updatedStudentsData.students[updatedStudentsData.currentStudent]?.progress || {};
+                const updatedSilverProgress = updatedStudentsData.students[updatedStudentsData.currentStudent]?.silverProgress || {};
+                const updatedStudentMode = updatedStudentsData.students[updatedStudentsData.currentStudent]?.studentMode || false;
+                const updatedGoldLevel = updatedProgress[exerciseKey] ? parseInt(updatedProgress[exerciseKey]) : 0;
+                const updatedSilverLevel = updatedSilverProgress[exerciseKey] ? parseInt(updatedSilverProgress[exerciseKey]) : 0;
+
+                const newStarElement = createStarElement(doc, exerciseKey.replace('exercise', ''), updatedGoldLevel, updatedSilverLevel, x, y, width, height);
+                if (updatedStudentMode && updatedGoldLevel === 6) {
+                    newStarElement.classList.add('non-clickable');
+                }
+                parent.replaceChild(newStarElement, star);
+                newStarElement.addEventListener('click', (e) => handleStarClick(e, newStarElement, exerciseKey, doc, parent, x, y, width, height));
+                console.log(`Reattached click handler for star-${exerciseKey} in storage listener`);
+            });
+
+            checkCompletion(updatedStudentsData);
+
+            const globalSelect = document.getElementById('globalStudentSelect');
+            const userNameDisplay = document.getElementById('userNameDisplay');
+            if (globalSelect && typeof updateDropdown === 'function') {
+                console.log('Storage event: Updating dropdown');
+                updateDropdown();
+            }
+            if (userNameDisplay) {
+                console.log('Storage event: Updating userNameDisplay');
+                userNameDisplay.textContent = updatedStudentsData.currentStudent || '';
+            }
+        }
+    };
+    window.addEventListener('storage', window.storageListener);
+
+    checkCompletion(studentsData);
+}
+
+function createStarElement(doc, starId, goldLevel, silverLevel, x, y, width, height, initialOpacity = 1) {
+    const starElement = doc.createElementNS('http://www.w3.org/2000/svg', 'image');
+    starElement.setAttribute('id', `star-${starId.replace(/:/g, '-')}`);
+    starElement.setAttribute('x', x);
+    starElement.setAttribute('y', y);
+    starElement.setAttribute('width', width);
+    starElement.setAttribute('height', height);
+    const image = starImages[goldLevel][silverLevel] || starImages[0][0];
+    starElement.setAttributeNS('http://www.w3.org/1999/xlink', 'href', image);
+    starElement.setAttribute('alt', `Exercise ${starId} - ${goldLevel === 0 && silverLevel === 0 ? 'Outlined Star' : `${goldLevel} Golden Stars, ${silverLevel} Silver Stars`}`);
+    starElement.style.opacity = initialOpacity;
+    return starElement;
+}
+
+function handleStarClick(event, star, exerciseKey, doc, parent, x, y, width, height) {
+    const starElement = event.currentTarget;
+    const exerciseCode = exerciseKey.replace('exercise', '');
+    let studentsData;
+    try {
+        studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
+    } catch (e) {
+        console.error(`Failed to parse starAcademyStudents in click handler: ${e}`);
+        return;
+    }
+    if (!studentsData.currentStudent) {
+        console.warn(`No current student set, ignoring click for ${exerciseCode}`);
+        return;
+    }
+    const progress = studentsData.students[studentsData.currentStudent]?.progress || {};
+    const silverProgress = studentsData.students[studentsData.currentStudent]?.silverProgress || {};
+    const studentMode = studentsData.students[studentsData.currentStudent]?.studentMode || false;
+    console.log(`Star ${exerciseCode} clicked, studentMode=${studentMode}`);
+    console.log(`Click handler executed for star-${exerciseCode}`);
+    let goldLevel = progress[exerciseKey] ? parseInt(progress[exerciseKey]) : 0;
+    let silverLevel = silverProgress[exerciseKey] ? parseInt(silverProgress[exerciseKey]) : 0;
+
+    let newGoldLevel = goldLevel;
+    let newSilverLevel = silverLevel;
+    let isException = false;
+    if (studentMode && goldLevel === 6) {
+        console.log(`Student mode: Fade effect for goldLevel=6, no state change for ${exerciseKey}`);
+        isException = true;
+        starElement.classList.add('non-clickable');
+    } else if (studentMode) {
+        const maxSilver = 6 - goldLevel;
+        newSilverLevel = (silverLevel + 1) % (maxSilver + 1);
+        if (newSilverLevel === 0 && silverLevel === maxSilver) {
+            isException = true;
+        }
+        silverProgress[exerciseKey] = newSilverLevel.toString();
+        studentsData.students[studentsData.currentStudent].silverProgress = silverProgress;
+        console.log(`Student mode: Updated silverLevel=${newSilverLevel} for ${exerciseKey}`);
+    } else {
+        newGoldLevel = (goldLevel + 1) % 7;
+        newSilverLevel = 0;
+        if (goldLevel === 6 && newGoldLevel === 0) {
+            isException = true;
+        }
+        progress[exerciseKey] = newGoldLevel.toString();
+        silverProgress[exerciseKey] = '0';
+        studentsData.students[studentsData.currentStudent].progress = progress;
+        studentsData.students[studentsData.currentStudent].silverProgress = silverProgress;
+        console.log(`Normal mode: Updated goldLevel=${newGoldLevel}, silverLevel=0 for ${exerciseKey}`);
+    }
+
+    if (isException) {
+        starElement.style.opacity = '0';
+        setTimeout(() => {
+            starElement.setAttributeNS('http://www.w3.org/1999/xlink', 'href', starImages[newGoldLevel][newSilverLevel]);
+            starElement.setAttribute('alt', `Exercise ${exerciseCode} - ${newGoldLevel === 0 && newSilverLevel === 0 ? 'Outlined Star' : `${newGoldLevel} Golden Stars, ${newSilverLevel} Silver Stars`}`);
+            starElement.style.opacity = '1';
+        }, 400);
+    } else {
+        const overlayStarElement = createStarElement(doc, exerciseCode, newGoldLevel, newSilverLevel, x, y, width, height, 0);
+        parent.appendChild(overlayStarElement);
+        setTimeout(() => {
+            overlayStarElement.style.opacity = '1';
+            starElement.style.opacity = '0';
+        }, 10);
+        setTimeout(() => {
+            parent.removeChild(starElement);
+            overlayStarElement.setAttribute('id', `star-${exerciseCode.replace(/:/g, '-')}`);
+            overlayStarElement.addEventListener('click', (e) => handleStarClick(e, overlayStarElement, exerciseKey, doc, parent, x, y, width, height));
+            console.log(`Reattached click handler for star-${exerciseCode}`);
+        }, 400);
+    }
+
+    if (!(studentMode && goldLevel === 6)) {
+        try {
+            localStorage.setItem('starAcademyStudents', JSON.stringify(studentsData));
+        } catch (e) {
+            console.error(`Failed to save starAcademyStudents: ${e}`);
+        }
+    }
+
+    if (typeof window.updateStarStates === 'function') {
+        console.log(`Star clicked on chapter ${chapterNum}, calling updateStarStates for exercise ${exerciseCode}`);
+        window.updateStarStates(studentsData, true);
+    } else {
+        console.error('updateStarStates not defined');
+    }
+
+    checkCompletion(studentsData);
+}
+
+function checkCompletion(studentsData) {
+    const exercises = [];
+    for (let part = 1; part <= 4; part++) {
+        for (let star = 1; star <= 4; star++) {
+            exercises.push(`exercise${chapterNum}:${part}:${star}`);
+        }
+    }
+    const allStarsAtSix = exercises.every(exercise => {
+        const progress = studentsData.students[studentsData.currentStudent]?.progress || {};
+        return (progress[exercise] ? parseInt(progress[exercise]) : 0) === 6;
+    });
+    if (allStarsAtSix) {
+        const overlay = document.getElementById('congratulationsOverlay');
+        if (overlay) {
+            overlay.style.display = 'flex';
+            setTimeout(() => {
+                overlay.style.display = 'none';
+            }, 5000);
+        }
     }
 }
 

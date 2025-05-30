@@ -241,6 +241,24 @@ body.popup-open .student-manager {
     background-color: transparent;
 }
 
+.stars-svg {
+    width: 100%;
+    height: 100%;
+    display: none;
+}
+
+.stars-svg .exercise-code {
+    font-family: Cochin, Georgia, Arial, sans-serif;
+    font-size: 16px;
+    fill: #999999;
+}
+
+.stars-svg .star {
+    cursor: pointer;
+    transition: opacity 0.4s ease-in-out;
+    -webkit-tap-highlight-color: transparent;
+}
+
 .chapters-toggle {
     display: block;
     color: #000;
@@ -2402,6 +2420,12 @@ h2#popupWelcome {
     #rankAchievementPopup .popup-content h2#rankAchievementMessage {
         font-size: 20px;
     }
+    #stars-4x4 {
+        display: none;
+    }
+    #stars-2x2x4 {
+        display: block;
+    }
 }
 
 /* iPhone landscape */
@@ -2645,6 +2669,12 @@ h2#popupWelcome {
         0% { opacity: 0; }
         100% { opacity: 1; }
     }
+    #stars-4x4 {
+        display: block;
+    }
+    #stars-2x2x4 {
+        display: none;
+    }
 }
 
 /* iPad Mini landscape adjustments */
@@ -2763,6 +2793,12 @@ h2#popupWelcome {
     }
     .popup-content {
         max-width: 600px;
+    }
+    #stars-4x4 {
+        display: block;
+    }
+    #stars-2x2x4 {
+        display: none;
     }
 }
 
