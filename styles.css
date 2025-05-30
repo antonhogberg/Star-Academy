@@ -2780,21 +2780,23 @@ h2#popupWelcome {
     }
     body.chapters .stars-svg#stars-4x4 {
         display: block;
-        width: 100%;
         max-width: 650px;
-        height: calc(var(--vh, 1vh) * 85);
+        max-height: calc(90% - 60px); /* 90% of .chapter-container, accounting for margin-top */
+        width: 100%;
+        height: auto;
         position: absolute;
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
+        object-fit: contain;
     }
     body.chapters .stars-svg#stars-2x2x4 {
-        display: none;
+        display: none !important;
     }
     body.chapters .chapter-container {
         position: relative;
         padding: 20px;
-        min-height: calc(var(--vh, 1vh) * 100);
+        min-height: calc(var(--vh, 1vh) * 100 - 60px);
     }
     .chapter-title {
         padding: 10px 0;
@@ -2806,42 +2808,17 @@ h2#popupWelcome {
     .chapter-name {
         font-size: 28px;
     }
-    .parts {
-        max-width: 1024px;
-        min-width: 580px;
-        margin: 0 auto;
-        padding-top: 15px;
-        padding-bottom: 10px;
-        height: calc(100% - 35px);
-        overflow-y: auto;
-        box-sizing: border-box;
-        justify-content: space-between;
-        flex-grow: 0;
+    .star-chapter {
+        width: 140px;
+        height: 119.26923px;
     }
-
-    #stars-4x4 {
-        display: block !important;
-        width: 100%;
-    }
-
-    #stars-2x2x4 {
-        display: none !important;
-    }
-    .exercises {
-        gap: 20px;
-        max-width: 800px;
-        justify-content: center;
-        margin: 0 auto;
-    }
-    .star-container {
-        width: 120px;
-        height: 140px;
-        box-sizing: border-box;
-    }
-    
     .exercise-code {
-        margin-top: 125px;
-        margin-right: 2px;
+        margin-top: 139.20798px;
+        margin-right: 0;
+        font-size: 16px;
+    }
+    .parts, .exercises, .star-container {
+        display: none;
     }
     .star-map-container {
         height: calc(100vh - 70px);
