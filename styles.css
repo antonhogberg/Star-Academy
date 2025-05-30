@@ -74,19 +74,18 @@ body.popup-open .student-manager {
 }
 
 .stars-svg {
-    display: none;
+    display: block;
     width: 100%;
-    max-width: 650px; /* Intrinsic width of 4x4 SVG */
     margin: 0 auto;
     position: relative;
 }
 
 #stars-4x4 {
-    aspect-ratio: 650 / 700; /* 4x4 SVG aspect ratio */
+    aspect-ratio: 650 / 700;
 }
 
 #stars-2x2x4 {
-    aspect-ratio: 310 / 1500; /* 2x2x4 SVG aspect ratio */
+    aspect-ratio: 310 / 1500;
 }
 
 .stars-svg svg {
@@ -1755,28 +1754,22 @@ h2#popupWelcome {
 
 /* iPad Mini (newer models), iPad Pro 11", etc. */
 @media only screen and (min-device-width: 834px) and (max-device-width: 1366px) and (-webkit-min-device-pixel-ratio: 2) {
-    body.chapters .exercises {
-        gap: 15px; /* Reduced gap */
-        max-width: 80vw;
-        flex-wrap: nowrap; /* Ensure single row */
-        justify-content: center;
-        flex-direction: row;
+    body.chapters .stars-svg#stars-4x4 {
+        display: block;
+        width: 100%;
+        max-width: 650px;
+        height: calc(var(--vh, 1vh) * 85);
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
     }
-    body.chapters .star-container {
-        width: clamp(80px, 10vw, 120px); /* Responsive scaling, max 120px */
-        height: clamp(100px, 12vw, 140px); /* Responsive scaling, max 140px */
-        box-sizing: border-box;
+    body.chapters .stars-svg#stars-2x2x4 {
+        display: none;
     }
-    .star {
-        width: clamp(80px, 10vw, 120px);
-        min-width: clamp(80px, 10vw, 120px);
-        max-width: clamp(80px, 10vw, 120px);
-        height: auto;
-        object-fit: contain;
-    }
-    .exercise-code {
-        margin-top: clamp(85px, 10vw, 125px); /* Adjusted for smaller star size */
-        margin-right: 2px;
+    body.chapters .chapter-container {
+        position: relative;
+        padding-bottom: calc(var(--vh, 1vh) * 85 + 20px);
     }
 }
 
@@ -2160,21 +2153,23 @@ h2#popupWelcome {
         justify-content: center;
         align-items: center;
     }
-    body.chapters {
-        overflow: auto;
+    body.chapters .stars-svg#stars-4x4 {
+        display: none;
+    }
+    body.chapters .stars-svg#stars-2x2x4 {
+        display: block;
+        width: calc(85vw);
+        max-width: 310px;
         height: auto;
+        margin: 0 auto;
     }
-    body.chapters .exercises {
-        flex-wrap: wrap;
-        gap: 20px 10px;
-        max-width: 300px;
-        justify-content: center;
-        flex-direction: row;
+    body.chapters .chapter-container {
+        padding: 10px;
+        overflow-y: auto;
     }
-    body.chapters .star-container {
-        width: 140px;
-        height: 160px;
-        box-sizing: border-box;
+    body.chapters {
+        height: auto;
+        overflow-y: auto;
     }
     .chapter-container {
         height: auto;
@@ -2518,19 +2513,22 @@ h2#popupWelcome {
         overflow-y: auto !important;
         overscroll-behavior: auto !important;
     }
-    body.chapters {
-        overflow: hidden !important;
-        height: 100vh;
-        overscroll-behavior: none;
-        display: flex;
-        flex-direction: column;
+    body.chapters .stars-svg#stars-4x4 {
+        display: block;
+        width: 100%;
+        max-width: 650px;
+        height: calc(var(--vh, 1vh) * 85);
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
     }
-    body.chapters .exercises {
-        gap: 30px;
-        max-width: 1000px; /* Ensure enough width for 4 stars (4 * 150px + 3 * 30px = 690px) */
-        flex-wrap: nowrap; /* Prevent wrapping */
-        justify-content: center;
-        flex-direction: row;
+    body.chapters .stars-svg#stars-2x2x4 {
+        display: none;
+    }
+    body.chapters .chapter-container {
+        position: relative;
+        padding-bottom: calc(var(--vh, 1vh) * 85 + 20px);
     }
     .chapter-container {
         height: calc(var(--vh, 1vh) * 100);
@@ -2720,17 +2718,22 @@ h2#popupWelcome {
 
 /* iPad 1, 2, Mini, Air portrait (768x1024, pixel ratio 1) */
 @media only screen and (min-width: 768px) and (max-width: 1024px) and (orientation: portrait) and (-webkit-min-device-pixel-ratio: 1) {
-    body.chapters .exercises {
-        gap: 20px;
-        max-width: 1000px; /* Increased to ensure 4 stars (4 * 100px + 3 * 20px = 460px) fit in a single row */
-        flex-wrap: nowrap; /* Prevent wrapping */
-        justify-content: center;
-        flex-direction: row;
+    body.chapters .stars-svg#stars-4x4 {
+        display: block;
+        width: 100%;
+        max-width: 650px;
+        height: calc(var(--vh, 1vh) * 85);
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
     }
-    body.chapters .star-container {
-        width: 100px;
-        height: 120px;
-        box-sizing: border-box;
+    body.chapters .stars-svg#stars-2x2x4 {
+        display: none;
+    }
+    body.chapters .chapter-container {
+        position: relative;
+        padding-bottom: calc(var(--vh, 1vh) * 85 + 20px);
     }
     .star {
         width: 100px;
@@ -2748,17 +2751,22 @@ h2#popupWelcome {
 
 /* iPad 1, 2, Mini, Air landscape (768x1024, pixel ratio 1) */
 @media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 1) {
-    body.chapters .exercises {
-        gap: 20px;
-        max-width: 80vw;
-        flex-wrap: wrap;
-        justify-content: center;
-        flex-direction: row;
+    body.chapters .stars-svg#stars-4x4 {
+        display: block;
+        width: 100%;
+        max-width: 650px;
+        height: calc(var(--vh, 1vh) * 85);
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
     }
-    body.chapters .star-container {
-        width: 100px;
-        height: 120px;
-        box-sizing: border-box;
+    body.chapters .stars-svg#stars-2x2x4 {
+        display: none;
+    }
+    body.chapters .chapter-container {
+        position: relative;
+        padding-bottom: calc(var(--vh, 1vh) * 85 + 20px);
     }
     .star {
         width: 100px;
@@ -2783,17 +2791,22 @@ h2#popupWelcome {
 
 /* iPad 3, 4, Pro 9.7" portrait (768x1024, pixel ratio 2) */
 @media only screen and (min-width: 768px) and (max-width: 1024px) and (orientation: portrait) and (-webkit-min-device-pixel-ratio: 2) {
-    body.chapters .exercises {
-        gap: 10px; /* Reduced gap to fit better */
-        max-width: 1000px;
-        flex-wrap: nowrap;
-        justify-content: center;
-        flex-direction: row;
+    body.chapters .stars-svg#stars-4x4 {
+        display: block;
+        width: 100%;
+        max-width: 650px;
+        height: calc(var(--vh, 1vh) * 85);
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
     }
-    body.chapters .star-container {
-        width: 80px; /* Reduced from 100px */
-        height: 100px; /* Reduced from 120px */
-        box-sizing: border-box;
+    body.chapters .stars-svg#stars-2x2x4 {
+        display: none;
+    }
+    body.chapters .chapter-container {
+        position: relative;
+        padding-bottom: calc(var(--vh, 1vh) * 85 + 20px);
     }
     .star {
         width: 80px;
@@ -2811,17 +2824,22 @@ h2#popupWelcome {
 
 /* iPad 3, 4, Pro 9.7" landscape (768x1024, pixel ratio 2) */
 @media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
-    body.chapters .exercises {
-        gap: 20px;
-        max-width: 80vw;
-        flex-wrap: wrap;
-        justify-content: center;
-        flex-direction: row;
+    body.chapters .stars-svg#stars-4x4 {
+        display: block;
+        width: 100%;
+        max-width: 650px;
+        height: calc(var(--vh, 1vh) * 85);
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
     }
-    body.chapters .star-container {
-        width: 100px;
-        height: 120px;
-        box-sizing: border-box;
+    body.chapters .stars-svg#stars-2x2x4 {
+        display: none;
+    }
+    body.chapters .chapter-container {
+        position: relative;
+        padding-bottom: calc(var(--vh, 1vh) * 85 + 20px);
     }
     .star {
         width: 100px;
@@ -2839,16 +2857,22 @@ h2#popupWelcome {
 
 /* iPad 11" and Similar Tablets (834px–1193px, Pixel Ratio 2) */
 @media only screen and (min-device-width: 834px) and (max-device-width: 1193px) and (-webkit-min-device-pixel-ratio: 2) {
-    body.chapters .exercises {
-        gap: 15px;
-        max-width: 80vw;
-        flex-wrap: nowrap;
-        justify-content: space-between;
+    body.chapters .stars-svg#stars-4x4 {
+        display: block;
+        width: 100%;
+        max-width: 650px;
+        height: calc(var(--vh, 1vh) * 85);
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
     }
-    body.chapters .star-container {
-        width: 120px;
-        height: 140px;
-        box-sizing: border-box;
+    body.chapters .stars-svg#stars-2x2x4 {
+        display: none;
+    }
+    body.chapters .chapter-container {
+        position: relative;
+        padding-bottom: calc(var(--vh, 1vh) * 85 + 20px);
     }
     .star {
         width: 120px;
@@ -2870,16 +2894,22 @@ h2#popupWelcome {
 
 /* iPad Pro 12.9" (1194px–1366px, Pixel Ratio 2) */
 @media only screen and (min-device-width: 1194px) and (max-device-width: 1366px) and (-webkit-min-device-pixel-ratio: 2) {
-    body.chapters .exercises {
-        gap: 20px;
-        max-width: 80vw;
-        flex-wrap: nowrap;
-        justify-content: space-between;
+    body.chapters .stars-svg#stars-4x4 {
+        display: block;
+        width: 100%;
+        max-width: 650px;
+        height: calc(var(--vh, 1vh) * 85);
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
     }
-    body.chapters .star-container {
-        width: 150px;
-        height: 170px;
-        box-sizing: border-box;
+    body.chapters .stars-svg#stars-2x2x4 {
+        display: none;
+    }
+    body.chapters .chapter-container {
+        position: relative;
+        padding-bottom: calc(var(--vh, 1vh) * 85 + 20px);
     }
     .star {
         width: 150px;
@@ -2906,6 +2936,23 @@ h2#popupWelcome {
         height: calc(var(--vh, 1vh) * 100);
         display: flex;
         flex-direction: column;
+    }
+    body.chapters .stars-svg#stars-4x4 {
+        display: block;
+        width: 100%;
+        max-width: 650px;
+        height: calc(var(--vh, 1vh) * 85);
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+    body.chapters .stars-svg#stars-2x2x4 {
+        display: none;
+    }
+    body.chapters .chapter-container {
+        position: relative;
+        padding-bottom: calc(var(--vh, 1vh) * 85 + 20px);
     }
     .chapter-container {
         height: calc(var(--vh, 1vh) * 100);
