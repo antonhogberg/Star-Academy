@@ -73,6 +73,40 @@ body.popup-open .student-manager {
     overflow-y: hidden;
 }
 
+.stars-svg {
+    display: none;
+    width: 100%;
+    max-width: 650px; /* Intrinsic width of 4x4 SVG */
+    margin: 0 auto;
+    position: relative;
+}
+
+#stars-4x4 {
+    aspect-ratio: 650 / 700; /* 4x4 SVG aspect ratio */
+}
+
+#stars-2x2x4 {
+    aspect-ratio: 310 / 1500; /* 2x2x4 SVG aspect ratio */
+}
+
+.stars-svg svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+.stars-svg .exercise-code {
+    font-family: Cochin, Georgia, Arial, sans-serif;
+    font-size: 16px;
+    fill: #999999;
+}
+
+.stars-svg .star {
+    cursor: pointer;
+    transition: opacity 0.4s ease-in-out;
+    -webkit-tap-highlight-color: transparent;
+}
+
 .title-container {
     display: flex;
     justify-content: center;
@@ -2226,6 +2260,17 @@ h2#popupWelcome {
         flex-direction: column;
         align-items: center;
         flex-grow: 1;
+        width: 100%;
+    }
+
+    #stars-4x4 {
+        display: none !important;
+    }
+
+    #stars-2x2x4 {
+        display: block !important;
+        width: 100%;
+        max-width: 310px; /* Intrinsic width of 2x2x4 SVG */
     }
     .exercises {
         flex-wrap: wrap;
@@ -2525,6 +2570,20 @@ h2#popupWelcome {
         align-items: center;
         height: calc(var(--vh, 1vh) * 100);
         overflow-y: hidden !important;
+    }
+    .parts {
+        height: calc(100% - 20px);
+        flex-grow: 0;
+        justify-content: space-between;
+    }
+
+    #stars-4x4 {
+        display: block !important;
+        width: 100%;
+    }
+
+    #stars-2x2x4 {
+        display: none !important;
     }
     .progress-svg {
         width: 85%;
@@ -2866,13 +2925,22 @@ h2#popupWelcome {
         max-width: 1024px;
         min-width: 580px;
         margin: 0 auto;
-        padding-top: 0;
+        padding-top: 15px;
         padding-bottom: 10px;
-        height: auto;
+        height: calc(100% - 35px);
         overflow-y: auto;
         box-sizing: border-box;
-        justify-content: flex-start;
-        flex-grow: 1;
+        justify-content: space-between;
+        flex-grow: 0;
+    }
+
+    #stars-4x4 {
+        display: block !important;
+        width: 100%;
+    }
+
+    #stars-2x2x4 {
+        display: none !important;
     }
     .exercises {
         gap: 20px;
