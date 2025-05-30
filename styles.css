@@ -78,6 +78,8 @@ body.popup-open .student-manager {
     width: 100%;
     margin: 0 auto;
     position: relative;
+    max-width: 100%;
+    max-height: 100%;
 }
 
 #stars-4x4 {
@@ -485,14 +487,14 @@ body.popup-open .student-manager {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: flex-start;
+    justify-content: center;
     width: 100%;
     box-sizing: border-box;
     flex-grow: 1;
-    padding: 80px 20px 20px 20px; /* Add top padding to account for fixed title */
-    overflow-y: auto; /* Ensure no overflow */
+    margin-top: 60px; /* Account for fixed .chapter-title */
+    min-height: calc(var(--vh, 1vh) * 100 - 60px);
+    overflow-y: auto;
 }
-
 .students-title {
     text-align: center;
     margin: 10px 0;
@@ -670,6 +672,18 @@ body.popup-open .student-manager {
     height: auto;
     max-width: 100%;
     object-fit: contain;
+}
+
+.star-chapter {
+    cursor: pointer;
+    transition: opacity 0.4s ease-in-out;
+    padding: 0;
+    margin: 0;
+    width: 140px;
+    height: 119.26923px;
+    max-width: 100%;
+    object-fit: contain;
+    -webkit-tap-highlight-color: transparent;
 }
 
 .star:hover {
@@ -2145,6 +2159,29 @@ h2#popupWelcome {
     body.chapters .chapter-container {
         padding: 10px;
         overflow-y: auto;
+        margin-top: 50px; /* Slightly smaller for mobile */
+        min-height: calc(var(--vh, 1vh) * 100 - 50px);
+    }
+    body.chapters .chapter-title {
+        position: fixed;
+        font-size: 20px;
+        margin: 0;
+        white-space: normal;
+        overflow: visible;
+        text-overflow: clip;
+    }
+    .star-chapter {
+        width: 140px;
+        height: 119.26923px;
+    }
+    .exercise-code {
+        margin-top: 139.20798px; /* Adjusted for 140px star height */
+        margin-right: 0;
+        font-size: 14px;
+    }
+    /* Hide old layout */
+    .parts, .exercises, .star-container {
+        display: none;
     }
     body.chapters {
         height: auto;
@@ -2221,59 +2258,14 @@ h2#popupWelcome {
     .chapter-name {
         font-size: 20px;
     }
-    .parts {
-        max-width: 744px;
-        min-width: 0;
-        margin: 0 auto;
-        padding-top: 10px;
-        padding-bottom: 20px;
-        height: auto;
-        overflow-y: visible;
-        box-sizing: border-box;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        flex-grow: 1;
-        width: 100%;
-    }
-
-    #stars-4x4 {
-        display: none !important;
-    }
-
-    #stars-2x2x4 {
-        display: block !important;
-        width: 100%;
-        max-width: 310px; /* Intrinsic width of 2x2x4 SVG */
-    }
-    .exercises {
-        flex-wrap: wrap;
-        gap: 20px 10px;
-        max-width: 300px;
-        justify-content: center;
-        flex-direction: row;
-    }
-    .star-container {
-        width: 140px;
-        height: 160px;
-        box-sizing: border-box;
-    }
+    
+   
     .star {
         width: 140px;
         min-width: 140px;
         max-width: 140px;
         height: auto;
         object-fit: contain;
-    }
-    .exercise-code {
-        margin-top: 145px;
-        margin-right: 3px;
-    }
-    .part {
-        margin-bottom: 10px;
-    }
-    .part:nth-child(-n+3) {
-        margin-bottom: 50px;
     }
     .text-box {
         position: static;
@@ -2494,13 +2486,15 @@ h2#popupWelcome {
     }
     body.chapters .stars-svg#stars-4x4 {
         display: block;
-        width: 100%;
         max-width: 650px;
-        height: calc(var(--vh, 1vh) * 85);
+        max-height: calc(90% - 60px); /* 90% of .chapter-container, accounting for margin-top */
+        width: 100%;
+        height: auto;
         position: absolute;
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
+        object-fit: contain;
     }
     body.chapters .stars-svg#stars-2x2x4 {
         display: none;
@@ -2508,7 +2502,7 @@ h2#popupWelcome {
     body.chapters .chapter-container {
         position: relative;
         padding: 20px;
-        min-height: calc(var(--vh, 1vh) * 100);
+        min-height: calc(var(--vh, 1vh) * 100 - 60px);
     }
     .user-name-box {
         min-width: 200px;
@@ -2525,6 +2519,15 @@ h2#popupWelcome {
     }
     .chapter-name {
         font-size: 28px;
+    }
+    .star-chapter {
+        width: 140px;
+        height: 119.26923px;
+    }
+    .exercise-code {
+        margin-top: 139.20798px; /* Adjusted for 140px star height */
+        margin-right: 0;
+        font-size: 16px;
     }
     .layout-container {
         overflow-y: auto !important;

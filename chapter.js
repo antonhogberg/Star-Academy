@@ -45,7 +45,7 @@ function createStarElement(doc, starId, goldLevel, silverLevel, x, y, width, hei
         console.error(`Failed to load image for star-${starId}: ${image}`);
         starElement.setAttributeNS('http://www.w3.org/1999/xlink', 'href', starImages[0][0]);
     };
-    starElement.style.cursor = 'pointer';
+    starElement.classList.add('star-chapter');
     starElement.style.opacity = initialOpacity;
     return starElement;
 }
@@ -160,7 +160,7 @@ function initializeChapter() {
 
     const styleElement = document.createElement('style');
     styleElement.textContent = `
-        image.star { pointer-events: all; transition: opacity 0.4s ease-in-out; }
+        image.star-chapter { pointer-events: all; transition: opacity 0.4s ease-in-out; }
         image.non-clickable { pointer-events: auto; }
     `;
     const existingStyles = document.head.querySelectorAll('style[data-chapter-styles]');
@@ -210,7 +210,6 @@ function initializeChapter() {
 
                 const parent = starElement.parentNode;
                 const newStarElement = createStarElement(document, starId, goldLevel, silverLevel, x, y, width, height);
-                newStarElement.classList.add('star');
                 if (studentMode && goldLevel === 6) {
                     newStarElement.classList.add('non-clickable');
                 }
@@ -232,11 +231,10 @@ function initializeChapter() {
                         const updatedSilverProgress = updatedStudentsData.students[updatedStudentsData.currentStudent]?.silverProgress || {};
                         const updatedStudentMode = updatedStudentsData.students[updatedStudentsData.currentStudent]?.studentMode || false;
                         const updatedGoldLevel = updatedProgress[exerciseKey] ? parseInt(updatedProgress[exerciseKey]) : 0;
-                        const updatedSilverLevel = updatedSilverProgress[exerciseKey] ? parseInt(updatedSilverProgress[exerciseKey]) : 0;
+                        const updatedSilverLevel = updatedSilverProgress[exerciseKey] ? parseInt(silverProgress[exerciseKey]) : 0;
 
                         if (updatedGoldLevel !== goldLevel || updatedSilverLevel !== silverLevel) {
                             const newStarElementUpdate = createStarElement(document, starId, updatedGoldLevel, updatedSilverLevel, x, y, width, height);
-                            newStarElementUpdate.classList.add('star');
                             if (updatedStudentMode && updatedGoldLevel === 6) {
                                 newStarElementUpdate.classList.add('non-clickable');
                             }
