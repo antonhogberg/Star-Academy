@@ -2147,10 +2147,10 @@ h2#popupWelcome {
         align-items: center;
     }
     body.chapters .stars-svg#stars-4x4 {
-        display: none;
+        display: none !important;
     }
     body.chapters .stars-svg#stars-2x2x4 {
-        display: block;
+        display: block !important; /* Override inline style */
         width: calc(85vw);
         max-width: 310px;
         height: auto;
@@ -2159,7 +2159,7 @@ h2#popupWelcome {
     body.chapters .chapter-container {
         padding: 10px;
         overflow-y: auto;
-        margin-top: 50px; /* Slightly smaller for mobile */
+        margin-top: 50px;
         min-height: calc(var(--vh, 1vh) * 100 - 50px);
     }
     body.chapters .chapter-title {
@@ -2175,11 +2175,10 @@ h2#popupWelcome {
         height: 119.26923px;
     }
     .exercise-code {
-        margin-top: 139.20798px; /* Adjusted for 140px star height */
+        margin-top: 139.20798px;
         margin-right: 0;
         font-size: 14px;
     }
-    /* Hide old layout */
     .parts, .exercises, .star-container {
         display: none;
     }
@@ -2258,8 +2257,6 @@ h2#popupWelcome {
     .chapter-name {
         font-size: 20px;
     }
-    
-   
     .star {
         width: 140px;
         min-width: 140px;
@@ -2294,7 +2291,6 @@ h2#popupWelcome {
     .student-manager .checkbox-group {
         width: 72vw;
     }
-    
     .student-manager button#shareButton,
     .student-manager button#shareExportButton {
         width: 72vw;
