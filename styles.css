@@ -2223,6 +2223,20 @@ h2#popupWelcome {
         flex-grow: 1;
         width: 100%;
     }
+
+    #stars-4x4 {
+        display: none !important;
+    }
+
+    #stars-2x2x4 {
+        display: block !important;
+        width: 100%;
+    }
+
+    #stars-2x2x4 svg {
+        width: 100%;
+        height: auto;
+    }
     .exercises {
         flex-wrap: wrap;
         gap: 20px 10px;
@@ -2425,17 +2439,6 @@ h2#popupWelcome {
     #rankAchievementPopup .popup-content h2#rankAchievementMessage {
         font-size: 20px;
     }
-    #stars-4x4 {
-        display: none;
-    }
-    #stars-2x2x4 {
-        display: block;
-        width: 100%;
-    }
-    #stars-2x2x4 svg {
-        width: 100%;
-        height: auto;
-    }
 }
 
 /* iPhone landscape */
@@ -2494,12 +2497,12 @@ h2#popupWelcome {
     }
 
     #stars-4x4 {
-        display: block;
+        display: block !important;
         width: 100%;
     }
 
     #stars-2x2x4 {
-        display: none;
+        display: none !important;
     }
 
     #stars-4x4 svg {
@@ -2784,12 +2787,12 @@ h2#popupWelcome {
     }
 
     #stars-4x4 {
-        display: block;
+        display: block !important;
         width: 100%;
     }
 
     #stars-2x2x4 {
-        display: none;
+        display: none !important;
     }
 
     #stars-4x4 svg {

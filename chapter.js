@@ -48,39 +48,24 @@ function initializeChapter() {
     // Step 5: Preload images
     preloadImages();
 
-    // Fetch and embed SVGs
-    Promise.all([
-        fetch('chapters-4x4.svg').then(res => res.text()),
-        fetch('chapters-2x2x4.svg').then(res => res.text())
-    ]).then(([svg4x4Content, svg2x2x4Content]) => {
-        // Create SVG containers
-        const svg4x4Div = document.createElement('div');
-        svg4x4Div.id = 'stars-4x4';
-        svg4x4Div.className = 'stars-svg';
-        svg4x4Div.innerHTML = svg4x4Content;
+    // Initialize only the visible SVG
+    const svg4x4Div = document.getElementById('stars-4x4');
+    const svg2x2x4Div = document.getElementById('stars-2x2x4');
 
-        const svg2x2x4Div = document.createElement('div');
-        svg2x2x4Div.id = 'stars-2x2x4';
-        svg2x2x4Div.className = 'stars-svg';
-        svg2x2x4Div.innerHTML = svg2x2x4Content;
+    const isSvg4x4Visible = window.getComputedStyle(svg4x4Div).display !== 'none';
+    const isSvg2x2x4Visible = window.getComputedStyle(svg2x2x4Div).display !== 'none';
 
-        partsContainer.appendChild(svg4x4Div);
-        partsContainer.appendChild(svg2x2x4Div);
+    console.log(`SVG Visibility - 4x4: ${isSvg4x4Visible}, 2x2x4: ${isSvg2x2x4Visible}`);
 
-        // Access the SVG documents
+    if (isSvg4x4Visible) {
         const svg4x4Doc = svg4x4Div.querySelector('svg');
-        const svg2x2x4Doc = svg2x2x4Div.querySelector('svg');
-
-        // Update viewBox attributes
-        svg4x4Doc.setAttribute('viewBox', '0 0 650 700');
-        svg2x2x4Doc.setAttribute('viewBox', '0 0 310 1500');
-
-        // Initialize SVGs
         initializeSvg(svg4x4Doc, chapterNum);
+    } else if (isSvg2x2x4Visible) {
+        const svg2x2x4Doc = svg2x2x4Div.querySelector('svg');
         initializeSvg(svg2x2x4Doc, chapterNum);
-    }).catch(err => {
-        console.error('Failed to load SVGs:', err);
-    });
+    } else {
+        console.error('No SVG is visible');
+    }
 }
 
 function initializeSvg(doc, chapterNum) {
@@ -142,8 +127,16 @@ function initializeSvg(doc, chapterNum) {
         const y = star.getAttribute('y');
         const width = star.getAttribute('width');
         const height = star.getAttribute('height');
-        star.addEventListener('click', (e) => handleStarClick(e, star, exerciseKey, doc, parent, x, y, width, height));
+        star.addEventListener('click', (e) => {
+            console.log(`Click event triggered for star-${exerciseKey}`);
+            handleStarClick(e, star, exerciseKey, doc, parent, x, y, width, height);
+        });
         console.log(`Attached click handler for star-${exerciseKey}`);
+
+        // Test clickability with a simple handler
+        star.addEventListener('click', () => {
+            console.log(`Test click handler: Star ${exerciseKey} clicked`);
+        });
     });
 
     // Handle storage updates
@@ -175,7 +168,10 @@ function initializeSvg(doc, chapterNum) {
                     newStarElement.classList.add('non-clickable');
                 }
                 parent.replaceChild(newStarElement, star);
-                newStarElement.addEventListener('click', (e) => handleStarClick(e, newStarElement, exerciseKey, doc, parent, x, y, width, height));
+                newStarElement.addEventListener('click', (e) => {
+                    console.log(`Click event triggered for star-${exerciseKey} after storage update`);
+                    handleStarClick(e, newStarElement, exerciseKey, doc, parent, x, y, width, height);
+                });
                 console.log(`Reattached click handler for star-${exerciseKey} in storage listener`);
             });
 
@@ -267,7 +263,7 @@ function handleStarClick(event, star, exerciseKey, doc, parent, x, y, width, hei
         starElement.style.opacity = '0';
         setTimeout(() => {
             starElement.setAttributeNS('http://www.w3.org/1999/xlink', 'href', starImages[newGoldLevel][newSilverLevel]);
-            starElement.setAttribute('alt', `Exercise ${exerciseCode} - ${newGoldLevel === 0 && newSilverLevel === 0 ? 'Outlined Star' : `${newGoldLevel} Golden Stars, ${newSilverLevel} Silver Stars`}`);
+            starElement.setAttribute('alt', `Exercise ${exerciseCode} - ${newGoldLevel === 0 && silverLevel === 0 ? 'Outlined Star' : `${newGoldLevel} Golden Stars, ${newSilverLevel} Silver Stars`}`);
             starElement.style.opacity = '1';
         }, 400);
     } else {
@@ -280,7 +276,10 @@ function handleStarClick(event, star, exerciseKey, doc, parent, x, y, width, hei
         setTimeout(() => {
             parent.removeChild(starElement);
             overlayStarElement.setAttribute('id', `star-${exerciseCode.replace(/:/g, '-')}`);
-            overlayStarElement.addEventListener('click', (e) => handleStarClick(e, overlayStarElement, exerciseKey, doc, parent, x, y, width, height));
+            overlayStarElement.addEventListener('click', (e) => {
+                console.log(`Click event triggered for star-${exerciseKey} after fade`);
+                handleStarClick(e, overlayStarElement, exerciseKey, doc, parent, x, y, width, height);
+            });
             console.log(`Reattached click handler for star-${exerciseCode}`);
         }, 400);
     }
