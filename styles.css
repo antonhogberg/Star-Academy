@@ -2698,13 +2698,7 @@ h2#popupWelcome {
 /* iPad 1, 2, Mini, Air portrait (768x1024, pixel ratio 1) */
 @media only screen and (min-width: 768px) and (max-width: 1024px) and (orientation: portrait) and (-webkit-min-device-pixel-ratio: 1) {
     
-    .star {
-        width: 100px;
-        min-width: 100px;
-        max-width: 100px;
-        height: auto;
-        object-fit: contain;
-    }
+    
     .exercise-code {
         margin-top: 105px;
         margin-right: 2px;
@@ -2715,13 +2709,7 @@ h2#popupWelcome {
 /* iPad 1, 2, Mini, Air landscape (768x1024, pixel ratio 1) */
 @media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 1) {
     
-    .star {
-        width: 100px;
-        min-width: 100px;
-        max-width: 100px;
-        height: auto;
-        object-fit: contain;
-    }
+    
     .exercise-code {
         margin-top: 105px;
         margin-right: 2px;
@@ -2738,13 +2726,7 @@ h2#popupWelcome {
 
 /* iPad 3, 4, Pro 9.7" portrait (768x1024, pixel ratio 2) */
 @media only screen and (min-width: 768px) and (max-width: 1024px) and (orientation: portrait) and (-webkit-min-device-pixel-ratio: 2) {
-    .star {
-        width: 80px;
-        min-width: 80px;
-        max-width: 80px;
-        height: auto;
-        object-fit: contain;
-    }
+    
     .exercise-code {
         margin-top: 85px; /* Adjusted for smaller star size */
         margin-right: 2px;
@@ -2755,13 +2737,7 @@ h2#popupWelcome {
 /* iPad 3, 4, Pro 9.7" landscape (768x1024, pixel ratio 2) */
 @media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
     
-    .star {
-        width: 100px;
-        min-width: 100px;
-        max-width: 100px;
-        height: auto;
-        object-fit: contain;
-    }
+    
     .exercise-code {
         margin-top: 105px;
         margin-right: 2px;
@@ -2771,13 +2747,7 @@ h2#popupWelcome {
 
 /* iPad 11" and Similar Tablets (834px–1193px, Pixel Ratio 2) */
 @media only screen and (min-device-width: 834px) and (max-device-width: 1193px) and (-webkit-min-device-pixel-ratio: 2) {
-    .star {
-        width: 120px;
-        min-width: 120px;
-        max-width: 120px;
-        height: auto;
-        object-fit: contain;
-    }
+    
     .exercise-code {
         margin-top: 125px;
         margin-right: 4px;
@@ -2792,13 +2762,7 @@ h2#popupWelcome {
 /* iPad Pro 12.9" (1194px–1366px, Pixel Ratio 2) */
 @media only screen and (min-device-width: 1194px) and (max-device-width: 1366px) and (-webkit-min-device-pixel-ratio: 2) {
     
-    .star {
-        width: 150px;
-        min-width: 150px;
-        max-width: 150px;
-        height: auto;
-        object-fit: contain;
-    }
+    
     .exercise-code {
         margin-top: 155px;
         margin-right: 4px;
@@ -2878,13 +2842,7 @@ h2#popupWelcome {
         height: 140px;
         box-sizing: border-box;
     }
-    .star {
-        width: 120px;
-        min-width: 120px;
-        max-width: 120px;
-        height: auto;
-        object-fit: contain;
-    }
+    
     .exercise-code {
         margin-top: 125px;
         margin-right: 2px;
