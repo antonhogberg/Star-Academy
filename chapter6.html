@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no, viewport-fit=cover">
     <meta charset="UTF-8">
-    <title>Kapitel 6 / Chapter 6</title>
+    <title data-translate="chapter6"></title>
     <link rel="stylesheet" href="styles.css">
     <script>
         function setViewportHeight() {
@@ -23,6 +23,28 @@
         }
         window.addEventListener('load', detectMobile);
         detectMobile();
+
+        function preloadImages() {
+            const starImages = [
+                ['gold0_silver0.png', 'gold0_silver1.png', 'gold0_silver2.png', 'gold0_silver3.png', 'gold0_silver4.png', 'gold0_silver5.png', 'gold0_silver6.png'],
+                ['gold1_silver0.png', 'gold1_silver1.png', 'gold1_silver2.png', 'gold1_silver3.png', 'gold1_silver4.png', 'gold1_silver5.png'],
+                ['gold2_silver0.png', 'gold2_silver1.png', 'gold2_silver2.png', 'gold2_silver3.png', 'gold2_silver4.png'],
+                ['gold3_silver0.png', 'gold3_silver1.png', 'gold3_silver2.png', 'gold3_silver3.png'],
+                ['gold4_silver0.png', 'gold4_silver1.png', 'gold4_silver2.png'],
+                ['gold5_silver0.png', 'gold5_silver1.png'],
+                ['gold6_silver0.png']
+            ];
+            console.log('Preloading star images for chapter');
+            starImages.forEach((goldLevelImages) => {
+                goldLevelImages.forEach((image) => {
+                    const img = new Image();
+                    img.src = image;
+                    img.onload = () => console.log(`Loaded image: ${image}`);
+                    img.onerror = () => console.error(`Failed to preload image: ${image}`);
+                });
+            });
+        }
+        preloadImages();
     </script>
 </head>
 <body class="chapters">
@@ -34,12 +56,106 @@
         <div class="black-key bottom"></div>
     </div>
     <nav id="menu-placeholder"></nav>
+    <h1 class="chapter-title">
+        <span class="chapter-number"></span>
+        <span class="chapter-name"></span>
+    </h1>
     <div class="chapter-container" id="chapterContainer">
-        <h1 class="chapter-title">
-            <span class="chapter-number"></span>
-            <span class="chapter-name"></span>
-        </h1>
-        <div class="parts"></div>
+        <div class="stars-svg" id="stars-4x4">
+            <svg
+                width="650"
+                height="700"
+                viewBox="0 0 650 700"
+                version="1.1"
+                id="svg1"
+                xml:space="preserve"
+                xmlns="http://www.w3.org/2000/svg"
+                xmlns:svg="http://www.w3.org/2000/svg">
+                <defs id="defs1" />
+                <g inkscape:label="Stars" inkscape:groupmode="layer" id="layer1" style="fill:#999999;fill-opacity:1">
+                    <image width="140" height="119.26923" preserveAspectRatio="none" xlink:href="gold0_silver0.png" id="star-6-1-1" x="0" y="0" />
+                    <image width="140" height="119.26923" preserveAspectRatio="none" xlink:href="gold0_silver0.png" id="star-6-1-2" x="170" y="0" />
+                    <image width="140" height="119.26923" preserveAspectRatio="none" xlink:href="gold0_silver0.png" id="star-6-1-3" x="340" y="0" />
+                    <image width="140" height="119.26923" preserveAspectRatio="none" xlink:href="gold0_silver0.png" id="star-6-1-4" x="510" y="0" />
+                    <image width="140" height="119.26923" preserveAspectRatio="none" xlink:href="gold0_silver0.png" id="star-6-2-1" x="0" y="180" />
+                    <image width="140" height="119.26923" preserveAspectRatio="none" xlink:href="gold0_silver0.png" id="star-6-2-2" x="170" y="180" />
+                    <image width="140" height="119.26923" preserveAspectRatio="none" xlink:href="gold0_silver0.png" id="star-6-2-3" x="340" y="180" />
+                    <image width="140" height="119.26923" preserveAspectRatio="none" xlink:href="gold0_silver0.png" id="star-6-2-4" x="510" y="180" />
+                    <image width="140" height="119.26923" preserveAspectRatio="none" xlink:href="gold0_silver0.png" id="star-6-3-1" x="0" y="360" />
+                    <image width="140" height="119.26923" preserveAspectRatio="none" xlink:href="gold0_silver0.png" id="star-6-3-2" x="170" y="360" />
+                    <image width="140" height="119.26923" preserveAspectRatio="none" xlink:href="gold0_silver0.png" id="star-6-3-3" x="340" y="360" />
+                    <image width="140" height="119.26923" preserveAspectRatio="none" xlink:href="gold0_silver0.png" id="star-6-3-4" x="510" y="360" />
+                    <image width="140" height="119.26923" preserveAspectRatio="none" xlink:href="gold0_silver0.png" id="star-6-4-1" x="0" y="540" />
+                    <image width="140" height="119.26923" preserveAspectRatio="none" xlink:href="gold0_silver0.png" id="star-6-4-2" x="170" y="540" />
+                    <image width="140" height="119.26923" preserveAspectRatio="none" xlink:href="gold0_silver0.png" id="star-6-4-3" x="340" y="540" />
+                    <image width="140" height="119.26923" preserveAspectRatio="none" xlink:href="gold0_silver0.png" id="star-6-4-4" x="510" y="540" />
+                </g>
+                <g inkscape:groupmode="layer" id="layer3" inkscape:label="Codes">
+                    <text xml:space="preserve" style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:21.3333px;font-family:Cochin;-inkscape-font-specification:'Cochin, Medium';text-align:center;writing-mode:lr-tb;direction:ltr;text-anchor:middle;fill:#999999;stroke:none;fill-opacity:1" x="70" y="139.20798" id="code-6-1-1"><tspan sodipodi:role="line" x="70" y="139.20798">6:1:1</tspan></text>
+                    <text xml:space="preserve" style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:21.3333px;font-family:Cochin;-inkscape-font-specification:'Cochin, Medium';text-align:center;writing-mode:lr-tb;direction:ltr;text-anchor:middle;fill:#999999;stroke:none;fill-opacity:1" x="240" y="139.20798" id="code-6-1-2"><tspan sodipodi:role="line" x="240" y="139.20798">6:1:2</tspan></text>
+                    <text xml:space="preserve" style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:21.3333px;font-family:Cochin;-inkscape-font-specification:'Cochin, Medium';text-align:center;writing-mode:lr-tb;direction:ltr;text-anchor:middle;fill:#999999;stroke:none;fill-opacity:1" x="410" y="139.20798" id="code-6-1-3"><tspan sodipodi:role="line" x="410" y="139.20798">6:1:3</tspan></text>
+                    <text xml:space="preserve" style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:21.3333px;font-family:Cochin;-inkscape-font-specification:'Cochin, Medium';text-align:center;writing-mode:lr-tb;direction:ltr;text-anchor:middle;fill:#999999;stroke:none;fill-opacity:1" x="580" y="139.20798" id="code-6-1-4"><tspan sodipodi:role="line" x="580" y="139.20798">6:1:4</tspan></text>
+                    <text xml:space="preserve" style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:21.3333px;font-family:Cochin;-inkscape-font-specification:'Cochin, Medium';text-align:center;writing-mode:lr-tb;direction:ltr;text-anchor:middle;fill:#999999;stroke:none;fill-opacity:1" x="70" y="319.20798" id="code-6-2-1"><tspan sodipodi:role="line" x="70" y="319.20798">6:2:1</tspan></text>
+                    <text xml:space="preserve" style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:21.3333px;font-family:Cochin;-inkscape-font-specification:'Cochin, Medium';text-align:center;writing-mode:lr-tb;direction:ltr;text-anchor:middle;fill:#999999;stroke:none;fill-opacity:1" x="240" y="319.20798" id="code-6-2-2"><tspan sodipodi:role="line" x="240" y="319.20798">6:2:2</tspan></text>
+                    <text xml:space="preserve" style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:21.3333px;font-family:Cochin;-inkscape-font-specification:'Cochin, Medium';text-align:center;writing-mode:lr-tb;direction:ltr;text-anchor:middle;fill:#999999;stroke:none;fill-opacity:1" x="410" y="319.20798" id="code-6-2-3"><tspan sodipodi:role="line" x="410" y="319.20798">6:2:3</tspan></text>
+                    <text xml:space="preserve" style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:21.3333px;font-family:Cochin;-inkscape-font-specification:'Cochin, Medium';text-align:center;writing-mode:lr-tb;direction:ltr;text-anchor:middle;fill:#999999;stroke:none;fill-opacity:1" x="580" y="319.20798" id="code-6-2-4"><tspan sodipodi:role="line" x="580" y="319.20798">6:2:4</tspan></text>
+                    <text xml:space="preserve" style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:21.3333px;font-family:Cochin;-inkscape-font-specification:'Cochin, Medium';text-align:center;writing-mode:lr-tb;direction:ltr;text-anchor:middle;fill:#999999;stroke:none;fill-opacity:1" x="70" y="499.20798" id="code-6-3-1"><tspan sodipodi:role="line" x="70" y="499.20798">6:3:1</tspan></text>
+                    <text xml:space="preserve" style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:21.3333px;font-family:Cochin;-inkscape-font-specification:'Cochin, Medium';text-align:center;writing-mode:lr-tb;direction:ltr;text-anchor:middle;fill:#999999;stroke:none;fill-opacity:1" x="240" y="499.20798" id="code-6-3-2"><tspan sodipodi:role="line" x="240" y="499.20798">6:3:2</tspan></text>
+                    <text xml:space="preserve" style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:21.3333px;font-family:Cochin;-inkscape-font-specification:'Cochin, Medium';text-align:center;writing-mode:lr-tb;direction:ltr;text-anchor:middle;fill:#999999;stroke:none;fill-opacity:1" x="410" y="499.20798" id="code-6-3-3"><tspan sodipodi:role="line" x="410" y="499.20798">6:3:3</tspan></text>
+                    <text xml:space="preserve" style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:21.3333px;font-family:Cochin;-inkscape-font-specification:'Cochin, Medium';text-align:center;writing-mode:lr-tb;direction:ltr;text-anchor:middle;fill:#999999;stroke:none;fill-opacity:1" x="580" y="499.20798" id="code-6-3-4"><tspan sodipodi:role="line" x="580" y="499.20798">6:3:4</tspan></text>
+                    <text xml:space="preserve" style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:21.3333px;font-family:Cochin;-inkscape-font-specification:'Cochin, Medium';text-align:center;writing-mode:lr-tb;direction:ltr;text-anchor:middle;fill:#999999;stroke:none;fill-opacity:1" x="70" y="679.20801" id="code-6-4-1"><tspan sodipodi:role="line" x="70" y="679.20801">6:4:1</tspan></text>
+                    <text xml:space="preserve" style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:21.3333px;font-family:Cochin;-inkscape-font-specification:'Cochin, Medium';text-align:center;writing-mode:lr-tb;direction:ltr;text-anchor:middle;fill:#999999;stroke:none;fill-opacity:1" x="240" y="679.20801" id="code-6-4-2"><tspan sodipodi:role="line" x="240" y="679.20801">6:4:2</tspan></text>
+                    <text xml:space="preserve" style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:21.3333px;font-family:Cochin;-inkscape-font-specification:'Cochin, Medium';text-align:center;writing-mode:lr-tb;direction:ltr;text-anchor:middle;fill:#999999;stroke:none;fill-opacity:1" x="410" y="679.20801" id="code-6-4-3"><tspan sodipodi:role="line" x="410" y="679.20801">6:4:3</tspan></text>
+                    <text xml:space="preserve" style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:21.3333px;font-family:Cochin;-inkscape-font-specification:'Cochin, Medium';text-align:center;writing-mode:lr-tb;direction:ltr;text-anchor:middle;fill:#999999;stroke:none;fill-opacity:1" x="580" y="679.20801" id="code-6-4-4"><tspan sodipodi:role="line" x="580" y="679.20801">6:4:4</tspan></text>
+                </g>
+            </svg>
+        </div>
+        <div class="stars-svg" id="stars-2x2x4" style="display: none;">
+            <svg width="310" height="1650" viewBox="0 0 310 1650" version="1.1" id="svg2" xmlns="http://www.w3.org/2000/svg">
+                <defs id="defs2" />
+                <g inkscape:label="Stars" inkscape:groupmode="layer" id="layer1-2" style="fill:#999999;fill-opacity:1">
+                    <image width="140" height="119.26923" preserveAspectRatio="none" xlink:href="gold0_silver0.png" id="star-6-1-1" x="0" y="0" />
+                    <image width="140" height="119.26923" preserveAspectRatio="none" xlink:href="gold0_silver0.png" id="star-6-1-2" x="170" y="0" />
+                    <image width="140" height="119.26923" preserveAspectRatio="none" xlink:href="gold0_silver0.png" id="star-6-1-3" x="0" y="180" />
+                    <image width="140" height="119.26923" preserveAspectRatio="none" xlink:href="gold0_silver0.png" id="star-6-1-4" x="170" y="180" />
+                    <image width="140" height="119.26923" preserveAspectRatio="none" xlink:href="gold0_silver0.png" id="star-6-2-1" x="0" y="410" />
+                    <image width="140" height="119.26923" preserveAspectRatio="none" xlink:href="gold0_silver0.png" id="star-6-2-2" x="170" y="410" />
+                    <image width="140" height="119.26923" preserveAspectRatio="none" xlink:href="gold0_silver0.png" id="star-6-2-3" x="0" y="590" />
+                    <image width="140" height="119.26923" preserveAspectRatio="none" xlink:href="gold0_silver0.png" id="star-6-2-4" x="170" y="590" />
+                    <image width="140" height="119.26923" preserveAspectRatio="none" xlink:href="gold0_silver0.png" id="star-6-3-1" x="0" y="820" />
+                    <image width="140" height="119.26923" preserveAspectRatio="none" xlink:href="gold0_silver0.png" id="star-6-3-2" x="170" y="820" />
+                    <image width="140" height="119.26923" preserveAspectRatio="none" xlink:href="gold0_silver0.png" id="star-6-3-3" x="0" y="1000" />
+                    <image width="140" height="119.26923" preserveAspectRatio="none" xlink:href="gold0_silver0.png" id="star-6-3-4" x="170" y="1000" />
+                    <image width="140" height="119.26923" preserveAspectRatio="none" xlink:href="gold0_silver0.png" id="star-6-4-1" x="0" y="1230" />
+                    <image width="140" height="119.26923" preserveAspectRatio="none" xlink:href="gold0_silver0.png" id="star-6-4-2" x="170" y="1230" />
+                    <image width="140" height="119.26923" preserveAspectRatio="none" xlink:href="gold0_silver0.png" id="star-6-4-3" x="0" y="1410" />
+                    <image width="140" height="119.26923" preserveAspectRatio="none" xlink:href="gold0_silver0.png" id="star-6-4-4" x="170" y="1410" />
+                </g>
+                <g inkscape:groupmode="layer" id="layer3-2" inkscape:label="Codes">
+                    <text xml:space="preserve" style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:21.3333px;font-family:Cochin;-inkscape-font-specification:'Cochin, Medium';text-align:center;writing-mode:lr-tb;direction:ltr;text-anchor:middle;fill:#999999;stroke:none;fill-opacity:1" x="70" y="143.20798" id="code-6-1-1"><tspan sodipodi:role="line" x="70" y="143.20798">6:1:1</tspan></text>
+                    <text xml:space="preserve" style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:21.3333px;font-family:Cochin;-inkscape-font-specification:'Cochin, Medium';text-align:center;writing-mode:lr-tb;direction:ltr;text-anchor:middle;fill:#999999;stroke:none;fill-opacity:1" x="240" y="143.20798" id="code-6-1-2"><tspan sodipodi:role="line" x="240" y="143.20798">6:1:2</tspan></text>
+                    <text xml:space="preserve" style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:21.3333px;font-family:Cochin;-inkscape-font-specification:'Cochin, Medium';text-align:center;writing-mode:lr-tb;direction:ltr;text-anchor:middle;fill:#999999;stroke:none;fill-opacity:1" x="70" y="323.20798" id="code-6-1-3"><tspan sodipodi:role="line" x="70" y="323.20798">6:1:3</tspan></text>
+                    <text xml:space="preserve" style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:21.3333px;font-family:Cochin;-inkscape-font-specification:'Cochin, Medium';text-align:center;writing-mode:lr-tb;direction:ltr;text-anchor:middle;fill:#999999;stroke:none;fill-opacity:1" x="240" y="323.20798" id="code-6-1-4"><tspan sodipodi:role="line" x="240" y="323.20798">6:1:4</tspan></text>
+                    <text xml:space="preserve" style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:21.3333px;font-family:Cochin;-inkscape-font-specification:'Cochin, Medium';text-align:center;writing-mode:lr-tb;direction:ltr;text-anchor:middle;fill:#999999;stroke:none;fill-opacity:1" x="70" y="553.20798" id="code-6-2-1"><tspan sodipodi:role="line" x="70" y="553.20798">6:2:1</tspan></text>
+                    <text xml:space="preserve" style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:21.3333px;font-family:Cochin;-inkscape-font-specification:'Cochin, Medium';text-align:center;writing-mode:lr-tb;direction:ltr;text-anchor:middle;fill:#999999;stroke:none;fill-opacity:1" x="240" y="553.20798" id="code-6-2-2"><tspan sodipodi:role="line" x="240" y="553.20798">6:2:2</tspan></text>
+                    <text xml:space="preserve" style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:21.3333px;font-family:Cochin;-inkscape-font-specification:'Cochin, Medium';text-align:center;writing-mode:lr-tb;direction:ltr;text-anchor:middle;fill:#999999;stroke:none;fill-opacity:1" x="70" y="733.20798" id="code-6-2-3"><tspan sodipodi:role="line" x="70" y="733.20798">6:2:3</tspan></text>
+                    <text xml:space="preserve" style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:21.3333px;font-family:Cochin;-inkscape-font-specification:'Cochin, Medium';text-align:center;writing-mode:lr-tb;direction:ltr;text-anchor:middle;fill:#999999;stroke:none;fill-opacity:1" x="240" y="733.20798" id="code-6-2-4"><tspan sodipodi:role="line" x="240" y="733.20798">6:2:4</tspan></text>
+                    <text xml:space="preserve" style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:21.3333px;font-family:Cochin;-inkscape-font-specification:'Cochin, Medium';text-align:center;writing-mode:lr-tb;direction:ltr;text-anchor:middle;fill:#999999;stroke:none;fill-opacity:1" x="70" y="963.20798" id="code-6-3-1"><tspan sodipodi:role="line" x="70" y="963.20798">6:3:1</tspan></text>
+                    <text xml:space="preserve" style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:21.3333px;font-family:Cochin;-inkscape-font-specification:'Cochin, Medium';text-align:center;writing-mode:lr-tb;direction:ltr;text-anchor:middle;fill:#999999;stroke:none;fill-opacity:1" x="240" y="963.20798" id="code-6-3-2"><tspan sodipodi:role="line" x="240" y="963.20798">6:3:2</tspan></text>
+                    <text xml:space="preserve" style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:21.3333px;font-family:Cochin;-inkscape-font-specification:'Cochin, Medium';text-align:center;writing-mode:lr-tb;direction:ltr;text-anchor:middle;fill:#999999;stroke:none;fill-opacity:1" x="70" y="1143.20798" id="code-6-3-3"><tspan sodipodi:role="line" x="70" y="1143.20798">6:3:3</tspan></text>
+                    <text xml:space="preserve" style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:21.3333px;font-family:Cochin;-inkscape-font-specification:'Cochin, Medium';text-align:center;writing-mode:lr-tb;direction:ltr;text-anchor:middle;fill:#999999;stroke:none;fill-opacity:1" x="240" y="1143.20798" id="code-6-3-4"><tspan sodipodi:role="line" x="240" y="1143.20798">6:3:4</tspan></text>
+                    <text xml:space="preserve" style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:21.3333px;font-family:Cochin;-inkscape-font-specification:'Cochin, Medium';text-align:center;writing-mode:lr-tb;direction:ltr;text-anchor:middle;fill:#999999;stroke:none;fill-opacity:1" x="70" y="1373.20801" id="code-6-4-1"><tspan sodipodi:role="line" x="70" y="1373.20801">6:4:1</tspan></text>
+                    <text xml:space="preserve" style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:21.3333px;font-family:Cochin;-inkscape-font-specification:'Cochin, Medium';text-align:center;writing-mode:lr-tb;direction:ltr;text-anchor:middle;fill:#999999;stroke:none;fill-opacity:1" x="240" y="1373.20801" id="code-6-4-2"><tspan sodipodi:role="line" x="240" y="1373.20801">6:4:2</tspan></text>
+                    <text xml:space="preserve" style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:21.3333px;font-family:Cochin;-inkscape-font-specification:'Cochin, Medium';text-align:center;writing-mode:lr-tb;direction:ltr;text-anchor:middle;fill:#999999;stroke:none;fill-opacity:1" x="70" y="1553.20801" id="code-6-4-3"><tspan sodipodi:role="line" x="70" y="1553.20801">6:4:3</tspan></text>
+                    <text xml:space="preserve" style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:21.3333px;font-family:Cochin;-inkscape-font-specification:'Cochin, Medium';text-align:center;writing-mode:lr-tb;direction:ltr;text-anchor:middle;fill:#999999;stroke:none;fill-opacity:1" x="240" y="1553.20801" id="code-6-4-4"><tspan sodipodi:role="line" x="240" y="1553.20801">6:4:4</tspan></text>
+                </g>
+                <g inkscape:groupmode="layer" id="layer4" inkscape:label="Separators">
+                    <line x1="74" y1="370" x2="230" y2="370" style="stroke:#999999;stroke-width:1"></line>
+                    <line x1="74" y1="780" x2="230" y2="780" style="stroke:#999999;stroke-width:1"></line>
+                    <line x1="74" y1="1190" x2="230" y2="1190" style="stroke:#999999;stroke-width:1"></line>
+                </g>
+            </svg>
+        </div>
     </div>
     <div id="namePopup" class="popup" style="display: none;">
         <div class="popup-content">
@@ -75,7 +191,7 @@
             </div>
             <button id="closeRankPopup" class="close-button">×</button>
         </div>
-    </div>  
+    </div>
     <div class="user-name-display">
         <span id="userNameDisplay"></span>
     </div>
@@ -88,59 +204,24 @@
             let studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
             const namePopup = document.getElementById('namePopup');
             const nameInput = document.getElementById('nameInput');
-        
-            const chapterTitle = document.querySelector('.chapter-title');
-            const chapterContainer = document.querySelector('.chapter-container');
-        
-            if (chapterTitle && chapterContainer) {
-                const adjustPadding = () => {
-                    const isMobile = window.matchMedia("(max-width: 767px) and (orientation: portrait)").matches;
-                    if (!isMobile) {
-                        requestAnimationFrame(() => {
-                            const titleHeight = chapterTitle.offsetHeight;
-                            chapterContainer.style.paddingTop = `${titleHeight + 20}px`;
-                        });
-                    } else {
-                        chapterContainer.style.paddingTop = '';
-                    }
-                };
-                adjustPadding();
-                window.addEventListener('load', adjustPadding);
-                window.addEventListener('resize', adjustPadding);
-                window.addEventListener('orientationchange', adjustPadding);
-                const observer = new MutationObserver(() => {
-                    adjustPadding();
-                });
-                observer.observe(chapterTitle, {
-                    childList: true,
-                    subtree: true,
-                    characterData: true
-                });
-                window.addEventListener('unload', () => {
-                    observer.disconnect();
-                });
-            }
-        
-            // Visa namePopup om ingen student finns
+
             if (!studentsData.currentStudent) {
                 namePopup.style.display = 'flex';
                 document.body.classList.add('popup-open');
-        
-                // Centrera popupen
+
                 const popupContent = namePopup.querySelector('.popup-content');
                 popupContent.style.position = 'absolute';
                 popupContent.style.top = '50%';
                 popupContent.style.left = '50%';
                 popupContent.style.transform = 'translate(-50%, -50%)';
             }
-        
+
             const initialLang = localStorage.getItem('language') || 'sv';
             switchLanguage(initialLang);
-        
-            // Hantera keyboard-beteende (iOS/iPad)
+
             if (nameInput) {
                 let originalScrollY = 0;
-        
+
                 const lockViewport = () => {
                     originalScrollY = window.scrollY;
                     document.body.style.position = 'fixed';
@@ -148,7 +229,7 @@
                     document.body.style.width = '100%';
                     document.body.style.overflow = 'hidden';
                 };
-        
+
                 const unlockViewport = () => {
                     document.body.style.position = '';
                     document.body.style.top = '';
@@ -156,17 +237,17 @@
                     document.body.style.overflow = '';
                     window.scrollTo(0, originalScrollY);
                 };
-        
+
                 nameInput.addEventListener('focus', () => {
                     document.body.classList.add('keyboard-open');
                     lockViewport();
                 });
-        
+
                 nameInput.addEventListener('blur', () => {
                     document.body.classList.remove('keyboard-open');
                     unlockViewport();
                 });
-        
+
                 window.addEventListener('resize', () => {
                     if (document.body.classList.contains('keyboard-open')) {
                         lockViewport();
@@ -174,7 +255,6 @@
                 });
             }
         });
-        </script>
-    <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'93898aec2a83b0e8',t:'MTc0NjA0MjM1OS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
+    </script>
 </body>
 </html>
