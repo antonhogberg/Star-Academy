@@ -2154,7 +2154,7 @@ h2#popupWelcome {
         width: calc(85vw);
         max-width: 310px;
         height: auto;
-        margin: 0 auto;
+        margin: 30px auto 0;
     }
     body.chapters .chapter-container {
         padding: 10px;
