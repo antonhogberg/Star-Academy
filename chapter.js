@@ -48,19 +48,34 @@ function initializeChapter() {
     // Step 5: Preload images
     preloadImages();
 
-    // Load SVGs
-    const svg4x4Object = document.getElementById('stars-4x4');
-    const svg2x2x4Object = document.getElementById('stars-2x2x4');
-
-    // Wait for SVGs to load
+    // Fetch and embed SVGs
     Promise.all([
-        new Promise(resolve => {
-            svg4x4Object.addEventListener('load', () => resolve(svg4x4Object.contentDocument));
-        }),
-        new Promise(resolve => {
-            svg2x2x4Object.addEventListener('load', () => resolve(svg2x2x4Object.contentDocument));
-        })
-    ]).then(([svg4x4Doc, svg2x2x4Doc]) => {
+        fetch('chapters-4x4.svg').then(res => res.text()),
+        fetch('chapters-2x2x4.svg').then(res => res.text())
+    ]).then(([svg4x4Content, svg2x2x4Content]) => {
+        // Create SVG containers
+        const svg4x4Div = document.createElement('div');
+        svg4x4Div.id = 'stars-4x4';
+        svg4x4Div.className = 'stars-svg';
+        svg4x4Div.innerHTML = svg4x4Content;
+
+        const svg2x2x4Div = document.createElement('div');
+        svg2x2x4Div.id = 'stars-2x2x4';
+        svg2x2x4Div.className = 'stars-svg';
+        svg2x2x4Div.innerHTML = svg2x2x4Content;
+
+        partsContainer.appendChild(svg4x4Div);
+        partsContainer.appendChild(svg2x2x4Div);
+
+        // Access the SVG documents
+        const svg4x4Doc = svg4x4Div.querySelector('svg');
+        const svg2x2x4Doc = svg2x2x4Div.querySelector('svg');
+
+        // Update viewBox attributes
+        svg4x4Doc.setAttribute('viewBox', '0 0 650 700');
+        svg2x2x4Doc.setAttribute('viewBox', '0 0 310 1500');
+
+        // Initialize SVGs
         initializeSvg(svg4x4Doc, chapterNum);
         initializeSvg(svg2x2x4Doc, chapterNum);
     }).catch(err => {
@@ -82,10 +97,9 @@ function initializeSvg(doc, chapterNum) {
         image { pointer-events: all; transition: opacity 0.4s ease-in-out; }
         image.non-clickable { pointer-events: auto; }
     `;
-    const svgRoot = doc.querySelector('svg');
-    const existingStyles = svgRoot.querySelectorAll('style');
+    const existingStyles = doc.querySelectorAll('style');
     existingStyles.forEach(style => style.remove());
-    svgRoot.appendChild(styleElement);
+    doc.appendChild(styleElement);
 
     // Update star IDs and exercise codes
     const stars = doc.querySelectorAll('image[id^="star-"]');
@@ -96,6 +110,7 @@ function initializeSvg(doc, chapterNum) {
         const newId = `star-${chapterNum}-${part}-${starNum}`;
         star.setAttribute('id', newId);
         star.setAttribute('data-exercise', `exercise${chapterNum}:${part}:${starNum}`);
+        console.log(`Updated star ID to ${newId}`);
     });
     codes.forEach(code => {
         const oldId = code.getAttribute('id'); // e.g., code-X-1-1
@@ -103,6 +118,7 @@ function initializeSvg(doc, chapterNum) {
         const newId = `code-${chapterNum}-${part}-${starNum}`;
         code.setAttribute('id', newId);
         code.textContent = `${chapterNum}:${part}:${starNum}`;
+        console.log(`Updated code ID to ${newId}, text to ${code.textContent}`);
     });
 
     // Initialize stars
@@ -288,6 +304,8 @@ function handleStarClick(event, star, exerciseKey, doc, parent, x, y, width, hei
 }
 
 function checkCompletion(studentsData) {
+    const chapterNumMatch = document.location.pathname.match(/chapter(\d+)/);
+    const chapterNum = chapterNumMatch ? parseInt(chapterNumMatch[1]) : 1;
     const exercises = [];
     for (let part = 1; part <= 4; part++) {
         for (let star = 1; star <= 4; star++) {

@@ -242,9 +242,13 @@ body.popup-open .student-manager {
 }
 
 .stars-svg {
-    width: 100%;
-    height: 100%;
     display: none;
+}
+
+.stars-svg svg {
+    width: 100%;
+    height: auto;
+    display: block;
 }
 
 .stars-svg .exercise-code {
@@ -2217,6 +2221,7 @@ h2#popupWelcome {
         flex-direction: column;
         align-items: center;
         flex-grow: 1;
+        width: 100%;
     }
     .exercises {
         flex-wrap: wrap;
@@ -2425,6 +2430,11 @@ h2#popupWelcome {
     }
     #stars-2x2x4 {
         display: block;
+        width: 100%;
+    }
+    #stars-2x2x4 svg {
+        width: 100%;
+        height: auto;
     }
 }
 
@@ -2481,6 +2491,20 @@ h2#popupWelcome {
         height: calc(100% - 20px);
         flex-grow: 0;
         justify-content: space-between;
+    }
+
+    #stars-4x4 {
+        display: block;
+        width: 100%;
+    }
+
+    #stars-2x2x4 {
+        display: none;
+    }
+
+    #stars-4x4 svg {
+        width: 100%;
+        height: auto;
     }
     .part {
         height: 25%;
@@ -2669,12 +2693,7 @@ h2#popupWelcome {
         0% { opacity: 0; }
         100% { opacity: 1; }
     }
-    #stars-4x4 {
-        display: block;
-    }
-    #stars-2x2x4 {
-        display: none;
-    }
+
 }
 
 /* iPad Mini landscape adjustments */
@@ -2763,6 +2782,20 @@ h2#popupWelcome {
         justify-content: space-between;
         flex-grow: 0;
     }
+
+    #stars-4x4 {
+        display: block;
+        width: 100%;
+    }
+
+    #stars-2x2x4 {
+        display: none;
+    }
+
+    #stars-4x4 svg {
+        width: 100%;
+        height: auto;
+    }
     .exercises {
         height: 100%;
         flex-wrap: nowrap;
@@ -2794,12 +2827,7 @@ h2#popupWelcome {
     .popup-content {
         max-width: 600px;
     }
-    #stars-4x4 {
-        display: block;
-    }
-    #stars-2x2x4 {
-        display: none;
-    }
+    
 }
 
 /* General popup adjustment */
