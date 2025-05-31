@@ -5,47 +5,6 @@
     <meta charset="UTF-8">
     <title data-translate="chapter1"></title>
     <link rel="stylesheet" href="styles.css">
-    <script>
-        function setViewportHeight() {
-            let vh = window.innerHeight * 0.01;
-            document.documentElement.style.setProperty('--vh', `${vh}px`);
-        }
-        window.addEventListener('resize', setViewportHeight);
-        window.addEventListener('orientationchange', setViewportHeight);
-        setViewportHeight();
-
-        function detectMobile() {
-            const userAgent = navigator.userAgent || navigator.vendor || window.opera;
-            const isMobile = /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(userAgent.toLowerCase());
-            if (isMobile) {
-                document.body.classList.add('is-mobile');
-            }
-        }
-        window.addEventListener('load', detectMobile);
-        detectMobile();
-
-        function preloadImages() {
-            const starImages = [
-                ['gold0_silver0.png', 'gold0_silver1.png', 'gold0_silver2.png', 'gold0_silver3.png', 'gold0_silver4.png', 'gold0_silver5.png', 'gold0_silver6.png'],
-                ['gold1_silver0.png', 'gold1_silver1.png', 'gold1_silver2.png', 'gold1_silver3.png', 'gold1_silver4.png', 'gold1_silver5.png'],
-                ['gold2_silver0.png', 'gold2_silver1.png', 'gold2_silver2.png', 'gold2_silver3.png', 'gold2_silver4.png'],
-                ['gold3_silver0.png', 'gold3_silver1.png', 'gold3_silver2.png', 'gold3_silver3.png'],
-                ['gold4_silver0.png', 'gold4_silver1.png', 'gold4_silver2.png'],
-                ['gold5_silver0.png', 'gold5_silver1.png'],
-                ['gold6_silver0.png']
-            ];
-            console.log('Preloading star images for chapter');
-            starImages.forEach((goldLevelImages) => {
-                goldLevelImages.forEach((image) => {
-                    const img = new Image();
-                    img.src = image;
-                    img.onload = () => console.log(`Loaded image: ${image}`);
-                    img.onerror = () => console.error(`Failed to preload image: ${image}`);
-                });
-            });
-        }
-        preloadImages();
-    </script>
     <script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css" />
 <script>
@@ -87,6 +46,48 @@
     });
   });
 </script>
+<script>
+        function setViewportHeight() {
+            let vh = window.innerHeight * 0.01;
+            document.documentElement.style.setProperty('--vh', `${vh}px`);
+        }
+        window.addEventListener('resize', setViewportHeight);
+        window.addEventListener('orientationchange', setViewportHeight);
+        setViewportHeight();
+
+        function detectMobile() {
+            const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+            const isMobile = /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(userAgent.toLowerCase());
+            if (isMobile) {
+                document.body.classList.add('is-mobile');
+            }
+        }
+        window.addEventListener('load', detectMobile);
+        detectMobile();
+
+        function preloadImages() {
+            const starImages = [
+                ['gold0_silver0.png', 'gold0_silver1.png', 'gold0_silver2.png', 'gold0_silver3.png', 'gold0_silver4.png', 'gold0_silver5.png', 'gold0_silver6.png'],
+                ['gold1_silver0.png', 'gold1_silver1.png', 'gold1_silver2.png', 'gold1_silver3.png', 'gold1_silver4.png', 'gold1_silver5.png'],
+                ['gold2_silver0.png', 'gold2_silver1.png', 'gold2_silver2.png', 'gold2_silver3.png', 'gold2_silver4.png'],
+                ['gold3_silver0.png', 'gold3_silver1.png', 'gold3_silver2.png', 'gold3_silver3.png'],
+                ['gold4_silver0.png', 'gold4_silver1.png', 'gold4_silver2.png'],
+                ['gold5_silver0.png', 'gold5_silver1.png'],
+                ['gold6_silver0.png']
+            ];
+            console.log('Preloading star images for chapter');
+            starImages.forEach((goldLevelImages) => {
+                goldLevelImages.forEach((image) => {
+                    const img = new Image();
+                    img.src = image;
+                    img.onload = () => console.log(`Loaded image: ${image}`);
+                    img.onerror = () => console.error(`Failed to preload image: ${image}`);
+                });
+            });
+        }
+        preloadImages();
+    </script>
+    
 </head>
 <body class="chapters">
     <div class="piano-menu" id="menuButton" aria-expanded="false" aria-controls="main-menu">
