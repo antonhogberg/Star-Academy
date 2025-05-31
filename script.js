@@ -322,7 +322,7 @@ const menuHtml = `
                 <a href="students.html" class="menu-link" data-translate="menuStudents"></a>
                 <a href="remove.html" class="menu-link" data-translate="menuRemove"></a>
                 <a href="faq.html" class="menu-link" data-translate="menuFAQ"></a>
-                <a href="Star-Academy/privacy-policy.html" class="menu-link" data-translate="menuPrivacyPolicy"></a>
+                <a href="privacy-policy.html" class="menu-link" data-translate="menuPrivacyPolicy"></a>
                 <div class="language-switcher">
                     <span class="flag" onclick="switchLanguage('en')">🇬🇧</span>
                     <span class="flag" onclick="switchLanguage('sv')">🇸🇪</span>
@@ -473,6 +473,7 @@ function initializeConsentPopup() {
                 console.log('User consented, saving to localStorage');
                 localStorage.setItem('consentGiven', 'true');
                 this.element.style.display = 'none'; // Hide popup
+                window.consentInitialized = false; // Allow reinitialization on next load
                 if (typeof handleUserNamePopup === 'function') handleUserNamePopup();
             } else {
                 console.log('User rejected consent, redirecting to no-consent.html');
@@ -482,12 +483,9 @@ function initializeConsentPopup() {
     });
 }
 
-document.addEventListener('DOMContentLoaded', initializeConsentPopup);
-
-// Reinitialize popup on language change
-window.addEventListener('storage', (event) => {
-    if (event.key === 'language' && localStorage.getItem('consentGiven') !== 'true') {
-        console.log('Language changed, reinitializing consent popup');
+// Initialize popup on DOM load
+document.addEventListener('DOMContentLoaded', () => {
+    if (!window.consentInitialized) {
         initializeConsentPopup();
     }
 });
