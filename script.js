@@ -444,7 +444,7 @@ function initializeConsentPopup() {
             dismiss: translations[lang].consentAccept,
             deny: translations[lang].consentReject,
             link: translations[lang].consentPolicyLink,
-            href: "Star-Academy/privacy-policy.html"
+            href: "privacy-policy.html"
         },
         type: "opt-in",
         onInitialise: function(status) {
