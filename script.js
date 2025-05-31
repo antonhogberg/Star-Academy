@@ -13,6 +13,7 @@ const translations = {
       menuChapters: "Chapters",
       menuFAQ: "FAQ",
       menuRemove: "Remove student",
+      menuPrivacyPolicy: "Privacy Policy",
       popupWelcome: "Welcome to North Star Piano School!",
       popupIntro: "You’ve just embarked on your piano journey as an Explorer! The Star Map is your guide—it’s there to show you which exercise to do next as you progress through the seven chapters, earning stars and advancing through ranks like Star Cadet, Star Officer, and beyond.",
       popupTeacherNote: "You can also focus on a specific chapter if Scales or Chords is what you want to excel at. Visit the chapter pages to start earning stars, check your progress on the Star Overview page, or manage students on the For Teachers page.",
@@ -157,6 +158,7 @@ const translations = {
       menuChapters: "Kapitel",
       menuFAQ: "Vanliga frågor",
       menuRemove: "Radera elev",
+      menuPrivacyPolicy: "Integritetspolicy",
       popupWelcome: "Välkommen till Nordstjärnans pianoskola!",
       popupIntro: "Du har nu påbörjat din pianoresa som en upptäckare! Stjärnkartan är din guide – den visar dig vilken övning du ska göra härnäst medan du navigerar dig fram genom bokens sju kapitel, samlar stjärnor och klättrar i rang, från stjärnkadett till stjärnofficer och vidare.",
       popupTeacherNote: "Du kan också fokusera på ett specifikt kapitel om du vill bli extra bra på t.ex. skalor eller ackord. Besök kapitel-sidorna för att börja samla stjärnor, se dina framsteg på stjärnöversikt-sidan, eller hantera elever på sidan för lärare.",
@@ -429,7 +431,14 @@ function injectMenu() {
 }
 
 function initializeConsentPopup() {
-    // Destroy existing popup to prevent duplicates
+    // Prevent multiple initializations
+    if (window.consentInitialized) {
+        console.log('Consent popup already initialized, skipping');
+        return;
+    }
+    window.consentInitialized = true;
+
+    // Destroy existing popup
     if (window.cookieconsent && window.cookieconsent.element) {
         window.cookieconsent.element.remove();
         window.cookieconsent = null;
@@ -451,7 +460,7 @@ function initializeConsentPopup() {
             dismiss: translations[lang].consentAccept,
             deny: translations[lang].consentReject,
             link: translations[lang].consentPolicyLink,
-            href: "Star-Academy/privacy-policy.html"
+            href: "privacy-policy.html"
         },
         type: "opt-in",
         onInitialise: function(status) {
@@ -991,7 +1000,7 @@ function switchLanguage(lang) {
             link.textContent = translations[newLang].menuFAQ;
         } else if (href === 'remove.html') {
             link.textContent = translations[newLang].menuRemove;
-        } else if (href === 'star-academy/privacy-policy.html') {
+        } else if (href === 'privacy-policy.html') {
             link.textContent = translations[newLang].menuPrivacyPolicy;
         } else {
             const chapterNum = href?.match(/chapter(\d+)\.html/)?.[1];
@@ -1161,6 +1170,7 @@ function switchLanguage(lang) {
     // Reinitialize consent popup if not consented
     if (localStorage.getItem('consentGiven') !== 'true' && typeof initializeConsentPopup === 'function') {
         console.log('Reinitializing consent popup for language:', newLang);
+        window.consentInitialized = false; // Reset flag
         initializeConsentPopup();
     }
 }
