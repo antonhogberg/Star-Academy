@@ -1165,11 +1165,18 @@ function switchLanguage(lang) {
         userNameDisplay.textContent = window.studentsData?.currentStudent || '';
     }
 
-    // Reinitialize consent popup if not consented
-    if (localStorage.getItem('consentGiven') !== 'true' && typeof initializeConsentPopup === 'function') {
-        console.log('Reinitializing consent popup for language:', newLang);
-        window.consentInitialized = false; // Reset flag
-        initializeConsentPopup();
+    // Update consent popup text if visible
+    if (localStorage.getItem('consentGiven') !== 'true' && window.cookieconsent && window.cookieconsent.element) {
+        console.log('Updating consent popup text for language:', newLang);
+        const popup = window.cookieconsent.element;
+        const message = popup.querySelector('.cc-message');
+        const dismiss = popup.querySelector('.cc-dismiss');
+        const deny = popup.querySelector('.cc-deny');
+        const link = popup.querySelector('.cc-link');
+        if (message) message.innerHTML = translations[newLang].consentMessage;
+        if (dismiss) dismiss.textContent = translations[newLang].consentAccept;
+        if (deny) deny.textContent = translations[newLang].consentReject;
+        if (link) link.textContent = translations[newLang].consentPolicyLink;
     }
 }
 
@@ -1193,170 +1200,184 @@ function setActivePage() {
 
 function handleUserNamePopup() {
     if (window.isImporting) {
-      console.log('Delaying handleUserNamePopup until import completes');
-      const checkImport = () => {
-        if (!window.isImporting) {
-          console.log('Import completed, proceeding with handleUserNamePopup');
-          proceedWithPopup();
-        } else {
-          setTimeout(checkImport, 100);
-        }
-      };
-      checkImport();
+        console.log('Delaying handleUserNamePopup until import completes');
+        const checkImport = () => {
+            if (!window.isImporting) {
+                console.log('Import completed, proceeding with handleUserNamePopup');
+                proceedWithPopup();
+            } else {
+                setTimeout(checkImport, 100);
+            }
+        };
+        checkImport();
     } else {
-      proceedWithPopup();
+        proceedWithPopup();
     }
 
     function proceedWithPopup() {
-      let studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || {
-        students: {},
-        currentStudent: ''
-      };
-      const userNameDisplay = document.getElementById('userNameDisplay');
-      const namePopup = document.getElementById('namePopup');
-      const nameInput = document.getElementById('nameInput');
-      const menu = document.querySelector('.menu');
+        let studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || {
+            students: {},
+            currentStudent: ''
+        };
+        const userNameDisplay = document.getElementById('userNameDisplay');
+        const namePopup = document.getElementById('namePopup');
+        const nameInput = document.getElementById('nameInput');
+        const menu = document.querySelector('.menu');
 
-      if (!namePopup || !nameInput) {
-        console.warn('namePopup or nameInput not found in DOM, skipping popup:', {
-          namePopup: !!namePopup,
-          nameInput: !!nameInput,
-          page: window.location.pathname,
-          bodyChildCount: document.body.childElementCount
-        });
-        return;
-      }
-
-      const updateMenuHeight = () => {
-        if (menu) {
-          menu.style.height = `${window.innerHeight}px`;
+        if (!namePopup || !nameInput) {
+            console.warn('namePopup or nameInput not found in DOM, skipping popup:', {
+                namePopup: !!namePopup,
+                nameInput: !!nameInput,
+                page: window.location.pathname,
+                bodyChildCount: document.body.childElementCount
+            });
+            return;
         }
-      };
 
-      window.addEventListener('resize', updateMenuHeight);
-      window.addEventListener('orientationchange', updateMenuHeight);
-
-      if (!studentsData.currentStudent && localStorage.getItem('consentGiven') === 'true') {
-        console.log('Showing namePopup for new user');
-        namePopup.style.display = 'flex';
-        document.body.classList.add('popup-open');
-        const rect = namePopup.getBoundingClientRect();
-        console.log('Name popup displayed:', {
-          display: namePopup.style.display,
-          width: rect.width,
-          height: rect.height,
-          top: rect.top,
-          left: rect.left
-        });
-        updateMenuHeight();
-      } else if (userNameDisplay) {
-        userNameDisplay.textContent = studentsData.currentStudent;
-        console.log('Set userNameDisplay to:', studentsData.currentStudent);
-      }
-
-      window.saveName = function() {
-        const name = nameInput.value.trim();
-        if (name) {
-          studentsData.students[name] = {
-            name: name,
-            progress: {},
-            rank: "Explorer"
-          };
-          for (let chapter = 1; chapter <= 7; chapter++) {
-            for (let part = 1; part <= 4; part++) {
-              for (let exercise = 1; exercise <= 4; exercise++) {
-                const key = `exercise${chapter}:${part}:${exercise}`;
-                studentsData.students[name].progress[key] = "0";
-              }
+        const updateMenuHeight = () => {
+            if (menu) {
+                menu.style.height = `${window.innerHeight}px`;
             }
-          }
-          studentsData.currentStudent = name;
-          localStorage.setItem('starAcademyStudents', JSON.stringify(studentsData));
-          if (userNameDisplay) userNameDisplay.textContent = name;
-          namePopup.style.display = 'none';
+        };
 
-          setTimeout(() => {
-            document.body.classList.remove('popup-open');
-            const isMobilePortrait = window.matchMedia('(max-width: 767px) and (orientation: portrait)').matches;
-            if (!isMobilePortrait) {
-              window.scrollTo(0, 0);
-              const container = document.querySelector('.chapter-container');
-              if (container) container.scrollTop = 0;
-              setTimeout(() => {
-                document.body.style.overflow = 'hidden';
-              }, 50);
+        window.addEventListener('resize', updateMenuHeight);
+        window.addEventListener('orientationchange', updateMenuHeight);
+
+        // Show namePopup if no current student, regardless of consent
+        if (!studentsData.currentStudent) {
+            console.log('Showing namePopup for new user');
+            namePopup.style.display = 'flex';
+            document.body.classList.add('popup-open');
+            const rect = namePopup.getBoundingClientRect();
+            console.log('Name popup displayed:', {
+                display: namePopup.style.display,
+                width: rect.width,
+                height: rect.height,
+                top: rect.top,
+                left: rect.left
+            });
+            updateMenuHeight();
+
+            // Disable input and button if no consent
+            if (localStorage.getItem('consentGiven') !== 'true') {
+                nameInput.disabled = true;
+                const submitBtn = document.getElementById('submitNameButton');
+                if (submitBtn) submitBtn.disabled = true;
+            }
+        } else if (userNameDisplay) {
+            userNameDisplay.textContent = studentsData.currentStudent;
+            console.log('Set userNameDisplay to:', studentsData.currentStudent);
+        }
+
+        window.saveName = function() {
+            // Prevent saving if no consent
+            if (localStorage.getItem('consentGiven') !== 'true') {
+                console.log('Cannot save name: consent not given');
+                return;
+            }
+
+            const name = nameInput.value.trim();
+            if (name) {
+                studentsData.students[name] = {
+                    name: name,
+                    progress: {},
+                    rank: "Explorer"
+                };
+                for (let chapter = 1; chapter <= 7; chapter++) {
+                    for (let part = 1; part <= 4; part++) {
+                        for (let exercise = 1; exercise <= 4; exercise++) {
+                            const key = `exercise${chapter}:${part}:${exercise}`;
+                            studentsData.students[name].progress[key] = "0";
+                        }
+                    }
+                }
+                studentsData.currentStudent = name;
+                localStorage.setItem('starAcademyStudents', JSON.stringify(studentsData));
+                if (userNameDisplay) userNameDisplay.textContent = name;
+                namePopup.style.display = 'none';
+
+                setTimeout(() => {
+                    document.body.classList.remove('popup-open');
+                    const isMobilePortrait = window.matchMedia('(max-width: 767px) and (orientation: portrait)').matches;
+                    if (!isMobilePortrait) {
+                        window.scrollTo(0, 0);
+                        const container = document.querySelector('.chapter-container');
+                        if (container) container.scrollTop = 0;
+                        setTimeout(() => {
+                            document.body.style.overflow = 'hidden';
+                        }, 50);
+                    } else {
+                        document.body.style.overflow = '';
+                    }
+                }, 100);
+
+                updateMenuHeight();
+
+                const successPopup = document.createElement('div');
+                successPopup.id = 'studentPopup';
+                successPopup.className = 'student-popup';
+                const starSVG = '<svg class="popup-star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>';
+                successPopup.innerHTML = `
+                    <div class="student-popup-content">
+                        <p>${starSVG} ${translations[localStorage.getItem('language') || 'sv'].addStudentSuccess} ${starSVG}</p>
+                    </div>
+                `;
+                document.body.appendChild(successPopup);
+                successPopup.style.display = 'flex';
+                successPopup.style.opacity = '1';
+                document.body.classList.add('popup-open');
+                updateMenuHeight();
+                setTimeout(() => {
+                    successPopup.style.transition = 'opacity 1s ease';
+                    successPopup.style.opacity = '0';
+                    setTimeout(() => {
+                        successPopup.style.display = 'none';
+                        document.body.classList.remove('popup-open');
+                        document.body.removeChild(successPopup);
+                        updateMenuHeight();
+                    }, 1000);
+                }, 2000);
+
+                if (typeof updateDropdown === 'function') {
+                    console.log('Calling updateDropdown after saving name');
+                    updateDropdown();
+                } else {
+                    console.error('updateDropdown not defined');
+                }
+
+                updateStarStates();
+                if (window.location.pathname.toLowerCase().includes('starmap.html') && typeof window.initializeStarMap === 'function') {
+                    console.log('Calling initializeStarMap after saving name');
+                    window.initializeStarMap();
+                }
             } else {
-              document.body.style.overflow = '';
+                alert(translations[localStorage.getItem('language') || 'sv'].addStudentNoName);
             }
-          }, 100);
+        };
 
-          updateMenuHeight();
-
-          const successPopup = document.createElement('div');
-          successPopup.id = 'studentPopup';
-          successPopup.className = 'student-popup';
-          const starSVG = '<svg class="popup-star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>';
-          successPopup.innerHTML = `
-            <div class="student-popup-content">
-              <p>${starSVG} ${translations[localStorage.getItem('language') || 'sv'].addStudentSuccess} ${starSVG}</p>
-            </div>
-          `;
-          document.body.appendChild(successPopup);
-          successPopup.style.display = 'flex';
-          successPopup.style.opacity = '1';
-          document.body.classList.add('popup-open');
-          updateMenuHeight();
-          setTimeout(() => {
-            successPopup.style.transition = 'opacity 1s ease';
-            successPopup.style.opacity = '0';
-            setTimeout(() => {
-              successPopup.style.display = 'none';
-              document.body.classList.remove('popup-open');
-              document.body.removeChild(successPopup);
-              updateMenuHeight();
-            }, 1000);
-          }, 2000);
-
-          if (typeof updateDropdown === 'function') {
-            console.log('Calling updateDropdown after saving name');
-            updateDropdown();
-          } else {
-            console.error('updateDropdown not defined');
-          }
-
-          updateStarStates();
-          if (window.location.pathname.toLowerCase().includes('starmap.html') && typeof window.initializeStarMap === 'function') {
-            console.log('Calling initializeStarMap after saving name');
-            window.initializeStarMap();
-          }
-        } else {
-          alert(translations[localStorage.getItem('language') || 'sv'].addStudentNoName);
+        const submitBtn = document.querySelector('button[onclick="saveName()"]');
+        if (submitBtn) {
+            submitBtn.removeEventListener('click', window.saveName);
+            submitBtn.addEventListener('click', window.saveName);
+            console.log('Submit button listener added');
         }
-      };
-
-      const submitBtn = document.querySelector('button[onclick="saveName()"]');
-      if (submitBtn) {
-        submitBtn.removeEventListener('click', window.saveName);
-        submitBtn.addEventListener('click', window.saveName);
-        console.log('Submit button listener added');
-      }
-      if (nameInput) {
-        nameInput.removeEventListener('keypress', handleEnterKey);
-        nameInput.addEventListener('keypress', handleEnterKey);
-        function handleEnterKey(e) {
-          if (e.key === 'Enter') window.saveName();
+        if (nameInput) {
+            nameInput.removeEventListener('keypress', handleEnterKey);
+            nameInput.addEventListener('keypress', handleEnterKey);
+            function handleEnterKey(e) {
+                if (e.key === 'Enter') window.saveName();
+            }
+            console.log('Enter key listener added');
         }
-        console.log('Enter key listener added');
-      }
 
-      namePopup.removeEventListener('click', window.namePopupClickListener);
-      window.namePopupClickListener = (event) => {
-        console.log('Click event on namePopup, target:', event.target);
-        if (event.target === namePopup) {
-          console.log('Ignoring overlay click for namePopup to prevent accidental closure');
-        }
-      };
-      namePopup.addEventListener('click', window.namePopupClickListener);
+        namePopup.removeEventListener('click', window.namePopupClickListener);
+        window.namePopupClickListener = (event) => {
+            console.log('Click event on namePopup, target:', event.target);
+            if (event.target === namePopup) {
+                console.log('Ignoring overlay click for namePopup to prevent accidental closure');
+            }
+        };
+        namePopup.addEventListener('click', window.namePopupClickListener);
     }
 }
 
@@ -1452,6 +1473,11 @@ function initializeRemovePage() {
     // Initial button text update
     updateButtonText();
 
+    // Disable button if no consent
+    if (localStorage.getItem('consentGiven') !== 'true') {
+        removeButton.disabled = true;
+    }
+
     // Fallback to update button text periodically
     let lastKnownUser = window.studentsData.currentStudent;
     const checkUserChange = setInterval(() => {
@@ -1482,6 +1508,12 @@ function initializeRemovePage() {
 
     if (removeButton) {
         removeButton.addEventListener('click', () => {
+            // Prevent action if no consent
+            if (localStorage.getItem('consentGiven') !== 'true') {
+                console.log('Cannot remove student: consent not given');
+                return;
+            }
+
             const selectedStudent = window.studentsData.currentStudent;
             if (!selectedStudent) {
                 alert(lang === 'en' ? "No current student selected to remove." : "Ingen aktuell elev vald att radera.");
