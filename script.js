@@ -320,7 +320,7 @@ const menuHtml = `
                 <a href="students.html" class="menu-link" data-translate="menuStudents"></a>
                 <a href="remove.html" class="menu-link" data-translate="menuRemove"></a>
                 <a href="faq.html" class="menu-link" data-translate="menuFAQ"></a>
-                <a href="privacy-policy.html" class="menu-link" data-translate="menuPrivacyPolicy"></a>
+                <a href="Star-Academy/privacy-policy.html" class="menu-link" data-translate="menuPrivacyPolicy"></a>
                 <div class="language-switcher">
                     <span class="flag" onclick="switchLanguage('en')">🇬🇧</span>
                     <span class="flag" onclick="switchLanguage('sv')">🇸🇪</span>
@@ -427,7 +427,14 @@ function injectMenu() {
     switchLanguage(lang);
     setActivePage();
 }
+
 function initializeConsentPopup() {
+    // Destroy existing popup to prevent duplicates
+    if (window.cookieconsent && window.cookieconsent.element) {
+        window.cookieconsent.element.remove();
+        window.cookieconsent = null;
+    }
+
     const consentGiven = localStorage.getItem('consentGiven') === 'true';
     if (consentGiven) {
         console.log('Consent already given, skipping popup');
@@ -444,7 +451,7 @@ function initializeConsentPopup() {
             dismiss: translations[lang].consentAccept,
             deny: translations[lang].consentReject,
             link: translations[lang].consentPolicyLink,
-            href: "privacy-policy.html"
+            href: "Star-Academy/privacy-policy.html"
         },
         type: "opt-in",
         onInitialise: function(status) {
@@ -984,7 +991,7 @@ function switchLanguage(lang) {
             link.textContent = translations[newLang].menuFAQ;
         } else if (href === 'remove.html') {
             link.textContent = translations[newLang].menuRemove;
-        } else if (href === 'privacy-policy.html') {
+        } else if (href === 'star-academy/privacy-policy.html') {
             link.textContent = translations[newLang].menuPrivacyPolicy;
         } else {
             const chapterNum = href?.match(/chapter(\d+)\.html/)?.[1];
