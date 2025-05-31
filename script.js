@@ -427,6 +427,53 @@ function injectMenu() {
     switchLanguage(lang);
     setActivePage();
 }
+function initializeConsentPopup() {
+    const consentGiven = localStorage.getItem('consentGiven') === 'true';
+    if (consentGiven) {
+        console.log('Consent already given, skipping popup');
+        if (typeof handleUserNamePopup === 'function') handleUserNamePopup();
+        return;
+    }
+
+    const lang = localStorage.getItem('language') || 'sv';
+    window.cookieconsent.initialise({
+        palette: { popup: { background: "#f0f0f0", text: "#333" }, button: { background: "#ffd700", text: "#333" } },
+        position: "bottom",
+        content: {
+            message: translations[lang].consentMessage,
+            dismiss: translations[lang].consentAccept,
+            deny: translations[lang].consentReject,
+            link: translations[lang].consentPolicyLink,
+            href: "/Star-Academy/privacypolicy.html"
+        },
+        type: "opt-in",
+        onInitialise: function(status) {
+            if (!this.hasConsented()) {
+                console.log('No consent yet, showing popup');
+            }
+        },
+        onStatusChange: function(status) {
+            if (this.hasConsented()) {
+                console.log('User consented, saving to localStorage');
+                localStorage.setItem('consentGiven', 'true');
+                if (typeof handleUserNamePopup === 'function') handleUserNamePopup();
+            } else {
+                console.log('User rejected consent, redirecting to no-consent.html');
+                window.location.href = '/no-consent.html';
+            }
+        }
+    });
+}
+
+document.addEventListener('DOMContentLoaded', initializeConsentPopup);
+
+// Reinitialize popup on language change
+window.addEventListener('storage', (event) => {
+    if (event.key === 'language' && localStorage.getItem('consentGiven') !== 'true') {
+        console.log('Language changed, reinitializing consent popup');
+        initializeConsentPopup();
+    }
+});
 
 function checkAndShowRankAchievementPopup(
     sixStarCount, 
@@ -936,6 +983,8 @@ function switchLanguage(lang) {
         link.textContent = translations[newLang].menuFAQ;
       } else if (href === 'remove.html') {
         link.textContent = translations[newLang].menuRemove;
+      } else if (href === 'star-academy/privacypolicy.html') {
+        link.textContent = translations[newLang].menuPrivacyPolicy;
       } else {
         const chapterNum = href?.match(/chapter(\d+)\.html/)?.[1];
         if (chapterNum) {
@@ -1121,7 +1170,6 @@ function setActivePage() {
 }
 
 function handleUserNamePopup() {
-    // Wait for import to complete
     if (window.isImporting) {
       console.log('Delaying handleUserNamePopup until import completes');
       const checkImport = () => {
@@ -1136,7 +1184,7 @@ function handleUserNamePopup() {
     } else {
       proceedWithPopup();
     }
-  
+
     function proceedWithPopup() {
       let studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || {
         students: {},
@@ -1146,7 +1194,7 @@ function handleUserNamePopup() {
       const namePopup = document.getElementById('namePopup');
       const nameInput = document.getElementById('nameInput');
       const menu = document.querySelector('.menu');
-  
+
       if (!namePopup || !nameInput) {
         console.warn('namePopup or nameInput not found in DOM, skipping popup:', {
           namePopup: !!namePopup,
@@ -1156,17 +1204,17 @@ function handleUserNamePopup() {
         });
         return;
       }
-  
+
       const updateMenuHeight = () => {
         if (menu) {
           menu.style.height = `${window.innerHeight}px`;
         }
       };
-  
+
       window.addEventListener('resize', updateMenuHeight);
       window.addEventListener('orientationchange', updateMenuHeight);
-  
-      if (!studentsData.currentStudent) {
+
+      if (!studentsData.currentStudent && localStorage.getItem('consentGiven') === 'true') {
         console.log('Showing namePopup for new user');
         namePopup.style.display = 'flex';
         document.body.classList.add('popup-open');
@@ -1183,7 +1231,7 @@ function handleUserNamePopup() {
         userNameDisplay.textContent = studentsData.currentStudent;
         console.log('Set userNameDisplay to:', studentsData.currentStudent);
       }
-  
+
       window.saveName = function() {
         const name = nameInput.value.trim();
         if (name) {
@@ -1207,28 +1255,21 @@ function handleUserNamePopup() {
 
           setTimeout(() => {
             document.body.classList.remove('popup-open');
-          
-            // Endast lås scroll om det inte är portrait på mobil
             const isMobilePortrait = window.matchMedia('(max-width: 767px) and (orientation: portrait)').matches;
-          
             if (!isMobilePortrait) {
               window.scrollTo(0, 0);
               const container = document.querySelector('.chapter-container');
               if (container) container.scrollTop = 0;
-          
               setTimeout(() => {
                 document.body.style.overflow = 'hidden';
               }, 50);
             } else {
-              // Se till att mobiler inte blir låsta av misstag
               document.body.style.overflow = '';
             }
           }, 100);
 
-            // Behåll direkt uppdatering av menyn
-            updateMenuHeight();
+          updateMenuHeight();
 
-  
           const successPopup = document.createElement('div');
           successPopup.id = 'studentPopup';
           successPopup.className = 'student-popup';
@@ -1253,14 +1294,14 @@ function handleUserNamePopup() {
               updateMenuHeight();
             }, 1000);
           }, 2000);
-  
+
           if (typeof updateDropdown === 'function') {
             console.log('Calling updateDropdown after saving name');
             updateDropdown();
           } else {
             console.error('updateDropdown not defined');
           }
-  
+
           updateStarStates();
           if (window.location.pathname.toLowerCase().includes('starmap.html') && typeof window.initializeStarMap === 'function') {
             console.log('Calling initializeStarMap after saving name');
@@ -1270,8 +1311,7 @@ function handleUserNamePopup() {
           alert(translations[localStorage.getItem('language') || 'sv'].addStudentNoName);
         }
       };
-  
-      // Remove existing listeners to prevent duplicates
+
       const submitBtn = document.querySelector('button[onclick="saveName()"]');
       if (submitBtn) {
         submitBtn.removeEventListener('click', window.saveName);
@@ -1286,8 +1326,7 @@ function handleUserNamePopup() {
         }
         console.log('Enter key listener added');
       }
-  
-      // Overlay click listener (non-closing per design)
+
       namePopup.removeEventListener('click', window.namePopupClickListener);
       window.namePopupClickListener = (event) => {
         console.log('Click event on namePopup, target:', event.target);
@@ -1297,7 +1336,7 @@ function handleUserNamePopup() {
       };
       namePopup.addEventListener('click', window.namePopupClickListener);
     }
-  }
+}
 
 function waitForDOM() {
     return new Promise(resolve => {

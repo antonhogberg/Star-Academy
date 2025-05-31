@@ -4,7 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title data-translate="privacyPolicyTitle"></title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="../styles.css">
+    <style>
+        .faq-container, .faq-container h1, .faq-container h2, .faq-container p, .faq-container ul, .faq-container li {
+            color: #ffffff !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+            font-family: Arial, sans-serif;
+        }
+        .faq-container a {
+            color: #ffd700 !important;
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body>
     <div class="piano-menu" id="menuButton" aria-expanded="false" aria-controls="main-menu">
@@ -61,7 +73,7 @@
         <h2 data-translate="contactUs"></h2>
         <p data-translate="contactUsText"></p>
     </div>
-    <script src="script.js"></script>
+    <script src="../script.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const lang = localStorage.getItem('language') || 'sv';

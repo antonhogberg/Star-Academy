@@ -5,6 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title data-translate="removeStudentTitle"></title>
     <link rel="stylesheet" href="styles.css">
+    <style>
+        .remove-container, .remove-container h2, .remove-container p, .remove-container button {
+            color: #ffffff !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+        }
+    </style>
 </head>
 <body>
     <div class="piano-menu" id="menuButton" aria-expanded="false" aria-controls="main-menu">
@@ -21,6 +28,9 @@
             <div class="remove-button-container">
                 <button id="removeStudentButton" type="button"></button>
             </div>
+            <h2>Manage Consent</h2>
+            <p>Revoke your consent for local storage to see the consent popup again.</p>
+            <button id="revokeConsentButton" type="button">Revoke Consent</button>
         </div>
     </div>
     <div id="confirmRemovePopup" class="student-popup">
@@ -37,6 +47,14 @@
             const lang = localStorage.getItem('language') || 'sv';
             injectMenu();
             switchLanguage(lang);
+
+            const revokeConsentButton = document.getElementById('revokeConsentButton');
+            if (revokeConsentButton) {
+                revokeConsentButton.addEventListener('click', () => {
+                    localStorage.removeItem('consentGiven');
+                    alert(lang === 'en' ? 'Consent revoked. Reload the page to see the consent popup.' : 'Samtycke återkallat. Ladda om sidan för att se samtyckespopupen.');
+                });
+            }
         });
     </script>
 </body>
