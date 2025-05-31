@@ -3,6 +3,8 @@
     background-color: #f0f0f0 !important;
     color: #333 !important;
     border: 1px solid #333 !important;
+    position: fixed !important;
+    bottom: 0 !important;
 }
 .cc-message {
     color: #333 !important;
@@ -17,4 +19,5 @@
 .cc-deny, .cc-allow {
     background-color: #ffd700 !important;
     color: #333 !important;
+    cursor: pointer !important;
 }

@@ -320,7 +320,7 @@ const menuHtml = `
                 <a href="students.html" class="menu-link" data-translate="menuStudents"></a>
                 <a href="remove.html" class="menu-link" data-translate="menuRemove"></a>
                 <a href="faq.html" class="menu-link" data-translate="menuFAQ"></a>
-                <a href="privacy-policy.html" class="menu-link" data-translate="menuPrivacyPolicy"></a>
+                <a href="Star-Academy/privacy-policy.html" class="menu-link" data-translate="menuPrivacyPolicy"></a>
                 <div class="language-switcher">
                     <span class="flag" onclick="switchLanguage('en')">🇬🇧</span>
                     <span class="flag" onclick="switchLanguage('sv')">🇸🇪</span>
@@ -444,7 +444,7 @@ function initializeConsentPopup() {
             dismiss: translations[lang].consentAccept,
             deny: translations[lang].consentReject,
             link: translations[lang].consentPolicyLink,
-            href: "/Star-Academy/privacypolicy.html"
+            href: "Star-Academy/privacy-policy.html"
         },
         type: "opt-in",
         onInitialise: function(status) {
@@ -459,7 +459,7 @@ function initializeConsentPopup() {
                 if (typeof handleUserNamePopup === 'function') handleUserNamePopup();
             } else {
                 console.log('User rejected consent, redirecting to no-consent.html');
-                window.location.href = '/no-consent.html';
+                window.location.href = 'no-consent.html';
             }
         }
     });
@@ -961,38 +961,38 @@ function switchLanguage(lang) {
     localStorage.setItem('language', newLang);
 
     document.querySelectorAll('[data-translate]').forEach(element => {
-      const key = element.getAttribute('data-translate');
-      if (translations[newLang][key]) {
-        if (element.tagName === 'TITLE') {
-          element.textContent = translations[newLang][key];
-        } else {
-          element.innerHTML = translations[newLang][key];
+        const key = element.getAttribute('data-translate');
+        if (translations[newLang][key]) {
+            if (element.tagName === 'TITLE') {
+                element.textContent = translations[newLang][key];
+            } else {
+                element.innerHTML = translations[newLang][key];
+            }
         }
-      }
     });
 
     document.querySelectorAll('.menu-link').forEach(link => {
-      const href = link.getAttribute('href')?.toLowerCase();
-      if (href === 'index.html') {
-        link.textContent = translations[newLang].menuFrontPage;
-      } else if (href === 'students.html') {
-        link.textContent = translations[newLang].menuStudents;
-      } else if (href === 'starmap.html#svg-start') {
-        link.textContent = translations[newLang].menuStarMap;
-      } else if (href === 'faq.html') {
-        link.textContent = translations[newLang].menuFAQ;
-      } else if (href === 'remove.html') {
-        link.textContent = translations[newLang].menuRemove;
-      } else if (href === 'star-academy/privacypolicy.html') {
-        link.textContent = translations[newLang].menuPrivacyPolicy;
-      } else {
-        const chapterNum = href?.match(/chapter(\d+)\.html/)?.[1];
-        if (chapterNum) {
-          const span = link.querySelector('span');
-          if (span) span.textContent = `${translations[newLang].menuChapter} ${chapterNum}`;
-          else link.textContent = `${translations[newLang].menuChapter} ${chapterNum}`;
+        const href = link.getAttribute('href')?.toLowerCase();
+        if (href === 'index.html') {
+            link.textContent = translations[newLang].menuFrontPage;
+        } else if (href === 'students.html') {
+            link.textContent = translations[newLang].menuStudents;
+        } else if (href === 'starmap.html#svg-start') {
+            link.textContent = translations[newLang].menuStarMap;
+        } else if (href === 'faq.html') {
+            link.textContent = translations[newLang].menuFAQ;
+        } else if (href === 'remove.html') {
+            link.textContent = translations[newLang].menuRemove;
+        } else if (href === 'star-academy/privacy-policy.html') {
+            link.textContent = translations[newLang].menuPrivacyPolicy;
+        } else {
+            const chapterNum = href?.match(/chapter(\d+)\.html/)?.[1];
+            if (chapterNum) {
+                const span = link.querySelector('span');
+                if (span) span.textContent = `${translations[newLang].menuChapter} ${chapterNum}`;
+                else link.textContent = `${translations[newLang].menuChapter} ${chapterNum}`;
+            }
         }
-      }
     });
 
     const chaptersToggle = document.querySelector('.chapters-toggle');
@@ -1018,11 +1018,11 @@ function switchLanguage(lang) {
     const chapterNumber = document.querySelector('.chapter-number');
     const chapterName = document.querySelector('.chapter-name');
     if (chapterNumber && chapterName) {
-      const chapterNum = window.location.pathname.match(/chapter(\d+)\.html/)?.[1];
-      if (chapterNum) {
-        chapterNumber.textContent = translations[newLang][`chapter${chapterNum}`];
-        chapterName.textContent = translations[newLang][`chapterName${chapterNum}`];
-      }
+        const chapterNum = window.location.pathname.match(/chapter(\d+)\.html/)?.[1];
+        if (chapterNum) {
+            chapterNumber.textContent = translations[newLang][`chapter${chapterNum}`];
+            chapterName.textContent = translations[newLang][`chapterName${chapterNum}`];
+        }
     }
 
     const rankTitle = document.getElementById('rankTitle');
@@ -1039,15 +1039,15 @@ function switchLanguage(lang) {
     const saveNotesButton = document.getElementById('saveNotesButton');
     const studentModeLabel = document.getElementById('studentModeLabel');
     if (studentsPageTitle && studentsLabel) {
-      studentsPageTitle.textContent = translations[newLang].menuStudents;
-      studentsLabel.textContent = translations[newLang].studentsLabel;
-      newStudentInput.placeholder = translations[newLang].studentNamePlaceholder;
-      addButton.textContent = translations[newLang].addButton;
-      addStudentLabel.textContent = translations[newLang].addNewStudent;
-      notesLabel.textContent = translations[newLang].notesLabel;
-      studentNotes.placeholder = translations[newLang].notesPlaceholder;
-      if (saveNotesButton) saveNotesButton.textContent = translations[newLang].saveNotesButton;
-      if (studentModeLabel) studentModeLabel.textContent = translations[newLang].studentModeLabel;
+        studentsPageTitle.textContent = translations[newLang].menuStudents;
+        studentsLabel.textContent = translations[newLang].studentsLabel;
+        newStudentInput.placeholder = translations[newLang].studentNamePlaceholder;
+        addButton.textContent = translations[newLang].addButton;
+        addStudentLabel.textContent = translations[newLang].addNewStudent;
+        notesLabel.textContent = translations[newLang].notesLabel;
+        studentNotes.placeholder = translations[newLang].notesPlaceholder;
+        if (saveNotesButton) saveNotesButton.textContent = translations[newLang].saveNotesButton;
+        if (studentModeLabel) studentModeLabel.textContent = translations[newLang].studentModeLabel;
     }
 
     const faqTitle = document.querySelector('h1[data-translate="faqTitle"]');
@@ -1055,52 +1055,52 @@ function switchLanguage(lang) {
     const faqAnswers = document.querySelectorAll('.faq-answer[data-translate]');
     if (faqTitle) faqTitle.textContent = translations[newLang].faqTitle;
     faqQuestions.forEach(question => {
-      const key = question.getAttribute('data-translate');
-      if (translations[newLang][key]) question.childNodes[0].textContent = translations[newLang][key];
+        const key = question.getAttribute('data-translate');
+        if (translations[newLang][key]) question.childNodes[0].textContent = translations[newLang][key];
     });
     faqAnswers.forEach(answer => {
-      const key = answer.getAttribute('data-translate');
-      if (translations[newLang][key]) answer.innerHTML = translations[newLang][key];
+        const key = answer.getAttribute('data-translate');
+        if (translations[newLang][key]) answer.innerHTML = translations[newLang][key];
     });
 
     const titleContainerH1 = document.querySelector('.title-container h1[data-translate]');
     if (titleContainerH1) {
-      const key = titleContainerH1.getAttribute('data-translate');
-      if (translations[newLang][key]) titleContainerH1.textContent = translations[newLang][key];
+        const key = titleContainerH1.getAttribute('data-translate');
+        if (translations[newLang][key]) titleContainerH1.textContent = translations[newLang][key];
     }
 
     const removeStudentTitle = document.querySelector('h1[data-translate="removeStudentTitle"]');
     const confirmRemoveMessage = document.querySelector('p[data-translate="confirmRemoveMessage"]');
     if (removeStudentTitle) removeStudentTitle.textContent = translations[newLang].removeStudentTitle;
     if (confirmRemoveMessage) {
-      const selectedStudent = window.studentsData.currentStudent || '';
-      confirmRemoveMessage.textContent = `${translations[newLang].confirmRemoveMessage}${selectedStudent ? ` ${selectedStudent}.` : '.'}`;
+        const selectedStudent = window.studentsData.currentStudent || '';
+        confirmRemoveMessage.textContent = `${translations[newLang].confirmRemoveMessage}${selectedStudent ? ` ${selectedStudent}.` : '.'}`;
     }
 
     const removeStudentButton = document.getElementById('removeStudentButton');
     if (removeStudentButton && window.studentsData) {
-      if (window.studentsData.currentStudent) {
-        removeStudentButton.textContent = `${translations[newLang].removeCurrentStudent}${window.studentsData.currentStudent}`;
-      } else {
-        removeStudentButton.textContent = translations[newLang].removeCurrentStudentNone;
-      }
+        if (window.studentsData.currentStudent) {
+            removeStudentButton.textContent = `${translations[newLang].removeCurrentStudent}${window.studentsData.currentStudent}`;
+        } else {
+            removeStudentButton.textContent = translations[newLang].removeCurrentStudentNone;
+        }
     }
 
     const starMapTitle = document.querySelector('h3[data-translate="starMapTitle"]');
     if (starMapTitle) starMapTitle.textContent = translations[newLang].starMapTitle;
     document.querySelectorAll('.star-map-steps p[data-translate]').forEach(p => {
-      const key = p.getAttribute('data-translate');
-      if (translations[newLang][key]) {
-        const translatedText = translations[newLang][key];
-        const match = translatedText.match(/^(.*?)(?=\s[A-Z])/);
-        if (match) {
-          const semiTitle = match[0];
-          const restOfText = translatedText.substring(semiTitle.length).trim();
-          p.innerHTML = `<span class="semi-title"><strong>${semiTitle}</strong></span> ${restOfText}`;
-        } else {
-          p.textContent = translatedText;
+        const key = p.getAttribute('data-translate');
+        if (translations[newLang][key]) {
+            const translatedText = translations[newLang][key];
+            const match = translatedText.match(/^(.*?)(?=\s[A-Z])/);
+            if (match) {
+                const semiTitle = match[0];
+                const restOfText = translatedText.substring(semiTitle.length).trim();
+                p.innerHTML = `<span class="semi-title"><strong>${semiTitle}</strong></span> ${restOfText}`;
+            } else {
+                p.textContent = translatedText;
+            }
         }
-      }
     });
 
     const exportTitle = document.getElementById('exportTitle');
@@ -1122,32 +1122,37 @@ function switchLanguage(lang) {
     const rankPopupDescription = document.getElementById('rankAchievementDescription');
     const currentStudent = window.studentsData?.currentStudent || '';
     if (rankPopup && rankMessage && rankSubtitle && rankPopupDescription && rankPopup.style.display === 'flex') {
-      rankMessage.textContent = translations[newLang].rankAchievementMessage.replace('[userName]', currentStudent);
-      rankSubtitle.textContent = translations[newLang].rankAchievementSubtitle;
-      rankPopupDescription.textContent = translations[newLang].textboxStarCadet;
+        rankMessage.textContent = translations[newLang].rankAchievementMessage.replace('[userName]', currentStudent);
+        rankSubtitle.textContent = translations[newLang].rankAchievementSubtitle;
+        rankPopupDescription.textContent = translations[newLang].textboxStarCadet;
     }
 
     const loaderText = document.getElementById('loaderText');
     if (loaderText) {
-      loaderText.textContent = translations[newLang].loading;
+        loaderText.textContent = translations[newLang].loading;
     }
 
     const studentPopup = document.getElementById('studentPopup');
     if (studentPopup && studentPopup.classList.contains('show')) {
-      const popupContent = studentPopup.querySelector('.student-popup-content p');
-      const name = studentPopup.dataset.name;
-      const isError = studentPopup.dataset.isError === 'true';
-      const starSVG = '<svg class="popup-star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>';
-      if (name) {
-        popupContent.innerHTML = `${starSVG} ${translations[newLang].success} ${name}! ${starSVG}`;
-      } else if (isError) {
-        popupContent.textContent = translations[newLang].error;
-      }
+        const popupContent = studentPopup.querySelector('.student-popup-content p');
+        const name = studentPopup.dataset.name;
+        const isError = studentPopup.dataset.isError === 'true';
+        const starSVG = '<svg class="popup-star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>';
+        if (name) {
+            popupContent.innerHTML = `${starSVG} ${translations[newLang].success} ${name}! ${starSVG}`;
+        } else if (isError) {
+            popupContent.textContent = translations[newLang].error;
+        }
     }
 
     const userNameDisplay = document.getElementById('userNameDisplay');
     if (userNameDisplay) {
-      userNameDisplay.textContent = window.studentsData?.currentStudent || '';
+        userNameDisplay.textContent = window.studentsData?.currentStudent || '';
+    }
+
+    // Reinitialize consent popup if not consented
+    if (localStorage.getItem('consentGiven') !== 'true' && typeof initializeConsentPopup === 'function') {
+        initializeConsentPopup();
     }
 }
 
