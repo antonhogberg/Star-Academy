@@ -83,9 +83,9 @@ const translations = {
       faqQ12: "Why did my progress disappear?",
       faqA12: "If you cleared your browser history, all star data was removed as it’s stored in the browser’s cache. If you imported a user with your name from another device via a QR code created on the For Teachers page, your user data was overwritten by the imported user.",
       faqQ13: "Is my student data stored online? Is it safe?",
-      faqA13: "Your student data (name or anonymous ID, notes, and stars) is stored locally in your browser’s localStorage, not online, ensuring privacy. When sharing progress, data is encoded into a secure QR code or link, readable only by the importing device. Teachers must obtain student consent (or parental consent for minors) before adding names, or use an anonymous ID (e.g., ‘Student123’). Use the <a href='/remove.html'>Remove Users page</a> to delete data. See our <a href='/privacy-policy.html'>Privacy Policy</a> for details.",
+      faqA13: "Your student data (name or anonymous ID, notes, and stars) is stored locally in your browser’s localStorage, not online, ensuring privacy. When sharing progress, data is encoded into a secure QR code or link, readable only by the importing device. Teachers must obtain student consent (or parental consent for minors) before adding names, or use an anonymous ID (e.g., ‘Student123’). Use the <a href='remove.html'>Remove Users page</a> to delete data. See our <a href='privacy-policy.html'>Privacy Policy</a> for details.",
       faqQ14: "Do I need permission to add my students’ data, and why is local storage required?",
-      faqA14: "Yes, teachers must obtain consent from students (or parents for minors under 13) or another lawful basis (e.g., lesson contract) before adding names to the platform, or use an anonymous ID (e.g., ‘Student123’) if consent isn’t obtained, especially in regions like the EU. Data is stored locally in your browser’s localStorage, which is essential for tracking progress across 112 exercises (e.g., level 5/6 for exercise 1:1:1). Without localStorage, progress cannot be saved, making the platform unusable. Use the <a href='/remove.html'>Remove Users page</a> to delete data or see our <a href='/privacy-policy.html'>Privacy Policy</a> for more.",
+      faqA14: "Yes, teachers must obtain consent from students (or parents for minors under 13) or another lawful basis (e.g., lesson contract) before adding names to the platform, or use an anonymous ID (e.g., ‘Student123’) if consent isn’t obtained, especially in regions like the EU. Data is stored locally in your browser’s localStorage, which is essential for tracking progress across 112 exercises (e.g., level 5/6 for exercise 1:1:1). Without localStorage, progress cannot be saved, making the platform unusable. Use the <a href='remove.html'>Remove Users page</a> to delete data or see our <a href='privacy-policy.html'>Privacy Policy</a> for more.",
       exportTitle: "Export Student Data",
       exportInfo: "Tap the button below to share the current student to another device. The recipient just needs to scan the QR code or open the link to add the student automatically!",
       exportInfoText: "(Exports: Name, Notes & Stars)",
@@ -113,7 +113,7 @@ const translations = {
       error: "Invalid link. No student was added.",
       studentModeLabel: "Fixed gold stars",
       noConsentTitle: "Welcome Back Later",
-      noConsentMessage: "We’re sorry you couldn’t accept our privacy policy at this time. North Star Piano School uses local storage on your device to track progress in 112 piano exercises, which is essential for the platform to work. Without agreeing, your progress can’t be saved locally, but we’d love to welcome you back when you’re ready! Visit our <a href='/faq.html'>FAQ</a> or <a href='/privacy-policy.html'>Privacy Policy</a> to learn more, or return to the <a href='/index.html'>home page</a> to try again.",
+      noConsentMessage: "We’re sorry you couldn’t accept our privacy policy at this time. North Star Piano School uses local storage on your device to track progress in 112 piano exercises, which is essential for the platform to work. Without agreeing, your progress can’t be saved locally, but we’d love to welcome you back when you’re ready! Visit our <a href='faq.html'>FAQ</a> or <a href='privacy-policy.html'>Privacy Policy</a> to learn more, or return to the <a href='index.html'>home page</a> to try again.",
       consentMessage: "Welcome to North Star Piano School! We use local storage to save progress for 112 piano exercises, essential for tracking your or your students’ achievements. Teachers: please obtain student consent (or parental consent for minors under 13) before adding names, or use an anonymous ID (e.g., ‘Student123’) in regions requiring consent, like the EU. No data is stored online. Agree to start your piano journey!",
       consentAccept: "Start Playing!",
       consentReject: "I Don’t Agree",
@@ -133,13 +133,13 @@ const translations = {
       legalBasis: "Legal Basis",
       legalBasisText: "Teachers must process data based on a lawful basis, such as:<ul><li><strong>Consent</strong>: Obtained from students or parents (for minors).</li><li><strong>Contract</strong>: To fulfill lesson agreements requiring progress tracking.</li><li><strong>Legitimate Interest</strong>: For progress tracking, if balanced with student rights.</li></ul>Our platform prompts teachers to confirm they have permission or use anonymous IDs before adding students.",
       storage: "Storage",
-      storageText: "All data is stored locally in the user’s browser localStorage, not on servers or databases. Clearing your browser cache or using the <a href='/remove.html'>Remove Users page</a> deletes all data.",
+      storageText: "All data is stored locally in the user’s browser localStorage, not on servers or databases. Clearing your browser cache or using the <a href='remove.html'>Remove Users page</a> deletes all data.",
       sharing: "Sharing",
       sharingText: "No data is shared with North Star Piano School or third parties. Teachers may share progress via secure QR codes or links, processed client-side and readable only by the importing device (e.g., a student’s iPad).",
       retention: "Retention",
-      retentionText: "Data remains in localStorage until the user clears their browser cache or deletes users via the <a href='/remove.html'>Remove Users page</a>.",
+      retentionText: "Data remains in localStorage until the user clears their browser cache or deletes users via the <a href='remove.html'>Remove Users page</a>.",
       yourRights: "Your Rights",
-      yourRightsText: "Under GDPR and other laws, students/parents have the right to:<ul><li><strong>Access</strong>: View data in the teacher’s browser (via developer tools).</li><li><strong>Delete</strong>: Ask the teacher to delete data via the <a href='/remove.html'>Remove Users page</a> or clear their own browser cache.</li><li><strong>Restrict</strong>: Opt out of storage, but this prevents progress tracking, making the platform unusable.</li></ul>Since we do not access data, contact your teacher for data requests. If you use the platform directly, use <a href='/remove.html'>Remove Users</a> or clear your cache.",
+      yourRightsText: "Under GDPR and other laws, students/parents have the right to:<ul><li><strong>Access</strong>: View data in the teacher’s browser (via developer tools).</li><li><strong>Delete</strong>: Ask the teacher to delete data via the <a href='remove.html'>Remove Users page</a> or clear their own browser cache.</li><li><strong>Restrict</strong>: Opt out of storage, but this prevents progress tracking, making the platform unusable.</li></ul>Since we do not access data, contact your teacher for data requests. If you use the platform directly, use <a href='remove.html'>Remove Users</a> or clear your cache.",
       security: "Security",
       securityText: "Data is stored locally, reducing risks. QR code/link exports are encoded securely to prevent unauthorized access.",
       minors: "Minors",
@@ -228,9 +228,9 @@ const translations = {
       faqQ12: "Varför försvann mina framsteg?",
       faqA12: "Om du har rensat din historik i din webbläsare så försvann all data som visar stjärnor eftersom denna lagras i webbläsarens cacheminne. Om du har importerat en användare med ditt namn från en annan enhet via en länk eller QR-kod som skapats på för lärare-sidan så har din användare skrivits över av den importerade användaren.",
       faqQ13: "Lagras min elevdata online? Är det GDPR-vänligt?",
-      faqA13: "Din elevdata (namn eller anonymt ID, anteckningar och stjärnor) lagras endast lokalt i din webbläsare, inte online. Vid export kodas datan till en säker QR-kod eller länk, som endast den importerande enheten kan läsa. Lärare måste skaffa elevens samtycke (eller förälders samtycke för barn) innan de lägger till namn, eller använda ett anonymt ID (t.ex. ‘elev123’). Använd <a href='/remove.html'>radera användare-sidan</a> för att ta bort data. Se vår <a href='/privacy-policy.html'>integritetspolicy</a> för detaljer.",
+      faqA13: "Din elevdata (namn eller anonymt ID, anteckningar och stjärnor) lagras endast lokalt i din webbläsare, inte online. Vid export kodas datan till en säker QR-kod eller länk, som endast den importerande enheten kan läsa. Lärare måste skaffa elevens samtycke (eller förälders samtycke för barn) innan de lägger till namn, eller använda ett anonymt ID (t.ex. ‘elev123’). Använd <a href='remove.html'>radera användare-sidan</a> för att ta bort data. Se vår <a href='privacy-policy.html'>integritetspolicy</a> för detaljer.",
       faqQ14: "Behöver jag tillstånd för att lägga till mina elevers data, och varför krävs lokal lagring?",
-      faqA14: "Ja, lärare måste skaffa samtycke från elever (eller föräldrar för barn under 13) eller en annan laglig grund (t.ex. lektionsavtal) innan de lägger till namn i plattformen, eller använda ett anonymt ID (t.ex. ‘elev123’) om samtycke saknas, särskilt i regioner som EU. Data lagras lokalt i din webbläsares localStorage, vilket är nödvändigt för att spåra framsteg i 112 övningar (t.ex. nivå 5/6 för övning 1:1:1). Utan localStorage kan framsteg inte sparas, vilket gör plattformen oanvändbar. Använd <a href='/remove.html'>radera användare-sidan</a> för att ta bort data eller se vår <a href='/privacy-policy.html'>integritetspolicy</a> för mer.",
+      faqA14: "Ja, lärare måste skaffa samtycke från elever (eller föräldrar för barn under 13) eller en annan laglig grund (t.ex. lektionsavtal) innan de lägger till namn i plattformen, eller använda ett anonymt ID (t.ex. ‘elev123’) om samtycke saknas, särskilt i regioner som EU. Data lagras lokalt i din webbläsares localStorage, vilket är nödvändigt för att spåra framsteg i 112 övningar (t.ex. nivå 5/6 för övning 1:1:1). Utan localStorage kan framsteg inte sparas, vilket gör plattformen oanvändbar. Använd <a href='remove.html'>radera användare-sidan</a> för att ta bort data eller se vår <a href='privacy-policy.html'>integritetspolicy</a> för mer.",
       exportTitle: "Exportera elevdata",
       exportInfo: "Genom att trycka på knappen nedan kan du dela den aktuella eleven till en annan enhet. Mottagaren behöver bara öppna länken – eleven läggs automatiskt till!",
       exportInfoText: "(exporterar: namn, anteckningar & stjärnor)",
@@ -258,7 +258,7 @@ const translations = {
       error: "Ogiltig länk. Ingen elev lades till.",
       studentModeLabel: "Låsta guldstjärnor",
       noConsentTitle: "Välkommen tillbaka senare",
-      noConsentMessage: "Vi är ledsna att du inte kunde godkänna vår integritetspolicy just nu. Nordstjärnans pianoskola använder lokal lagring på din enhet för att spåra framsteg i 112 pianövningar, vilket är nödvändigt för att plattformen ska fungera. Utan att godkänna detta kan dina framsteg inte sparas lokalt, men vi välkomnar dig gärna tillbaka när du är redo! Besök vår <a href='/faq.html'>FAQ</a> eller <a href='/privacy-policy.html'>integritetspolicy</a> för att läsa mer, eller återvänd till <a href='/index.html'>startsidan</a> för att försöka igen.",
+      noConsentMessage: "Vi är ledsna att du inte kunde godkänna vår integritetspolicy just nu. Nordstjärnans pianoskola använder lokal lagring på din enhet för att spåra framsteg i 112 pianövningar, vilket är nödvändigt för att plattformen ska fungera. Utan att godkänna detta kan dina framsteg inte sparas lokalt, men vi välkomnar dig gärna tillbaka när du är redo! Besök vår <a href='faq.html'>FAQ</a> eller <a href='privacy-policy.html'>integritetspolicy</a> för att läsa mer, eller återvänd till <a href='index.html'>startsidan</a> för att försöka igen.",
       consentMessage: "Välkommen till Nordstjärnans pianoskola! Vi använder lokal lagring för att spara framsteg i 112 pianövningar, vilket är nödvändigt för att spåra dina eller dina elevers prestationer. Lärare: skaffa elevens samtycke (eller förälders samtycke för barn under 13) innan du lägger till namn, eller använd ett anonymt ID (t.ex. ‘elev123’) i regioner som kräver samtycke, som EU. Ingen data lagras online. Godkänn för att börja din pianoresa!",
       consentAccept: "Börja spela!",
       consentReject: "Jag godkänner inte",
@@ -278,13 +278,13 @@ const translations = {
       legalBasis: "Rättslig grund",
       legalBasisText: "Lärare måste behandla data baserat på en rättslig grund, såsom:<ul><li><strong>Samtycke</strong>: Erhållet från elever eller föräldrar (för barn).</li><li><strong>Avtal</strong>: För att uppfylla lektionsavtal som kräver spårning av framsteg.</li><li><strong>Legitimt intresse</strong>: För spårning av framsteg, om det balanseras med elevers rättigheter.</li></ul>Vår plattform uppmanar lärare att bekräfta att de har tillstånd eller använder anonyma ID:n innan de lägger till elever.",
       storage: "Lagring",
-      storageText: "All data lagras lokalt i användarens webbläsares localStorage, inte på servrar eller i databaser. Att rensa webbläsarens cache eller använda <a href='/remove.html'>radera användare-sidan</a> tar bort all data.",
+      storageText: "All data lagras lokalt i användarens webbläsares localStorage, inte på servrar eller i databaser. Att rensa webbläsarens cache eller använda <a href='remove.html'>radera användare-sidan</a> tar bort all data.",
       sharing: "Delning",
       sharingText: "Ingen data delas med Nordstjärnans pianoskola eller tredje parter. Lärare kan dela framsteg via säkra QR-koder eller länkar, behandlade klient-side och läsbara endast av den importerande enheten (t.ex. en elevs iPad).",
       retention: "Lagringstid",
-      retentionText: "Data finns kvar i localStorage tills användaren rensar webbläsarens cache eller tar bort användare via <a href='/remove.html'>radera användare-sidan</a>.",
+      retentionText: "Data finns kvar i localStorage tills användaren rensar webbläsarens cache eller tar bort användare via <a href='remove.html'>radera användare-sidan</a>.",
       yourRights: "Dina rättigheter",
-      yourRightsText: "Enligt GDPR och andra lagar har elever/föräldrar rätt att:<ul><li><strong>Tillgång</strong>: Se data i lärarens webbläsare (via utvecklarverktyg).</li><li><strong>Radera</strong>: Be läraren att radera data via <a href='/remove.html'>radera användare-sidan</a> eller rensa sin egen webbläsarcache.</li><li><strong>Begränsa</strong>: Välja bort lagring, men detta förhindrar spårning av framsteg, vilket gör plattformen oanvändbar.</li></ul>Eftersom vi inte har åtkomst till data, kontakta din lärare för databehov. Om du använder plattformen direkt, använd <a href='/remove.html'>radera användare</a> eller rensa din cache.",
+      yourRightsText: "Enligt GDPR och andra lagar har elever/föräldrar rätt att:<ul><li><strong>Tillgång</strong>: Se data i lärarens webbläsare (via utvecklarverktyg).</li><li><strong>Radera</strong>: Be läraren att radera data via <a href='remove.html'>radera användare-sidan</a> eller rensa sin egen webbläsarcache.</li><li><strong>Begränsa</strong>: Välja bort lagring, men detta förhindrar spårning av framsteg, vilket gör plattformen oanvändbar.</li></ul>Eftersom vi inte har åtkomst till data, kontakta din lärare för databehov. Om du använder plattformen direkt, använd <a href='remove.html'>radera användare</a> eller rensa din cache.",
       security: "Säkerhet",
       securityText: "Data lagras lokalt, vilket minskar risker. QR-kod/länkexport är kodade säkert för att förhindra obehörig åtkomst.",
       minors: "Barn",
@@ -444,7 +444,7 @@ function initializeConsentPopup() {
             dismiss: translations[lang].consentAccept,
             deny: translations[lang].consentReject,
             link: translations[lang].consentPolicyLink,
-            href: "/Star-Academy/privacypolicy.html"
+            href: "/Star-Academy/privacy-policy.html"
         },
         type: "opt-in",
         onInitialise: function(status) {
@@ -459,7 +459,7 @@ function initializeConsentPopup() {
                 if (typeof handleUserNamePopup === 'function') handleUserNamePopup();
             } else {
                 console.log('User rejected consent, redirecting to no-consent.html');
-                window.location.href = '/no-consent.html';
+                window.location.href = 'no-consent.html';
             }
         }
     });
