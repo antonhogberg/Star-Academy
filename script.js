@@ -474,7 +474,7 @@ function initializeConsentPopup() {
                 localStorage.setItem('consentGiven', 'true');
                 this.element.style.display = 'none'; // Hide popup
                 window.consentInitialized = false; // Allow reinitialization on next load
-                if (typeof handleUserNamePopup === 'function') handleUserNamePopup();
+                if (typeof handleUserNamePopup === 'function') handleUserNamePopup(); // Trigger namePopup after consent
             } else {
                 console.log('User rejected consent, redirecting to no-consent.html');
                 window.location.href = 'no-consent.html';
@@ -1222,12 +1222,14 @@ function handleUserNamePopup() {
         const userNameDisplay = document.getElementById('userNameDisplay');
         const namePopup = document.getElementById('namePopup');
         const nameInput = document.getElementById('nameInput');
+        const submitBtn = document.getElementById('submitNameButton');
         const menu = document.querySelector('.menu');
 
-        if (!namePopup || !nameInput) {
-            console.warn('namePopup or nameInput not found in DOM, skipping popup:', {
+        if (!namePopup || !nameInput || !submitBtn) {
+            console.warn('namePopup, nameInput, or submitNameButton not found in DOM, skipping popup:', {
                 namePopup: !!namePopup,
                 nameInput: !!nameInput,
+                submitBtn: !!submitBtn,
                 page: window.location.pathname,
                 bodyChildCount: document.body.childElementCount
             });
@@ -1243,7 +1245,7 @@ function handleUserNamePopup() {
         window.addEventListener('resize', updateMenuHeight);
         window.addEventListener('orientationchange', updateMenuHeight);
 
-        // Show namePopup if no current student, regardless of consent
+        // Show namePopup if no current student
         if (!studentsData.currentStudent) {
             console.log('Showing namePopup for new user');
             namePopup.style.display = 'flex';
@@ -1258,12 +1260,9 @@ function handleUserNamePopup() {
             });
             updateMenuHeight();
 
-            // Disable input and button if no consent
-            if (localStorage.getItem('consentGiven') !== 'true') {
-                nameInput.disabled = true;
-                const submitBtn = document.getElementById('submitNameButton');
-                if (submitBtn) submitBtn.disabled = true;
-            }
+            // Ensure input and button are enabled
+            nameInput.disabled = false;
+            submitBtn.disabled = false;
         } else if (userNameDisplay) {
             userNameDisplay.textContent = studentsData.currentStudent;
             console.log('Set userNameDisplay to:', studentsData.currentStudent);
@@ -1273,6 +1272,7 @@ function handleUserNamePopup() {
             // Prevent saving if no consent
             if (localStorage.getItem('consentGiven') !== 'true') {
                 console.log('Cannot save name: consent not given');
+                alert(translations[localStorage.getItem('language') || 'sv'].consentMessage);
                 return;
             }
 
@@ -1355,10 +1355,10 @@ function handleUserNamePopup() {
             }
         };
 
-        const submitBtn = document.querySelector('button[onclick="saveName()"]');
-        if (submitBtn) {
-            submitBtn.removeEventListener('click', window.saveName);
-            submitBtn.addEventListener('click', window.saveName);
+        const submitBtnHandler = document.querySelector('button[onclick="saveName()"]');
+        if (submitBtnHandler) {
+            submitBtnHandler.removeEventListener('click', window.saveName);
+            submitBtnHandler.addEventListener('click', window.saveName);
             console.log('Submit button listener added');
         }
         if (nameInput) {
