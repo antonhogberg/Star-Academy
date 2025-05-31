@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="styles.css">
     <script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css" />
-<link rel="stylesheet" href="/cookieconsent.css" />
+<link rel="stylesheet" href="cookieconsent.css" />
 <script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', () => {
@@ -51,7 +51,7 @@
           if (typeof handleUserNamePopup === 'function') handleUserNamePopup();
         } else {
           console.log('User rejected consent, redirecting to no-consent.html');
-          window.location.href = '/no-consent.html';
+          window.location.href = 'no-consent.html';
         }
       }
     });
