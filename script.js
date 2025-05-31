@@ -320,6 +320,7 @@ const menuHtml = `
                 <a href="students.html" class="menu-link" data-translate="menuStudents"></a>
                 <a href="remove.html" class="menu-link" data-translate="menuRemove"></a>
                 <a href="faq.html" class="menu-link" data-translate="menuFAQ"></a>
+                <a href="privacy-policy.html" class="menu-link" data-translate="menuPrivacyPolicy"></a>
                 <div class="language-switcher">
                     <span class="flag" onclick="switchLanguage('en')">🇬🇧</span>
                     <span class="flag" onclick="switchLanguage('sv')">🇸🇪</span>
