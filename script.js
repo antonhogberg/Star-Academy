@@ -320,7 +320,7 @@ const menuHtml = `
                 <a href="students.html" class="menu-link" data-translate="menuStudents"></a>
                 <a href="remove.html" class="menu-link" data-translate="menuRemove"></a>
                 <a href="faq.html" class="menu-link" data-translate="menuFAQ"></a>
-                <a href="Star-Academy/privacy-policy.html" class="menu-link" data-translate="menuPrivacyPolicy"></a>
+                <a href="privacy-policy.html" class="menu-link" data-translate="menuPrivacyPolicy"></a>
                 <div class="language-switcher">
                     <span class="flag" onclick="switchLanguage('en')">🇬🇧</span>
                     <span class="flag" onclick="switchLanguage('sv')">🇸🇪</span>
@@ -984,7 +984,7 @@ function switchLanguage(lang) {
             link.textContent = translations[newLang].menuFAQ;
         } else if (href === 'remove.html') {
             link.textContent = translations[newLang].menuRemove;
-        } else if (href === 'star-academy/privacy-policy.html') {
+        } else if (href === 'privacy-policy.html') {
             link.textContent = translations[newLang].menuPrivacyPolicy;
         } else {
             const chapterNum = href?.match(/chapter(\d+)\.html/)?.[1];
