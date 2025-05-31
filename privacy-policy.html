@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-translate="privacyPolicyTitle"></title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="piano-menu" id="menuButton" aria-expanded="false" aria-controls="main-menu">
+        <div class="white-key"></div>
+        <div class="white-key"></div>
+        <div class="white-key"></div>
+        <div class="black-key top"></div>
+        <div class="black-key bottom"></div>
+    </div>
+    <nav id="menu-placeholder"></nav>
+    <div class="faq-container">
+        <h1 data-translate="privacyPolicyTitle"></h1>
+        <p><strong data-translate="effectiveDate"></strong> May 31, 2025</p>
+        
+        <h2 data-translate="whoWeAre"></h2>
+        <p data-translate="whoWeAreText"></p>
+        
+        <h2 data-translate="ourRole"></h2>
+        <p data-translate="ourRoleText"></p>
+        
+        <h2 data-translate="teachersRole"></h2>
+        <p data-translate="teachersRoleText"></p>
+        
+        <h2 data-translate="dataProcessed"></h2>
+        <p data-translate="dataProcessedText"></p>
+        
+        <h2 data-translate="purpose"></h2>
+        <p data-translate="purposeText"></p>
+        
+        <h2 data-translate="legalBasis"></h2>
+        <p data-translate="legalBasisText"></p>
+        
+        <h2 data-translate="storage"></h2>
+        <p data-translate="storageText"></p>
+        
+        <h2 data-translate="sharing"></h2>
+        <p data-translate="sharingText"></p>
+        
+        <h2 data-translate="retention"></h2>
+        <p data-translate="retentionText"></p>
+        
+        <h2 data-translate="yourRights"></h2>
+        <p data-translate="yourRightsText"></p>
+        
+        <h2 data-translate="security"></h2>
+        <p data-translate="securityText"></p>
+        
+        <h2 data-translate="minors"></h2>
+        <p data-translate="minorsText"></p>
+        
+        <h2 data-translate="usingWithoutStorage"></h2>
+        <p data-translate="usingWithoutStorageText"></p>
+        
+        <h2 data-translate="contactUs"></h2>
+        <p data-translate="contactUsText"></p>
+    </div>
+    <script src="script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const lang = localStorage.getItem('language') || 'sv';
+            injectMenu();
+            switchLanguage(lang);
+        });
+    </script>
+</body>
+</html>

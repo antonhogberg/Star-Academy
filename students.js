@@ -1,10 +1,8 @@
-// Load student data from localStorage
 window.studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || {
     students: {},
     currentStudent: localStorage.getItem('userName') || ''
 };
 
-// Step 1: Helper function to initialize silverProgress for 112 exercises
 function initializeSilverProgress() {
     const silverProgress = {};
     for (let chapter = 1; chapter <= 7; chapter++) {
@@ -18,15 +16,14 @@ function initializeSilverProgress() {
     return silverProgress;
 }
 
-// Initialize the first student if they exist in userName but not in studentsData
 if (window.studentsData.currentStudent && !window.studentsData.students[window.studentsData.currentStudent]) {
     window.studentsData.students[window.studentsData.currentStudent] = {
         name: window.studentsData.currentStudent,
         progress: {},
         rank: "Explorer",
         notes: "",
-        studentMode: false, // Step 1: Add studentMode for initialized students
-        silverProgress: initializeSilverProgress() // Step 1: Initialize silverProgress
+        studentMode: false,
+        silverProgress: initializeSilverProgress()
     };
     for (let chapter = 1; chapter <= 7; chapter++) {
         for (let part = 1; part <= 4; part++) {
@@ -67,6 +64,12 @@ function addStudent(e) {
     if (window.studentsData.students[name]) {
         console.log('Duplicate name:', name);
         showStudentPopup(translations[lang].addStudentDuplicate, 3000);
+        return;
+    }
+
+    if (!confirm(translations[lang].addStudentConsentPrompt.replace('{name}', name))) {
+        console.log('Teacher declined consent prompt for student:', name);
+        showStudentPopup(translations[lang].addStudentCancelled, 3000);
         return;
     }
 
@@ -230,7 +233,6 @@ document.addEventListener('DOMContentLoaded', () => {
         studentTitle.textContent = lang === 'en' ? 'Manage Students' : 'Hantera elever';
     }
 
-    // Bind addStudent to the Add button
     const addButton = document.getElementById('addStudentButton');
     if (addButton) {
         console.log('Binding addStudent to addStudentButton');
@@ -239,7 +241,6 @@ document.addEventListener('DOMContentLoaded', () => {
         console.error('addStudentButton not found');
     }
 
-    // Handle Enter key on input
     const nameInput = document.getElementById('newStudentName');
     if (nameInput) {
         nameInput.addEventListener('keypress', (e) => {
@@ -252,6 +253,3 @@ document.addEventListener('DOMContentLoaded', () => {
         console.error('newStudentName input not found');
     }
 });
-
-// Step 1: Trailing newlines to align with VSCode line count
-// (Original file had ~49 empty lines; adjust as needed in VSCode)

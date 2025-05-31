@@ -52,6 +52,8 @@ const translations = {
       addStudentSuccess: "New Star Student created!",
       addStudentDuplicate: "Student name already exists! Please choose a different name.",
       addStudentNoName: "Please enter a name!",
+      addStudentConsentPrompt: "You are adding ‘{name}’ to track their piano progress locally on your device. In regions like the EU, you need their consent (or parental consent for minors under 13). Alternatively, use an anonymous ID (e.g., ‘Student123’) if consent isn’t obtained. Continue?",
+      addStudentCancelled: "Student addition cancelled.",
       notesLabel: "Notes",
       notesPlaceholder: "Add notes about planned homework, progress, or other details here—they’re saved automatically.",
       congratsMessage: "🌟 Congratulations! You’ve completed the Star Map! 🌟",
@@ -81,7 +83,9 @@ const translations = {
       faqQ12: "Why did my progress disappear?",
       faqA12: "If you cleared your browser history, all star data was removed as it’s stored in the browser’s cache. If you imported a user with your name from another device via a QR code created on the For Teachers page, your user data was overwritten by the imported user.",
       faqQ13: "Is my student data stored online? Is it safe?",
-      faqA13: "Your student data (name, notes, and stars) is stored locally in your browser, not online, ensuring privacy. When exporting, data is encoded into a secure QR code or link, readable only by the importing device. No databases or external access are involved.",
+      faqA13: "Your student data (name or anonymous ID, notes, and stars) is stored locally in your browser’s localStorage, not online, ensuring privacy. When sharing progress, data is encoded into a secure QR code or link, readable only by the importing device. Teachers must obtain student consent (or parental consent for minors) before adding names, or use an anonymous ID (e.g., ‘Student123’). Use the <a href='/remove.html'>Remove Users page</a> to delete data. See our <a href='/privacy-policy.html'>Privacy Policy</a> for details.",
+      faqQ14: "Do I need permission to add my students’ data, and why is local storage required?",
+      faqA14: "Yes, teachers must obtain consent from students (or parents for minors under 13) or another lawful basis (e.g., lesson contract) before adding names to the platform, or use an anonymous ID (e.g., ‘Student123’) if consent isn’t obtained, especially in regions like the EU. Data is stored locally in your browser’s localStorage, which is essential for tracking progress across 112 exercises (e.g., level 5/6 for exercise 1:1:1). Without localStorage, progress cannot be saved, making the platform unusable. Use the <a href='/remove.html'>Remove Users page</a> to delete data or see our <a href='/privacy-policy.html'>Privacy Policy</a> for more.",
       exportTitle: "Export Student Data",
       exportInfo: "Tap the button below to share the current student to another device. The recipient just needs to scan the QR code or open the link to add the student automatically!",
       exportInfoText: "(Exports: Name, Notes & Stars)",
@@ -107,7 +111,43 @@ const translations = {
       loading: "Loading student data...",
       success: "Your stars are updated, welcome",
       error: "Invalid link. No student was added.",
-      studentModeLabel: "Fixed gold stars" // Step 2: Add translation for checkbox
+      studentModeLabel: "Fixed gold stars",
+      noConsentTitle: "Welcome Back Later",
+      noConsentMessage: "We’re sorry you couldn’t accept our privacy policy at this time. North Star Piano School uses local storage on your device to track progress in 112 piano exercises, which is essential for the platform to work. Without agreeing, your progress can’t be saved locally, but we’d love to welcome you back when you’re ready! Visit our <a href='/faq.html'>FAQ</a> or <a href='/privacy-policy.html'>Privacy Policy</a> to learn more, or return to the <a href='/index.html'>home page</a> to try again.",
+      consentMessage: "Welcome to North Star Piano School! We use local storage to save progress for 112 piano exercises, essential for tracking your or your students’ achievements. Teachers: please obtain student consent (or parental consent for minors under 13) before adding names, or use an anonymous ID (e.g., ‘Student123’) in regions requiring consent, like the EU. No data is stored online. Agree to start your piano journey!",
+      consentAccept: "Start Playing!",
+      consentReject: "I Don’t Agree",
+      consentPolicyLink: "Privacy Policy",
+      privacyPolicyTitle: "Privacy Policy",
+      effectiveDate: "Effective Date",
+      whoWeAre: "Who We Are",
+      whoWeAreText: "North Star Piano School provides an educational platform for piano teachers and students to track progress across 112 exercises. We do not collect, store, or access any user data. Contact us at <a href='mailto:northstarpianoacademy@gmail.com'>northstarpianoacademy@gmail.com</a>.",
+      ourRole: "Our Role",
+      ourRoleText: "We provide a platform that allows users (primarily piano teachers) to store student data locally in their browser’s localStorage. This is essential for tracking progress, the core purpose of our site. We do not have access to this data, as it is stored only on the user’s device, not on servers or databases.",
+      teachersRole: "Piano Teachers’ Role and Responsibilities",
+      teachersRoleText: "Piano teachers using our platform act as <strong>data controllers</strong> under GDPR. They:<ul><li>Input student data (e.g., names, progress, notes) into localStorage to track progress in 112 exercises.</li><li>Must obtain <strong>permission</strong> (e.g., consent, contract, or legitimate interest) to store student data. For minors under 13 in Sweden (or 16 in some EU countries), <strong>parental consent</strong> is required.</li><li>In regions requiring consent (e.g., EU), teachers may use an <strong>anonymous ID</strong> (e.g., ‘Student123’) instead of a student’s name if consent cannot be obtained, ensuring compliance with local laws.</li><li>Are responsible for informing students/parents about data processing and ensuring compliance with data protection laws (e.g., GDPR).</li></ul>",
+      dataProcessed: "Data Processed",
+      dataProcessedText: "Teachers may store the following data locally via our platform:<ul><li><strong>Student Names or Anonymous IDs</strong>: To identify students (e.g., “Alice” or “Student123”).</li><li><strong>Progress</strong>: Star ratings for exercises (e.g., level 5 of 6 for exercise 1:1:1).</li><li><strong>Notes</strong>: Teacher notes about students.</li><li><strong>Language Preference</strong>: Chosen language (e.g., Swedish or English).</li></ul>This data is necessary to use the platform, as tracking progress is its core function.",
+      purpose: "Purpose",
+      purposeText: "Teachers use this data to monitor student progress across 112 exercises and personalize lessons. Language settings enhance usability. Without localStorage, progress cannot be saved, rendering the platform unusable.",
+      legalBasis: "Legal Basis",
+      legalBasisText: "Teachers must process data based on a lawful basis, such as:<ul><li><strong>Consent</strong>: Obtained from students or parents (for minors).</li><li><strong>Contract</strong>: To fulfill lesson agreements requiring progress tracking.</li><li><strong>Legitimate Interest</strong>: For progress tracking, if balanced with student rights.</li></ul>Our platform prompts teachers to confirm they have permission or use anonymous IDs before adding students.",
+      storage: "Storage",
+      storageText: "All data is stored locally in the user’s browser localStorage, not on servers or databases. Clearing your browser cache or using the <a href='/remove.html'>Remove Users page</a> deletes all data.",
+      sharing: "Sharing",
+      sharingText: "No data is shared with North Star Piano School or third parties. Teachers may share progress via secure QR codes or links, processed client-side and readable only by the importing device (e.g., a student’s iPad).",
+      retention: "Retention",
+      retentionText: "Data remains in localStorage until the user clears their browser cache or deletes users via the <a href='/remove.html'>Remove Users page</a>.",
+      yourRights: "Your Rights",
+      yourRightsText: "Under GDPR and other laws, students/parents have the right to:<ul><li><strong>Access</strong>: View data in the teacher’s browser (via developer tools).</li><li><strong>Delete</strong>: Ask the teacher to delete data via the <a href='/remove.html'>Remove Users page</a> or clear their own browser cache.</li><li><strong>Restrict</strong>: Opt out of storage, but this prevents progress tracking, making the platform unusable.</li></ul>Since we do not access data, contact your teacher for data requests. If you use the platform directly, use <a href='/remove.html'>Remove Users</a> or clear your cache.",
+      security: "Security",
+      securityText: "Data is stored locally, reducing risks. QR code/link exports are encoded securely to prevent unauthorized access.",
+      minors: "Minors",
+      minorsText: "For students under 13 in Sweden (or 16 in some EU countries), teachers must obtain parental consent before adding their data to our platform, or use an anonymous ID.",
+      usingWithoutStorage: "Using the Platform Without Local Storage",
+      usingWithoutStorageText: "The platform’s purpose is to track progress for 112 piano exercises (e.g., level 5/6 for exercise 1:1:1). localStorage is essential to save this progress. Opting out (e.g., clearing cache or declining storage) resets all progress, making the platform unusable, as no data is stored online.",
+      contactUs: "Contact Us",
+      contactUsText: "For questions about our platform, email <a href='mailto:northstarpianoacademy@gmail.com'>northstarpianoacademy@gmail.com</a>. For data concerns, contact your piano teacher, as they control the data."
     },
     sv: {
       menuFrontPage: "Stjärnöversikt",
@@ -117,9 +157,9 @@ const translations = {
       menuChapters: "Kapitel",
       menuFAQ: "Vanliga frågor",
       menuRemove: "Radera elev",
-      popupWelcome: "Välkommen till Nordstjärnans Pianoskola!",
-      popupIntro: "Du har nu påbörjat din pianoresa som en Upptäckare! Stjärnkartan är din guide – den visar dig vilken övning du ska göra härnäst medan du navigerar dig fram genom bokens sju kapitel, samlar stjärnor och klättrar i rang, från Stjärnkadett till Stjärnofficer och vidare.",
-      popupTeacherNote: "Du kan också fokusera på ett specifikt kapitel om du vill bli extra bra på t.ex. skalor eller ackord. Besök kapitel-sidorna för att börja samla stjärnor, se dina framsteg på Stjärnöversikt-sidan, eller hantera elever på sidan För lärare.",
+      popupWelcome: "Välkommen till Nordstjärnans pianoskola!",
+      popupIntro: "Du har nu påbörjat din pianoresa som en upptäckare! Stjärnkartan är din guide – den visar dig vilken övning du ska göra härnäst medan du navigerar dig fram genom bokens sju kapitel, samlar stjärnor och klättrar i rang, från stjärnkadett till stjärnofficer och vidare.",
+      popupTeacherNote: "Du kan också fokusera på ett specifikt kapitel om du vill bli extra bra på t.ex. skalor eller ackord. Besök kapitel-sidorna för att börja samla stjärnor, se dina framsteg på stjärnöversikt-sidan, eller hantera elever på sidan för lärare.",
       popupEnterName: "Låt oss sätta igång – skriv in ditt namn nedan för att starta ditt äventyr!",
       rankExplorer: "Upptäckare",
       rankStarCadet: "Stjärnkadett",
@@ -128,13 +168,13 @@ const translations = {
       rankStarCommander: "Stjärnkommendör",
       rankStarAdmiral: "Stjärnamiral",
       rankAchievementMessage: "Grattis [userName]!",
-      rankAchievementSubtitle: "Du har uppnått rangen Stjärnkadett!",
-      textboxExplorer: "Ditt pianoäventyr har startat, och du upptäcker noter, skalor, ackord och arpeggion i din egen takt. Klarar du 16 övningar blir du Stjärnkadett!",
-      textboxStarCadet: "Du har visat järnvilja och samlat sex stjärnor i 16 övningar i Nordstjärnans Pianoskola. Klarar du Del 1 i alla sju kapitel blir du Stjärnofficer!",
-      textboxStarOfficer: "Med stort fokus och noggrannhet har du lärt dig tangentnamn, skalor, grundackord och flera stycken. Var stolt, för nu är du Stjärnofficer i Nordstjärnans Pianoskola – klara av Del 2 i alla kapitel och bli Stjärnkapten!",
-      textboxStarCaptain: "Med stort fokus har du lärt dig notläsning och kan nu spela låtar med ackord och framföra klassiska verk. Var stolt, för nu är du Stjärnkapten i Nordstjärnans Pianoskola – klara av Del 3 i alla kapitel och bli Stjärnkommendör!",
-      textboxStarCommander: "Du har fått bra grepp om ackord och arpeggion i alla omvändningar och kan spela skalor, känna igen intervall och framföra hela konserter på egen hand. Var stolt, för nu är du Stjärnkommendör i Nordstjärnans Pianoskola – klara av Del 4 i alla kapitel och bli Stjärnamiral!",
-      textboxStarAdmiral: "Dina ansträngningar och ditt fokus har gjort dig till en pianovirtuos. Du är nu Stjärnamiral i Nordstjärnans Pianoskola.",
+      rankAchievementSubtitle: "Du har uppnått rangen stjärnkadett!",
+      textboxExplorer: "Ditt pianoäventyr har startat, och du upptäcker noter, skalor, ackord och arpeggion i din egen takt. Klarar du 16 övningar blir du stjärnkadett!",
+      textboxStarCadet: "Du har visat järnvilja och samlat sex stjärnor i 16 övningar i Nordstjärnans pianoskola. Klarar du del 1 i alla sju kapitel blir du stjärnofficer!",
+      textboxStarOfficer: "Med stort fokus och noggrannhet har du lärt dig tangentnamn, skalor, grundackord och flera stycken. Var stolt, för nu är du stjärnofficer i Nordstjärnans pianoskola – klara av del 2 i alla kapitel och bli stjärnkapten!",
+      textboxStarCaptain: "Med stort fokus har du lärt dig notläsning och kan nu spela låtar med ackord och framföra klassiska verk. Var stolt, för nu är du stjärnkapten i Nordstjärnans pianoskola – klara av del 3 i alla kapitel och bli stjärnkommendör!",
+      textboxStarCommander: "Du har fått bra grepp om ackord och arpeggion i alla omvändningar och kan spela skalor, känna igen intervall och framföra hela konserter på egen hand. Var stolt, för nu är du stjärnkommendör i Nordstjärnans pianoskola – klara av del 4 i alla kapitel och bli stjärnamiral!",
+      textboxStarAdmiral: "Dina ansträngningar och ditt fokus har gjort dig till en pianovirtuos. Du är nu stjärnamiral i Nordstjärnans pianoskola.",
       chapter1: "Kapitel 1",
       chapter2: "Kapitel 2",
       chapter3: "Kapitel 3",
@@ -156,63 +196,103 @@ const translations = {
       addStudentSuccess: "Ny stjärnelev skapad!",
       addStudentDuplicate: "Elevnamnet finns redan! Välj ett annat namn.",
       addStudentNoName: "Vänligen ange ett namn!",
+      addStudentConsentPrompt: "Du lägger till ‘{name}’ för att spåra deras pianoprogress lokalt på din enhet. I regioner som EU behöver du deras samtycke (eller förälders samtycke för barn under 13). Alternativt, använd ett anonymt ID (t.ex. ‘elev123’) om samtycke saknas. Fortsätta?",
+      addStudentCancelled: "Elevtillägg avbrutet.",
       notesLabel: "Anteckningar",
-      notesPlaceholder: "Skriv dina anteckningar om läxor m.m. här. (De sparas automatiskt)",
+      notesPlaceholder: "Skriv dina anteckningar om läxor m.m. här. (de sparas automatiskt)",
       saveNotesButton: "Spara anteckningar",
-      congratsMessage: "🌟 Grattis! Du har slutfört Stjärnkartan! 🌟",
+      congratsMessage: "🌟 Grattis! Du har slutfört stjärnkartan! 🌟",
       faqTitle: "Vanliga frågor",
-      faqQ1: "Hur använder jag Stjärnkartan?",
-      faqA1: "Gå till Stjärnkartan i menyn och scrolla till vänster för att se en förklaring till hur du använder stjärnkartan.",
+      faqQ1: "Hur använder jag stjärnkartan?",
+      faqA1: "Gå till stjärnkartan i menyn och scrolla till vänster för att se en förklaring till hur du använder stjärnkartan.",
       faqQ2: "Kan jag lägga till mina elever och finns det en gräns för hur många jag kan lägga till?",
-      faqA2: "Ja, du kan lägga till elever i För lärare: skriv elevens namn, tryck Lägg till, och skifta mellan elever när du vill i menyn—data sparas lokalt och automatiskt. Det finns ingen gräns för hur många elever du kan lägga till!",
+      faqA2: "Ja, du kan lägga till elever i för lärare: skriv elevens namn, tryck lägg till, och skifta mellan elever när du vill i menyn—data sparas lokalt och automatiskt. Det finns ingen gräns för hur många elever du kan lägga till!",
       faqQ3: "Kan jag dela en elevs framsteg med dem, om de vill se sina stjärnor på sin egen iPad?",
-      faqA3: "Ja, du kan dela en elevs framsteg! På För lärare-sidan, välj eleven och generera en delningslänk eller QR-kod. Eleven kan skanna QR-koden med sin iPads kameraapp för att importera sina framsteg, eller så kan du skicka importlänken via SMS, e-post eller AirDrop för att de ska kunna öppna den på sin enhet. När framstegen är importerade kan de se sina stjärnor och framsteg på sin egen iPad och även klicka på nya stjärnor själva—era konton är inte länkade. Vid nästa lektion kan du exportera elevens data igen till deras iPad, och din version kommer att skriva över elevens version, så att deras framsteg hålls uppdaterade med dina register.",
-      faqQ4: "Varför kan jag inte klicka på stjärnorna på Stjärnöversikt-sidan?",
-      faqA4: "Stjärnorna på rangmärket i Stjärnöversikt är inte klickbara – de tänds automatiskt när du samlar stjärnor på Kapitel-sidorna och i Stjärnkartan.",
-      faqQ5: "Hur fungerar rangsystemet i Nordstjärnans Pianoskola?",
-      faqA5: "Rangmärket har ett nedre fält med 16 små stjärnor. För varje övning som du slutför (får 6 stjärnor på) – tänds en av dessa små stjärnor. När det nedre fältet är fullt uppnår du Stjärnkadett-rangen, och märket till höger uppdateras från tomma stjärnor till gyllene stjärnor. I rangmärket finns också fyra chevroner, där varje chevron har stora stjärnor som tänds när du slutför alla fyra övningar i en Del. Den första chevronens sju stjärnor motsvarar Del 1 i alla sju kapitel, den andra chevronen Del 2, och så vidare. När du fyller en chevron med stjärnor klättrar du i rang: du blir Stjärnofficer efter Del 1, Stjärnkapten efter Del 2, Stjärnkommendör efter Del 3 och når du den högsta rangen, efter Del 4, blir du Stjärnamiral. Märket till höger får en motsvarande chevron för varje Del du slutför, vilket visar din nuvarande rang!",
+      faqA3: "Ja, du kan dela en elevs framsteg! På för lärare-sidan, välj eleven och generera en delningslänk eller QR-kod. Eleven kan skanna QR-koden med sin iPads kameraapp för att importera sina framsteg, eller så kan du skicka importlänken via SMS, e-post eller AirDrop för att de ska kunna öppna den på sin enhet. När framstegen är importerade kan de se sina stjärnor och framsteg på sin egen iPad och även klicka på nya stjärnor själva—era konton är inte länkade. Vid nästa lektion kan du exportera elevens data igen till deras iPad, och din version kommer att skriva över elevens version, så att deras framsteg hålls uppdaterade med dina register.",
+      faqQ4: "Varför kan jag inte klicka på stjärnorna på stjärnöversikt-sidan?",
+      faqA4: "Stjärnorna på rangmärket i stjärnöversikt är inte klickbara – de tänds automatiskt när du samlar stjärnor på kapitel-sidorna och i stjärnkartan.",
+      faqQ5: "Hur fungerar rangsystemet i Nordstjärnans pianoskola?",
+      faqA5: "Rangmärket har ett nedre fält med 16 små stjärnor. För varje övning som du slutför (får 6 stjärnor på) – tänds en av dessa små stjärnor. När det nedre fältet är fullt uppnår du stjärnkadett-rangen, och märket till höger uppdateras från tomma stjärnor till gyllene stjärnor. I rangmärket finns också fyra chevroner, där varje chevron har stora stjärnor som tänds när du slutför alla fyra övningar i en del. Den första chevronens sju stjärnor motsvarar del 1 i alla sju kapitel, den andra chevronen del 2, och så vidare. När du fyller en chevron med stjärnor klättrar du i rang: du blir stjärnofficer efter del 1, stjärnkapten efter del 2, stjärnkommendör efter del 3 och når du den högsta rangen, efter del 4, blir du stjärnamiral. Märket till höger får en motsvarande chevron för varje del du slutför, vilket visar din nuvarande rang!",
       faqQ6: "Hur mycket tid bör jag lägga på att öva varje dag?",
       faqA6: "Vi rekommenderar att du övar 15–30 minuter per dag utöver den tid du lägger på stycken, beroende på din nivå och ålder. Nybörjare kan börja med 15 minuter, medan mer avancerade elever kan sikta på 30 minuter. Försök att öva varje dag för att göra stadiga framsteg, och fokusera på dina aktiva övningar för att tjäna stjärnor.",
-      faqQ7: "Kan jag använda Nordstjärnans Pianoskola om jag redan kan spela piano, och hur avancerade är övningarna?",
-      faqA7: "Ja, om du redan kan spela piano kan du ändå använda Nordstjärnans Pianoskola! Övningarna är uppdelade i fyra delar med olika nivåer: Del 1 är för nybörjare, Del 2 är för något mer erfarna elever, Del 3 är för avancerade elever, och Del 4 är överlag väldigt avancerade övningar för erfarna pianister. Börja med övningar som matchar din nivå eller starta från början för att samla några lätta stjärnor. Samla stjärnor för att klättra i rang och förbättra dina färdigheter, oavsett din nivå!",
+      faqQ7: "Kan jag använda Nordstjärnans pianoskola om jag redan kan spela piano, och hur avancerade är övningarna?",
+      faqA7: "Ja, om du redan kan spela piano kan du ändå använda Nordstjärnans pianoskola! Övningarna är uppdelade i fyra delar med olika nivåer: del 1 är för nybörjare, del 2 är för något mer erfarna elever, del 3 är för avancerade elever, och del 4 är överlag väldigt avancerade övningar för erfarna pianister. Börja med övningar som matchar din nivå eller starta från början för att samla några lätta stjärnor. Samla stjärnor för att klättra i rang och förbättra dina färdigheter, oavsett din nivå!",
       faqQ8: "Hur många ranger finns det?",
-      faqA8: "Det finns sex ranger i Nordstjärnans Pianoskola: Upptäckare, Stjärnkadett, Stjärnofficer, Stjärnkapten, Stjärnkommendör och Stjärnamiral. Du klättrar i rang genom att tjäna stjärnor i övningar, och den högsta rangen, Stjärnamiral, uppnår du genom att få sex stjärnor på alla övningar i alla kapitel.",
-      faqQ9: "Behöver jag ett piano för att använda Nordstjärnans Pianoskola?",
-      faqA9: "För att använda Nordstjärnans Pianoskola behöver du tillgång till ett piano eller ett keyboard för att öva på övningarna i Nordstjärnans Pianoskola. Ett keyboard med minst 61 tangenter fungerar bra för nybörjare, men ett piano är idealiskt för att utveckla rätt teknik. Du behöver inte äga ett piano—du kan använda ett på en skola eller hyra ett om det behövs.",
+      faqA8: "Det finns sex ranger i Nordstjärnans pianoskola: upptäckare, stjärnkadett, stjärnofficer, stjärnkapten, stjärnkommendör och stjärnamiral. Du klättrar i rang genom att tjäna stjärnor i övningar, och den högsta rangen, stjärnamiral, uppnår du genom att få sex stjärnor på alla övningar i alla kapitel.",
+      faqQ9: "Behöver jag ett piano för att använda Nordstjärnans pianoskola?",
+      faqA9: "För att använda Nordstjärnans pianoskola behöver du tillgång till ett piano eller ett keyboard för att öva på övningarna i Nordstjärnans pianoskola. Ett keyboard med minst 61 tangenter fungerar bra för nybörjare, men ett piano är idealiskt för att utveckla rätt teknik. Du behöver inte äga ett piano—du kan använda ett på en skola eller hyra ett om det behövs.",
       faqQ10: "Vad gör jag om jag har tekniska problem med hemsidan?",
       faqA10: "Om du har tekniska problem med hemsidan, prova att ladda om sidan eller kontrollera din internetanslutning. Om problemet kvarstår, kontakta oss på nordstjarnanspianoskola@gmail.com så hjälper vi dig. Se också till att inte rensa webbläsarens cache, eftersom det tar bort dina framsteg.",
       faqQ11: "Kan jag skicka förslag och frågor?",
       faqA11: "Ja, maila gärna: nordstjarnanspianoskola@gmail.com",
       faqQ12: "Varför försvann mina framsteg?",
-      faqA12: "Om du har rensat din historik i din webbläsare så försvann all data som visar stjärnor eftersom denna lagras i webbläsarens cacheminne. Om du har importerat en användare med ditt namn från en annan enhet via en länk eller QR-kod som skapats på För lärare-sidan så har din användare skrivits över av den importerade användaren.",
+      faqA12: "Om du har rensat din historik i din webbläsare så försvann all data som visar stjärnor eftersom denna lagras i webbläsarens cacheminne. Om du har importerat en användare med ditt namn från en annan enhet via en länk eller QR-kod som skapats på för lärare-sidan så har din användare skrivits över av den importerade användaren.",
       faqQ13: "Lagras min elevdata online? Är det GDPR-vänligt?",
-      faqA13: "Din elevdata (namn, anteckningar och stjärnor) lagras endast lokalt i din webbläsare, inte online. Vid export kodas datan till en säker QR-kod eller länk, som endast den importerande enheten kan läsa. Inga databaser är involverade.",
+      faqA13: "Din elevdata (namn eller anonymt ID, anteckningar och stjärnor) lagras endast lokalt i din webbläsare, inte online. Vid export kodas datan till en säker QR-kod eller länk, som endast den importerande enheten kan läsa. Lärare måste skaffa elevens samtycke (eller förälders samtycke för barn) innan de lägger till namn, eller använda ett anonymt ID (t.ex. ‘elev123’). Använd <a href='/remove.html'>radera användare-sidan</a> för att ta bort data. Se vår <a href='/privacy-policy.html'>integritetspolicy</a> för detaljer.",
+      faqQ14: "Behöver jag tillstånd för att lägga till mina elevers data, och varför krävs lokal lagring?",
+      faqA14: "Ja, lärare måste skaffa samtycke från elever (eller föräldrar för barn under 13) eller en annan laglig grund (t.ex. lektionsavtal) innan de lägger till namn i plattformen, eller använda ett anonymt ID (t.ex. ‘elev123’) om samtycke saknas, särskilt i regioner som EU. Data lagras lokalt i din webbläsares localStorage, vilket är nödvändigt för att spåra framsteg i 112 övningar (t.ex. nivå 5/6 för övning 1:1:1). Utan localStorage kan framsteg inte sparas, vilket gör plattformen oanvändbar. Använd <a href='/remove.html'>radera användare-sidan</a> för att ta bort data eller se vår <a href='/privacy-policy.html'>integritetspolicy</a> för mer.",
       exportTitle: "Exportera elevdata",
       exportInfo: "Genom att trycka på knappen nedan kan du dela den aktuella eleven till en annan enhet. Mottagaren behöver bara öppna länken – eleven läggs automatiskt till!",
-      exportInfoText: "(Exporterar: Namn, Anteckningar & Stjärnor)",
-      studentModeInfoText: "När du klickar i 'Låsta guldstjärnor' och sedan klickar på Dela-knappen skapas en elevversion av exporten. När eleven importerar på sin iPad/enhet så är intjänade guldstjärnor låsta och kan inte ändras. Istället framträder silverstjärnor när eleven klickar på stjärnorna. Detta gör det möjligt för eleven att öva hemma, markera nivåer de anser sig ha klarat med silverstjärnor, och visa sina framsteg vid nästa lektion. Som lärare kan du granska silverstjärnorna för att bedöma vilka nivåer eleven faktiskt har klarat och bekräfta deras framsteg med guldstjärnor. Exporten påverkar inte din enhet, där du fortsatt kan lägga till guldstjärnor. Vid nästa lektion kan du exportera igen med låsta guldstjärnor för att uppdatera elevens data.",
+      exportInfoText: "(exporterar: namn, anteckningar & stjärnor)",
+      studentModeInfoText: "När du klickar i 'låsta guldstjärnor' och sedan klickar på dela-knappen skapas en elevversion av exporten. När eleven importerar på sin iPad/enhet så är intjänade guldstjärnor låsta och kan inte ändras. Istället framträder silverstjärnor när eleven klickar på stjärnorna. Detta gör det möjligt för eleven att öva hemma, markera nivåer de anser sig ha klarat med silverstjärnor, och visa sina framsteg vid nästa lektion. Som lärare kan du granska silverstjärnorna för att bedöma vilka nivåer eleven faktiskt har klarat och bekräfta deras framsteg med guldstjärnor. Exporten påverkar inte din enhet, där du fortsatt kan lägga till guldstjärnor. Vid nästa lektion kan du exportera igen med låsta guldstjärnor för att uppdatera elevens data.",
       creatingLink: "Skapar länk, vänta…",
       copyLinkSuccess: "Länk kopierad till urklipp! Klistra in för att dela.",
       scanOrShare: "Skanna QR-koden eller...",
-      shareButtonExport: "Dela via AirDrop / Meddelande / QR-kod",
-      shareButtonQR: "Dela elev via AirDrop / Meddelande",
+      shareButtonExport: "Dela via AirDrop / meddelande / QR-kod",
+      shareButtonQR: "Dela elev via AirDrop / meddelande",
       removeStudentTitle: "Radera elev",
       removeStudentButton: "Radera elev",
       confirmRemoveMessage: "Tryck på knappen nedan för att radera ",
       confirmRemoveButton: "Radera ",
       removeCurrentStudent: "Radera aktuell elev: ",
-      removeCurrentStudentNone: "Radera aktuell elev: Ingen",
-      starMapDescription: "Välkommen till Stjärnkartan! Klicka på varje stjärna för att följa dina framsteg i Nordstjärnans Pianoskola. Förtjäna upp till sex stjärnor per övning genom att öva i Pianoskolan. Scrolla för att utforska alla kapitel och övningar.",
-      starMapTitle: "Såhär använder du Stjärnkartan",
-      starMapBullet1: "Börja med Stjärna 1:1:1: Navigera till övning 1:1:1 i Nordstjärnans Pianoskola. Stjärnkoder anges som Kapitel:Del:Övning (t.ex. 1:1:1 är Kapitel 1, Del 1, Övning 1).",
-      starMapBullet2: "Förtjäna stjärnor: Följ bokens instruktioner för att slutföra övningen och få stjärnor. Återvänd till Stjärnkartan, klicka på Stjärna 1:1:1 för att få fram dina stjärnor. Klickar du för många, fortsätt klicka för att nollställa.",
-      starMapBullet3: "Öva lagom: Öva på en övning en stund, gå sedan vidare till nästa stjärna på kartan.",
-      starMapBullet4: "Daglig övning: Återkom till dina aktiva övningar varje dag och sikta på sex stjärnor i varje.",
-      starMapBullet5: "Hur många aktiva övningar?: Jobba på flera övningar dagligen, t.ex. 4–6 st, men försök slutföra övning 1:1:1 (med sex stjärnor) innan du påbörjar övning 1:1:2; slutför övning 2:1:1 innan du påbörjar övning 2:1:2 o.s.v.",
+      removeCurrentStudentNone: "Radera aktuell elev: ingen",
+      starMapDescription: "Välkommen till stjärnkartan! Klicka på varje stjärna för att följa dina framsteg i Nordstjärnans pianoskola. Förtjäna upp till sex stjärnor per övning genom att öva i pianoskolan. Scrolla för att utforska alla kapitel och övningar.",
+      starMapTitle: "Såhär använder du stjärnkartan",
+      starMapBullet1: "Börja med stjärna 1:1:1: navigera till övning 1:1:1 i Nordstjärnans pianoskola. Stjärnkoder anges som kapitel:del:övning (t.ex. 1:1:1 är kapitel 1, del 1, övning 1).",
+      starMapBullet2: "Förtjäna stjärnor: följ bokens instruktioner för att slutföra övningen och få stjärnor. Återvänd till stjärnkartan, klicka på stjärna 1:1:1 för att få fram dina stjärnor. Klickar du för många, fortsätt klicka för att nollställa.",
+      starMapBullet3: "Öva lagom: öva på en övning en stund, gå sedan vidare till nästa stjärna på kartan.",
+      starMapBullet4: "Daglig övning: återkom till dina aktiva övningar varje dag och sikta på sex stjärnor i varje.",
+      starMapBullet5: "Hur många aktiva övningar?: jobba på flera övningar dagligen, t.ex. 4–6 st, men försök slutföra övning 1:1:1 (med sex stjärnor) innan du påbörjar övning 1:1:2; slutför övning 2:1:1 innan du påbörjar övning 2:1:2 o.s.v.",
       loading: "Laddar elevdata...",
       success: "Dina framgångar är uppdaterade, välkommen",
       error: "Ogiltig länk. Ingen elev lades till.",
-      studentModeLabel: "Låsta guldstjärnor" // Step 2: Add translation for checkbox
+      studentModeLabel: "Låsta guldstjärnor",
+      noConsentTitle: "Välkommen tillbaka senare",
+      noConsentMessage: "Vi är ledsna att du inte kunde godkänna vår integritetspolicy just nu. Nordstjärnans pianoskola använder lokal lagring på din enhet för att spåra framsteg i 112 pianövningar, vilket är nödvändigt för att plattformen ska fungera. Utan att godkänna detta kan dina framsteg inte sparas lokalt, men vi välkomnar dig gärna tillbaka när du är redo! Besök vår <a href='/faq.html'>FAQ</a> eller <a href='/privacy-policy.html'>integritetspolicy</a> för att läsa mer, eller återvänd till <a href='/index.html'>startsidan</a> för att försöka igen.",
+      consentMessage: "Välkommen till Nordstjärnans pianoskola! Vi använder lokal lagring för att spara framsteg i 112 pianövningar, vilket är nödvändigt för att spåra dina eller dina elevers prestationer. Lärare: skaffa elevens samtycke (eller förälders samtycke för barn under 13) innan du lägger till namn, eller använd ett anonymt ID (t.ex. ‘elev123’) i regioner som kräver samtycke, som EU. Ingen data lagras online. Godkänn för att börja din pianoresa!",
+      consentAccept: "Börja spela!",
+      consentReject: "Jag godkänner inte",
+      consentPolicyLink: "Integritetspolicy",
+      privacyPolicyTitle: "Integritetspolicy",
+      effectiveDate: "Ikraftträdandedatum",
+      whoWeAre: "Vilka vi är",
+      whoWeAreText: "Nordstjärnans pianoskola tillhandahåller en utbildningsplattform för pianolärare och elever att spåra framsteg i 112 övningar. Vi samlar inte in, lagrar eller får åtkomst till någon användardata. Kontakta oss på <a href='mailto:nordstjarnanspianoskola@gmail.com'>nordstjarnanspianoskola@gmail.com</a>.",
+      ourRole: "Vår roll",
+      ourRoleText: "Vi tillhandahåller en plattform som låter användare (främst pianolärare) lagra elevdata lokalt i deras webbläsares localStorage. Detta är nödvändigt för att spåra framsteg, vilket är plattformens kärnfunktion. Vi har ingen åtkomst till denna data, eftersom den endast lagras på användarens enhet, inte på servrar eller i databaser.",
+      teachersRole: "Pianolärares roll och ansvar",
+      teachersRoleText: "Pianolärare som använder vår plattform agerar som <strong>personuppgiftsansvariga</strong> enligt GDPR. De:<ul><li>Matar in elevdata (t.ex. namn, framsteg, anteckningar) i localStorage för att spåra framsteg i 112 övningar.</li><li>Måste skaffa <strong>tillstånd</strong> (t.ex. samtycke, avtal eller legitimt intresse) för att lagra elevdata. För barn under 13 i Sverige (eller 16 i vissa EU-länder) krävs <strong>föräldrars samtycke</strong>.</li><li>I regioner som kräver samtycke (t.ex. EU) kan lärare använda ett <strong>anonymt ID</strong> (t.ex. ‘elev123’) istället för elevens namn om samtycke inte kan erhållas, för att säkerställa efterlevnad av lokala lagar.</li><li>Ansvarar för att informera elever/föräldrar om databehandling och säkerställa efterlevnad av dataskyddslagar (t.ex. GDPR).</li></ul>",
+      dataProcessed: "Data som behandlas",
+      dataProcessedText: "Lärare kan lagra följande data lokalt via vår plattform:<ul><li><strong>Elevnamn eller anonyma ID:n</strong>: För att identifiera elever (t.ex. “Alice” eller “elev123”).</li><li><strong>Framsteg</strong>: Stjärnbetyg för övningar (t.ex. nivå 5 av 6 för övning 1:1:1).</li><li><strong>Anteckningar</strong>: Lärares anteckningar om elever.</li><li><strong>Språkval</strong>: Valt språk (t.ex. svenska eller engelska).</li></ul>Denna data är nödvändig för att använda plattformen, eftersom spårning av framsteg är dess kärnfunktion.",
+      purpose: "Syfte",
+      purposeText: "Lärare använder denna data för att övervaka elevers framsteg i 112 övningar och anpassa lektioner. Språkinställningar förbättrar användbarheten. Utan localStorage kan framsteg inte sparas, vilket gör plattformen oanvändbar.",
+      legalBasis: "Rättslig grund",
+      legalBasisText: "Lärare måste behandla data baserat på en rättslig grund, såsom:<ul><li><strong>Samtycke</strong>: Erhållet från elever eller föräldrar (för barn).</li><li><strong>Avtal</strong>: För att uppfylla lektionsavtal som kräver spårning av framsteg.</li><li><strong>Legitimt intresse</strong>: För spårning av framsteg, om det balanseras med elevers rättigheter.</li></ul>Vår plattform uppmanar lärare att bekräfta att de har tillstånd eller använder anonyma ID:n innan de lägger till elever.",
+      storage: "Lagring",
+      storageText: "All data lagras lokalt i användarens webbläsares localStorage, inte på servrar eller i databaser. Att rensa webbläsarens cache eller använda <a href='/remove.html'>radera användare-sidan</a> tar bort all data.",
+      sharing: "Delning",
+      sharingText: "Ingen data delas med Nordstjärnans pianoskola eller tredje parter. Lärare kan dela framsteg via säkra QR-koder eller länkar, behandlade klient-side och läsbara endast av den importerande enheten (t.ex. en elevs iPad).",
+      retention: "Lagringstid",
+      retentionText: "Data finns kvar i localStorage tills användaren rensar webbläsarens cache eller tar bort användare via <a href='/remove.html'>radera användare-sidan</a>.",
+      yourRights: "Dina rättigheter",
+      yourRightsText: "Enligt GDPR och andra lagar har elever/föräldrar rätt att:<ul><li><strong>Tillgång</strong>: Se data i lärarens webbläsare (via utvecklarverktyg).</li><li><strong>Radera</strong>: Be läraren att radera data via <a href='/remove.html'>radera användare-sidan</a> eller rensa sin egen webbläsarcache.</li><li><strong>Begränsa</strong>: Välja bort lagring, men detta förhindrar spårning av framsteg, vilket gör plattformen oanvändbar.</li></ul>Eftersom vi inte har åtkomst till data, kontakta din lärare för databehov. Om du använder plattformen direkt, använd <a href='/remove.html'>radera användare</a> eller rensa din cache.",
+      security: "Säkerhet",
+      securityText: "Data lagras lokalt, vilket minskar risker. QR-kod/länkexport är kodade säkert för att förhindra obehörig åtkomst.",
+      minors: "Barn",
+      minorsText: "För elever under 13 i Sverige (eller 16 i vissa EU-länder) måste lärare skaffa föräldrars samtycke innan de lägger till deras data i vår plattform, eller använda ett anonymt ID.",
+      usingWithoutStorage: "Att använda plattformen utan lokal lagring",
+      usingWithoutStorageText: "Plattformens syfte är att spåra framsteg för 112 pianövningar (t.ex. nivå 5/6 för övning 1:1:1). localStorage är nödvändigt för att spara dessa framsteg. Att välja bort (t.ex. rensa cache eller neka lagring) återställer alla framsteg, vilket gör plattformen oanvändbar, eftersom ingen data lagras online.",
+      contactUs: "Kontakta oss",
+      contactUsText: "För frågor om vår plattform, maila <a href='mailto:nordstjarnanspianoskola@gmail.com'>nordstjarnanspianoskola@gmail.com</a>. För databehov, kontakta din pianolärare, eftersom de kontrollerar datan."
     }
 };
 
@@ -831,21 +911,18 @@ function updateStarStates(studentsDataParam, fromStarClick = false) {
 function switchLanguage(lang) {
     const newLang = lang || (localStorage.getItem('language') === 'sv' ? 'en' : 'sv');
     localStorage.setItem('language', newLang);
-  
-    // Handle all data-translate elements (including studentModeInfoText)
+
     document.querySelectorAll('[data-translate]').forEach(element => {
       const key = element.getAttribute('data-translate');
       if (translations[newLang][key]) {
-        // Special handling for title to avoid innerHTML
         if (element.tagName === 'TITLE') {
           element.textContent = translations[newLang][key];
         } else {
-          element.textContent = translations[newLang][key];
+          element.innerHTML = translations[newLang][key];
         }
       }
     });
-  
-    // Menu links
+
     document.querySelectorAll('.menu-link').forEach(link => {
       const href = link.getAttribute('href')?.toLowerCase();
       if (href === 'index.html') {
@@ -867,12 +944,10 @@ function switchLanguage(lang) {
         }
       }
     });
-  
-    // Chapters toggle
+
     const chaptersToggle = document.querySelector('.chapters-toggle');
     if (chaptersToggle) chaptersToggle.textContent = translations[newLang].menuChapters;
-  
-    // Popups
+
     const popupWelcome = document.getElementById('popupWelcome');
     const popupIntro = document.getElementById('popupIntro');
     const popupTeacherNote = document.getElementById('popupTeacherNote');
@@ -883,16 +958,13 @@ function switchLanguage(lang) {
     if (popupTeacherNote) popupTeacherNote.textContent = translations[newLang].popupTeacherNote;
     if (popupEnterName) popupEnterName.textContent = translations[newLang].popupEnterName;
     if (submitNameButton) submitNameButton.textContent = translations[newLang].addButton;
-  
-    // Congratulations message
+
     const congratsMessage = document.getElementById('congratsMessage');
     if (congratsMessage) congratsMessage.textContent = translations[newLang].congratsMessage;
-  
-    // QR instruction
+
     const qrInstruction = document.getElementById('qrInstruction');
     if (qrInstruction) qrInstruction.textContent = translations[newLang].scanOrShare;
-  
-    // Chapter titles
+
     const chapterNumber = document.querySelector('.chapter-number');
     const chapterName = document.querySelector('.chapter-name');
     if (chapterNumber && chapterName) {
@@ -902,13 +974,11 @@ function switchLanguage(lang) {
         chapterName.textContent = translations[newLang][`chapterName${chapterNum}`];
       }
     }
-  
-    // Rank display
+
     const rankTitle = document.getElementById('rankTitle');
     const rankDescription = document.getElementById('rankDescription');
     if (rankTitle && rankDescription) updateStarStates();
-  
-    // Students page
+
     const studentsPageTitle = document.getElementById('studentsPageTitle');
     const studentsLabel = document.getElementById('studentsLabel');
     const newStudentInput = document.getElementById('newStudentName');
@@ -929,29 +999,26 @@ function switchLanguage(lang) {
       if (saveNotesButton) saveNotesButton.textContent = translations[newLang].saveNotesButton;
       if (studentModeLabel) studentModeLabel.textContent = translations[newLang].studentModeLabel;
     }
-  
-    // FAQ page
-    const faqTitle = document.querySelector('h1[data-translate="menuFAQ"]');
+
+    const faqTitle = document.querySelector('h1[data-translate="faqTitle"]');
     const faqQuestions = document.querySelectorAll('.faq-question[data-translate]');
     const faqAnswers = document.querySelectorAll('.faq-answer[data-translate]');
-    if (faqTitle) faqTitle.textContent = translations[newLang].menuFAQ;
+    if (faqTitle) faqTitle.textContent = translations[newLang].faqTitle;
     faqQuestions.forEach(question => {
       const key = question.getAttribute('data-translate');
       if (translations[newLang][key]) question.childNodes[0].textContent = translations[newLang][key];
     });
     faqAnswers.forEach(answer => {
       const key = answer.getAttribute('data-translate');
-      if (translations[newLang][key]) answer.textContent = translations[newLang][key];
+      if (translations[newLang][key]) answer.innerHTML = translations[newLang][key];
     });
-  
-    // Title container
+
     const titleContainerH1 = document.querySelector('.title-container h1[data-translate]');
     if (titleContainerH1) {
       const key = titleContainerH1.getAttribute('data-translate');
       if (translations[newLang][key]) titleContainerH1.textContent = translations[newLang][key];
     }
-  
-    // Remove page
+
     const removeStudentTitle = document.querySelector('h1[data-translate="removeStudentTitle"]');
     const confirmRemoveMessage = document.querySelector('p[data-translate="confirmRemoveMessage"]');
     if (removeStudentTitle) removeStudentTitle.textContent = translations[newLang].removeStudentTitle;
@@ -959,8 +1026,7 @@ function switchLanguage(lang) {
       const selectedStudent = window.studentsData.currentStudent || '';
       confirmRemoveMessage.textContent = `${translations[newLang].confirmRemoveMessage}${selectedStudent ? ` ${selectedStudent}.` : '.'}`;
     }
-  
-    // Remove button
+
     const removeStudentButton = document.getElementById('removeStudentButton');
     if (removeStudentButton && window.studentsData) {
       if (window.studentsData.currentStudent) {
@@ -969,8 +1035,7 @@ function switchLanguage(lang) {
         removeStudentButton.textContent = translations[newLang].removeCurrentStudentNone;
       }
     }
-  
-    // Star Map description
+
     const starMapTitle = document.querySelector('h3[data-translate="starMapTitle"]');
     if (starMapTitle) starMapTitle.textContent = translations[newLang].starMapTitle;
     document.querySelectorAll('.star-map-steps p[data-translate]').forEach(p => {
@@ -987,8 +1052,7 @@ function switchLanguage(lang) {
         }
       }
     });
-  
-    // Export section
+
     const exportTitle = document.getElementById('exportTitle');
     const exportInfo = document.getElementById('exportInfo');
     const exportInfoText = document.querySelector('p[data-translate="exportInfoText"]');
@@ -1001,8 +1065,7 @@ function switchLanguage(lang) {
     if (shareExportButton) shareExportButton.textContent = translations[newLang].shareButtonExport;
     if (shareButtonInQR) shareButtonInQR.textContent = translations[newLang].shareButtonQR;
     if (exportStatus) exportStatus.textContent = translations[newLang].creatingLink;
-  
-    // Rank achievement popup
+
     const rankPopup = document.getElementById('rankAchievementPopup');
     const rankMessage = document.getElementById('rankAchievementMessage');
     const rankSubtitle = document.getElementById('rankAchievementSubtitle');
@@ -1013,14 +1076,12 @@ function switchLanguage(lang) {
       rankSubtitle.textContent = translations[newLang].rankAchievementSubtitle;
       rankPopupDescription.textContent = translations[newLang].textboxStarCadet;
     }
-  
-    // Import loader
+
     const loaderText = document.getElementById('loaderText');
     if (loaderText) {
       loaderText.textContent = translations[newLang].loading;
     }
-  
-    // Student popup
+
     const studentPopup = document.getElementById('studentPopup');
     if (studentPopup && studentPopup.classList.contains('show')) {
       const popupContent = studentPopup.querySelector('.student-popup-content p');
@@ -1033,13 +1094,12 @@ function switchLanguage(lang) {
         popupContent.textContent = translations[newLang].error;
       }
     }
-  
-    // User name display
+
     const userNameDisplay = document.getElementById('userNameDisplay');
     if (userNameDisplay) {
       userNameDisplay.textContent = window.studentsData?.currentStudent || '';
     }
-  }
+}
 
 function setInitialLanguage() {
     const hash = window.location.hash.replace('#', '').toLowerCase();

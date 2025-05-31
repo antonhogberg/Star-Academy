@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title data-translate="removeStudentTitle"></title>
+    <title data-translate="noConsentTitle"></title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -15,23 +15,11 @@
         <div class="black-key bottom"></div>
     </div>
     <nav id="menu-placeholder"></nav>
-    <div class="content">
-        <h1 data-translate="removeStudentTitle"></h1>
-        <div class="remove-container">
-            <div class="remove-button-container">
-                <button id="removeStudentButton" type="button"></button>
-            </div>
-        </div>
-    </div>
-    <div id="confirmRemovePopup" class="student-popup">
-        <div class="student-popup-content">
-            <button id="closeConfirmRemovePopup">×</button>
-            <p id="confirmRemoveMessage" data-translate="confirmRemoveMessage"></p>
-            <button id="confirmRemoveButton"></button>
-        </div>
+    <div class="faq-container">
+        <h1 data-translate="noConsentTitle"></h1>
+        <p data-translate="noConsentMessage"></p>
     </div>
     <script src="script.js"></script>
-    <script src="students.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const lang = localStorage.getItem('language') || 'sv';
