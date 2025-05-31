@@ -74,11 +74,15 @@
         <p data-translate="contactUsText"></p>
     </div>
     <script src="script.js"></script>
+    <script src="students.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const lang = localStorage.getItem('language') || 'sv';
             injectMenu();
             switchLanguage(lang);
+            if (typeof updateDropdown === 'function') {
+                updateDropdown();
+            }
         });
     </script>
 </body>

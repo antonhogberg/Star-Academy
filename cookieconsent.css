@@ -5,12 +5,15 @@
     border: 1px solid #333 !important;
     position: fixed !important;
     bottom: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
 }
 .cc-message {
     color: #333 !important;
 }
 .cc-btn {
     color: #333 !important;
+    cursor: pointer !important;
 }
 .cc-link {
     color: #ffd700 !important;
@@ -20,4 +23,6 @@
     background-color: #ffd700 !important;
     color: #333 !important;
     cursor: pointer !important;
+    padding: 10px 20px !important;
+    margin: 0 5px !important;
 }

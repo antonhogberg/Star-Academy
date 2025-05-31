@@ -115,7 +115,7 @@ const translations = {
       noConsentTitle: "Welcome Back Later",
       noConsentMessage: "We’re sorry you couldn’t accept our privacy policy at this time. North Star Piano School uses local storage on your device to track progress in 112 piano exercises, which is essential for the platform to work. Without agreeing, your progress can’t be saved locally, but we’d love to welcome you back when you’re ready! Visit our <a href='faq.html'>FAQ</a> or <a href='privacy-policy.html'>Privacy Policy</a> to learn more, or return to the <a href='index.html'>home page</a> to try again.",
       consentMessage: "Welcome to North Star Piano School! We use local storage to save progress for 112 piano exercises, essential for tracking your or your students’ achievements. Teachers: please obtain student consent (or parental consent for minors under 13) before adding names, or use an anonymous ID (e.g., ‘Student123’) in regions requiring consent, like the EU. No data is stored online. Agree to start your piano journey!",
-      consentAccept: "Start Playing!",
+      consentAccept: "I Accept!",
       consentReject: "I Don’t Agree",
       consentPolicyLink: "Privacy Policy",
       privacyPolicyTitle: "Privacy Policy",
@@ -260,7 +260,7 @@ const translations = {
       noConsentTitle: "Välkommen tillbaka senare",
       noConsentMessage: "Vi är ledsna att du inte kunde godkänna vår integritetspolicy just nu. Nordstjärnans pianoskola använder lokal lagring på din enhet för att spåra framsteg i 112 pianövningar, vilket är nödvändigt för att plattformen ska fungera. Utan att godkänna detta kan dina framsteg inte sparas lokalt, men vi välkomnar dig gärna tillbaka när du är redo! Besök vår <a href='faq.html'>FAQ</a> eller <a href='privacy-policy.html'>integritetspolicy</a> för att läsa mer, eller återvänd till <a href='index.html'>startsidan</a> för att försöka igen.",
       consentMessage: "Välkommen till Nordstjärnans pianoskola! Vi använder lokal lagring för att spara framsteg i 112 pianövningar, vilket är nödvändigt för att spåra dina eller dina elevers prestationer. Lärare: skaffa elevens samtycke (eller förälders samtycke för barn under 13) innan du lägger till namn, eller använd ett anonymt ID (t.ex. ‘elev123’) i regioner som kräver samtycke, som EU. Ingen data lagras online. Godkänn för att börja din pianoresa!",
-      consentAccept: "Börja spela!",
+      consentAccept: "Jag godkänner!",
       consentReject: "Jag godkänner inte",
       consentPolicyLink: "Integritetspolicy",
       privacyPolicyTitle: "Integritetspolicy",
@@ -320,7 +320,7 @@ const menuHtml = `
                 <a href="students.html" class="menu-link" data-translate="menuStudents"></a>
                 <a href="remove.html" class="menu-link" data-translate="menuRemove"></a>
                 <a href="faq.html" class="menu-link" data-translate="menuFAQ"></a>
-                <a href="privacy-policy.html" class="menu-link" data-translate="menuPrivacyPolicy"></a>
+                <a href="Star-Academy/privacy-policy.html" class="menu-link" data-translate="menuPrivacyPolicy"></a>
                 <div class="language-switcher">
                     <span class="flag" onclick="switchLanguage('en')">🇬🇧</span>
                     <span class="flag" onclick="switchLanguage('sv')">🇸🇪</span>
@@ -444,7 +444,7 @@ function initializeConsentPopup() {
             dismiss: translations[lang].consentAccept,
             deny: translations[lang].consentReject,
             link: translations[lang].consentPolicyLink,
-            href: "/Star-Academy/privacy-policy.html"
+            href: "Star-Academy/privacy-policy.html"
         },
         type: "opt-in",
         onInitialise: function(status) {
@@ -452,10 +452,11 @@ function initializeConsentPopup() {
                 console.log('No consent yet, showing popup');
             }
         },
-        onStatusChange: function(status) {
+        onStatusChange: function(status, chosenBefore) {
             if (this.hasConsented()) {
                 console.log('User consented, saving to localStorage');
                 localStorage.setItem('consentGiven', 'true');
+                this.element.style.display = 'none'; // Hide popup
                 if (typeof handleUserNamePopup === 'function') handleUserNamePopup();
             } else {
                 console.log('User rejected consent, redirecting to no-consent.html');
@@ -961,38 +962,38 @@ function switchLanguage(lang) {
     localStorage.setItem('language', newLang);
 
     document.querySelectorAll('[data-translate]').forEach(element => {
-      const key = element.getAttribute('data-translate');
-      if (translations[newLang][key]) {
-        if (element.tagName === 'TITLE') {
-          element.textContent = translations[newLang][key];
-        } else {
-          element.innerHTML = translations[newLang][key];
+        const key = element.getAttribute('data-translate');
+        if (translations[newLang][key]) {
+            if (element.tagName === 'TITLE') {
+                element.textContent = translations[newLang][key];
+            } else {
+                element.innerHTML = translations[newLang][key];
+            }
         }
-      }
     });
 
     document.querySelectorAll('.menu-link').forEach(link => {
-      const href = link.getAttribute('href')?.toLowerCase();
-      if (href === 'index.html') {
-        link.textContent = translations[newLang].menuFrontPage;
-      } else if (href === 'students.html') {
-        link.textContent = translations[newLang].menuStudents;
-      } else if (href === 'starmap.html#svg-start') {
-        link.textContent = translations[newLang].menuStarMap;
-      } else if (href === 'faq.html') {
-        link.textContent = translations[newLang].menuFAQ;
-      } else if (href === 'remove.html') {
-        link.textContent = translations[newLang].menuRemove;
-      } else if (href === 'star-academy/privacypolicy.html') {
-        link.textContent = translations[newLang].menuPrivacyPolicy;
-      } else {
-        const chapterNum = href?.match(/chapter(\d+)\.html/)?.[1];
-        if (chapterNum) {
-          const span = link.querySelector('span');
-          if (span) span.textContent = `${translations[newLang].menuChapter} ${chapterNum}`;
-          else link.textContent = `${translations[newLang].menuChapter} ${chapterNum}`;
+        const href = link.getAttribute('href')?.toLowerCase();
+        if (href === 'index.html') {
+            link.textContent = translations[newLang].menuFrontPage;
+        } else if (href === 'students.html') {
+            link.textContent = translations[newLang].menuStudents;
+        } else if (href === 'starmap.html#svg-start') {
+            link.textContent = translations[newLang].menuStarMap;
+        } else if (href === 'faq.html') {
+            link.textContent = translations[newLang].menuFAQ;
+        } else if (href === 'remove.html') {
+            link.textContent = translations[newLang].menuRemove;
+        } else if (href === 'star-academy/privacy-policy.html') {
+            link.textContent = translations[newLang].menuPrivacyPolicy;
+        } else {
+            const chapterNum = href?.match(/chapter(\d+)\.html/)?.[1];
+            if (chapterNum) {
+                const span = link.querySelector('span');
+                if (span) span.textContent = `${translations[newLang].menuChapter} ${chapterNum}`;
+                else link.textContent = `${translations[newLang].menuChapter} ${chapterNum}`;
+            }
         }
-      }
     });
 
     const chaptersToggle = document.querySelector('.chapters-toggle');
@@ -1018,11 +1019,11 @@ function switchLanguage(lang) {
     const chapterNumber = document.querySelector('.chapter-number');
     const chapterName = document.querySelector('.chapter-name');
     if (chapterNumber && chapterName) {
-      const chapterNum = window.location.pathname.match(/chapter(\d+)\.html/)?.[1];
-      if (chapterNum) {
-        chapterNumber.textContent = translations[newLang][`chapter${chapterNum}`];
-        chapterName.textContent = translations[newLang][`chapterName${chapterNum}`];
-      }
+        const chapterNum = window.location.pathname.match(/chapter(\d+)\.html/)?.[1];
+        if (chapterNum) {
+            chapterNumber.textContent = translations[newLang][`chapter${chapterNum}`];
+            chapterName.textContent = translations[newLang][`chapterName${chapterNum}`];
+        }
     }
 
     const rankTitle = document.getElementById('rankTitle');
@@ -1039,15 +1040,15 @@ function switchLanguage(lang) {
     const saveNotesButton = document.getElementById('saveNotesButton');
     const studentModeLabel = document.getElementById('studentModeLabel');
     if (studentsPageTitle && studentsLabel) {
-      studentsPageTitle.textContent = translations[newLang].menuStudents;
-      studentsLabel.textContent = translations[newLang].studentsLabel;
-      newStudentInput.placeholder = translations[newLang].studentNamePlaceholder;
-      addButton.textContent = translations[newLang].addButton;
-      addStudentLabel.textContent = translations[newLang].addNewStudent;
-      notesLabel.textContent = translations[newLang].notesLabel;
-      studentNotes.placeholder = translations[newLang].notesPlaceholder;
-      if (saveNotesButton) saveNotesButton.textContent = translations[newLang].saveNotesButton;
-      if (studentModeLabel) studentModeLabel.textContent = translations[newLang].studentModeLabel;
+        studentsPageTitle.textContent = translations[newLang].menuStudents;
+        studentsLabel.textContent = translations[newLang].studentsLabel;
+        newStudentInput.placeholder = translations[newLang].studentNamePlaceholder;
+        addButton.textContent = translations[newLang].addButton;
+        addStudentLabel.textContent = translations[newLang].addNewStudent;
+        notesLabel.textContent = translations[newLang].notesLabel;
+        studentNotes.placeholder = translations[newLang].notesPlaceholder;
+        if (saveNotesButton) saveNotesButton.textContent = translations[newLang].saveNotesButton;
+        if (studentModeLabel) studentModeLabel.textContent = translations[newLang].studentModeLabel;
     }
 
     const faqTitle = document.querySelector('h1[data-translate="faqTitle"]');
@@ -1055,52 +1056,52 @@ function switchLanguage(lang) {
     const faqAnswers = document.querySelectorAll('.faq-answer[data-translate]');
     if (faqTitle) faqTitle.textContent = translations[newLang].faqTitle;
     faqQuestions.forEach(question => {
-      const key = question.getAttribute('data-translate');
-      if (translations[newLang][key]) question.childNodes[0].textContent = translations[newLang][key];
+        const key = question.getAttribute('data-translate');
+        if (translations[newLang][key]) question.childNodes[0].textContent = translations[newLang][key];
     });
     faqAnswers.forEach(answer => {
-      const key = answer.getAttribute('data-translate');
-      if (translations[newLang][key]) answer.innerHTML = translations[newLang][key];
+        const key = answer.getAttribute('data-translate');
+        if (translations[newLang][key]) answer.innerHTML = translations[newLang][key];
     });
 
     const titleContainerH1 = document.querySelector('.title-container h1[data-translate]');
     if (titleContainerH1) {
-      const key = titleContainerH1.getAttribute('data-translate');
-      if (translations[newLang][key]) titleContainerH1.textContent = translations[newLang][key];
+        const key = titleContainerH1.getAttribute('data-translate');
+        if (translations[newLang][key]) titleContainerH1.textContent = translations[newLang][key];
     }
 
     const removeStudentTitle = document.querySelector('h1[data-translate="removeStudentTitle"]');
     const confirmRemoveMessage = document.querySelector('p[data-translate="confirmRemoveMessage"]');
     if (removeStudentTitle) removeStudentTitle.textContent = translations[newLang].removeStudentTitle;
     if (confirmRemoveMessage) {
-      const selectedStudent = window.studentsData.currentStudent || '';
-      confirmRemoveMessage.textContent = `${translations[newLang].confirmRemoveMessage}${selectedStudent ? ` ${selectedStudent}.` : '.'}`;
+        const selectedStudent = window.studentsData.currentStudent || '';
+        confirmRemoveMessage.textContent = `${translations[newLang].confirmRemoveMessage}${selectedStudent ? ` ${selectedStudent}.` : '.'}`;
     }
 
     const removeStudentButton = document.getElementById('removeStudentButton');
     if (removeStudentButton && window.studentsData) {
-      if (window.studentsData.currentStudent) {
-        removeStudentButton.textContent = `${translations[newLang].removeCurrentStudent}${window.studentsData.currentStudent}`;
-      } else {
-        removeStudentButton.textContent = translations[newLang].removeCurrentStudentNone;
-      }
+        if (window.studentsData.currentStudent) {
+            removeStudentButton.textContent = `${translations[newLang].removeCurrentStudent}${window.studentsData.currentStudent}`;
+        } else {
+            removeStudentButton.textContent = translations[newLang].removeCurrentStudentNone;
+        }
     }
 
     const starMapTitle = document.querySelector('h3[data-translate="starMapTitle"]');
     if (starMapTitle) starMapTitle.textContent = translations[newLang].starMapTitle;
     document.querySelectorAll('.star-map-steps p[data-translate]').forEach(p => {
-      const key = p.getAttribute('data-translate');
-      if (translations[newLang][key]) {
-        const translatedText = translations[newLang][key];
-        const match = translatedText.match(/^(.*?)(?=\s[A-Z])/);
-        if (match) {
-          const semiTitle = match[0];
-          const restOfText = translatedText.substring(semiTitle.length).trim();
-          p.innerHTML = `<span class="semi-title"><strong>${semiTitle}</strong></span> ${restOfText}`;
-        } else {
-          p.textContent = translatedText;
+        const key = p.getAttribute('data-translate');
+        if (translations[newLang][key]) {
+            const translatedText = translations[newLang][key];
+            const match = translatedText.match(/^(.*?)(?=\s[A-Z])/);
+            if (match) {
+                const semiTitle = match[0];
+                const restOfText = translatedText.substring(semiTitle.length).trim();
+                p.innerHTML = `<span class="semi-title"><strong>${semiTitle}</strong></span> ${restOfText}`;
+            } else {
+                p.textContent = translatedText;
+            }
         }
-      }
     });
 
     const exportTitle = document.getElementById('exportTitle');
@@ -1122,32 +1123,38 @@ function switchLanguage(lang) {
     const rankPopupDescription = document.getElementById('rankAchievementDescription');
     const currentStudent = window.studentsData?.currentStudent || '';
     if (rankPopup && rankMessage && rankSubtitle && rankPopupDescription && rankPopup.style.display === 'flex') {
-      rankMessage.textContent = translations[newLang].rankAchievementMessage.replace('[userName]', currentStudent);
-      rankSubtitle.textContent = translations[newLang].rankAchievementSubtitle;
-      rankPopupDescription.textContent = translations[newLang].textboxStarCadet;
+        rankMessage.textContent = translations[newLang].rankAchievementMessage.replace('[userName]', currentStudent);
+        rankSubtitle.textContent = translations[newLang].rankAchievementSubtitle;
+        rankPopupDescription.textContent = translations[newLang].textboxStarCadet;
     }
 
     const loaderText = document.getElementById('loaderText');
     if (loaderText) {
-      loaderText.textContent = translations[newLang].loading;
+        loaderText.textContent = translations[newLang].loading;
     }
 
     const studentPopup = document.getElementById('studentPopup');
     if (studentPopup && studentPopup.classList.contains('show')) {
-      const popupContent = studentPopup.querySelector('.student-popup-content p');
-      const name = studentPopup.dataset.name;
-      const isError = studentPopup.dataset.isError === 'true';
-      const starSVG = '<svg class="popup-star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>';
-      if (name) {
-        popupContent.innerHTML = `${starSVG} ${translations[newLang].success} ${name}! ${starSVG}`;
-      } else if (isError) {
-        popupContent.textContent = translations[newLang].error;
-      }
+        const popupContent = studentPopup.querySelector('.student-popup-content p');
+        const name = studentPopup.dataset.name;
+        const isError = studentPopup.dataset.isError === 'true';
+        const starSVG = '<svg class="popup-star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>';
+        if (name) {
+            popupContent.innerHTML = `${starSVG} ${translations[newLang].success} ${name}! ${starSVG}`;
+        } else if (isError) {
+            popupContent.textContent = translations[newLang].error;
+        }
     }
 
     const userNameDisplay = document.getElementById('userNameDisplay');
     if (userNameDisplay) {
-      userNameDisplay.textContent = window.studentsData?.currentStudent || '';
+        userNameDisplay.textContent = window.studentsData?.currentStudent || '';
+    }
+
+    // Reinitialize consent popup if not consented
+    if (localStorage.getItem('consentGiven') !== 'true' && typeof initializeConsentPopup === 'function') {
+        console.log('Reinitializing consent popup for language:', newLang);
+        initializeConsentPopup();
     }
 }
 
