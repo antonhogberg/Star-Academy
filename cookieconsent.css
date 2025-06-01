@@ -1,5 +1,5 @@
 .cc-window {
-    z-index: 10002 !important;
+    z-index: 10009 !important;
     background-color: #f0f0f0 !important;
     color: #333 !important;
     border: 1px solid #333 !important;
@@ -7,7 +7,6 @@
     bottom: 0 !important;
     width: 100% !important;
     max-width: 100% !important;
-    display: block !important;
 }
 .cc-message {
     color: #333 !important;
@@ -29,4 +28,3 @@
     border: none !important;
     outline: none !important;
 }
-
