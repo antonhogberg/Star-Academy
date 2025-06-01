@@ -1236,41 +1236,6 @@ function handleUserNamePopup() {
             return;
         }
 
-        let isConsentPopupActive = false;
-
-        function showConsentPopup(message, duration) {
-            console.log('showConsentPopup called:', message);
-            const popup = document.getElementById('studentPopup');
-            const popupMessage = document.getElementById('studentPopupMessage');
-
-            if (!popup || !popupMessage) {
-                console.error('Consent popup elements not found');
-                alert(message); // Fallback
-                return;
-            }
-
-            if (nameInput) nameInput.blur();
-            if (nameInput) nameInput.disabled = true;
-            if (submitBtn) submitBtn.disabled = true;
-            popupMessage.textContent = message;
-            popup.style.display = 'flex';
-            popup.style.opacity = '1';
-            isConsentPopupActive = true;
-
-            setTimeout(() => {
-                popup.style.transition = 'opacity 1s ease';
-                popup.style.opacity = '0';
-                setTimeout(() => {
-                    popup.style.display = 'none';
-                    popup.style.opacity = '1';
-                    popup.style.transition = '';
-                    isConsentPopupActive = false;
-                    if (nameInput) nameInput.disabled = false;
-                    if (submitBtn) submitBtn.disabled = false;
-                }, 1000);
-            }, duration - 1000);
-        }
-
         const updateMenuHeight = () => {
             if (menu) {
                 menu.style.height = `${window.innerHeight}px`;
@@ -1295,7 +1260,7 @@ function handleUserNamePopup() {
             });
             updateMenuHeight();
 
-            // Ensure input and button are enabled initially
+            // Ensure input and button are enabled
             nameInput.disabled = false;
             submitBtn.disabled = false;
         } else if (userNameDisplay) {
@@ -1304,15 +1269,10 @@ function handleUserNamePopup() {
         }
 
         window.saveName = function() {
-            if (isConsentPopupActive) {
-                console.log('Consent popup active, ignoring saveName');
-                return;
-            }
-
+            // Prevent saving if no consent
             if (localStorage.getItem('consentGiven') !== 'true') {
                 console.log('Cannot save name: consent not given');
-                const lang = localStorage.getItem('language') || 'sv';
-                showConsentPopup(translations[lang].noConsentError, 3000);
+                alert(translations[localStorage.getItem('language') || 'sv'].consentMessage);
                 return;
             }
 
@@ -1321,10 +1281,7 @@ function handleUserNamePopup() {
                 studentsData.students[name] = {
                     name: name,
                     progress: {},
-                    rank: "Explorer",
-                    notes: "",
-                    studentMode: false,
-                    silverProgress: initializeSilverProgress()
+                    rank: "Explorer"
                 };
                 for (let chapter = 1; chapter <= 7; chapter++) {
                     for (let part = 1; part <= 4; part++) {
@@ -1393,28 +1350,23 @@ function handleUserNamePopup() {
                     console.log('Calling initializeStarMap after saving name');
                     window.initializeStarMap();
                 }
-                if (window.location.pathname.toLowerCase().includes('chapter') && typeof window.initializeChapter === 'function') {
-                    console.log('Calling initializeChapter after saving name');
-                    window.initializeChapter();
-                }
             } else {
-                showConsentPopup(translations[localStorage.getItem('language') || 'sv'].addStudentNoName, 3000);
+                alert(translations[localStorage.getItem('language') || 'sv'].addStudentNoName);
             }
         };
 
         const submitBtnHandler = document.querySelector('button[onclick="saveName()"]');
         if (submitBtnHandler) {
             submitBtnHandler.removeEventListener('click', window.saveName);
-            submitBtnHandler.addEventListener('click', () => {
-                if (!isConsentPopupActive) window.saveName();
-            });
+            submitBtnHandler.addEventListener('click', window.saveName);
             console.log('Submit button listener added');
         }
         if (nameInput) {
             nameInput.removeEventListener('keypress', handleEnterKey);
-            nameInput.addEventListener('keypress', (e) => {
-                if (e.key === 'Enter' && !isConsentPopupActive) window.saveName();
-            });
+            nameInput.addEventListener('keypress', handleEnterKey);
+            function handleEnterKey(e) {
+                if (e.key === 'Enter') window.saveName();
+            }
             console.log('Enter key listener added');
         }
 
