@@ -30,7 +30,7 @@
             </div>
             <h2>Manage Consent</h2>
             <p>Revoke your consent for local storage to see the consent popup again.</p>
-            <button id="revokeConsentButton" type="button">Revoke Consent</button>
+            <button id="revokeConsentButton" onclick="revokeConsent()">Revoke Consent</button>
         </div>
     </div>
     <div id="confirmRemovePopup" class="student-popup">
@@ -42,6 +42,14 @@
     </div>
     <script src="script.js"></script>
     <script src="students.js"></script>
+    <script>
+        function revokeConsent() {
+            localStorage.removeItem('consentGiven');
+            console.log('Consent revoked, consentGiven removed from localStorage');
+            // Optionally redirect to refresh the page
+            window.location.href = 'chapter1.html';
+        }
+    </script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const lang = localStorage.getItem('language') || 'sv';
