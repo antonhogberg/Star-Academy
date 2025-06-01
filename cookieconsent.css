@@ -30,21 +30,3 @@
     outline: none !important;
 }
 
-.cc-btn.cc-allow {
-    background: #ffd700 !important;
-    color: #333 !important;
-    transition: background 0.3s ease;
-}
-.cc-btn.cc-allow:hover {
-    background: #e6c200 !important; /* Darker gold */
-    cursor: pointer;
-}
-.cc-btn.cc-deny {
-    background: #ccc !important;
-    color: #333 !important;
-    transition: background 0.3s ease;
-}
-.cc-btn.cc-deny:hover {
-    background: #aaa !important;
-    cursor: pointer;
-}
