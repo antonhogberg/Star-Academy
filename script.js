@@ -13,6 +13,7 @@ const translations = {
       menuChapters: "Chapters",
       menuFAQ: "FAQ",
       menuRemove: "Remove student",
+      menuPrivacyPolicy: "Privacy Policy",
       popupWelcome: "Welcome to North Star Piano School!",
       popupIntro: "You’ve just embarked on your piano journey as an Explorer! The Star Map is your guide—it’s there to show you which exercise to do next as you progress through the seven chapters, earning stars and advancing through ranks like Star Cadet, Star Officer, and beyond.",
       popupTeacherNote: "You can also focus on a specific chapter if Scales or Chords is what you want to excel at. Visit the chapter pages to start earning stars, check your progress on the Star Overview page, or manage students on the For Teachers page.",
@@ -113,9 +114,9 @@ const translations = {
       error: "Invalid link. No student was added.",
       studentModeLabel: "Fixed gold stars",
       noConsentTitle: "Welcome Back Later",
-      noConsentMessage: "We’re sorry you couldn’t accept our privacy policy at this time. North Star Piano School uses local storage on your device to track progress in 112 piano exercises, which is essential for the platform to work. Without agreeing, your progress can’t be saved locally, but we’d love to welcome you back when you’re ready! Visit our <a href='faq.html'>FAQ</a> or <a href='privacy-policy.html'>Privacy Policy</a> to learn more.",
+      noConsentMessage: "We’re sorry you couldn’t accept our privacy policy at this time. North Star Piano School uses local storage on your device to track progress in 112 piano exercises, which is essential for the platform to work. Without agreeing, your progress can’t be saved locally, but we’d love to welcome you back when you’re ready! Visit our <a href='faq.html'>FAQ</a> or <a href='privacy-policy.html'>Privacy Policy</a> to learn more, or return to the <a href='index.html'>home page</a> to try again.",
       consentMessage: "Welcome to North Star Piano School! We use local storage to save progress for 112 piano exercises, essential for tracking your or your students’ achievements. Teachers: please obtain student consent (or parental consent for minors under 13) before adding names, or use an anonymous ID (e.g., ‘Student123’) in regions requiring consent, like the EU. No data is stored online. Agree to start your piano journey!",
-      consentAccept: "Start Playing!",
+      consentAccept: "I Accept!",
       consentReject: "I Don’t Agree",
       consentPolicyLink: "Privacy Policy",
       privacyPolicyTitle: "Privacy Policy",
@@ -157,6 +158,7 @@ const translations = {
       menuChapters: "Kapitel",
       menuFAQ: "Vanliga frågor",
       menuRemove: "Radera elev",
+      menuPrivacyPolicy: "Integritetspolicy",
       popupWelcome: "Välkommen till Nordstjärnans pianoskola!",
       popupIntro: "Du har nu påbörjat din pianoresa som en upptäckare! Stjärnkartan är din guide – den visar dig vilken övning du ska göra härnäst medan du navigerar dig fram genom bokens sju kapitel, samlar stjärnor och klättrar i rang, från stjärnkadett till stjärnofficer och vidare.",
       popupTeacherNote: "Du kan också fokusera på ett specifikt kapitel om du vill bli extra bra på t.ex. skalor eller ackord. Besök kapitel-sidorna för att börja samla stjärnor, se dina framsteg på stjärnöversikt-sidan, eller hantera elever på sidan för lärare.",
@@ -260,7 +262,7 @@ const translations = {
       noConsentTitle: "Välkommen tillbaka senare",
       noConsentMessage: "Vi är ledsna att du inte kunde godkänna vår integritetspolicy just nu. Nordstjärnans pianoskola använder lokal lagring på din enhet för att spåra framsteg i 112 pianövningar, vilket är nödvändigt för att plattformen ska fungera. Utan att godkänna detta kan dina framsteg inte sparas lokalt, men vi välkomnar dig gärna tillbaka när du är redo! Besök vår <a href='faq.html'>FAQ</a> eller <a href='privacy-policy.html'>integritetspolicy</a> för att läsa mer, eller återvänd till <a href='index.html'>startsidan</a> för att försöka igen.",
       consentMessage: "Välkommen till Nordstjärnans pianoskola! Vi använder lokal lagring för att spara framsteg i 112 pianövningar, vilket är nödvändigt för att spåra dina eller dina elevers prestationer. Lärare: skaffa elevens samtycke (eller förälders samtycke för barn under 13) innan du lägger till namn, eller använd ett anonymt ID (t.ex. ‘elev123’) i regioner som kräver samtycke, som EU. Ingen data lagras online. Godkänn för att börja din pianoresa!",
-      consentAccept: "Börja spela!",
+      consentAccept: "Jag godkänner!",
       consentReject: "Jag godkänner inte",
       consentPolicyLink: "Integritetspolicy",
       privacyPolicyTitle: "Integritetspolicy",
@@ -320,7 +322,7 @@ const menuHtml = `
                 <a href="students.html" class="menu-link" data-translate="menuStudents"></a>
                 <a href="remove.html" class="menu-link" data-translate="menuRemove"></a>
                 <a href="faq.html" class="menu-link" data-translate="menuFAQ"></a>
-                <a href="Star-Academy/privacy-policy.html" class="menu-link" data-translate="menuPrivacyPolicy"></a>
+                <a href="privacy-policy.html" class="menu-link" data-translate="menuPrivacyPolicy"></a>
                 <div class="language-switcher">
                     <span class="flag" onclick="switchLanguage('en')">🇬🇧</span>
                     <span class="flag" onclick="switchLanguage('sv')">🇸🇪</span>
@@ -429,6 +431,19 @@ function injectMenu() {
 }
 
 function initializeConsentPopup() {
+    // Prevent multiple initializations
+    if (window.consentInitialized) {
+        console.log('Consent popup already initialized, skipping');
+        return;
+    }
+    window.consentInitialized = true;
+
+    // Destroy existing popup
+    if (window.cookieconsent && window.cookieconsent.element) {
+        window.cookieconsent.element.remove();
+        window.cookieconsent = null;
+    }
+
     const consentGiven = localStorage.getItem('consentGiven') === 'true';
     if (consentGiven) {
         console.log('Consent already given, skipping popup');
@@ -453,10 +468,12 @@ function initializeConsentPopup() {
                 console.log('No consent yet, showing popup');
             }
         },
-        onStatusChange: function(status) {
+        onStatusChange: function(status, chosenBefore) {
             if (this.hasConsented()) {
                 console.log('User consented, saving to localStorage');
                 localStorage.setItem('consentGiven', 'true');
+                this.element.style.display = 'none'; // Hide popup
+                window.consentInitialized = false; // Allow reinitialization on next load
                 if (typeof handleUserNamePopup === 'function') handleUserNamePopup();
             } else {
                 console.log('User rejected consent, redirecting to no-consent.html');
@@ -466,12 +483,9 @@ function initializeConsentPopup() {
     });
 }
 
-document.addEventListener('DOMContentLoaded', initializeConsentPopup);
-
-// Reinitialize popup on language change
-window.addEventListener('storage', (event) => {
-    if (event.key === 'language' && localStorage.getItem('consentGiven') !== 'true') {
-        console.log('Language changed, reinitializing consent popup');
+// Initialize popup on DOM load
+document.addEventListener('DOMContentLoaded', () => {
+    if (!window.consentInitialized) {
         initializeConsentPopup();
     }
 });
@@ -984,7 +998,7 @@ function switchLanguage(lang) {
             link.textContent = translations[newLang].menuFAQ;
         } else if (href === 'remove.html') {
             link.textContent = translations[newLang].menuRemove;
-        } else if (href === 'star-academy/privacy-policy.html') {
+        } else if (href === 'privacy-policy.html') {
             link.textContent = translations[newLang].menuPrivacyPolicy;
         } else {
             const chapterNum = href?.match(/chapter(\d+)\.html/)?.[1];
@@ -1153,6 +1167,8 @@ function switchLanguage(lang) {
 
     // Reinitialize consent popup if not consented
     if (localStorage.getItem('consentGiven') !== 'true' && typeof initializeConsentPopup === 'function') {
+        console.log('Reinitializing consent popup for language:', newLang);
+        window.consentInitialized = false; // Reset flag
         initializeConsentPopup();
     }
 }
