@@ -450,31 +450,29 @@ function initializeConsentPopup() {
         position: "bottom",
         content: {
             message: translations[lang].consentMessage,
-            dismiss: translations[lang].consentAccept, // Ensure "I Accept!"
-            deny: translations[lang].consentReject, // "I Don’t Agree"
+            dismiss: translations[lang].consentAccept,
+            deny: translations[lang].consentReject,
             link: translations[lang].consentPolicyLink,
             href: "privacy-policy.html"
         },
         type: "opt-in",
         onInitialise: function(status) {
             console.log('ConsentPopup initialized');
-            // Initialize chapter for SVG sizing
-            if (window.location.pathname.toLowerCase().includes('chapter') && typeof window.initializeChapter === 'function') {
-                setTimeout(() => window.initializeChapter(), 100);
-            }
         },
         onStatusChange: function(status, chosenBefore) {
             if (this.hasConsented()) {
                 localStorage.setItem('consentGiven', 'true');
-                this.element.style.display = 'none';
-                window.consentInitialized = false;
+                // Destroy cookieconsent instance to hide patch
+                if (window.cookieconsent) {
+                    window.cookieconsent.element.remove();
+                    window.cookieconsent = null;
+                    window.consentInitialized = false;
+                }
                 if (typeof handleUserNamePopup === 'function') handleUserNamePopup();
             } else {
-                const lang = localStorage.getItem('language') || 'sv';
-                alert(translations[lang].noConsentOptOut || "This platform requires local storage to track your progress, which is essential for its functionality. If you do not consent, you cannot use the platform. Please accept the privacy policy to continue or choose not to use the site. See our Privacy Policy for details.");
+                alert(translations[lang].noConsentOptOut || "This platform requires local storage to track progress, which is essential for functionality. If you do not consent, you cannot use the platform. Please accept the privacy policy to continue or choose not to use the site.");
                 localStorage.removeItem('consentGiven');
                 localStorage.removeItem('cookieconsent_status');
-                // Stay on page, keep popup open
             }
         }
     });
@@ -1620,299 +1618,273 @@ waitForDOM().then(() => {
     previousPart3SixStarCount = parseInt(localStorage.getItem('part3SixStarCount')) || 0;
     previousPart4SixStarCount = parseInt(localStorage.getItem('part4SixStarCount')) || 0;
     console.log('Initialized counts:', { 
-      previousSixStarCount, 
-      previousPart1SixStarCount, 
-      previousPart2SixStarCount, 
-      previousPart3SixStarCount, 
-      previousPart4SixStarCount 
+        previousSixStarCount, 
+        previousPart1SixStarCount, 
+        previousPart2SixStarCount, 
+        previousPart3SixStarCount, 
+        previousPart4SixStarCount 
     });
-  
+
     injectMenu();
-    // Delay handleUserNamePopup to ensure import logic runs first
-    setTimeout(() => {
-      console.log('Checking for namePopup after import');
-      handleUserNamePopup();
-    }, 1000);
     setInitialLanguage();
-    
+    initializeConsentPopup(); // Call consent popup
+
     const globalSelect = document.getElementById('globalStudentSelect');
     const userNameDisplay = document.getElementById('userNameDisplay');
     if (globalSelect) {
-      console.log('globalStudentSelect found, updating dropdown and binding change event');
-      if (typeof updateDropdown === 'function') {
-        updateDropdown();
-      } else {
-        console.error('updateDropdown not defined');
-      }
-  
-      globalSelect.addEventListener('change', (event) => {
-        console.log('globalStudentSelect changed');
-        const selectedValue = event.target.value;
-      
-        if (window.location.pathname.toLowerCase().includes('starmap.html')) {
-          console.log('Reloading starmap.html with new user query parameter');
-          const url = new URL(window.location);
-          url.searchParams.set('newUser', selectedValue);
-          window.location.href = url.toString();
+        console.log('globalStudentSelect found, updating dropdown and binding change event');
+        if (typeof updateDropdown === 'function') {
+            updateDropdown();
         } else {
-          switchStudent(selectedValue);
+            console.error('updateDropdown not defined');
         }
-      });
-    } else {
-      console.error('globalStudentSelect not found after injectMenu');
-    }
-  
-    if (window.location.pathname.toLowerCase().includes('starmap.html')) {
-      const urlParams = new URLSearchParams(window.location.search);
-      const newUser = urlParams.get('newUser');
-      if (newUser) {
-        console.log(`Switching to user ${newUser} from query parameter`);
-        switchStudent(newUser);
-        const cleanUrl = window.location.pathname + (window.location.hash || '');
-        window.history.replaceState({}, document.title, cleanUrl);
-      }
-  
-      const starMapContainer = document.querySelector('.star-map-container');
-      const infoOverlay = document.querySelector('.info-overlay');
-      if (starMapContainer && infoOverlay) {
-        localStorage.setItem('infoOverlayHidden', 'false');
-        console.log('Reset infoOverlayHidden to false on page load');
-  
-        window.addEventListener('pageshow', (event) => {
-          if (event.persisted) {
-            console.log('Page loaded from BFCache, forcing reload...');
-            window.location.reload();
-          }
-        });
-  
-        if (window.starMapScrollListener) {
-          starMapContainer.removeEventListener('scroll', window.starMapScrollListener);
-        }
-  
-        if (window.infoOverlayClickListener) {
-          infoOverlay.removeEventListener('click', window.infoOverlayClickListener);
-        }
-  
-        const isMobile = window.matchMedia("(max-width: 767px) and (orientation: portrait)").matches;
-        const scrollTarget = isMobile ? 300 : 500;
-        const threshold = 50;
-  
-        let isInitialScroll = true;
-  
-        setTimeout(() => {
-          starMapContainer.scrollTo({
-            left: scrollTarget,
-            behavior: 'smooth'
-          });
-          console.log('Scrolled to description container end after delay');
-          setTimeout(() => {
-            isInitialScroll = false;
-            console.log('Initial scroll complete, enabling scroll listener');
-          }, 500);
-        }, 100);
-  
-        window.starMapScrollListener = () => {
-          if (isInitialScroll) {
-            console.log('Ignoring scroll event during initial scroll animation');
-            return;
-          }
-  
-          if (localStorage.getItem('infoOverlayHidden') === 'true') {
-            return;
-          }
-  
-          const scrollLeft = starMapContainer.scrollLeft;
-          if (scrollLeft > scrollTarget + threshold) {
-            infoOverlay.classList.add('hidden');
-            localStorage.setItem('infoOverlayHidden', 'true');
-            console.log('Info-overlay hidden on right-scroll');
-          } else if (scrollLeft < scrollTarget - threshold) {
-            infoOverlay.classList.add('hidden');
-            localStorage.setItem('infoOverlayHidden', 'true');
-            console.log('Info-overlay hidden on left-scroll');
-          } else {
-            infoOverlay.classList.remove('hidden');
-            console.log('Info-overlay visible within threshold');
-          }
-        };
-  
-        starMapContainer.addEventListener('scroll', window.starMapScrollListener);
-  
-        window.infoOverlayClickListener = () => {
-          starMapContainer.scrollTo({ left: 0, behavior: 'smooth' });
-          console.log('Info-overlay clicked, scrolling to scrollLeft = 0');
-          localStorage.setItem('infoOverlayHidden', 'true');
-          infoOverlay.classList.add('hidden');
-        };
-  
-        infoOverlay.addEventListener('click', window.infoOverlayClickListener);
-  
-        setTimeout(() => {
-          console.log('Initial scrollLeft:', starMapContainer.scrollLeft);
-          if (Math.abs(starMapContainer.scrollLeft - scrollTarget) < threshold && localStorage.getItem('infoOverlayHidden') === 'false') {
-            infoOverlay.classList.remove('hidden');
-            console.log('Initial check: Info-overlay shown');
-          } else {
-            console.log('Initial check: Info-overlay hidden');
-          }
-        }, 600);
-      }
-    }
-  
-    if (!window.isImporting) {
-      console.log('Running initializeAppContent from waitForDOM');
-      window.initializeAppContent();
-    }
-  
-    if (window.location.pathname.toLowerCase().includes('starmap.html') && typeof window.initializeStarMap === 'function') {
-      console.log('Navigating to starmap.html');
-      const starMapSvg = document.getElementById('starMap');
-      if (starMapSvg) {
-        console.log('Star Map SVG found (inline)');
-        const studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
-        if (studentsData.currentStudent) {
-          console.log('Initializing Star Map');
-          setTimeout(() => {
-            window.initializeStarMap();
-            if (userNameDisplay) {
-              userNameDisplay.textContent = studentsData.currentStudent || '';
+
+        globalSelect.addEventListener('change', (event) => {
+            console.log('globalStudentSelect changed');
+            const selectedValue = event.target.value;
+            if (window.location.pathname.toLowerCase().includes('starmap.html')) {
+                console.log('Reloading starmap.html with new user query parameter');
+                const url = new URL(window.location);
+                url.searchParams.set('newUser', selectedValue);
+                window.location.href = url.toString();
+            } else {
+                switchStudent(selectedValue);
             }
-          }, 100);
-        } else {
-          console.log('No current student, skipping Star Map initialization');
-        }
-      } else {
-        console.error('Star Map SVG not found');
-      }
-  
-      window.addEventListener('pageshow', (event) => {
-        if (event.persisted) {
-          console.log('Page loaded from BFCache, forcing reload...');
-          window.location.reload();
-        }
-      });
+        });
+    } else {
+        console.error('globalStudentSelect not found after injectMenu');
     }
-  
+
+    // Initialize chapter immediately for SVG sizing
     if (window.location.pathname.toLowerCase().includes('chapter') && typeof window.initializeChapter === 'function') {
-      console.log('Navigating to chapter page');
-      const studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
-      if (studentsData.currentStudent) {
+        console.log('Navigating to chapter page');
         console.log('Initializing Chapter');
         setTimeout(() => {
-          window.initializeChapter();
-          if (userNameDisplay) {
-            userNameDisplay.textContent = studentsData.currentStudent || '';
-          }
+            window.initializeChapter();
+            if (userNameDisplay) {
+                userNameDisplay.textContent = JSON.parse(localStorage.getItem('starAcademyStudents'))?.currentStudent || '';
+            }
         }, 100);
-      } else {
-        console.log('No current student, skipping Chapter initialization');
-      }
-  
-      window.addEventListener('pageshow', (event) => {
-        if (event.persisted) {
-          console.log('Page loaded from BFCache, forcing reload...');
-          window.location.reload();
+    }
+
+    if (!window.isImporting) {
+        console.log('Running initializeAppContent from waitForDOM');
+        window.initializeAppContent();
+    }
+
+    if (window.location.pathname.toLowerCase().includes('starmap.html')) {
+        const urlParams = new URLSearchParams(window.location.search);
+        const newUser = urlParams.get('newUser');
+        if (newUser) {
+            console.log(`Switching to user ${newUser} from query parameter`);
+            switchStudent(newUser);
+            const cleanUrl = window.location.pathname + (window.location.hash || '');
+            window.history.replaceState({}, document.title, cleanUrl);
         }
-      });
+
+        const starMapContainer = document.querySelector('.star-map-container');
+        const infoOverlay = document.querySelector('.info-overlay');
+        if (starMapContainer && infoOverlay) {
+            localStorage.setItem('infoOverlayHidden', 'false');
+            console.log('Reset infoOverlayHidden to false on page load');
+
+            window.addEventListener('pageshow', (event) => {
+                if (event.persisted) {
+                    console.log('Page loaded from BFCache, forcing reload...');
+                    window.location.reload();
+                }
+            });
+
+            if (window.starMapScrollListener) {
+                starMapContainer.removeEventListener('scroll', window.starMapScrollListener);
+            }
+
+            if (window.infoOverlayClickListener) {
+                infoOverlay.removeEventListener('click', window.infoOverlayClickListener);
+            }
+
+            const isMobile = window.matchMedia("(max-width: 767px) and (orientation: portrait)").matches;
+            const scrollTarget = isMobile ? 300 : 500;
+            const threshold = 50;
+
+            let isInitialScroll = true;
+
+            setTimeout(() => {
+                starMapContainer.scrollTo({
+                    left: scrollTarget,
+                    behavior: 'smooth'
+                });
+                console.log('Scrolled to description container end after delay');
+                setTimeout(() => {
+                    isInitialScroll = false;
+                    console.log('Initial scroll complete, enabling scroll listener');
+                }, 500);
+            }, 100);
+
+            window.starMapScrollListener = () => {
+                if (isInitialScroll) {
+                    console.log('Ignoring scroll event during initial scroll animation');
+                    return;
+                }
+
+                if (localStorage.getItem('infoOverlayHidden') === 'true') {
+                    return;
+                }
+
+                const scrollLeft = starMapContainer.scrollLeft;
+                if (scrollLeft > scrollTarget + threshold) {
+                    infoOverlay.classList.add('hidden');
+                    localStorage.setItem('infoOverlayHidden', 'true');
+                    console.log('Info-overlay hidden on right-scroll');
+                } else if (scrollLeft < scrollTarget - threshold) {
+                    infoOverlay.classList.add('hidden');
+                    localStorage.setItem('infoOverlayHidden', 'true');
+                    console.log('Info-overlay hidden on left-scroll');
+                } else {
+                    infoOverlay.classList.remove('hidden');
+                    console.log('Info-overlay visible within threshold');
+                }
+            };
+
+            starMapContainer.addEventListener('scroll', window.starMapScrollListener);
+
+            window.infoOverlayClickListener = () => {
+                starMapContainer.scrollTo({ left: 0, behavior: 'smooth' });
+                console.log('Info-overlay clicked, scrolling to scrollLeft = 0');
+                localStorage.setItem('infoOverlayHidden', 'true');
+                infoOverlay.classList.add('hidden');
+            };
+
+            infoOverlay.addEventListener('click', window.infoOverlayClickListener);
+
+            setTimeout(() => {
+                console.log('Initial scrollLeft:', starMapContainer.scrollLeft);
+                if (Math.abs(starMapContainer.scrollLeft - scrollTarget) < threshold && localStorage.getItem('infoOverlayHidden') === 'false') {
+                    infoOverlay.classList.remove('hidden');
+                    console.log('Initial check: Info-overlay shown');
+                } else {
+                    console.log('Initial check: Info-overlay hidden');
+                }
+            }, 600);
+        }
+
+        const starMapSvg = document.getElementById('starMap');
+        if (starMapSvg && typeof window.initializeStarMap === 'function') {
+            console.log('Star Map SVG found (inline)');
+            const studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
+            if (studentsData.currentStudent) {
+                console.log('Initializing Star Map');
+                setTimeout(() => {
+                    window.initializeStarMap();
+                    if (userNameDisplay) {
+                        userNameDisplay.textContent = studentsData.currentStudent || '';
+                    }
+                }, 100);
+            } else {
+                console.log('No current student, skipping Star Map initialization');
+            }
+        }
     }
-  
-    if (window.location.pathname.toLowerCase().includes('faq.html')) initializeFAQ();
-  
+
+    if (window.location.pathname.toLowerCase().includes('faq.html')) {
+        initializeFAQ();
+    }
+
     if (window.location.pathname.toLowerCase().includes('remove.html')) {
-      window.removePageInitialized = false;
-      setTimeout(() => {
-        initializeRemovePage();
-      }, 100);
+        window.removePageInitialized = false;
+        setTimeout(() => {
+            initializeRemovePage();
+        }, 100);
     }
-  
+
     const header = document.querySelector('.title-container');
     if (header) {
-      let initialViewportHeight = window.innerHeight;
-      let reRenderInterval = null;
-  
-      const forceHeaderRender = () => {
-        header.style.opacity = '0.99';
-        header.offsetHeight;
-        header.style.opacity = '1';
-      };
-  
-      const checkKeyboardState = () => {
-        const currentViewportHeight = window.innerHeight;
-        if (currentViewportHeight < initialViewportHeight * 0.9) {
-          if (!reRenderInterval) {
-            reRenderInterval = setInterval(forceHeaderRender, 100);
-          }
-        } else {
-          if (reRenderInterval) {
-            clearInterval(reRenderInterval);
-            reRenderInterval = null;
-            forceHeaderRender();
-          }
-        }
-      };
-  
-      window.addEventListener('resize', checkKeyboardState);
-      window.addEventListener('orientationchange', checkKeyboardState);
-      setTimeout(forceHeaderRender, 100);
+        let initialViewportHeight = window.innerHeight;
+        let reRenderInterval = null;
+
+        const forceHeaderRender = () => {
+            header.style.opacity = '0.99';
+            header.offsetHeight;
+            header.style.opacity = '1';
+        };
+
+        const checkKeyboardState = () => {
+            const currentViewportHeight = window.innerHeight;
+            if (currentViewportHeight < initialViewportHeight * 0.9) {
+                if (!reRenderInterval) {
+                    reRenderInterval = setInterval(forceHeaderRender, 100);
+                }
+            } else {
+                if (reRenderInterval) {
+                    clearInterval(reRenderInterval);
+                    reRenderInterval = null;
+                    forceHeaderRender();
+                }
+            }
+        };
+
+        window.addEventListener('resize', checkKeyboardState);
+        window.addEventListener('orientationchange', checkKeyboardState);
+        setTimeout(forceHeaderRender, 100);
     }
-  
+
     const setStarMapHeight = () => {
-      const starMapContainer = document.querySelector('.star-map-container');
-      const titleContainer = document.querySelector('.title-container');
-      const body = document.querySelector('body');
-      if (starMapContainer && titleContainer && body) {
-        if (!window.initialTitleHeight) {
-          window.initialTitleHeight = titleContainer.getBoundingClientRect().height;
+        const starMapContainer = document.querySelector('.star-map-container');
+        const titleContainer = document.querySelector('.title-container');
+        const body = document.querySelector('body');
+        if (starMapContainer && titleContainer && body) {
+            if (!window.initialTitleHeight) {
+                window.initialTitleHeight = titleContainer.getBoundingClientRect().height;
+            }
+            const titleHeight = window.initialTitleHeight;
+            const marginTop = 10;
+            const borderWidth = parseFloat(getComputedStyle(starMapContainer).borderWidth) || 0;
+            const bodyBorderWidth = parseFloat(getComputedStyle(body).borderWidth) || 0;
+            const totalBorderHeight = borderWidth * 2;
+            const totalBodyBorderHeight = bodyBorderWidth * 2;
+            const viewportHeight = window.innerHeight;
+            const topPosition = titleHeight + marginTop;
+            const availableHeight = viewportHeight - topPosition - totalBorderHeight - totalBodyBorderHeight - 10;
+            const maxHeight = Math.min(600, availableHeight);
+            const isMobile = window.matchMedia("(max-width: 767px) and (orientation: portrait)").matches;
+            const isIPad = window.matchMedia("(min-width: 768px) and (max-width: 1400px) and (orientation: landscape)").matches;
+            if (isIPad) {
+                const gap = 20;
+                const adjustedTop = titleHeight + gap;
+                const adjustedHeight = viewportHeight - adjustedTop - gap - totalBodyBorderHeight;
+                starMapContainer.style.height = `${adjustedHeight}px`;
+                starMapContainer.style.top = `${adjustedTop}px`;
+                starMapContainer.style.bottom = `${gap + bodyBorderWidth}px`;
+            } else if (isMobile) {
+                starMapContainer.style.height = `${maxHeight}px`;
+                starMapContainer.style.top = `${topPosition}px`;
+                starMapContainer.style.bottom = 'auto';
+            } else {
+                starMapContainer.style.height = `${maxHeight}px`;
+                starMapContainer.style.top = `${topPosition}px`;
+                starMapContainer.style.bottom = 'auto';
+            }
+            starMapContainer.style.position = 'fixed';
+            starMapContainer.style.transform = 'none';
+
+            const starMapSvg = starMapContainer.querySelector('svg');
+            if (starMapSvg) {
+                if (isMobile) {
+                    starMapSvg.style.height = '100%';
+                    starMapSvg.style.width = 'auto';
+                } else {
+                    starMapSvg.style.height = `${starMapContainer.clientHeight - totalBorderHeight}px`;
+                    starMapSvg.style.width = '2780px';
+                }
+            }
+
+            console.log('Star Map Height:', starMapContainer.style.height, 'Viewport Height:', viewportHeight, 'px', 'Title Height:', titleHeight, 'px', 'Top Position:', topPosition, 'px', 'Body Border Width:', bodyBorderWidth, 'px', 'Is Mobile:', isMobile, 'Is iPad:', isIPad);
         }
-        const titleHeight = window.initialTitleHeight;
-        const marginTop = 10;
-        const borderWidth = parseFloat(getComputedStyle(starMapContainer).borderWidth) || 0;
-        const bodyBorderWidth = parseFloat(getComputedStyle(body).borderWidth) || 0;
-        const totalBorderHeight = borderWidth * 2;
-        const totalBodyBorderHeight = bodyBorderWidth * 2;
-        const viewportHeight = window.innerHeight;
-        const topPosition = titleHeight + marginTop;
-        const availableHeight = viewportHeight - topPosition - totalBorderHeight - totalBodyBorderHeight - 10;
-        const maxHeight = Math.min(600, availableHeight);
-        const isMobile = window.matchMedia("(max-width: 767px) and (orientation: portrait)").matches;
-        const isIPad = window.matchMedia("(min-width: 768px) and (max-width: 1400px) and (orientation: landscape)").matches;
-        if (isIPad) {
-          const gap = 20;
-          const adjustedTop = titleHeight + gap;
-          const adjustedHeight = viewportHeight - adjustedTop - gap - totalBodyBorderHeight;
-          starMapContainer.style.height = `${adjustedHeight}px`;
-          starMapContainer.style.top = `${adjustedTop}px`;
-          starMapContainer.style.bottom = `${gap + bodyBorderWidth}px`;
-        } else if (isMobile) {
-          starMapContainer.style.height = `${maxHeight}px`;
-          starMapContainer.style.top = `${topPosition}px`;
-          starMapContainer.style.bottom = 'auto';
-        } else {
-          starMapContainer.style.height = `${maxHeight}px`;
-          starMapContainer.style.top = `${topPosition}px`;
-          starMapContainer.style.bottom = 'auto';
-        }
-        starMapContainer.style.position = 'fixed';
-        starMapContainer.style.transform = 'none';
-  
-        const starMapSvg = starMapContainer.querySelector('svg');
-        if (starMapSvg) {
-          if (isMobile) {
-            starMapSvg.style.height = '100%';
-            starMapSvg.style.width = 'auto';
-          } else {
-            starMapSvg.style.height = `${starMapContainer.clientHeight - totalBorderHeight}px`;
-            starMapSvg.style.width = '2780px';
-          }
-        }
-  
-        console.log('Star Map Height:', starMapContainer.style.height, 'Viewport Height:', viewportHeight, 'px', 'Title Height:', titleHeight, 'px', 'Top Position:', topPosition, 'px', 'Body Border Width:', bodyBorderWidth, 'px', 'Is Mobile:', isMobile, 'Is iPad:', isIPad);
-      }
     };
-  
+
     setTimeout(() => {
-      setStarMapHeight();
-      window.addEventListener('resize', setStarMapHeight);
-      window.addEventListener('orientationchange', setStarMapHeight);
+        setStarMapHeight();
+        window.addEventListener('resize', setStarMapHeight);
+        window.addEventListener('orientationchange', setStarMapHeight);
     }, 200);
-  });
+});
