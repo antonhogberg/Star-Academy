@@ -13,7 +13,6 @@ const translations = {
       menuChapters: "Chapters",
       menuFAQ: "FAQ",
       menuRemove: "Remove student",
-      menuPrivacyPolicy: "Privacy Policy",
       popupWelcome: "Welcome to North Star Piano School!",
       popupIntro: "You’ve just embarked on your piano journey as an Explorer! The Star Map is your guide—it’s there to show you which exercise to do next as you progress through the seven chapters, earning stars and advancing through ranks like Star Cadet, Star Officer, and beyond.",
       popupTeacherNote: "You can also focus on a specific chapter if Scales or Chords is what you want to excel at. Visit the chapter pages to start earning stars, check your progress on the Star Overview page, or manage students on the For Teachers page.",
@@ -114,9 +113,9 @@ const translations = {
       error: "Invalid link. No student was added.",
       studentModeLabel: "Fixed gold stars",
       noConsentTitle: "Welcome Back Later",
-      noConsentMessage: "We’re sorry you couldn’t accept our privacy policy at this time. North Star Piano School uses local storage on your device to track progress in 112 piano exercises, which is essential for the platform to work. Without agreeing, your progress can’t be saved locally, but we’d love to welcome you back when you’re ready! Visit our <a href='faq.html'>FAQ</a> or <a href='privacy-policy.html'>Privacy Policy</a> to learn more, or return to the <a href='index.html'>home page</a> to try again.",
+      noConsentMessage: "We’re sorry you couldn’t accept our privacy policy at this time. North Star Piano School uses local storage on your device to track progress in 112 piano exercises, which is essential for the platform to work. Without agreeing, your progress can’t be saved locally, but we’d love to welcome you back when you’re ready! Visit our <a href='faq.html'>FAQ</a> or <a href='privacy-policy.html'>Privacy Policy</a> to learn more.",
       consentMessage: "Welcome to North Star Piano School! We use local storage to save progress for 112 piano exercises, essential for tracking your or your students’ achievements. Teachers: please obtain student consent (or parental consent for minors under 13) before adding names, or use an anonymous ID (e.g., ‘Student123’) in regions requiring consent, like the EU. No data is stored online. Agree to start your piano journey!",
-      consentAccept: "I Accept!",
+      consentAccept: "Start Playing!",
       consentReject: "I Don’t Agree",
       consentPolicyLink: "Privacy Policy",
       privacyPolicyTitle: "Privacy Policy",
@@ -140,7 +139,7 @@ const translations = {
       retention: "Retention",
       retentionText: "Data remains in localStorage until the user clears their browser cache or deletes users via the <a href='remove.html'>Remove Users page</a>.",
       yourRights: "Your Rights",
-      yourRightsText: "Under GDPR, you have the right to: <ul><li><strong>Access</strong>: View data via browser developer tools.</li><li><strong>Delete</strong>: Use <a href='remove.html'>Remove Users</a> or clear your browser cache.</li><li><strong>Withdraw Consent</strong>: Clear your browser cache (e.g., Chrome: Settings > Privacy > Clear browsing data) to delete all data and withdraw consent.</li><li><strong>Opt-Out</strong>: Without consenting to local storage, the platform is unusable, as it’s essential for tracking progress. You may choose not to use the platform.</li></ul> Contact your teacher for data requests or email <a href='mailto:northstarpianoacademy@gmail.com'>northstarpianoacademy@gmail.com</a>.",      
+      yourRightsText: "Under GDPR and other laws, students/parents have the right to:<ul><li><strong>Access</strong>: View data in the teacher’s browser (via developer tools).</li><li><strong>Delete</strong>: Ask the teacher to delete data via the <a href='remove.html'>Remove Users page</a> or clear their own browser cache.</li><li><strong>Restrict</strong>: Opt out of storage, but this prevents progress tracking, making the platform unusable.</li></ul>Since we do not access data, contact your teacher for data requests. If you use the platform directly, use <a href='remove.html'>Remove Users</a> or clear your cache.",
       security: "Security",
       securityText: "Data is stored locally, reducing risks. QR code/link exports are encoded securely to prevent unauthorized access.",
       minors: "Minors",
@@ -148,9 +147,7 @@ const translations = {
       usingWithoutStorage: "Using the Platform Without Local Storage",
       usingWithoutStorageText: "The platform’s purpose is to track progress for 112 piano exercises (e.g., level 5/6 for exercise 1:1:1). localStorage is essential to save this progress. Opting out (e.g., clearing cache or declining storage) resets all progress, making the platform unusable, as no data is stored online.",
       contactUs: "Contact Us",
-      contactUsText: "For questions about our platform, email <a href='mailto:northstarpianoacademy@gmail.com'>northstarpianoacademy@gmail.com</a>. For data concerns, contact your piano teacher, as they control the data.",
-      noConsentError: "Sorry, you need to agree to the privacy policy before creating a user.",
-      noConsentOptOut: "This platform requires local storage to track your progress, which is essential for its functionality. If you do not consent, you cannot use the platform. Please accept the privacy policy to continue or choose not to use the site. See our Privacy Policy for details."
+      contactUsText: "For questions about our platform, email <a href='mailto:northstarpianoacademy@gmail.com'>northstarpianoacademy@gmail.com</a>. For data concerns, contact your piano teacher, as they control the data."
     },
     sv: {
       menuFrontPage: "Stjärnöversikt",
@@ -160,7 +157,6 @@ const translations = {
       menuChapters: "Kapitel",
       menuFAQ: "Vanliga frågor",
       menuRemove: "Radera elev",
-      menuPrivacyPolicy: "Integritetspolicy",
       popupWelcome: "Välkommen till Nordstjärnans pianoskola!",
       popupIntro: "Du har nu påbörjat din pianoresa som en upptäckare! Stjärnkartan är din guide – den visar dig vilken övning du ska göra härnäst medan du navigerar dig fram genom bokens sju kapitel, samlar stjärnor och klättrar i rang, från stjärnkadett till stjärnofficer och vidare.",
       popupTeacherNote: "Du kan också fokusera på ett specifikt kapitel om du vill bli extra bra på t.ex. skalor eller ackord. Besök kapitel-sidorna för att börja samla stjärnor, se dina framsteg på stjärnöversikt-sidan, eller hantera elever på sidan för lärare.",
@@ -264,7 +260,7 @@ const translations = {
       noConsentTitle: "Välkommen tillbaka senare",
       noConsentMessage: "Vi är ledsna att du inte kunde godkänna vår integritetspolicy just nu. Nordstjärnans pianoskola använder lokal lagring på din enhet för att spåra framsteg i 112 pianövningar, vilket är nödvändigt för att plattformen ska fungera. Utan att godkänna detta kan dina framsteg inte sparas lokalt, men vi välkomnar dig gärna tillbaka när du är redo! Besök vår <a href='faq.html'>FAQ</a> eller <a href='privacy-policy.html'>integritetspolicy</a> för att läsa mer, eller återvänd till <a href='index.html'>startsidan</a> för att försöka igen.",
       consentMessage: "Välkommen till Nordstjärnans pianoskola! Vi använder lokal lagring för att spara framsteg i 112 pianövningar, vilket är nödvändigt för att spåra dina eller dina elevers prestationer. Lärare: skaffa elevens samtycke (eller förälders samtycke för barn under 13) innan du lägger till namn, eller använd ett anonymt ID (t.ex. ‘elev123’) i regioner som kräver samtycke, som EU. Ingen data lagras online. Godkänn för att börja din pianoresa!",
-      consentAccept: "Jag godkänner!",
+      consentAccept: "Börja spela!",
       consentReject: "Jag godkänner inte",
       consentPolicyLink: "Integritetspolicy",
       privacyPolicyTitle: "Integritetspolicy",
@@ -288,7 +284,7 @@ const translations = {
       retention: "Lagringstid",
       retentionText: "Data finns kvar i localStorage tills användaren rensar webbläsarens cache eller tar bort användare via <a href='remove.html'>radera användare-sidan</a>.",
       yourRights: "Dina rättigheter",
-      yourRightsText: "Under GDPR har du rätt att: <ul><li><strong>Åtkomst</strong>: Visa data via webbläsarens utvecklarverktyg.</li><li><strong>Radera</strong>: Använd <a href='remove.html'>Radera användare</a> eller rensa webbläsarens cache.</li><li><strong>Återkalla samtycke</strong>: Rensa webbläsarens cache (t.ex. Chrome: Inställningar > Sekretess > Rensa webbinformation) för att radera all data och återkalla samtycke.</li><li><strong>Välja bort</strong>: Utan samtycke till lokal lagring är plattformen oanvändbar, eftersom det är nödvändigt för att spåra framsteg. Du kan välja att inte använda plattformen.</li></ul> Kontakta din lärare eller maila <a href='mailto:nordstjarnanspianoskola@gmail.com'>nordstjarnanspianoskola@gmail.com</a>.",
+      yourRightsText: "Enligt GDPR och andra lagar har elever/föräldrar rätt att:<ul><li><strong>Tillgång</strong>: Se data i lärarens webbläsare (via utvecklarverktyg).</li><li><strong>Radera</strong>: Be läraren att radera data via <a href='remove.html'>radera användare-sidan</a> eller rensa sin egen webbläsarcache.</li><li><strong>Begränsa</strong>: Välja bort lagring, men detta förhindrar spårning av framsteg, vilket gör plattformen oanvändbar.</li></ul>Eftersom vi inte har åtkomst till data, kontakta din lärare för databehov. Om du använder plattformen direkt, använd <a href='remove.html'>radera användare</a> eller rensa din cache.",
       security: "Säkerhet",
       securityText: "Data lagras lokalt, vilket minskar risker. QR-kod/länkexport är kodade säkert för att förhindra obehörig åtkomst.",
       minors: "Barn",
@@ -296,9 +292,7 @@ const translations = {
       usingWithoutStorage: "Att använda plattformen utan lokal lagring",
       usingWithoutStorageText: "Plattformens syfte är att spåra framsteg för 112 pianövningar (t.ex. nivå 5/6 för övning 1:1:1). localStorage är nödvändigt för att spara dessa framsteg. Att välja bort (t.ex. rensa cache eller neka lagring) återställer alla framsteg, vilket gör plattformen oanvändbar, eftersom ingen data lagras online.",
       contactUs: "Kontakta oss",
-      contactUsText: "För frågor om vår plattform, maila <a href='mailto:nordstjarnanspianoskola@gmail.com'>nordstjarnanspianoskola@gmail.com</a>. För databehov, kontakta din pianolärare, eftersom de kontrollerar datan.",
-      noConsentError: "Du måste godkänna integritetspolicyn innan du kan skapa en användare.",
-      noConsentOptOut: "Denna plattform kräver lokal lagring för att spåra dina/dina elevers framsteg, vilket är nödvändigt för dess funktionalitet. Om du inte samtycker kan du inte använda plattformen. Vänligen acceptera integritetspolicyn för att fortsätta eller välj att inte använda webbplatsen. Se vår integritetspolicy för detaljer."
+      contactUsText: "För frågor om vår plattform, maila <a href='mailto:nordstjarnanspianoskola@gmail.com'>nordstjarnanspianoskola@gmail.com</a>. För databehov, kontakta din pianolärare, eftersom de kontrollerar datan."
     }
 };
 
@@ -326,7 +320,7 @@ const menuHtml = `
                 <a href="students.html" class="menu-link" data-translate="menuStudents"></a>
                 <a href="remove.html" class="menu-link" data-translate="menuRemove"></a>
                 <a href="faq.html" class="menu-link" data-translate="menuFAQ"></a>
-                <a href="privacy-policy.html" class="menu-link" data-translate="menuPrivacyPolicy"></a>
+                <a href="Star-Academy/privacy-policy.html" class="menu-link" data-translate="menuPrivacyPolicy"></a>
                 <div class="language-switcher">
                     <span class="flag" onclick="switchLanguage('en')">🇬🇧</span>
                     <span class="flag" onclick="switchLanguage('sv')">🇸🇪</span>
@@ -435,54 +429,49 @@ function injectMenu() {
 }
 
 function initializeConsentPopup() {
-    // Clear cookieconsent state
-    localStorage.removeItem('consentGiven');
-    localStorage.removeItem('cookieconsent_status');
-    if (window.cookieconsent && window.cookieconsent.element) {
-        window.cookieconsent.element.remove();
-        window.cookieconsent = null;
+    const consentGiven = localStorage.getItem('consentGiven') === 'true';
+    if (consentGiven) {
+        console.log('Consent already given, skipping popup');
+        if (typeof handleUserNamePopup === 'function') handleUserNamePopup();
+        return;
     }
-    window.consentInitialized = false;
 
     const lang = localStorage.getItem('language') || 'sv';
     window.cookieconsent.initialise({
-        palette: { popup: { background: "#f0f0f0", text: "#333" }, button: { background: "transparent", text: "#333" } },
+        palette: { popup: { background: "#f0f0f0", text: "#333" }, button: { background: "#ffd700", text: "#333" } },
         position: "bottom",
         content: {
             message: translations[lang].consentMessage,
-            dismiss: translations[lang].consentAccept || "I Accept!",
-            deny: translations[lang].consentReject || "I Don’t Agree",
+            dismiss: translations[lang].consentAccept,
+            deny: translations[lang].consentReject,
             link: translations[lang].consentPolicyLink,
             href: "privacy-policy.html"
         },
         type: "opt-in",
         onInitialise: function(status) {
-            console.log('ConsentPopup initialized');
+            if (!this.hasConsented()) {
+                console.log('No consent yet, showing popup');
+            }
         },
-        onStatusChange: function(status, chosenBefore) {
+        onStatusChange: function(status) {
             if (this.hasConsented()) {
-                console.log('User consented');
+                console.log('User consented, saving to localStorage');
                 localStorage.setItem('consentGiven', 'true');
-                // Fully destroy cookieconsent
-                if (window.cookieconsent) {
-                    this.element.remove();
-                    window.cookieconsent = null;
-                    window.consentInitialized = false;
-                }
                 if (typeof handleUserNamePopup === 'function') handleUserNamePopup();
             } else {
-                console.log('User rejected consent');
-                alert(translations[lang].noConsentOptOut || "This platform requires local storage to track progress, which is essential for functionality. If you do not consent, you cannot use the platform. Please accept the privacy policy to continue or choose not to use the site.");
-                localStorage.removeItem('consentGiven');
-                localStorage.removeItem('cookieconsent_status');
+                console.log('User rejected consent, redirecting to no-consent.html');
+                window.location.href = 'no-consent.html';
             }
         }
     });
 }
 
-// Initialize popup on DOM load
-document.addEventListener('DOMContentLoaded', () => {
-    if (!window.consentInitialized) {
+document.addEventListener('DOMContentLoaded', initializeConsentPopup);
+
+// Reinitialize popup on language change
+window.addEventListener('storage', (event) => {
+    if (event.key === 'language' && localStorage.getItem('consentGiven') !== 'true') {
+        console.log('Language changed, reinitializing consent popup');
         initializeConsentPopup();
     }
 });
@@ -995,7 +984,7 @@ function switchLanguage(lang) {
             link.textContent = translations[newLang].menuFAQ;
         } else if (href === 'remove.html') {
             link.textContent = translations[newLang].menuRemove;
-        } else if (href === 'privacy-policy.html') {
+        } else if (href === 'star-academy/privacy-policy.html') {
             link.textContent = translations[newLang].menuPrivacyPolicy;
         } else {
             const chapterNum = href?.match(/chapter(\d+)\.html/)?.[1];
@@ -1162,18 +1151,9 @@ function switchLanguage(lang) {
         userNameDisplay.textContent = window.studentsData?.currentStudent || '';
     }
 
-    // Update consent popup text if visible
-    if (localStorage.getItem('consentGiven') !== 'true' && window.cookieconsent && window.cookieconsent.element) {
-        console.log('Updating consent popup text for language:', newLang);
-        const popup = window.cookieconsent.element;
-        const message = popup.querySelector('.cc-message');
-        const dismiss = popup.querySelector('.cc-dismiss');
-        const deny = popup.querySelector('.cc-deny');
-        const link = popup.querySelector('.cc-link');
-        if (message) message.innerHTML = translations[newLang].consentMessage;
-        if (dismiss) dismiss.textContent = translations[newLang].consentAccept;
-        if (deny) deny.textContent = translations[newLang].consentReject;
-        if (link) link.textContent = translations[newLang].consentPolicyLink;
+    // Reinitialize consent popup if not consented
+    if (localStorage.getItem('consentGiven') !== 'true' && typeof initializeConsentPopup === 'function') {
+        initializeConsentPopup();
     }
 }
 
@@ -1197,184 +1177,170 @@ function setActivePage() {
 
 function handleUserNamePopup() {
     if (window.isImporting) {
-        console.log('Delaying handleUserNamePopup until import completes');
-        const checkImport = () => {
-            if (!window.isImporting) {
-                console.log('Import completed, proceeding with handleUserNamePopup');
-                proceedWithPopup();
-            } else {
-                setTimeout(checkImport, 100);
-            }
-        };
-        checkImport();
+      console.log('Delaying handleUserNamePopup until import completes');
+      const checkImport = () => {
+        if (!window.isImporting) {
+          console.log('Import completed, proceeding with handleUserNamePopup');
+          proceedWithPopup();
+        } else {
+          setTimeout(checkImport, 100);
+        }
+      };
+      checkImport();
     } else {
-        proceedWithPopup();
+      proceedWithPopup();
     }
 
     function proceedWithPopup() {
-        let studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || {
-            students: {},
-            currentStudent: ''
-        };
-        const userNameDisplay = document.getElementById('userNameDisplay');
-        const namePopup = document.getElementById('namePopup');
-        const nameInput = document.getElementById('nameInput');
-        const submitBtn = document.getElementById('submitNameButton');
-        const menu = document.querySelector('.menu');
+      let studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || {
+        students: {},
+        currentStudent: ''
+      };
+      const userNameDisplay = document.getElementById('userNameDisplay');
+      const namePopup = document.getElementById('namePopup');
+      const nameInput = document.getElementById('nameInput');
+      const menu = document.querySelector('.menu');
 
-        if (!namePopup || !nameInput || !submitBtn) {
-            console.warn('namePopup, nameInput, or submitNameButton not found in DOM, skipping popup:', {
-                namePopup: !!namePopup,
-                nameInput: !!nameInput,
-                submitBtn: !!submitBtn,
-                page: window.location.pathname,
-                bodyChildCount: document.body.childElementCount
-            });
-            return;
+      if (!namePopup || !nameInput) {
+        console.warn('namePopup or nameInput not found in DOM, skipping popup:', {
+          namePopup: !!namePopup,
+          nameInput: !!nameInput,
+          page: window.location.pathname,
+          bodyChildCount: document.body.childElementCount
+        });
+        return;
+      }
+
+      const updateMenuHeight = () => {
+        if (menu) {
+          menu.style.height = `${window.innerHeight}px`;
         }
+      };
 
-        const updateMenuHeight = () => {
-            if (menu) {
-                menu.style.height = `${window.innerHeight}px`;
+      window.addEventListener('resize', updateMenuHeight);
+      window.addEventListener('orientationchange', updateMenuHeight);
+
+      if (!studentsData.currentStudent && localStorage.getItem('consentGiven') === 'true') {
+        console.log('Showing namePopup for new user');
+        namePopup.style.display = 'flex';
+        document.body.classList.add('popup-open');
+        const rect = namePopup.getBoundingClientRect();
+        console.log('Name popup displayed:', {
+          display: namePopup.style.display,
+          width: rect.width,
+          height: rect.height,
+          top: rect.top,
+          left: rect.left
+        });
+        updateMenuHeight();
+      } else if (userNameDisplay) {
+        userNameDisplay.textContent = studentsData.currentStudent;
+        console.log('Set userNameDisplay to:', studentsData.currentStudent);
+      }
+
+      window.saveName = function() {
+        const name = nameInput.value.trim();
+        if (name) {
+          studentsData.students[name] = {
+            name: name,
+            progress: {},
+            rank: "Explorer"
+          };
+          for (let chapter = 1; chapter <= 7; chapter++) {
+            for (let part = 1; part <= 4; part++) {
+              for (let exercise = 1; exercise <= 4; exercise++) {
+                const key = `exercise${chapter}:${part}:${exercise}`;
+                studentsData.students[name].progress[key] = "0";
+              }
             }
-        };
+          }
+          studentsData.currentStudent = name;
+          localStorage.setItem('starAcademyStudents', JSON.stringify(studentsData));
+          if (userNameDisplay) userNameDisplay.textContent = name;
+          namePopup.style.display = 'none';
 
-        window.addEventListener('resize', updateMenuHeight);
-        window.addEventListener('orientationchange', updateMenuHeight);
-
-        // Show namePopup if no current student
-        if (!studentsData.currentStudent) {
-            console.log('Showing namePopup for new user');
-            namePopup.style.display = 'flex';
-            document.body.classList.add('popup-open');
-            const rect = namePopup.getBoundingClientRect();
-            console.log('Name popup displayed:', {
-                display: namePopup.style.display,
-                width: rect.width,
-                height: rect.height,
-                top: rect.top,
-                left: rect.left
-            });
-            updateMenuHeight();
-
-            // Ensure input and button are enabled
-            nameInput.disabled = false;
-            submitBtn.disabled = false;
-        } else if (userNameDisplay) {
-            userNameDisplay.textContent = studentsData.currentStudent;
-            console.log('Set userNameDisplay to:', studentsData.currentStudent);
-        }
-
-        window.saveName = function() {
-            // Prevent saving if no consent
-            if (localStorage.getItem('consentGiven') !== 'true') {
-                console.log('Cannot save name: consent not given');
-                alert(translations[localStorage.getItem('language') || 'sv'].consentMessage);
-                return;
-            }
-
-            const name = nameInput.value.trim();
-            if (name) {
-                studentsData.students[name] = {
-                    name: name,
-                    progress: {},
-                    rank: "Explorer"
-                };
-                for (let chapter = 1; chapter <= 7; chapter++) {
-                    for (let part = 1; part <= 4; part++) {
-                        for (let exercise = 1; exercise <= 4; exercise++) {
-                            const key = `exercise${chapter}:${part}:${exercise}`;
-                            studentsData.students[name].progress[key] = "0";
-                        }
-                    }
-                }
-                studentsData.currentStudent = name;
-                localStorage.setItem('starAcademyStudents', JSON.stringify(studentsData));
-                if (userNameDisplay) userNameDisplay.textContent = name;
-                namePopup.style.display = 'none';
-
-                setTimeout(() => {
-                    document.body.classList.remove('popup-open');
-                    const isMobilePortrait = window.matchMedia('(max-width: 767px) and (orientation: portrait)').matches;
-                    if (!isMobilePortrait) {
-                        window.scrollTo(0, 0);
-                        const container = document.querySelector('.chapter-container');
-                        if (container) container.scrollTop = 0;
-                        setTimeout(() => {
-                            document.body.style.overflow = 'hidden';
-                        }, 50);
-                    } else {
-                        document.body.style.overflow = '';
-                    }
-                }, 100);
-
-                updateMenuHeight();
-
-                const successPopup = document.createElement('div');
-                successPopup.id = 'studentPopup';
-                successPopup.className = 'student-popup';
-                const starSVG = '<svg class="popup-star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>';
-                successPopup.innerHTML = `
-                    <div class="student-popup-content">
-                        <p>${starSVG} ${translations[localStorage.getItem('language') || 'sv'].addStudentSuccess} ${starSVG}</p>
-                    </div>
-                `;
-                document.body.appendChild(successPopup);
-                successPopup.style.display = 'flex';
-                successPopup.style.opacity = '1';
-                document.body.classList.add('popup-open');
-                updateMenuHeight();
-                setTimeout(() => {
-                    successPopup.style.transition = 'opacity 1s ease';
-                    successPopup.style.opacity = '0';
-                    setTimeout(() => {
-                        successPopup.style.display = 'none';
-                        document.body.classList.remove('popup-open');
-                        document.body.removeChild(successPopup);
-                        updateMenuHeight();
-                    }, 1000);
-                }, 2000);
-
-                if (typeof updateDropdown === 'function') {
-                    console.log('Calling updateDropdown after saving name');
-                    updateDropdown();
-                } else {
-                    console.error('updateDropdown not defined');
-                }
-
-                updateStarStates();
-                if (window.location.pathname.toLowerCase().includes('starmap.html') && typeof window.initializeStarMap === 'function') {
-                    console.log('Calling initializeStarMap after saving name');
-                    window.initializeStarMap();
-                }
+          setTimeout(() => {
+            document.body.classList.remove('popup-open');
+            const isMobilePortrait = window.matchMedia('(max-width: 767px) and (orientation: portrait)').matches;
+            if (!isMobilePortrait) {
+              window.scrollTo(0, 0);
+              const container = document.querySelector('.chapter-container');
+              if (container) container.scrollTop = 0;
+              setTimeout(() => {
+                document.body.style.overflow = 'hidden';
+              }, 50);
             } else {
-                alert(translations[localStorage.getItem('language') || 'sv'].addStudentNoName);
+              document.body.style.overflow = '';
             }
-        };
+          }, 100);
 
-        const submitBtnHandler = document.querySelector('button[onclick="saveName()"]');
-        if (submitBtnHandler) {
-            submitBtnHandler.removeEventListener('click', window.saveName);
-            submitBtnHandler.addEventListener('click', window.saveName);
-            console.log('Submit button listener added');
-        }
-        if (nameInput) {
-            nameInput.removeEventListener('keypress', handleEnterKey);
-            nameInput.addEventListener('keypress', handleEnterKey);
-            function handleEnterKey(e) {
-                if (e.key === 'Enter') window.saveName();
-            }
-            console.log('Enter key listener added');
-        }
+          updateMenuHeight();
 
-        namePopup.removeEventListener('click', window.namePopupClickListener);
-        window.namePopupClickListener = (event) => {
-            console.log('Click event on namePopup, target:', event.target);
-            if (event.target === namePopup) {
-                console.log('Ignoring overlay click for namePopup to prevent accidental closure');
-            }
-        };
-        namePopup.addEventListener('click', window.namePopupClickListener);
+          const successPopup = document.createElement('div');
+          successPopup.id = 'studentPopup';
+          successPopup.className = 'student-popup';
+          const starSVG = '<svg class="popup-star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>';
+          successPopup.innerHTML = `
+            <div class="student-popup-content">
+              <p>${starSVG} ${translations[localStorage.getItem('language') || 'sv'].addStudentSuccess} ${starSVG}</p>
+            </div>
+          `;
+          document.body.appendChild(successPopup);
+          successPopup.style.display = 'flex';
+          successPopup.style.opacity = '1';
+          document.body.classList.add('popup-open');
+          updateMenuHeight();
+          setTimeout(() => {
+            successPopup.style.transition = 'opacity 1s ease';
+            successPopup.style.opacity = '0';
+            setTimeout(() => {
+              successPopup.style.display = 'none';
+              document.body.classList.remove('popup-open');
+              document.body.removeChild(successPopup);
+              updateMenuHeight();
+            }, 1000);
+          }, 2000);
+
+          if (typeof updateDropdown === 'function') {
+            console.log('Calling updateDropdown after saving name');
+            updateDropdown();
+          } else {
+            console.error('updateDropdown not defined');
+          }
+
+          updateStarStates();
+          if (window.location.pathname.toLowerCase().includes('starmap.html') && typeof window.initializeStarMap === 'function') {
+            console.log('Calling initializeStarMap after saving name');
+            window.initializeStarMap();
+          }
+        } else {
+          alert(translations[localStorage.getItem('language') || 'sv'].addStudentNoName);
+        }
+      };
+
+      const submitBtn = document.querySelector('button[onclick="saveName()"]');
+      if (submitBtn) {
+        submitBtn.removeEventListener('click', window.saveName);
+        submitBtn.addEventListener('click', window.saveName);
+        console.log('Submit button listener added');
+      }
+      if (nameInput) {
+        nameInput.removeEventListener('keypress', handleEnterKey);
+        nameInput.addEventListener('keypress', handleEnterKey);
+        function handleEnterKey(e) {
+          if (e.key === 'Enter') window.saveName();
+        }
+        console.log('Enter key listener added');
+      }
+
+      namePopup.removeEventListener('click', window.namePopupClickListener);
+      window.namePopupClickListener = (event) => {
+        console.log('Click event on namePopup, target:', event.target);
+        if (event.target === namePopup) {
+          console.log('Ignoring overlay click for namePopup to prevent accidental closure');
+        }
+      };
+      namePopup.addEventListener('click', window.namePopupClickListener);
     }
 }
 
@@ -1421,18 +1387,21 @@ function initializeFAQ() {
 function initializeRemovePage() {
     console.log('initializeRemovePage called');
 
+    // Prevent re-initialization
     if (window.removePageInitialized) {
         console.log('remove.html already initialized, skipping');
         return;
     }
     window.removePageInitialized = true;
 
-    window.studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || {
+    // Ensure window.studentsData is initialized
+    window.studentsData = window.studentsData || JSON.parse(localStorage.getItem('starAcademyStudents')) || {
         students: {},
         currentStudent: ''
     };
     console.log('window.studentsData on remove.html:', window.studentsData);
 
+    // Initialize elements
     const removeButton = document.getElementById('removeStudentButton');
     const confirmRemovePopup = document.getElementById('confirmRemovePopup');
     const confirmRemoveMessage = document.getElementById('confirmRemoveMessage');
@@ -1441,37 +1410,47 @@ function initializeRemovePage() {
     let lang = localStorage.getItem('language') || 'sv';
 
     if (!removeButton || !confirmRemovePopup || !confirmRemoveMessage || !confirmRemoveButton || !closeConfirmRemovePopup) {
-        console.error('Required elements not found on remove.html');
+        console.error('One or more required elements not found on remove.html');
         return;
     }
 
+    // Store popup state
+    let popupOpen = false;
+    let currentPopupStudent = null;
+
+    // Function to update the button text
     const updateButtonText = () => {
         if (window.studentsData.currentStudent) {
             removeButton.textContent = `${translations[lang].removeCurrentStudent}${window.studentsData.currentStudent}`;
         } else {
             removeButton.textContent = translations[lang].removeCurrentStudentNone;
         }
+
+        // Update popup text if the popup is open
         if (popupOpen && currentPopupStudent) {
             confirmRemoveMessage.textContent = `${translations[lang].confirmRemoveMessage}${currentPopupStudent}.`;
             confirmRemoveButton.textContent = `${translations[lang].confirmRemoveButton}${currentPopupStudent}`;
         }
     };
 
-    let popupOpen = false;
-    let currentPopupStudent = null;
-
+    // Initial button text update
     updateButtonText();
 
+    // Fallback to update button text periodically
+    let lastKnownUser = window.studentsData.currentStudent;
     const checkUserChange = setInterval(() => {
-        const current = window.studentsData.currentStudent;
-        if (current !== lastKnownUser) {
-            lastKnownUser = current;
+        if (window.studentsData.currentStudent !== lastKnownUser) {
+            lastKnownUser = window.studentsData.currentStudent;
             updateButtonText();
         }
     }, 500);
 
-    window.addEventListener('unload', () => clearInterval(checkUserChange));
+    // Clean up interval when leaving the page
+    window.addEventListener('unload', () => {
+        clearInterval(checkUserChange);
+    });
 
+    // Listen for language changes
     window.addEventListener('storage', (event) => {
         if (event.key === 'language') {
             lang = localStorage.getItem('language') || 'sv';
@@ -1485,49 +1464,93 @@ function initializeRemovePage() {
         }
     });
 
-    removeButton.addEventListener('click', () => {
-        const selectedStudent = window.studentsData.currentStudent;
-        if (!selectedStudent) {
-            alert(lang === 'en' ? "No current student selected to remove." : "Ingen aktuell elev vald att radera.");
-            return;
-        }
+    if (removeButton) {
+        removeButton.addEventListener('click', () => {
+            const selectedStudent = window.studentsData.currentStudent;
+            if (!selectedStudent) {
+                alert(lang === 'en' ? "No current student selected to remove." : "Ingen aktuell elev vald att radera.");
+                return;
+            }
 
-        popupOpen = true;
-        currentPopupStudent = selectedStudent;
-        confirmRemoveMessage.textContent = `${translations[lang].confirmRemoveMessage}${selectedStudent}.`;
-        confirmRemoveButton.textContent = `${translations[lang].confirmRemoveButton}${selectedStudent}`;
-        confirmRemovePopup.style.display = 'flex';
-        confirmRemovePopup.classList.add('show');
-    });
+            // Update popup state
+            popupOpen = true;
+            currentPopupStudent = selectedStudent;
 
-    confirmRemoveButton.addEventListener('click', () => {
-        let data = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
-        if (data.students[currentPopupStudent]) {
-            delete data.students[currentPopupStudent];
-            const remainingStudents = Object.keys(data.students).sort((a, b) => a.localeCompare(b));
-            data.currentStudent = remainingStudents.length > 0 ? remainingStudents[0] : '';
-            localStorage.setItem('starAcademyStudents', JSON.stringify(data));
-            window.studentsData = data;
-            updateButtonText();
-            popupOpen = false;
-            currentPopupStudent = null;
-            confirmRemovePopup.style.display = 'none';
-            if (typeof updateDropdown === 'function') updateDropdown();
-        }
-    });
+            // Update the confirmation message with the selected student's name
+            const baseMessage = translations[lang].confirmRemoveMessage;
+            confirmRemoveMessage.textContent = `${baseMessage}${selectedStudent}.`;
 
+            // Update the button text with the selected student's name
+            const buttonBaseText = translations[lang].confirmRemoveButton;
+            confirmRemoveButton.textContent = `${buttonBaseText}${selectedStudent}`;
+
+            // Clone confirmRemoveButton to remove existing listeners
+            const newConfirmButton = confirmRemoveButton.cloneNode(true);
+            confirmRemoveButton.parentNode.replaceChild(newConfirmButton, confirmRemoveButton);
+            confirmRemoveButton = newConfirmButton;
+
+            // Show the confirmation popup
+            confirmRemovePopup.style.display = 'flex';
+            confirmRemovePopup.classList.add('show');
+
+            // Handle the Confirm Remove button click
+            confirmRemoveButton.addEventListener('click', () => {
+                let data = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
+
+                console.log('Before deletion:', JSON.stringify(data.students));
+                console.log('Deleting student:', selectedStudent);
+
+                if (data.students[selectedStudent]) {
+                    delete data.students[selectedStudent];
+
+                    console.log('After deletion:', JSON.stringify(data.students));
+
+                    // Set currentStudent to the first remaining student
+                    const remainingStudents = Object.keys(data.students).sort((a, b) => a.localeCompare(b));
+                    data.currentStudent = remainingStudents.length > 0 ? remainingStudents[0] : '';
+
+                    // Save updated data
+                    localStorage.setItem('starAcademyStudents', JSON.stringify(data));
+                    window.studentsData = data;
+
+                    // Update the button text
+                    updateButtonText();
+
+                    // Reset popup state
+                    popupOpen = false;
+                    currentPopupStudent = null;
+
+                    // Hide the popup
+                    confirmRemovePopup.style.display = 'none';
+                }
+            });
+        });
+    }
+
+    // Handle closing the popup by clicking outside
     confirmRemovePopup.addEventListener('click', (e) => {
         if (!confirmRemovePopup.querySelector('.student-popup-content').contains(e.target)) {
             confirmRemovePopup.style.display = 'none';
             popupOpen = false;
             currentPopupStudent = null;
+
+            // Clone confirmRemoveButton to remove existing listeners
+            const newConfirmButton = confirmRemoveButton.cloneNode(true);
+            confirmRemoveButton.parentNode.replaceChild(newConfirmButton, confirmRemoveButton);
+            confirmRemoveButton = newConfirmButton;
         }
     });
 
+    // Handle closing the popup with the X button
     closeConfirmRemovePopup.addEventListener('click', () => {
         confirmRemovePopup.style.display = 'none';
         popupOpen = false;
         currentPopupStudent = null;
+
+        // Clone confirmRemoveButton to remove existing listeners
+        const newConfirmButton = confirmRemoveButton.cloneNode(true);
+        confirmRemoveButton.parentNode.replaceChild(newConfirmButton, confirmRemoveButton);
+        confirmRemoveButton = newConfirmButton;
     });
 }
 
@@ -1552,273 +1575,299 @@ waitForDOM().then(() => {
     previousPart3SixStarCount = parseInt(localStorage.getItem('part3SixStarCount')) || 0;
     previousPart4SixStarCount = parseInt(localStorage.getItem('part4SixStarCount')) || 0;
     console.log('Initialized counts:', { 
-        previousSixStarCount, 
-        previousPart1SixStarCount, 
-        previousPart2SixStarCount, 
-        previousPart3SixStarCount, 
-        previousPart4SixStarCount 
+      previousSixStarCount, 
+      previousPart1SixStarCount, 
+      previousPart2SixStarCount, 
+      previousPart3SixStarCount, 
+      previousPart4SixStarCount 
     });
-
+  
     injectMenu();
+    // Delay handleUserNamePopup to ensure import logic runs first
+    setTimeout(() => {
+      console.log('Checking for namePopup after import');
+      handleUserNamePopup();
+    }, 1000);
     setInitialLanguage();
-    initializeConsentPopup(); // Call consent popup
-
+    
     const globalSelect = document.getElementById('globalStudentSelect');
     const userNameDisplay = document.getElementById('userNameDisplay');
     if (globalSelect) {
-        console.log('globalStudentSelect found, updating dropdown and binding change event');
-        if (typeof updateDropdown === 'function') {
-            updateDropdown();
+      console.log('globalStudentSelect found, updating dropdown and binding change event');
+      if (typeof updateDropdown === 'function') {
+        updateDropdown();
+      } else {
+        console.error('updateDropdown not defined');
+      }
+  
+      globalSelect.addEventListener('change', (event) => {
+        console.log('globalStudentSelect changed');
+        const selectedValue = event.target.value;
+      
+        if (window.location.pathname.toLowerCase().includes('starmap.html')) {
+          console.log('Reloading starmap.html with new user query parameter');
+          const url = new URL(window.location);
+          url.searchParams.set('newUser', selectedValue);
+          window.location.href = url.toString();
         } else {
-            console.error('updateDropdown not defined');
+          switchStudent(selectedValue);
         }
-
-        globalSelect.addEventListener('change', (event) => {
-            console.log('globalStudentSelect changed');
-            const selectedValue = event.target.value;
-            if (window.location.pathname.toLowerCase().includes('starmap.html')) {
-                console.log('Reloading starmap.html with new user query parameter');
-                const url = new URL(window.location);
-                url.searchParams.set('newUser', selectedValue);
-                window.location.href = url.toString();
-            } else {
-                switchStudent(selectedValue);
-            }
-        });
+      });
     } else {
-        console.error('globalStudentSelect not found after injectMenu');
+      console.error('globalStudentSelect not found after injectMenu');
     }
-
-    // Initialize chapter immediately for SVG sizing
+  
+    if (window.location.pathname.toLowerCase().includes('starmap.html')) {
+      const urlParams = new URLSearchParams(window.location.search);
+      const newUser = urlParams.get('newUser');
+      if (newUser) {
+        console.log(`Switching to user ${newUser} from query parameter`);
+        switchStudent(newUser);
+        const cleanUrl = window.location.pathname + (window.location.hash || '');
+        window.history.replaceState({}, document.title, cleanUrl);
+      }
+  
+      const starMapContainer = document.querySelector('.star-map-container');
+      const infoOverlay = document.querySelector('.info-overlay');
+      if (starMapContainer && infoOverlay) {
+        localStorage.setItem('infoOverlayHidden', 'false');
+        console.log('Reset infoOverlayHidden to false on page load');
+  
+        window.addEventListener('pageshow', (event) => {
+          if (event.persisted) {
+            console.log('Page loaded from BFCache, forcing reload...');
+            window.location.reload();
+          }
+        });
+  
+        if (window.starMapScrollListener) {
+          starMapContainer.removeEventListener('scroll', window.starMapScrollListener);
+        }
+  
+        if (window.infoOverlayClickListener) {
+          infoOverlay.removeEventListener('click', window.infoOverlayClickListener);
+        }
+  
+        const isMobile = window.matchMedia("(max-width: 767px) and (orientation: portrait)").matches;
+        const scrollTarget = isMobile ? 300 : 500;
+        const threshold = 50;
+  
+        let isInitialScroll = true;
+  
+        setTimeout(() => {
+          starMapContainer.scrollTo({
+            left: scrollTarget,
+            behavior: 'smooth'
+          });
+          console.log('Scrolled to description container end after delay');
+          setTimeout(() => {
+            isInitialScroll = false;
+            console.log('Initial scroll complete, enabling scroll listener');
+          }, 500);
+        }, 100);
+  
+        window.starMapScrollListener = () => {
+          if (isInitialScroll) {
+            console.log('Ignoring scroll event during initial scroll animation');
+            return;
+          }
+  
+          if (localStorage.getItem('infoOverlayHidden') === 'true') {
+            return;
+          }
+  
+          const scrollLeft = starMapContainer.scrollLeft;
+          if (scrollLeft > scrollTarget + threshold) {
+            infoOverlay.classList.add('hidden');
+            localStorage.setItem('infoOverlayHidden', 'true');
+            console.log('Info-overlay hidden on right-scroll');
+          } else if (scrollLeft < scrollTarget - threshold) {
+            infoOverlay.classList.add('hidden');
+            localStorage.setItem('infoOverlayHidden', 'true');
+            console.log('Info-overlay hidden on left-scroll');
+          } else {
+            infoOverlay.classList.remove('hidden');
+            console.log('Info-overlay visible within threshold');
+          }
+        };
+  
+        starMapContainer.addEventListener('scroll', window.starMapScrollListener);
+  
+        window.infoOverlayClickListener = () => {
+          starMapContainer.scrollTo({ left: 0, behavior: 'smooth' });
+          console.log('Info-overlay clicked, scrolling to scrollLeft = 0');
+          localStorage.setItem('infoOverlayHidden', 'true');
+          infoOverlay.classList.add('hidden');
+        };
+  
+        infoOverlay.addEventListener('click', window.infoOverlayClickListener);
+  
+        setTimeout(() => {
+          console.log('Initial scrollLeft:', starMapContainer.scrollLeft);
+          if (Math.abs(starMapContainer.scrollLeft - scrollTarget) < threshold && localStorage.getItem('infoOverlayHidden') === 'false') {
+            infoOverlay.classList.remove('hidden');
+            console.log('Initial check: Info-overlay shown');
+          } else {
+            console.log('Initial check: Info-overlay hidden');
+          }
+        }, 600);
+      }
+    }
+  
+    if (!window.isImporting) {
+      console.log('Running initializeAppContent from waitForDOM');
+      window.initializeAppContent();
+    }
+  
+    if (window.location.pathname.toLowerCase().includes('starmap.html') && typeof window.initializeStarMap === 'function') {
+      console.log('Navigating to starmap.html');
+      const starMapSvg = document.getElementById('starMap');
+      if (starMapSvg) {
+        console.log('Star Map SVG found (inline)');
+        const studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
+        if (studentsData.currentStudent) {
+          console.log('Initializing Star Map');
+          setTimeout(() => {
+            window.initializeStarMap();
+            if (userNameDisplay) {
+              userNameDisplay.textContent = studentsData.currentStudent || '';
+            }
+          }, 100);
+        } else {
+          console.log('No current student, skipping Star Map initialization');
+        }
+      } else {
+        console.error('Star Map SVG not found');
+      }
+  
+      window.addEventListener('pageshow', (event) => {
+        if (event.persisted) {
+          console.log('Page loaded from BFCache, forcing reload...');
+          window.location.reload();
+        }
+      });
+    }
+  
     if (window.location.pathname.toLowerCase().includes('chapter') && typeof window.initializeChapter === 'function') {
-        console.log('Navigating to chapter page');
+      console.log('Navigating to chapter page');
+      const studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
+      if (studentsData.currentStudent) {
         console.log('Initializing Chapter');
         setTimeout(() => {
-            window.initializeChapter();
-            if (userNameDisplay) {
-                userNameDisplay.textContent = JSON.parse(localStorage.getItem('starAcademyStudents'))?.currentStudent || '';
-            }
+          window.initializeChapter();
+          if (userNameDisplay) {
+            userNameDisplay.textContent = studentsData.currentStudent || '';
+          }
         }, 100);
-    }
-
-    if (!window.isImporting) {
-        console.log('Running initializeAppContent from waitForDOM');
-        window.initializeAppContent();
-    }
-
-    if (window.location.pathname.toLowerCase().includes('starmap.html')) {
-        const urlParams = new URLSearchParams(window.location.search);
-        const newUser = urlParams.get('newUser');
-        if (newUser) {
-            console.log(`Switching to user ${newUser} from query parameter`);
-            switchStudent(newUser);
-            const cleanUrl = window.location.pathname + (window.location.hash || '');
-            window.history.replaceState({}, document.title, cleanUrl);
+      } else {
+        console.log('No current student, skipping Chapter initialization');
+      }
+  
+      window.addEventListener('pageshow', (event) => {
+        if (event.persisted) {
+          console.log('Page loaded from BFCache, forcing reload...');
+          window.location.reload();
         }
-
-        const starMapContainer = document.querySelector('.star-map-container');
-        const infoOverlay = document.querySelector('.info-overlay');
-        if (starMapContainer && infoOverlay) {
-            localStorage.setItem('infoOverlayHidden', 'false');
-            console.log('Reset infoOverlayHidden to false on page load');
-
-            window.addEventListener('pageshow', (event) => {
-                if (event.persisted) {
-                    console.log('Page loaded from BFCache, forcing reload...');
-                    window.location.reload();
-                }
-            });
-
-            if (window.starMapScrollListener) {
-                starMapContainer.removeEventListener('scroll', window.starMapScrollListener);
-            }
-
-            if (window.infoOverlayClickListener) {
-                infoOverlay.removeEventListener('click', window.infoOverlayClickListener);
-            }
-
-            const isMobile = window.matchMedia("(max-width: 767px) and (orientation: portrait)").matches;
-            const scrollTarget = isMobile ? 300 : 500;
-            const threshold = 50;
-
-            let isInitialScroll = true;
-
-            setTimeout(() => {
-                starMapContainer.scrollTo({
-                    left: scrollTarget,
-                    behavior: 'smooth'
-                });
-                console.log('Scrolled to description container end after delay');
-                setTimeout(() => {
-                    isInitialScroll = false;
-                    console.log('Initial scroll complete, enabling scroll listener');
-                }, 500);
-            }, 100);
-
-            window.starMapScrollListener = () => {
-                if (isInitialScroll) {
-                    console.log('Ignoring scroll event during initial scroll animation');
-                    return;
-                }
-
-                if (localStorage.getItem('infoOverlayHidden') === 'true') {
-                    return;
-                }
-
-                const scrollLeft = starMapContainer.scrollLeft;
-                if (scrollLeft > scrollTarget + threshold) {
-                    infoOverlay.classList.add('hidden');
-                    localStorage.setItem('infoOverlayHidden', 'true');
-                    console.log('Info-overlay hidden on right-scroll');
-                } else if (scrollLeft < scrollTarget - threshold) {
-                    infoOverlay.classList.add('hidden');
-                    localStorage.setItem('infoOverlayHidden', 'true');
-                    console.log('Info-overlay hidden on left-scroll');
-                } else {
-                    infoOverlay.classList.remove('hidden');
-                    console.log('Info-overlay visible within threshold');
-                }
-            };
-
-            starMapContainer.addEventListener('scroll', window.starMapScrollListener);
-
-            window.infoOverlayClickListener = () => {
-                starMapContainer.scrollTo({ left: 0, behavior: 'smooth' });
-                console.log('Info-overlay clicked, scrolling to scrollLeft = 0');
-                localStorage.setItem('infoOverlayHidden', 'true');
-                infoOverlay.classList.add('hidden');
-            };
-
-            infoOverlay.addEventListener('click', window.infoOverlayClickListener);
-
-            setTimeout(() => {
-                console.log('Initial scrollLeft:', starMapContainer.scrollLeft);
-                if (Math.abs(starMapContainer.scrollLeft - scrollTarget) < threshold && localStorage.getItem('infoOverlayHidden') === 'false') {
-                    infoOverlay.classList.remove('hidden');
-                    console.log('Initial check: Info-overlay shown');
-                } else {
-                    console.log('Initial check: Info-overlay hidden');
-                }
-            }, 600);
-        }
-
-        const starMapSvg = document.getElementById('starMap');
-        if (starMapSvg && typeof window.initializeStarMap === 'function') {
-            console.log('Star Map SVG found (inline)');
-            const studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
-            if (studentsData.currentStudent) {
-                console.log('Initializing Star Map');
-                setTimeout(() => {
-                    window.initializeStarMap();
-                    if (userNameDisplay) {
-                        userNameDisplay.textContent = studentsData.currentStudent || '';
-                    }
-                }, 100);
-            } else {
-                console.log('No current student, skipping Star Map initialization');
-            }
-        }
+      });
     }
-
-    if (window.location.pathname.toLowerCase().includes('faq.html')) {
-        initializeFAQ();
-    }
-
+  
+    if (window.location.pathname.toLowerCase().includes('faq.html')) initializeFAQ();
+  
     if (window.location.pathname.toLowerCase().includes('remove.html')) {
-        window.removePageInitialized = false;
-        setTimeout(() => {
-            initializeRemovePage();
-        }, 100);
+      window.removePageInitialized = false;
+      setTimeout(() => {
+        initializeRemovePage();
+      }, 100);
     }
-
+  
     const header = document.querySelector('.title-container');
     if (header) {
-        let initialViewportHeight = window.innerHeight;
-        let reRenderInterval = null;
-
-        const forceHeaderRender = () => {
-            header.style.opacity = '0.99';
-            header.offsetHeight;
-            header.style.opacity = '1';
-        };
-
-        const checkKeyboardState = () => {
-            const currentViewportHeight = window.innerHeight;
-            if (currentViewportHeight < initialViewportHeight * 0.9) {
-                if (!reRenderInterval) {
-                    reRenderInterval = setInterval(forceHeaderRender, 100);
-                }
-            } else {
-                if (reRenderInterval) {
-                    clearInterval(reRenderInterval);
-                    reRenderInterval = null;
-                    forceHeaderRender();
-                }
-            }
-        };
-
-        window.addEventListener('resize', checkKeyboardState);
-        window.addEventListener('orientationchange', checkKeyboardState);
-        setTimeout(forceHeaderRender, 100);
-    }
-
-    const setStarMapHeight = () => {
-        const starMapContainer = document.querySelector('.star-map-container');
-        const titleContainer = document.querySelector('.title-container');
-        const body = document.querySelector('body');
-        if (starMapContainer && titleContainer && body) {
-            if (!window.initialTitleHeight) {
-                window.initialTitleHeight = titleContainer.getBoundingClientRect().height;
-            }
-            const titleHeight = window.initialTitleHeight;
-            const marginTop = 10;
-            const borderWidth = parseFloat(getComputedStyle(starMapContainer).borderWidth) || 0;
-            const bodyBorderWidth = parseFloat(getComputedStyle(body).borderWidth) || 0;
-            const totalBorderHeight = borderWidth * 2;
-            const totalBodyBorderHeight = bodyBorderWidth * 2;
-            const viewportHeight = window.innerHeight;
-            const topPosition = titleHeight + marginTop;
-            const availableHeight = viewportHeight - topPosition - totalBorderHeight - totalBodyBorderHeight - 10;
-            const maxHeight = Math.min(600, availableHeight);
-            const isMobile = window.matchMedia("(max-width: 767px) and (orientation: portrait)").matches;
-            const isIPad = window.matchMedia("(min-width: 768px) and (max-width: 1400px) and (orientation: landscape)").matches;
-            if (isIPad) {
-                const gap = 20;
-                const adjustedTop = titleHeight + gap;
-                const adjustedHeight = viewportHeight - adjustedTop - gap - totalBodyBorderHeight;
-                starMapContainer.style.height = `${adjustedHeight}px`;
-                starMapContainer.style.top = `${adjustedTop}px`;
-                starMapContainer.style.bottom = `${gap + bodyBorderWidth}px`;
-            } else if (isMobile) {
-                starMapContainer.style.height = `${maxHeight}px`;
-                starMapContainer.style.top = `${topPosition}px`;
-                starMapContainer.style.bottom = 'auto';
-            } else {
-                starMapContainer.style.height = `${maxHeight}px`;
-                starMapContainer.style.top = `${topPosition}px`;
-                starMapContainer.style.bottom = 'auto';
-            }
-            starMapContainer.style.position = 'fixed';
-            starMapContainer.style.transform = 'none';
-
-            const starMapSvg = starMapContainer.querySelector('svg');
-            if (starMapSvg) {
-                if (isMobile) {
-                    starMapSvg.style.height = '100%';
-                    starMapSvg.style.width = 'auto';
-                } else {
-                    starMapSvg.style.height = `${starMapContainer.clientHeight - totalBorderHeight}px`;
-                    starMapSvg.style.width = '2780px';
-                }
-            }
-
-            console.log('Star Map Height:', starMapContainer.style.height, 'Viewport Height:', viewportHeight, 'px', 'Title Height:', titleHeight, 'px', 'Top Position:', topPosition, 'px', 'Body Border Width:', bodyBorderWidth, 'px', 'Is Mobile:', isMobile, 'Is iPad:', isIPad);
+      let initialViewportHeight = window.innerHeight;
+      let reRenderInterval = null;
+  
+      const forceHeaderRender = () => {
+        header.style.opacity = '0.99';
+        header.offsetHeight;
+        header.style.opacity = '1';
+      };
+  
+      const checkKeyboardState = () => {
+        const currentViewportHeight = window.innerHeight;
+        if (currentViewportHeight < initialViewportHeight * 0.9) {
+          if (!reRenderInterval) {
+            reRenderInterval = setInterval(forceHeaderRender, 100);
+          }
+        } else {
+          if (reRenderInterval) {
+            clearInterval(reRenderInterval);
+            reRenderInterval = null;
+            forceHeaderRender();
+          }
         }
+      };
+  
+      window.addEventListener('resize', checkKeyboardState);
+      window.addEventListener('orientationchange', checkKeyboardState);
+      setTimeout(forceHeaderRender, 100);
+    }
+  
+    const setStarMapHeight = () => {
+      const starMapContainer = document.querySelector('.star-map-container');
+      const titleContainer = document.querySelector('.title-container');
+      const body = document.querySelector('body');
+      if (starMapContainer && titleContainer && body) {
+        if (!window.initialTitleHeight) {
+          window.initialTitleHeight = titleContainer.getBoundingClientRect().height;
+        }
+        const titleHeight = window.initialTitleHeight;
+        const marginTop = 10;
+        const borderWidth = parseFloat(getComputedStyle(starMapContainer).borderWidth) || 0;
+        const bodyBorderWidth = parseFloat(getComputedStyle(body).borderWidth) || 0;
+        const totalBorderHeight = borderWidth * 2;
+        const totalBodyBorderHeight = bodyBorderWidth * 2;
+        const viewportHeight = window.innerHeight;
+        const topPosition = titleHeight + marginTop;
+        const availableHeight = viewportHeight - topPosition - totalBorderHeight - totalBodyBorderHeight - 10;
+        const maxHeight = Math.min(600, availableHeight);
+        const isMobile = window.matchMedia("(max-width: 767px) and (orientation: portrait)").matches;
+        const isIPad = window.matchMedia("(min-width: 768px) and (max-width: 1400px) and (orientation: landscape)").matches;
+        if (isIPad) {
+          const gap = 20;
+          const adjustedTop = titleHeight + gap;
+          const adjustedHeight = viewportHeight - adjustedTop - gap - totalBodyBorderHeight;
+          starMapContainer.style.height = `${adjustedHeight}px`;
+          starMapContainer.style.top = `${adjustedTop}px`;
+          starMapContainer.style.bottom = `${gap + bodyBorderWidth}px`;
+        } else if (isMobile) {
+          starMapContainer.style.height = `${maxHeight}px`;
+          starMapContainer.style.top = `${topPosition}px`;
+          starMapContainer.style.bottom = 'auto';
+        } else {
+          starMapContainer.style.height = `${maxHeight}px`;
+          starMapContainer.style.top = `${topPosition}px`;
+          starMapContainer.style.bottom = 'auto';
+        }
+        starMapContainer.style.position = 'fixed';
+        starMapContainer.style.transform = 'none';
+  
+        const starMapSvg = starMapContainer.querySelector('svg');
+        if (starMapSvg) {
+          if (isMobile) {
+            starMapSvg.style.height = '100%';
+            starMapSvg.style.width = 'auto';
+          } else {
+            starMapSvg.style.height = `${starMapContainer.clientHeight - totalBorderHeight}px`;
+            starMapSvg.style.width = '2780px';
+          }
+        }
+  
+        console.log('Star Map Height:', starMapContainer.style.height, 'Viewport Height:', viewportHeight, 'px', 'Title Height:', titleHeight, 'px', 'Top Position:', topPosition, 'px', 'Body Border Width:', bodyBorderWidth, 'px', 'Is Mobile:', isMobile, 'Is iPad:', isIPad);
+      }
     };
-
+  
     setTimeout(() => {
-        setStarMapHeight();
-        window.addEventListener('resize', setStarMapHeight);
-        window.addEventListener('orientationchange', setStarMapHeight);
+      setStarMapHeight();
+      window.addEventListener('resize', setStarMapHeight);
+      window.addEventListener('orientationchange', setStarMapHeight);
     }, 200);
-});
+  });
