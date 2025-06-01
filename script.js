@@ -140,7 +140,7 @@ const translations = {
       retention: "Retention",
       retentionText: "Data remains in localStorage until the user clears their browser cache or deletes users via the <a href='remove.html'>Remove Users page</a>.",
       yourRights: "Your Rights",
-      yourRightsText: "Under GDPR and other laws, students/parents have the right to:<ul><li><strong>Access</strong>: View data in the teacher’s browser (via developer tools).</li><li><strong>Delete</strong>: Ask the teacher to delete data via the <a href='remove.html'>Remove Users page</a> or clear their own browser cache.</li><li><strong>Restrict</strong>: Opt out of storage, but this prevents progress tracking, making the platform unusable.</li></ul>Since we do not access data, contact your teacher for data requests. If you use the platform directly, use <a href='remove.html'>Remove Users</a> or clear your cache.",
+      yourRightsText: "Under GDPR, you have the right to: <ul><li><strong>Access</strong>: View data via browser developer tools.</li><li><strong>Delete</strong>: Use <a href='remove.html'>Remove Users</a> or clear your browser cache.</li><li><strong>Withdraw Consent</strong>: Clear your browser cache (e.g., Chrome: Settings > Privacy > Clear browsing data) to delete all data and withdraw consent.</li><li><strong>Opt-Out</strong>: Without consenting to local storage, the platform is unusable, as it’s essential for tracking progress. You may choose not to use the platform.</li></ul> Contact your teacher for data requests or email <a href='mailto:northstarpianoacademy@gmail.com'>northstarpianoacademy@gmail.com</a>.",      
       security: "Security",
       securityText: "Data is stored locally, reducing risks. QR code/link exports are encoded securely to prevent unauthorized access.",
       minors: "Minors",
@@ -149,7 +149,8 @@ const translations = {
       usingWithoutStorageText: "The platform’s purpose is to track progress for 112 piano exercises (e.g., level 5/6 for exercise 1:1:1). localStorage is essential to save this progress. Opting out (e.g., clearing cache or declining storage) resets all progress, making the platform unusable, as no data is stored online.",
       contactUs: "Contact Us",
       contactUsText: "For questions about our platform, email <a href='mailto:northstarpianoacademy@gmail.com'>northstarpianoacademy@gmail.com</a>. For data concerns, contact your piano teacher, as they control the data.",
-      noConsentError: "Sorry, you need to agree to the privacy policy before creating a user."
+      noConsentError: "Sorry, you need to agree to the privacy policy before creating a user.",
+      noConsentOptOut: "This platform requires local storage to track your progress, which is essential for its functionality. If you do not consent, you cannot use the platform. Please accept the privacy policy to continue or choose not to use the site. See our Privacy Policy for details."
     },
     sv: {
       menuFrontPage: "Stjärnöversikt",
@@ -287,7 +288,7 @@ const translations = {
       retention: "Lagringstid",
       retentionText: "Data finns kvar i localStorage tills användaren rensar webbläsarens cache eller tar bort användare via <a href='remove.html'>radera användare-sidan</a>.",
       yourRights: "Dina rättigheter",
-      yourRightsText: "Enligt GDPR och andra lagar har elever/föräldrar rätt att:<ul><li><strong>Tillgång</strong>: Se data i lärarens webbläsare (via utvecklarverktyg).</li><li><strong>Radera</strong>: Be läraren att radera data via <a href='remove.html'>radera användare-sidan</a> eller rensa sin egen webbläsarcache.</li><li><strong>Begränsa</strong>: Välja bort lagring, men detta förhindrar spårning av framsteg, vilket gör plattformen oanvändbar.</li></ul>Eftersom vi inte har åtkomst till data, kontakta din lärare för databehov. Om du använder plattformen direkt, använd <a href='remove.html'>radera användare</a> eller rensa din cache.",
+      yourRightsText: "Under GDPR har du rätt att: <ul><li><strong>Åtkomst</strong>: Visa data via webbläsarens utvecklarverktyg.</li><li><strong>Radera</strong>: Använd <a href='remove.html'>Radera användare</a> eller rensa webbläsarens cache.</li><li><strong>Återkalla samtycke</strong>: Rensa webbläsarens cache (t.ex. Chrome: Inställningar > Sekretess > Rensa webbinformation) för att radera all data och återkalla samtycke.</li><li><strong>Välja bort</strong>: Utan samtycke till lokal lagring är plattformen oanvändbar, eftersom det är nödvändigt för att spåra framsteg. Du kan välja att inte använda plattformen.</li></ul> Kontakta din lärare eller maila <a href='mailto:nordstjarnanspianoskola@gmail.com'>nordstjarnanspianoskola@gmail.com</a>.",
       security: "Säkerhet",
       securityText: "Data lagras lokalt, vilket minskar risker. QR-kod/länkexport är kodade säkert för att förhindra obehörig åtkomst.",
       minors: "Barn",
@@ -296,7 +297,8 @@ const translations = {
       usingWithoutStorageText: "Plattformens syfte är att spåra framsteg för 112 pianövningar (t.ex. nivå 5/6 för övning 1:1:1). localStorage är nödvändigt för att spara dessa framsteg. Att välja bort (t.ex. rensa cache eller neka lagring) återställer alla framsteg, vilket gör plattformen oanvändbar, eftersom ingen data lagras online.",
       contactUs: "Kontakta oss",
       contactUsText: "För frågor om vår plattform, maila <a href='mailto:nordstjarnanspianoskola@gmail.com'>nordstjarnanspianoskola@gmail.com</a>. För databehov, kontakta din pianolärare, eftersom de kontrollerar datan.",
-      noConsentError: "Du måste godkänna integritetspolicyn innan du kan skapa en användare."
+      noConsentError: "Du måste godkänna integritetspolicyn innan du kan skapa en användare.",
+      noConsentOptOut: "Denna plattform kräver lokal lagring för att spåra dina/dina elevers framsteg, vilket är nödvändigt för dess funktionalitet. Om du inte samtycker kan du inte använda plattformen. Vänligen acceptera integritetspolicyn för att fortsätta eller välj att inte använda webbplatsen. Se vår integritetspolicy för detaljer."
     }
 };
 
@@ -433,19 +435,14 @@ function injectMenu() {
 }
 
 function initializeConsentPopup() {
-    // Always reset to ensure full popup
+    // Clear cookieconsent state
+    localStorage.removeItem('consentGiven');
+    localStorage.removeItem('cookieconsent_status');
     if (window.cookieconsent && window.cookieconsent.element) {
         window.cookieconsent.element.remove();
         window.cookieconsent = null;
     }
     window.consentInitialized = false;
-
-    const consentGiven = localStorage.getItem('consentGiven') === 'true';
-    if (consentGiven) {
-        console.log('Consent already given, initializing name popup');
-        if (typeof handleUserNamePopup === 'function') handleUserNamePopup();
-        return;
-    }
 
     const lang = localStorage.getItem('language') || 'sv';
     window.cookieconsent.initialise({
@@ -453,31 +450,31 @@ function initializeConsentPopup() {
         position: "bottom",
         content: {
             message: translations[lang].consentMessage,
-            dismiss: translations[lang].consentAccept,
-            deny: translations[lang].consentReject,
+            dismiss: translations[lang].consentAccept, // Ensure "I Accept!"
+            deny: translations[lang].consentReject, // "I Don’t Agree"
             link: translations[lang].consentPolicyLink,
             href: "privacy-policy.html"
         },
         type: "opt-in",
         onInitialise: function(status) {
-            if (!this.hasConsented()) {
-                console.log('No consent, showing full popup');
+            console.log('ConsentPopup initialized');
+            // Initialize chapter for SVG sizing
+            if (window.location.pathname.toLowerCase().includes('chapter') && typeof window.initializeChapter === 'function') {
+                setTimeout(() => window.initializeChapter(), 100);
             }
         },
         onStatusChange: function(status, chosenBefore) {
             if (this.hasConsented()) {
-                console.log('User consented, saving to localStorage');
                 localStorage.setItem('consentGiven', 'true');
                 this.element.style.display = 'none';
                 window.consentInitialized = false;
                 if (typeof handleUserNamePopup === 'function') handleUserNamePopup();
-                // Initialize chapter after consent
-                if (window.location.pathname.toLowerCase().includes('chapter') && typeof window.initializeChapter === 'function') {
-                    window.initializeChapter();
-                }
             } else {
-                console.log('User rejected consent, redirecting to no-consent.html');
-                window.location.href = 'no-consent.html';
+                const lang = localStorage.getItem('language') || 'sv';
+                alert(translations[lang].noConsentOptOut || "This platform requires local storage to track your progress, which is essential for its functionality. If you do not consent, you cannot use the platform. Please accept the privacy policy to continue or choose not to use the site. See our Privacy Policy for details.");
+                localStorage.removeItem('consentGiven');
+                localStorage.removeItem('cookieconsent_status');
+                // Stay on page, keep popup open
             }
         }
     });
