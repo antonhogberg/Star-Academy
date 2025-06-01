@@ -44,14 +44,6 @@
             const lang = localStorage.getItem('language') || 'sv';
             injectMenu();
             switchLanguage(lang);
-
-            const revokeConsentButton = document.getElementById('revokeConsentButton');
-            if (revokeConsentButton) {
-                revokeConsentButton.addEventListener('click', () => {
-                    localStorage.removeItem('consentGiven');
-                    alert(lang === 'en' ? 'Consent revoked. Reload the page to see the consent popup.' : 'Samtycke återkallat. Ladda om sidan för att se samtyckespopupen.');
-                });
-            }
         });
     </script>
 </body>

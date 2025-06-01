@@ -446,12 +446,12 @@ function initializeConsentPopup() {
 
     const lang = localStorage.getItem('language') || 'sv';
     window.cookieconsent.initialise({
-        palette: { popup: { background: "#f0f0f0", text: "#333" }, button: { background: "#ffd700", text: "#333" } },
+        palette: { popup: { background: "#f0f0f0", text: "#333" }, button: { background: "transparent", text: "#333" } },
         position: "bottom",
         content: {
             message: translations[lang].consentMessage,
-            dismiss: translations[lang].consentAccept,
-            deny: translations[lang].consentReject,
+            dismiss: translations[lang].consentAccept || "I Accept!",
+            deny: translations[lang].consentReject || "I Don’t Agree",
             link: translations[lang].consentPolicyLink,
             href: "privacy-policy.html"
         },
@@ -461,15 +461,17 @@ function initializeConsentPopup() {
         },
         onStatusChange: function(status, chosenBefore) {
             if (this.hasConsented()) {
+                console.log('User consented');
                 localStorage.setItem('consentGiven', 'true');
-                // Destroy cookieconsent instance to hide patch
+                // Fully destroy cookieconsent
                 if (window.cookieconsent) {
-                    window.cookieconsent.element.remove();
+                    this.element.remove();
                     window.cookieconsent = null;
                     window.consentInitialized = false;
                 }
                 if (typeof handleUserNamePopup === 'function') handleUserNamePopup();
             } else {
+                console.log('User rejected consent');
                 alert(translations[lang].noConsentOptOut || "This platform requires local storage to track progress, which is essential for functionality. If you do not consent, you cannot use the platform. Please accept the privacy policy to continue or choose not to use the site.");
                 localStorage.removeItem('consentGiven');
                 localStorage.removeItem('cookieconsent_status');
@@ -1419,21 +1421,18 @@ function initializeFAQ() {
 function initializeRemovePage() {
     console.log('initializeRemovePage called');
 
-    // Prevent re-initialization
     if (window.removePageInitialized) {
         console.log('remove.html already initialized, skipping');
         return;
     }
     window.removePageInitialized = true;
 
-    // Ensure window.studentsData is initialized
-    window.studentsData = window.studentsData || JSON.parse(localStorage.getItem('starAcademyStudents')) || {
+    window.studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || {
         students: {},
         currentStudent: ''
     };
     console.log('window.studentsData on remove.html:', window.studentsData);
 
-    // Initialize elements
     const removeButton = document.getElementById('removeStudentButton');
     const confirmRemovePopup = document.getElementById('confirmRemovePopup');
     const confirmRemoveMessage = document.getElementById('confirmRemoveMessage');
@@ -1442,52 +1441,37 @@ function initializeRemovePage() {
     let lang = localStorage.getItem('language') || 'sv';
 
     if (!removeButton || !confirmRemovePopup || !confirmRemoveMessage || !confirmRemoveButton || !closeConfirmRemovePopup) {
-        console.error('One or more required elements not found on remove.html');
+        console.error('Required elements not found on remove.html');
         return;
     }
 
-    // Store popup state
-    let popupOpen = false;
-    let currentPopupStudent = null;
-
-    // Function to update the button text
     const updateButtonText = () => {
         if (window.studentsData.currentStudent) {
             removeButton.textContent = `${translations[lang].removeCurrentStudent}${window.studentsData.currentStudent}`;
         } else {
             removeButton.textContent = translations[lang].removeCurrentStudentNone;
         }
-
-        // Update popup text if the popup is open
         if (popupOpen && currentPopupStudent) {
             confirmRemoveMessage.textContent = `${translations[lang].confirmRemoveMessage}${currentPopupStudent}.`;
             confirmRemoveButton.textContent = `${translations[lang].confirmRemoveButton}${currentPopupStudent}`;
         }
     };
 
-    // Initial button text update
+    let popupOpen = false;
+    let currentPopupStudent = null;
+
     updateButtonText();
 
-    // Disable button if no consent
-    if (localStorage.getItem('consentGiven') !== 'true') {
-        removeButton.disabled = true;
-    }
-
-    // Fallback to update button text periodically
-    let lastKnownUser = window.studentsData.currentStudent;
     const checkUserChange = setInterval(() => {
-        if (window.studentsData.currentStudent !== lastKnownUser) {
-            lastKnownUser = window.studentsData.currentStudent;
+        const current = window.studentsData.currentStudent;
+        if (current !== lastKnownUser) {
+            lastKnownUser = current;
             updateButtonText();
         }
     }, 500);
 
-    // Clean up interval when leaving the page
-    window.addEventListener('unload', () => {
-        clearInterval(checkUserChange);
-    });
+    window.addEventListener('unload', () => clearInterval(checkUserChange));
 
-    // Listen for language changes
     window.addEventListener('storage', (event) => {
         if (event.key === 'language') {
             lang = localStorage.getItem('language') || 'sv';
@@ -1501,99 +1485,49 @@ function initializeRemovePage() {
         }
     });
 
-    if (removeButton) {
-        removeButton.addEventListener('click', () => {
-            // Prevent action if no consent
-            if (localStorage.getItem('consentGiven') !== 'true') {
-                console.log('Cannot remove student: consent not given');
-                return;
-            }
+    removeButton.addEventListener('click', () => {
+        const selectedStudent = window.studentsData.currentStudent;
+        if (!selectedStudent) {
+            alert(lang === 'en' ? "No current student selected to remove." : "Ingen aktuell elev vald att radera.");
+            return;
+        }
 
-            const selectedStudent = window.studentsData.currentStudent;
-            if (!selectedStudent) {
-                alert(lang === 'en' ? "No current student selected to remove." : "Ingen aktuell elev vald att radera.");
-                return;
-            }
+        popupOpen = true;
+        currentPopupStudent = selectedStudent;
+        confirmRemoveMessage.textContent = `${translations[lang].confirmRemoveMessage}${selectedStudent}.`;
+        confirmRemoveButton.textContent = `${translations[lang].confirmRemoveButton}${selectedStudent}`;
+        confirmRemovePopup.style.display = 'flex';
+        confirmRemovePopup.classList.add('show');
+    });
 
-            // Update popup state
-            popupOpen = true;
-            currentPopupStudent = selectedStudent;
+    confirmRemoveButton.addEventListener('click', () => {
+        let data = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
+        if (data.students[currentPopupStudent]) {
+            delete data.students[currentPopupStudent];
+            const remainingStudents = Object.keys(data.students).sort((a, b) => a.localeCompare(b));
+            data.currentStudent = remainingStudents.length > 0 ? remainingStudents[0] : '';
+            localStorage.setItem('starAcademyStudents', JSON.stringify(data));
+            window.studentsData = data;
+            updateButtonText();
+            popupOpen = false;
+            currentPopupStudent = null;
+            confirmRemovePopup.style.display = 'none';
+            if (typeof updateDropdown === 'function') updateDropdown();
+        }
+    });
 
-            // Update the confirmation message with the selected student's name
-            const baseMessage = translations[lang].confirmRemoveMessage;
-            confirmRemoveMessage.textContent = `${baseMessage}${selectedStudent}.`;
-
-            // Update the button text with the selected student's name
-            const buttonBaseText = translations[lang].confirmRemoveButton;
-            confirmRemoveButton.textContent = `${buttonBaseText}${selectedStudent}`;
-
-            // Clone confirmRemoveButton to remove existing listeners
-            const newConfirmButton = confirmRemoveButton.cloneNode(true);
-            confirmRemoveButton.parentNode.replaceChild(newConfirmButton, confirmRemoveButton);
-            confirmRemoveButton = newConfirmButton;
-
-            // Show the confirmation popup
-            confirmRemovePopup.style.display = 'flex';
-            confirmRemovePopup.classList.add('show');
-
-            // Handle the Confirm Remove button click
-            confirmRemoveButton.addEventListener('click', () => {
-                let data = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
-
-                console.log('Before deletion:', JSON.stringify(data.students));
-                console.log('Deleting student:', selectedStudent);
-
-                if (data.students[selectedStudent]) {
-                    delete data.students[selectedStudent];
-
-                    console.log('After deletion:', JSON.stringify(data.students));
-
-                    // Set currentStudent to the first remaining student
-                    const remainingStudents = Object.keys(data.students).sort((a, b) => a.localeCompare(b));
-                    data.currentStudent = remainingStudents.length > 0 ? remainingStudents[0] : '';
-
-                    // Save updated data
-                    localStorage.setItem('starAcademyStudents', JSON.stringify(data));
-                    window.studentsData = data;
-
-                    // Update the button text
-                    updateButtonText();
-
-                    // Reset popup state
-                    popupOpen = false;
-                    currentPopupStudent = null;
-
-                    // Hide the popup
-                    confirmRemovePopup.style.display = 'none';
-                }
-            });
-        });
-    }
-
-    // Handle closing the popup by clicking outside
     confirmRemovePopup.addEventListener('click', (e) => {
         if (!confirmRemovePopup.querySelector('.student-popup-content').contains(e.target)) {
             confirmRemovePopup.style.display = 'none';
             popupOpen = false;
             currentPopupStudent = null;
-
-            // Clone confirmRemoveButton to remove existing listeners
-            const newConfirmButton = confirmRemoveButton.cloneNode(true);
-            confirmRemoveButton.parentNode.replaceChild(newConfirmButton, confirmRemoveButton);
-            confirmRemoveButton = newConfirmButton;
         }
     });
 
-    // Handle closing the popup with the X button
     closeConfirmRemovePopup.addEventListener('click', () => {
         confirmRemovePopup.style.display = 'none';
         popupOpen = false;
         currentPopupStudent = null;
-
-        // Clone confirmRemoveButton to remove existing listeners
-        const newConfirmButton = confirmRemoveButton.cloneNode(true);
-        confirmRemoveButton.parentNode.replaceChild(newConfirmButton, confirmRemoveButton);
-        confirmRemoveButton = newConfirmButton;
     });
 }
 
