@@ -148,7 +148,8 @@ const translations = {
       usingWithoutStorage: "Using the Platform Without Local Storage",
       usingWithoutStorageText: "The platform’s purpose is to track progress for 112 piano exercises (e.g., level 5/6 for exercise 1:1:1). localStorage is essential to save this progress. Opting out (e.g., clearing cache or declining storage) resets all progress, making the platform unusable, as no data is stored online.",
       contactUs: "Contact Us",
-      contactUsText: "For questions about our platform, email <a href='mailto:northstarpianoacademy@gmail.com'>northstarpianoacademy@gmail.com</a>. For data concerns, contact your piano teacher, as they control the data."
+      contactUsText: "For questions about our platform, email <a href='mailto:northstarpianoacademy@gmail.com'>northstarpianoacademy@gmail.com</a>. For data concerns, contact your piano teacher, as they control the data.",
+      noConsentError: "Sorry, you need to agree to the privacy policy before creating a user."
     },
     sv: {
       menuFrontPage: "Stjärnöversikt",
@@ -294,7 +295,8 @@ const translations = {
       usingWithoutStorage: "Att använda plattformen utan lokal lagring",
       usingWithoutStorageText: "Plattformens syfte är att spåra framsteg för 112 pianövningar (t.ex. nivå 5/6 för övning 1:1:1). localStorage är nödvändigt för att spara dessa framsteg. Att välja bort (t.ex. rensa cache eller neka lagring) återställer alla framsteg, vilket gör plattformen oanvändbar, eftersom ingen data lagras online.",
       contactUs: "Kontakta oss",
-      contactUsText: "För frågor om vår plattform, maila <a href='mailto:nordstjarnanspianoskola@gmail.com'>nordstjarnanspianoskola@gmail.com</a>. För databehov, kontakta din pianolärare, eftersom de kontrollerar datan."
+      contactUsText: "För frågor om vår plattform, maila <a href='mailto:nordstjarnanspianoskola@gmail.com'>nordstjarnanspianoskola@gmail.com</a>. För databehov, kontakta din pianolärare, eftersom de kontrollerar datan.",
+      noConsentError: "Du måste godkänna integritetspolicyn innan du kan skapa en användare."
     }
 };
 
@@ -431,22 +433,16 @@ function injectMenu() {
 }
 
 function initializeConsentPopup() {
-    // Prevent multiple initializations
-    if (window.consentInitialized) {
-        console.log('Consent popup already initialized, skipping');
-        return;
-    }
-    window.consentInitialized = true;
-
-    // Destroy existing popup
+    // Always reset to ensure full popup
     if (window.cookieconsent && window.cookieconsent.element) {
         window.cookieconsent.element.remove();
         window.cookieconsent = null;
     }
+    window.consentInitialized = false;
 
     const consentGiven = localStorage.getItem('consentGiven') === 'true';
     if (consentGiven) {
-        console.log('Consent already given, skipping popup');
+        console.log('Consent already given, initializing name popup');
         if (typeof handleUserNamePopup === 'function') handleUserNamePopup();
         return;
     }
@@ -465,16 +461,20 @@ function initializeConsentPopup() {
         type: "opt-in",
         onInitialise: function(status) {
             if (!this.hasConsented()) {
-                console.log('No consent yet, showing popup');
+                console.log('No consent, showing full popup');
             }
         },
         onStatusChange: function(status, chosenBefore) {
             if (this.hasConsented()) {
                 console.log('User consented, saving to localStorage');
                 localStorage.setItem('consentGiven', 'true');
-                this.element.style.display = 'none'; // Hide popup
-                window.consentInitialized = false; // Allow reinitialization on next load
-                if (typeof handleUserNamePopup === 'function') handleUserNamePopup(); // Trigger namePopup after consent
+                this.element.style.display = 'none';
+                window.consentInitialized = false;
+                if (typeof handleUserNamePopup === 'function') handleUserNamePopup();
+                // Initialize chapter after consent
+                if (window.location.pathname.toLowerCase().includes('chapter') && typeof window.initializeChapter === 'function') {
+                    window.initializeChapter();
+                }
             } else {
                 console.log('User rejected consent, redirecting to no-consent.html');
                 window.location.href = 'no-consent.html';
@@ -1236,6 +1236,41 @@ function handleUserNamePopup() {
             return;
         }
 
+        let isConsentPopupActive = false;
+
+        function showConsentPopup(message, duration) {
+            console.log('showConsentPopup called:', message);
+            const popup = document.getElementById('studentPopup');
+            const popupMessage = document.getElementById('studentPopupMessage');
+
+            if (!popup || !popupMessage) {
+                console.error('Consent popup elements not found');
+                alert(message); // Fallback
+                return;
+            }
+
+            if (nameInput) nameInput.blur();
+            if (nameInput) nameInput.disabled = true;
+            if (submitBtn) submitBtn.disabled = true;
+            popupMessage.textContent = message;
+            popup.style.display = 'flex';
+            popup.style.opacity = '1';
+            isConsentPopupActive = true;
+
+            setTimeout(() => {
+                popup.style.transition = 'opacity 1s ease';
+                popup.style.opacity = '0';
+                setTimeout(() => {
+                    popup.style.display = 'none';
+                    popup.style.opacity = '1';
+                    popup.style.transition = '';
+                    isConsentPopupActive = false;
+                    if (nameInput) nameInput.disabled = false;
+                    if (submitBtn) submitBtn.disabled = false;
+                }, 1000);
+            }, duration - 1000);
+        }
+
         const updateMenuHeight = () => {
             if (menu) {
                 menu.style.height = `${window.innerHeight}px`;
@@ -1260,7 +1295,7 @@ function handleUserNamePopup() {
             });
             updateMenuHeight();
 
-            // Ensure input and button are enabled
+            // Ensure input and button are enabled initially
             nameInput.disabled = false;
             submitBtn.disabled = false;
         } else if (userNameDisplay) {
@@ -1269,10 +1304,15 @@ function handleUserNamePopup() {
         }
 
         window.saveName = function() {
-            // Prevent saving if no consent
+            if (isConsentPopupActive) {
+                console.log('Consent popup active, ignoring saveName');
+                return;
+            }
+
             if (localStorage.getItem('consentGiven') !== 'true') {
                 console.log('Cannot save name: consent not given');
-                alert(translations[localStorage.getItem('language') || 'sv'].consentMessage);
+                const lang = localStorage.getItem('language') || 'sv';
+                showConsentPopup(translations[lang].noConsentError, 3000);
                 return;
             }
 
@@ -1281,7 +1321,10 @@ function handleUserNamePopup() {
                 studentsData.students[name] = {
                     name: name,
                     progress: {},
-                    rank: "Explorer"
+                    rank: "Explorer",
+                    notes: "",
+                    studentMode: false,
+                    silverProgress: initializeSilverProgress()
                 };
                 for (let chapter = 1; chapter <= 7; chapter++) {
                     for (let part = 1; part <= 4; part++) {
@@ -1350,23 +1393,28 @@ function handleUserNamePopup() {
                     console.log('Calling initializeStarMap after saving name');
                     window.initializeStarMap();
                 }
+                if (window.location.pathname.toLowerCase().includes('chapter') && typeof window.initializeChapter === 'function') {
+                    console.log('Calling initializeChapter after saving name');
+                    window.initializeChapter();
+                }
             } else {
-                alert(translations[localStorage.getItem('language') || 'sv'].addStudentNoName);
+                showConsentPopup(translations[localStorage.getItem('language') || 'sv'].addStudentNoName, 3000);
             }
         };
 
         const submitBtnHandler = document.querySelector('button[onclick="saveName()"]');
         if (submitBtnHandler) {
             submitBtnHandler.removeEventListener('click', window.saveName);
-            submitBtnHandler.addEventListener('click', window.saveName);
+            submitBtnHandler.addEventListener('click', () => {
+                if (!isConsentPopupActive) window.saveName();
+            });
             console.log('Submit button listener added');
         }
         if (nameInput) {
             nameInput.removeEventListener('keypress', handleEnterKey);
-            nameInput.addEventListener('keypress', handleEnterKey);
-            function handleEnterKey(e) {
-                if (e.key === 'Enter') window.saveName();
-            }
+            nameInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter' && !isConsentPopupActive) window.saveName();
+            });
             console.log('Enter key listener added');
         }
 
