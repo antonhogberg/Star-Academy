@@ -338,7 +338,7 @@ const menuHtml = `
 
 function injectMenu() {
     console.log('injectMenu called');
-    const placeholder = document.getElementById('menu-placeholder');
+    const placeholder = document.getElementById('mobileMenu');
     if (!placeholder) {
         console.error('Menu placeholder not found');
         return;
@@ -347,7 +347,7 @@ function injectMenu() {
     placeholder.innerHTML = menuHtml;
     console.log('Menu HTML injected');
 
-    const hamburger = document.getElementById('menuButton');
+    const hamburger = document.getElementById('pianoMenu');
     const menu = document.querySelector('.menu');
 
     if (!hamburger || !menu) {
@@ -358,19 +358,16 @@ function injectMenu() {
     console.log('Menu initialized with left: -250px via CSS');
 
     // Remove existing listeners to prevent duplicates
-    const newHamburger = hamburger.cloneNode(true);
-    hamburger.parentNode.replaceChild(newHamburger, hamburger);
-
-    newHamburger.addEventListener('click', () => {
+    hamburger.removeEventListener('click', window.hamburgerClickListener);
+    window.hamburgerClickListener = () => {
         console.log('Hamburger clicked');
-        const isExpanded = newHamburger.getAttribute('aria-expanded') === 'true';
-        newHamburger.setAttribute('aria-expanded', !isExpanded);
-        newHamburger.classList.toggle('active');
+        const isExpanded = hamburger.getAttribute('aria-expanded') === 'true';
+        hamburger.setAttribute('aria-expanded', !isExpanded);
+        hamburger.classList.toggle('active');
         if (!isExpanded) {
             menu.classList.add('active');
             menu.animate([{ left: '-250px' }, { left: '0' }], { duration: 300, easing: 'ease-in-out', fill: 'forwards' });
             console.log('Menu opened');
-            // Refresh the dropdown when opening the menu
             if (typeof updateDropdown === 'function') {
                 console.log('Calling updateDropdown when menu opens');
                 updateDropdown();
@@ -381,13 +378,14 @@ function injectMenu() {
                 console.log('Menu closed');
             };
         }
-    });
+    };
+    hamburger.addEventListener('click', window.hamburgerClickListener);
 
     document.querySelectorAll('.menu-link').forEach(link => {
         link.addEventListener('click', () => {
             console.log(`Menu link clicked: ${link.getAttribute('href')}`);
-            newHamburger.setAttribute('aria-expanded', 'false');
-            newHamburger.classList.remove('active');
+            hamburger.setAttribute('aria-expanded', 'false');
+            hamburger.classList.remove('active');
             menu.animate([{ left: '0' }, { left: '-250px' }], { duration: 300, easing: 'ease-in-out', fill: 'forwards' }).onfinish = () => {
                 menu.classList.remove('active');
                 console.log('Menu closed after link click');
@@ -396,10 +394,10 @@ function injectMenu() {
     });
 
     document.addEventListener('click', (e) => {
-        if (!newHamburger.contains(e.target) && !menu.contains(e.target)) {
+        if (!hamburger.contains(e.target) && !menu.contains(e.target)) {
             console.log('Clicked outside menu');
-            newHamburger.setAttribute('aria-expanded', 'false');
-            newHamburger.classList.remove('active');
+            hamburger.setAttribute('aria-expanded', 'false');
+            hamburger.classList.remove('active');
             menu.animate([{ left: '0' }, { left: '-250px' }], { duration: 300, easing: 'ease-in-out', fill: 'forwards' }).onfinish = () => {
                 menu.classList.remove('active');
                 console.log('Menu closed due to outside click');
@@ -491,11 +489,10 @@ function initializeConsentPopup() {
         alert(translations[lang].noConsentOptOut);
         localStorage.removeItem('consentGiven');
         localStorage.removeItem('cookieconsent_status');
-        // Keep popup open
         consentPopup.style.display = 'flex';
     });
 
-    consentPolicyLink.addEventListener('click', (e) => {
+    consentPolicyLink.addEventListener('click', () => {
         console.log('Privacy policy link clicked');
         showPrivacyPolicyPopup();
     });
@@ -1324,7 +1321,6 @@ function handleUserNamePopup() {
         window.addEventListener('resize', updateMenuHeight);
         window.addEventListener('orientationchange', updateMenuHeight);
 
-        // Show namePopup if no current student
         if (!studentsData.currentStudent) {
             console.log('Showing namePopup for new user');
             namePopup.style.display = 'flex';
@@ -1339,7 +1335,6 @@ function handleUserNamePopup() {
             });
             updateMenuHeight();
 
-            // Ensure input and button are enabled
             nameInput.disabled = false;
             submitBtn.disabled = false;
         } else if (userNameDisplay) {
@@ -1348,7 +1343,6 @@ function handleUserNamePopup() {
         }
 
         window.saveName = function() {
-            // Prevent saving if no consent
             if (localStorage.getItem('consentGiven') !== 'true') {
                 console.log('Cannot save name: consent not given');
                 alert(translations[localStorage.getItem('language') || 'sv'].consentMessage);
@@ -1377,6 +1371,7 @@ function handleUserNamePopup() {
 
                 setTimeout(() => {
                     document.body.classList.remove('popup-open');
+                    document.body.style.overflow = '';
                     const isMobilePortrait = window.matchMedia('(max-width: 767px) and (orientation: portrait)').matches;
                     if (!isMobilePortrait) {
                         window.scrollTo(0, 0);
@@ -1413,6 +1408,7 @@ function handleUserNamePopup() {
                         successPopup.style.display = 'none';
                         document.body.classList.remove('popup-open');
                         document.body.removeChild(successPopup);
+                        document.body.style.overflow = '';
                         updateMenuHeight();
                     }, 1000);
                 }, 2000);
@@ -1429,6 +1425,11 @@ function handleUserNamePopup() {
                     console.log('Calling initializeStarMap after saving name');
                     window.initializeStarMap();
                 }
+
+                // Reinitialize menu to ensure functionality
+                setTimeout(() => {
+                    injectMenu();
+                }, 100);
             } else {
                 alert(translations[localStorage.getItem('language') || 'sv'].addStudentNoName);
             }
