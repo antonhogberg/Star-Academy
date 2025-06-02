@@ -442,10 +442,6 @@ function initializeConsentPopup() {
     window.consentInitialized = true;
 
     localStorage.removeItem('cookieconsent_status');
-    if (window.cookieconsent && window.cookieconsent.element) {
-        window.cookieconsent.element.remove();
-        window.cookieconsent = null;
-    }
 
     const consentGiven = localStorage.getItem('consentGiven') === 'true';
     if (consentGiven) {
@@ -455,59 +451,58 @@ function initializeConsentPopup() {
     }
 
     const lang = localStorage.getItem('language') || 'sv';
-    window.cookieconsent.initialise({
-        palette: { popup: { background: "#f0f0f0", text: "#333" }, button: { background: "#ffd700", text: "#333" } },
-        position: "bottom",
-        content: {
-            message: translations[lang].consentMessage,
-            dismiss: translations[lang].consentAccept,
-            allow: translations[lang].consentAccept,
-            deny: translations[lang].consentReject,
-            link: translations[lang].consentPolicyLink,
-            href: "#"
-        },
-        type: "opt-in",
-        onInitialise: function(status) {
-            console.log('ConsentPopup initialized, status:', status);
-            if (!this.hasConsented()) {
-                setTimeout(() => {
-                    const allowButton = document.querySelector('.cc-btn.cc-allow');
-                    if (allowButton && allowButton.textContent !== translations[lang].consentAccept) {
-                        allowButton.textContent = translations[lang].consentAccept;
-                    }
-                    const policyLink = document.querySelector('.cc-link');
-                    if (policyLink) {
-                        policyLink.addEventListener('click', (e) => {
-                            e.preventDefault();
-                            showPrivacyPolicyPopup();
-                        });
-                    }
-                }, 100);
-            }
-        },
-        onStatusChange: function(status, chosenBefore) {
-            if (this.hasConsented()) {
-                console.log('User consented');
-                localStorage.setItem('consentGiven', 'true');
-                localStorage.removeItem('cookieconsent_status');
-                if (this.element) {
-                    this.element.remove();
-                    window.cookieconsent = null;
-                    window.consentInitialized = false;
-                }
-                if (typeof handleUserNamePopup === 'function') handleUserNamePopup();
-            } else {
-                console.log('User rejected consent');
-                alert(translations[lang].noConsentOptOut);
-                localStorage.removeItem('consentGiven');
-                localStorage.removeItem('cookieconsent_status');
-                // Keep popup open
-                this.show();
-            }
-        }
+    const consentPopup = document.getElementById('consentPopup');
+    const consentMessage = document.getElementById('consentMessage');
+    const consentAcceptButton = document.getElementById('consentAcceptButton');
+    const consentRejectButton = document.getElementById('consentRejectButton');
+    const consentPolicyLink = document.getElementById('consentPolicyLink');
+
+    if (!consentPopup || !consentMessage || !consentAcceptButton || !consentRejectButton || !consentPolicyLink) {
+        console.error('Consent popup elements not found:', {
+            consentPopup: !!consentPopup,
+            consentMessage: !!consentMessage,
+            consentAcceptButton: !!consentAcceptButton,
+            consentRejectButton: !!consentRejectButton,
+            consentPolicyLink: !!consentPolicyLink
+        });
+        return;
+    }
+
+    consentMessage.innerHTML = translations[lang].consentMessage;
+    consentAcceptButton.textContent = translations[lang].consentAccept;
+    consentRejectButton.textContent = translations[lang].consentReject;
+    consentPolicyLink.textContent = translations[lang].consentPolicyLink;
+
+    consentPopup.style.display = 'flex';
+    document.body.classList.add('popup-open');
+
+    consentAcceptButton.addEventListener('click', () => {
+        console.log('User consented');
+        localStorage.setItem('consentGiven', 'true');
+        localStorage.removeItem('cookieconsent_status');
+        consentPopup.style.display = 'none';
+        document.body.classList.remove('popup-open');
+        window.consentInitialized = false;
+        if (typeof handleUserNamePopup === 'function') handleUserNamePopup();
+    });
+
+    consentRejectButton.addEventListener('click', () => {
+        console.log('User rejected consent');
+        alert(translations[lang].noConsentOptOut);
+        localStorage.removeItem('consentGiven');
+        localStorage.removeItem('cookieconsent_status');
+        // Keep popup open
+        consentPopup.style.display = 'flex';
+    });
+
+    consentPolicyLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        console.log('Privacy policy link clicked');
+        showPrivacyPolicyPopup();
     });
 }
 
+// Ensure showPrivacyPolicyPopup is unchanged
 function showPrivacyPolicyPopup() {
     const lang = localStorage.getItem('language') || 'sv';
     const popup = document.createElement('div');
@@ -568,6 +563,7 @@ function showPrivacyPolicyPopup() {
         }
     });
 }
+
 
 // Initialize popup on DOM load
 document.addEventListener('DOMContentLoaded', () => {
