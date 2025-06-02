@@ -151,8 +151,21 @@ function initializeChapter() {
         return;
     }
 
-    const chapterNumMatch = document.location.pathname.match(/chapter(\d+)/);
-    const chapterNum = chapterNumMatch ? parseInt(chapterNumMatch[1]) : 1;
+    // Robust chapter number extraction
+    let chapterNum = 1;
+    const pathMatch = document.location.pathname.match(/chapter(\d+)/i); // Case-insensitive
+    if (pathMatch) {
+        chapterNum = parseInt(pathMatch[1]);
+    } else {
+        // Fallback to filename
+        const filename = document.location.pathname.split('/').pop().toLowerCase();
+        const fileMatch = filename.match(/chapter(\d+)/);
+        if (fileMatch) {
+            chapterNum = parseInt(fileMatch[1]);
+        }
+    }
+    console.log(`Detected chapter number: ${chapterNum}`);
+
     const exercisesPerPart = 4;
     const parts = 4;
 
@@ -175,6 +188,15 @@ function initializeChapter() {
         return;
     }
 
+    // Force SVG reflow for Safari
+    const starsSvg = document.getElementById('stars-4x4');
+    if (starsSvg) {
+        starsSvg.style.display = 'none';
+        starsSvg.offsetHeight; // Trigger reflow
+        starsSvg.style.display = 'block';
+        console.log('Forced SVG reflow for #stars-4x4');
+    }
+
     for (let part = 1; part <= parts; part++) {
         for (let exercise = 1; exercise <= exercisesPerPart; exercise++) {
             const exerciseCode = `${chapterNum}:${part}:${exercise}`;
@@ -193,11 +215,11 @@ function initializeChapter() {
             const silverLevel = silverProgress[exerciseKey] ? parseInt(silverProgress[exerciseKey]) : 0;
 
             [svg4x4, svg2x2x4].forEach((svg, index) => {
-                const starId = `${chapterNum}-${part}-${exercise}`;
-                const starElement = svg.querySelector(`#star-${starId.replace(/:/g, '-')}`);
-                const codeElement = svg.querySelector(`#code-${starId.replace(/:/g, '-')} tspan`);
+                const starId = `${chapterNum}:${part}:${exercise}`;
+                const starElement = svg.querySelector(`#star-${starId.replace(/:/g, '-')}`) || svg.querySelector(`#star-1-${part}-${exercise}`);
+                const codeElement = svg.querySelector(`#code-${starId.replace(/:/g, '-')}`)?.querySelector('tspan') || svg.querySelector(`#code-1-${part}-${exercise} tspan`);
                 if (!starElement || !codeElement) {
-                    console.error(`Star or code element not found in SVG ${index === 0 ? '4x4' : '2x2x4'} for ${starId}`);
+                    console.warn(`Star or code element not found in SVG ${index === 0 ? '4x4' : '2x2x4'} for ${starId}`);
                     return;
                 }
 
@@ -231,7 +253,7 @@ function initializeChapter() {
                         const updatedSilverProgress = updatedStudentsData.students[updatedStudentsData.currentStudent]?.silverProgress || {};
                         const updatedStudentMode = updatedStudentsData.students[updatedStudentsData.currentStudent]?.studentMode || false;
                         const updatedGoldLevel = updatedProgress[exerciseKey] ? parseInt(updatedProgress[exerciseKey]) : 0;
-                        const updatedSilverLevel = updatedSilverProgress[exerciseKey] ? parseInt(silverProgress[exerciseKey]) : 0;
+                        const updatedSilverLevel = updatedSilverProgress[exerciseKey] ? parseInt(updatedSilverProgress[exerciseKey]) : 0;
 
                         if (updatedGoldLevel !== goldLevel || updatedSilverLevel !== silverLevel) {
                             const newStarElementUpdate = createStarElement(document, starId, updatedGoldLevel, updatedSilverLevel, x, y, width, height);
