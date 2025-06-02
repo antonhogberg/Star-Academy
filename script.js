@@ -555,7 +555,7 @@ function showPrivacyPolicyPopup() {
             <p data-translate="contactUsText"></p>
         </div>
     `;
-    document.body.appendChild(popup);
+    document.documentElement.appendChild(popup); // Append to <html> instead of <body>
     popup.style.display = 'flex';
     document.body.classList.add('popup-open');
 
@@ -564,7 +564,9 @@ function showPrivacyPolicyPopup() {
     const closePopup = () => {
         popup.style.display = 'none';
         document.body.classList.remove('popup-open');
-        document.body.removeChild(popup);
+        if (popup.parentNode) {
+            popup.parentNode.removeChild(popup);
+        }
     };
 
     document.getElementById('closePrivacyPopup').addEventListener('click', closePopup);
