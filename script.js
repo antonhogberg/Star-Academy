@@ -496,13 +496,11 @@ function initializeConsentPopup() {
     });
 
     consentPolicyLink.addEventListener('click', (e) => {
-        e.preventDefault();
         console.log('Privacy policy link clicked');
         showPrivacyPolicyPopup();
     });
 }
 
-// Ensure showPrivacyPolicyPopup is unchanged
 function showPrivacyPolicyPopup() {
     const lang = localStorage.getItem('language') || 'sv';
     const popup = document.createElement('div');
@@ -563,7 +561,6 @@ function showPrivacyPolicyPopup() {
         }
     });
 }
-
 
 // Initialize popup on DOM load
 document.addEventListener('DOMContentLoaded', () => {

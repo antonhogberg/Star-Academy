@@ -2081,13 +2081,17 @@ h2#popupWelcome {
     bottom: 0;
     left: 0;
     width: 100%;
+    min-height: 20vh;
+    max-height: 25vh;
     background: #f0f0f0;
     color: #333;
     z-index: 1000;
     display: none;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     padding: 15px;
+    box-sizing: border-box;
 }
 .consent-popup-content {
     max-width: 800px;
@@ -2115,9 +2119,12 @@ h2#popupWelcome {
     font-size: 14px;
 }
 #consentPolicyLink {
+    background: none;
+    border: none;
     color: #333;
     text-decoration: underline;
     font-size: 14px;
+    cursor: pointer;
 }
 #privacyPolicyPopup {
     position: fixed;
@@ -2262,6 +2269,7 @@ h2#popupWelcome {
     }
     #consentPopup {
         padding: 10px;
+        min-height: 25vh;
     }
     .consent-buttons {
         flex-wrap: wrap;

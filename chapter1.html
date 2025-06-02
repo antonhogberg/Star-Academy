@@ -48,14 +48,14 @@
     </script>
 </head>
 <body class="chapters">
-    <div class="piano-menu" id="menuButton" aria-expanded="false" aria-controls="main-menu">
+    <div class="piano-menu" id="pianoMenu" aria-expanded="false" aria-controls="mobileMenu">
         <div class="white-key"></div>
         <div class="white-key"></div>
         <div class="white-key"></div>
         <div class="black-key top"></div>
         <div class="black-key bottom"></div>
     </div>
-    <nav id="menu-placeholder"></nav>
+    <nav id="mobileMenu"></nav>
     <h1 class="chapter-title">
         <span class="chapter-number"></span>
         <span class="chapter-name"></span>
@@ -72,7 +72,7 @@
                 xmlns="http://www.w3.org/2000/svg"
                 xmlns:svg="http://www.w3.org/2000/svg">
                 <defs id="defs1" />
-                <g inkscape:label="Stars" inkscape:groupmode="layer" id="layer1" style="fill:#999999;fill-opacity:1">
+                <g inkscape:label="Stars" inkscape:groupmode="layer" id="layer1" style="fill:#999999;">
                     <image width="140" height="119.26923" preserveAspectRatio="none" xlink:href="gold0_silver0.png" id="star-1-1-1" x="0" y="0" />
                     <image width="140" height="119.26923" preserveAspectRatio="none" xlink:href="gold0_silver0.png" id="star-1-1-2" x="170" y="0" />
                     <image width="140" height="119.26923" preserveAspectRatio="none" xlink:href="gold0_silver0.png" id="star-1-1-3" x="340" y="0" />
@@ -192,13 +192,13 @@
             <button id="closeRankPopup" class="close-button">×</button>
         </div>
     </div>
-    <div id="consentPopup" class="popup" style="display: none;">
+    <div id="consentPopup" style="display: none;">
         <div class="consent-popup-content">
             <p id="consentMessage"></p>
             <div class="consent-buttons">
                 <button id="consentAcceptButton"></button>
                 <button id="consentRejectButton"></button>
-                <a href="#" id="consentPolicyLink" data-translate="consentPolicyLink"></a>
+                <button id="consentPolicyLink" data-translate="consentPolicyLink"></button>
             </div>
         </div>
     </div>
@@ -211,24 +211,7 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             document.body.style.touchAction = 'manipulation';
-            let studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
-            const namePopup = document.getElementById('namePopup');
             const nameInput = document.getElementById('nameInput');
-
-            if (!studentsData.currentStudent && localStorage.getItem('consentGiven') === 'true') {
-                namePopup.style.display = 'flex';
-                document.body.classList.add('popup-open');
-
-                const popupContent = namePopup.querySelector('.popup-content');
-                popupContent.style.position = 'absolute';
-                popupContent.style.top = '50%';
-                popupContent.style.left = '50%';
-                popupContent.style.transform = 'translate(-50%, -50%)';
-            }
-
-            const initialLang = localStorage.getItem('language') || 'sv';
-            switchLanguage(initialLang);
-
             if (nameInput) {
                 let originalScrollY = 0;
 
