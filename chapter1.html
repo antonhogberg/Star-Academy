@@ -209,51 +209,60 @@
     <script src="chapter.js"></script>
     <script src="script.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            document.body.style.touchAction = 'manipulation';
-            const nameInput = document.getElementById('nameInput');
-            if (nameInput) {
-                let originalScrollY = 0;
+    document.addEventListener('DOMContentLoaded', () => {
+        document.body.style.touchAction = 'manipulation';
+        const nameInput = document.getElementById('nameInput');
+        if (nameInput) {
+            let originalScrollY = 0;
+            let isKeyboardOpen = false;
 
-                const lockViewport = () => {
+            const lockViewport = () => {
+                if (!isKeyboardOpen) {
                     originalScrollY = window.scrollY;
                     document.body.style.position = 'fixed';
                     document.body.style.top = `-${originalScrollY}px`;
                     document.body.style.width = '100%';
                     document.body.style.overflow = 'hidden';
-                };
+                    isKeyboardOpen = true;
+                }
+            };
 
-                const unlockViewport = () => {
+            const unlockViewport = () => {
+                if (isKeyboardOpen) {
                     document.body.style.position = '';
                     document.body.style.top = '';
                     document.body.style.width = '';
                     document.body.style.overflow = '';
+                    // Only scroll if keyboard was actually open
                     window.scrollTo(0, originalScrollY);
-                };
+                    isKeyboardOpen = false;
+                }
+            };
 
-                nameInput.addEventListener('focus', () => {
-                    document.body.classList.add('keyboard-open');
+            nameInput.addEventListener('focus', () => {
+                document.body.classList.add('keyboard-open');
+                lockViewport();
+            });
+
+            nameInput.addEventListener('blur', () => {
+                document.body.classList.remove('keyboard-open');
+                unlockViewport();
+            });
+
+            window.addEventListener('resize', () => {
+                const viewportHeight = window.innerHeight;
+                const isKeyboardLikelyOpen = viewportHeight < 500; // Adjust threshold based on device
+                if (isKeyboardLikelyOpen && !isKeyboardOpen) {
                     lockViewport();
-                });
-
-                nameInput.addEventListener('blur', () => {
-                    document.body.classList.remove('keyboard-open');
+                } else if (!isKeyboardLikelyOpen && isKeyboardOpen) {
                     unlockViewport();
-                });
-
-                window.addEventListener('resize', () => {
-                    if (document.body.classList.contains('keyboard-open')) {
-                        lockViewport();
-                    } else {
-                        unlockViewport();
-                    }
-                });
-            }
-            // Initialize consent popup
-            if (typeof initializeConsentPopup === 'function') {
-                initializeConsentPopup();
-            }
-        });
-    </script>
+                }
+            });
+        }
+        if (typeof initializeConsentPopup === 'function') {
+            initializeConsentPopup();
+        }
+    });
+</script>
 </body>
 </html>

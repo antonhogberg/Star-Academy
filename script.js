@@ -501,9 +501,16 @@ function initializeConsentPopup() {
         consentPopup.style.display = 'flex';
     });
 
-    consentPolicyLink.addEventListener('click', () => {
-        console.log('Privacy policy link clicked');
-        showPrivacyPolicyPopup();
+    // Debug clickability
+    consentPolicyLink.style.pointerEvents = 'auto'; // Ensure clickable
+    consentPolicyLink.addEventListener('click', (e) => {
+        console.log('Privacy policy link clicked, target:', e.target);
+        console.log('showPrivacyPolicyPopup exists:', typeof showPrivacyPolicyPopup === 'function');
+        if (typeof showPrivacyPolicyPopup === 'function') {
+            showPrivacyPolicyPopup();
+        } else {
+            console.error('showPrivacyPolicyPopup is not defined');
+        }
     });
 }
 
