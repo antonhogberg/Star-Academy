@@ -115,7 +115,7 @@ const translations = {
         studentModeLabel: "Fixed gold stars",
         noConsentTitle: "Welcome Back Later",
         noConsentMessage: "We’re sorry you couldn’t accept our privacy policy at this time. North Star Piano School uses local storage on your device to track progress in 112 piano exercises, which is essential for the platform to work. Without agreeing, your progress can’t be saved locally, but we’d love to welcome you back when you’re ready! Visit our <a href='faq.html'>FAQ</a> or view our Privacy Policy to learn more, or return to the <a href='index.html'>home page</a> to try again.",
-        consentMessage: "Welcome to North Star Piano School! We use local storage to save progress for 112 piano exercises, essential for tracking your or your students’ achievements. Teachers: please obtain student consent (or parental consent for minors under 13) before adding names, or use an anonymous ID (e.g., ‘Student123’) in regions requiring consent, like the EU. No data is stored online. Agree to start your piano journey!",
+        consentMessage: "Welcome to North Star Piano School! This website uses local storage to save names, progress, and notes in your browser. This means teachers storing their students’ names and other data must agree to our Privacy Policy to comply with GDPR or other similar laws regarding data storage. <br><strong style=\"color: #ff0000;\">If you’re a student using the platform only for yourself, you’re not directly affected by the Privacy Policy and can simply click I Accept!</strong><br> Teachers: Obtain students’ consent (or parental consent for children under 13) before adding names, or use an anonymous ID (e.g., ‘Student123’) if you cannot obtain consent. No data is stored online. No data is collected by North Star Piano School. Agree to start your piano journey!",
         consentAccept: "I Accept!",
         consentReject: "I Don’t Agree",
         consentPolicyLink: "Privacy Policy",
@@ -263,7 +263,7 @@ const translations = {
         studentModeLabel: "Låsta guldstjärnor",
         noConsentTitle: "Välkommen tillbaka senare",
         noConsentMessage: "Vi är ledsna att du inte kunde godkänna vår integritetspolicy just nu. Nordstjärnans pianoskola använder lokal lagring på din enhet för att spåra framsteg i 112 pianövningar, vilket är nödvändigt för att plattformen ska fungera. Utan att godkänna detta kan dina framsteg inte sparas lokalt, men vi välkomnar dig gärna tillbaka när du är redo! Besök vår <a href='faq.html'>FAQ</a> eller visa vår integritetspolicy för att läsa mer, eller återvänd till <a href='index.html'>startsidan</a> för att försöka igen.",
-        consentMessage: "Välkommen till Nordstjärnans pianoskola! Vi använder lokal lagring för att spara framsteg i 112 pianövningar, vilket är nödvändigt för att spåra dina eller dina elevers prestationer. Lärare: skaffa elevens samtycke (eller förälders samtycke för barn under 13) innan du lägger till namn, eller använd ett anonymt ID (t.ex. ‘elev123’) i regioner som kräver samtycke, som EU. Ingen data lagras online. Godkänn för att börja din pianoresa!",
+        consentMessage: "Välkommen till Nordstjärnans pianoskola! Hemsidan använder lokal lagring för att spara namn, framsteg och anteckningar i webbläsaren. Detta innebär att lärare som lagrar sina elevers namn och andra data behöver godkänna vår integritetspolicy för att följa GDPR eller andra liknande lagar om datalagring. <br><strong style=\"color: #ff0000;\">Är du en elev som bara har dig själv som användare så berörs du inte direkt av integritetspolicyn och kan bara trycka Jag godkänner!</strong><br> Lärare: Skaffa elevers samtycke (eller förälders samtycke för barn under 13 år) innan du lägger till namn, eller använd ett anonymt ID (t.ex. ‘elev123’) om du inte kan få samtycke. Ingen data lagras online. Ingen data samlas in av Nordstjärnans Pianoskola. Godkänn för att börja din pianoresa!",
         consentAccept: "Jag godkänner!",
         consentReject: "Jag godkänner inte",
         consentPolicyLink: "Integritetspolicy",
@@ -475,7 +475,7 @@ function initializeConsentPopup() {
         policyLink: translations[lang].consentPolicyLink
     });
 
-    consentMessage.textContent = translations[lang].consentMessage;
+    consentMessage.innerHTML = translations[lang].consentMessage; // Use innerHTML to render HTML tags
     consentAcceptButton.textContent = translations[lang].consentAccept;
     consentRejectButton.textContent = translations[lang].consentReject;
     consentPolicyLink.textContent = translations[lang].consentPolicyLink;
@@ -501,8 +501,7 @@ function initializeConsentPopup() {
         consentPopup.style.display = 'flex';
     });
 
-    // Debug clickability
-    consentPolicyLink.style.pointerEvents = 'auto'; // Ensure clickable
+    consentPolicyLink.style.pointerEvents = 'auto';
     consentPolicyLink.addEventListener('click', (e) => {
         console.log('Privacy policy link clicked, target:', e.target);
         console.log('showPrivacyPolicyPopup exists:', typeof showPrivacyPolicyPopup === 'function');
