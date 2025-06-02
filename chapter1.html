@@ -5,9 +5,6 @@
     <meta charset="UTF-8">
     <title data-translate="chapter1"></title>
     <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css" />
-    <link rel="stylesheet" href="cookieconsent.css" />
-    <script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js"></script>
     <script>
         function setViewportHeight() {
             let vh = window.innerHeight * 0.01;
@@ -114,7 +111,7 @@
             </svg>
         </div>
         <div class="stars-svg" id="stars-2x2x4" style="display: none;">
-            <svg width="310" height="1600" viewBox="0 0 310 1600" version="1.1" id="svg2" xmlns="http://www.w3.org/2000/svg">
+            <svg width="310" height="1650" viewBox="0 0 310 1650" version="1.1" id="svg2" xmlns="http://www.w3.org/2000/svg">
                 <defs id="defs2" />
                 <g inkscape:label="Stars" inkscape:groupmode="layer" id="layer1-2" style="fill:#999999;fill-opacity:1">
                     <image width="140" height="119.26923" preserveAspectRatio="none" xlink:href="gold0_silver0.png" id="star-1-1-1" x="0" y="0" />
@@ -195,10 +192,19 @@
             <button id="closeRankPopup" class="close-button">×</button>
         </div>
     </div>
+    <div id="consentPopup" class="popup" style="display: none;">
+        <div class="consent-popup-content">
+            <p id="consentMessage"></p>
+            <div class="consent-buttons">
+                <button id="consentAcceptButton"></button>
+                <button id="consentRejectButton"></button>
+                <a href="#" id="consentPolicyLink" data-translate="consentPolicyLink"></a>
+            </div>
+        </div>
+    </div>
     <div class="user-name-display">
         <span id="userNameDisplay"></span>
     </div>
-    <div id="consentContainer"></div>
     <script src="students.js"></script>
     <script src="chapter.js"></script>
     <script src="script.js"></script>

@@ -2076,6 +2076,49 @@ h2#popupWelcome {
     line-height: normal;
 }
 
+#consentPopup {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: #f0f0f0;
+    color: #333;
+    z-index: 1000;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    padding: 15px;
+}
+.consent-popup-content {
+    max-width: 800px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+#consentMessage {
+    margin: 0;
+    font-size: 16px;
+}
+.consent-buttons {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+#consentAcceptButton, #consentRejectButton {
+    background: #ffd700;
+    color: #333;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+}
+#consentPolicyLink {
+    color: #333;
+    text-decoration: underline;
+    font-size: 14px;
+}
 #privacyPolicyPopup {
     position: fixed;
     top: 0;
@@ -2216,6 +2259,12 @@ h2#popupWelcome {
     .privacy-popup-content {
         max-width: 90%;
         margin: 10px;
+    }
+    #consentPopup {
+        padding: 10px;
+    }
+    .consent-buttons {
+        flex-wrap: wrap;
     }
     .star-chapter {
         width: 140px;
