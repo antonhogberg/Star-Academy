@@ -67,12 +67,6 @@ function addStudent(e) {
         return;
     }
 
-    if (!confirm(translations[lang].addStudentConsentPrompt.replace('{name}', name))) {
-        console.log('Teacher declined consent prompt for student:', name);
-        showStudentPopup(translations[lang].addStudentCancelled, 3000);
-        return;
-    }
-
     window.studentsData.students[name] = {
         name: name,
         progress: {},
