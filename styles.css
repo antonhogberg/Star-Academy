@@ -2160,16 +2160,20 @@ h2#popupWelcome {
     justify-content: center;
     align-items: center;
     z-index: 1000;
+    overflow: auto; /* Ensure scrolling if content overflows */
 }
 .privacy-popup-content {
     background: #fff;
     padding: 20px;
     border-radius: 8px;
-    max-width: 600px;
-    max-height: 80vh;
+    max-width: 90vw; /* Allow more width on smaller screens */
+    max-height: 90vh; /* Increase to allow more content */
+    width: 600px; /* Fixed width for consistency */
     overflow-y: auto;
     position: relative;
     color: #333;
+    margin: 20px; /* Add margin to prevent edge hugging */
+    box-sizing: border-box;
 }
 #closePrivacyPopup {
     position: absolute;
@@ -2287,8 +2291,10 @@ h2#popupWelcome {
         text-overflow: clip;
     }
     .privacy-popup-content {
-        max-width: 90%;
+        width: 90vw; /* Responsive width */
+        max-height: 85vh; /* Slightly less to account for margins */
         margin: 10px;
+        padding: 15px;
     }
     #consentPopup {
         padding: 10px;
