@@ -518,7 +518,7 @@ function showPrivacyPolicyPopup() {
     const lang = localStorage.getItem('language') || 'sv';
     const popup = document.createElement('div');
     popup.id = 'privacyPolicyPopup';
-    popup.className = 'student-popup';
+    // Remove className = 'student-popup' to avoid conflicting styles
     popup.innerHTML = `
         <div class="privacy-popup-content">
             <button id="closePrivacyPopup">×</button>
@@ -550,12 +550,12 @@ function showPrivacyPolicyPopup() {
             <h2 data-translate="minors"></h2>
             <p data-translate="minorsText"></p>
             <h2 data-translate="usingWithoutStorage"></h2>
-            <p data-translate="usingWithoutStorageText"></p>
+            <p data-translate="usingWithoutStorageText"></h2>
             <h2 data-translate="contactUs"></h2>
             <p data-translate="contactUsText"></p>
         </div>
     `;
-    document.documentElement.appendChild(popup); // Append to <html> instead of <body>
+    document.documentElement.appendChild(popup);
     popup.style.display = 'flex';
     document.body.classList.add('popup-open');
 
