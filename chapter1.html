@@ -48,14 +48,14 @@
     </script>
 </head>
 <body class="chapters">
-    <div class="piano-menu" id="pianoMenu" aria-expanded="false" aria-controls="mobileMenu">
+    <div class="piano-menu" id="menuButton" aria-expanded="false" aria-controls="menu-placeholder">
         <div class="white-key"></div>
         <div class="white-key"></div>
         <div class="white-key"></div>
         <div class="black-key top"></div>
         <div class="black-key bottom"></div>
     </div>
-    <nav id="mobileMenu"></nav>
+    <nav id="menu-placeholder"></nav>
     <h1 class="chapter-title">
         <span class="chapter-number"></span>
         <span class="chapter-name"></span>
@@ -72,7 +72,7 @@
                 xmlns="http://www.w3.org/2000/svg"
                 xmlns:svg="http://www.w3.org/2000/svg">
                 <defs id="defs1" />
-                <g inkscape:label="Stars" inkscape:groupmode="layer" id="layer1" style="fill:#999999;">
+                <g inkscape:label="Stars" inkscape:groupmode="layer" id="layer1" style="fill:#999999;fill-opacity:1">
                     <image width="140" height="119.26923" preserveAspectRatio="none" xlink:href="gold0_silver0.png" id="star-1-1-1" x="0" y="0" />
                     <image width="140" height="119.26923" preserveAspectRatio="none" xlink:href="gold0_silver0.png" id="star-1-1-2" x="170" y="0" />
                     <image width="140" height="119.26923" preserveAspectRatio="none" xlink:href="gold0_silver0.png" id="star-1-1-3" x="340" y="0" />
@@ -244,8 +244,14 @@
                 window.addEventListener('resize', () => {
                     if (document.body.classList.contains('keyboard-open')) {
                         lockViewport();
+                    } else {
+                        unlockViewport();
                     }
                 });
+            }
+            // Initialize consent popup
+            if (typeof initializeConsentPopup === 'function') {
+                initializeConsentPopup();
             }
         });
     </script>
