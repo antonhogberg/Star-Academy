@@ -501,6 +501,8 @@ function initializeConsentPopup() {
                 alert(translations[lang].noConsentOptOut);
                 localStorage.removeItem('consentGiven');
                 localStorage.removeItem('cookieconsent_status');
+                // Keep popup open
+                this.show();
             }
         }
     });
