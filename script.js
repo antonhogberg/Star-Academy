@@ -461,15 +461,24 @@ function initializeConsentPopup() {
         position: "bottom",
         content: {
             message: translations[lang].consentMessage,
-            dismiss: translations[lang].consentAccept,
+            dismiss: translations[lang].consentAccept, // Attempt to set "I Accept!"
+            allow: translations[lang].consentAccept, // Fallback for cookieconsent default
             deny: translations[lang].consentReject,
             link: translations[lang].consentPolicyLink,
             href: "privacy-policy.html"
         },
         type: "opt-in",
         onInitialise: function(status) {
+            console.log('ConsentPopup initialized, status:', status);
             if (!this.hasConsented()) {
                 console.log('No consent yet, showing popup');
+                // Override "Allow Cookies" text if default persists
+                setTimeout(() => {
+                    const allowButton = document.querySelector('.cc-btn.cc-allow');
+                    if (allowButton && allowButton.textContent !== translations[lang].consentAccept) {
+                        allowButton.textContent = translations[lang].consentAccept;
+                    }
+                }, 100);
             }
         },
         onStatusChange: function(status, chosenBefore) {
@@ -477,11 +486,12 @@ function initializeConsentPopup() {
                 console.log('User consented, saving to localStorage');
                 localStorage.setItem('consentGiven', 'true');
                 this.element.style.display = 'none'; // Hide popup
-                window.consentInitialized = false; // Allow reinitialization on next load
-                if (typeof handleUserNamePopup === 'function') handleUserNamePopup(); // Trigger namePopup after consent
+                window.consentInitialized = false; // Allow reinitialization
+                if (typeof handleUserNamePopup === 'function') handleUserNamePopup();
             } else {
-                console.log('User rejected consent, redirecting to no-consent.html');
-                window.location.href = 'no-consent.html';
+                console.log('User rejected consent, showing alert');
+                alert(translations[lang].noConsentOptOut);
+                localStorage.removeItem('consentGiven');
             }
         }
     });
