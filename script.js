@@ -435,46 +435,53 @@ function injectMenu() {
 }
 
 function initializeConsentPopup() {
-    // Clear cookieconsent state
-    localStorage.removeItem('consentGiven');
-    localStorage.removeItem('cookieconsent_status');
+    // Prevent multiple initializations
+    if (window.consentInitialized) {
+        console.log('Consent popup already initialized, skipping');
+        return;
+    }
+    window.consentInitialized = true;
+
+    // Destroy existing popup
     if (window.cookieconsent && window.cookieconsent.element) {
         window.cookieconsent.element.remove();
         window.cookieconsent = null;
     }
-    window.consentInitialized = false;
+
+    const consentGiven = localStorage.getItem('consentGiven') === 'true';
+    if (consentGiven) {
+        console.log('Consent already given, skipping popup');
+        if (typeof handleUserNamePopup === 'function') handleUserNamePopup();
+        return;
+    }
 
     const lang = localStorage.getItem('language') || 'sv';
     window.cookieconsent.initialise({
-        palette: { popup: { background: "#f0f0f0", text: "#333" }, button: { background: "transparent", text: "#333" } },
+        palette: { popup: { background: "#f0f0f0", text: "#333" }, button: { background: "#ffd700", text: "#333" } },
         position: "bottom",
         content: {
             message: translations[lang].consentMessage,
-            dismiss: translations[lang].consentAccept || "I Accept!",
-            deny: translations[lang].consentReject || "I Don’t Agree",
+            dismiss: translations[lang].consentAccept,
+            deny: translations[lang].consentReject,
             link: translations[lang].consentPolicyLink,
             href: "privacy-policy.html"
         },
         type: "opt-in",
         onInitialise: function(status) {
-            console.log('ConsentPopup initialized');
+            if (!this.hasConsented()) {
+                console.log('No consent yet, showing popup');
+            }
         },
         onStatusChange: function(status, chosenBefore) {
             if (this.hasConsented()) {
-                console.log('User consented');
+                console.log('User consented, saving to localStorage');
                 localStorage.setItem('consentGiven', 'true');
-                // Fully destroy cookieconsent
-                if (window.cookieconsent) {
-                    this.element.remove();
-                    window.cookieconsent = null;
-                    window.consentInitialized = false;
-                }
-                if (typeof handleUserNamePopup === 'function') handleUserNamePopup();
+                this.element.style.display = 'none'; // Hide popup
+                window.consentInitialized = false; // Allow reinitialization on next load
+                if (typeof handleUserNamePopup === 'function') handleUserNamePopup(); // Trigger namePopup after consent
             } else {
-                console.log('User rejected consent');
-                alert(translations[lang].noConsentOptOut || "This platform requires local storage to track progress, which is essential for functionality. If you do not consent, you cannot use the platform. Please accept the privacy policy to continue or choose not to use the site.");
-                localStorage.removeItem('consentGiven');
-                localStorage.removeItem('cookieconsent_status');
+                console.log('User rejected consent, redirecting to no-consent.html');
+                window.location.href = 'no-consent.html';
             }
         }
     });
