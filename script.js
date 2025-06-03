@@ -1512,6 +1512,45 @@ function initializeFAQ() {
             }
         });
     });
+}function initializeFAQ() {
+    const faqQuestions = document.querySelectorAll('.faq-question');
+    faqQuestions.forEach(question => {
+        // Ensure faq-answer is initially hidden
+        const faqItem = question.parentElement;
+        const faqAnswer = faqItem.querySelector('.faq-answer');
+        if (!faqItem.classList.contains('active')) {
+            faqAnswer.style.display = 'none'; // Hide answers initially to prevent flash
+        }
+
+        question.addEventListener('click', () => {
+            const faqArrow = question.querySelector('.faq-arrow');
+            const isActive = faqItem.classList.contains('active');
+
+            console.log('FAQ item toggled:', { question: question.textContent, isActive: isActive });
+
+            if (isActive) {
+                faqAnswer.style.maxHeight = faqAnswer.scrollHeight + 'px';
+                requestAnimationFrame(() => {
+                    faqAnswer.style.maxHeight = '0';
+                    faqAnswer.style.padding = '0 10px';
+                    faqItem.classList.remove('active');
+                    setTimeout(() => {
+                        faqAnswer.style.display = 'none'; // Hide after animation
+                    }, 500); // Match transition duration
+                });
+            } else {
+                faqAnswer.style.display = 'block';
+                const fullHeight = faqAnswer.scrollHeight + 20;
+                faqAnswer.style.maxHeight = fullHeight + 'px';
+                faqAnswer.style.padding = '10px';
+                faqItem.classList.add('active');
+                faqAnswer.addEventListener('transitionend', function resetHeight() {
+                    faqAnswer.style.maxHeight = 'none'; // Allow dynamic height
+                    faqAnswer.removeEventListener('transitionend', resetHeight);
+                }, { once: true });
+            }
+        });
+    });
 }
 
 function initializeRemovePage() {
