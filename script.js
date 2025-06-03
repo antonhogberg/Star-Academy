@@ -104,11 +104,11 @@ const translations = {
         removeCurrentStudentNone: "Remove current student: None",
         starMapDescription: "Welcome to the Star Map! Click on each star to track your progress in North Star Piano School. Earn up to six stars per exercise by practicing in the Piano School. Scroll to explore all chapters and exercises.",
         starMapTitle: "Using the Star Map",
-        starMapBullet1: "Start with Star 1:1:1: In North Star Piano School, navigate to the corresponding exercise. Star codes are formatted as Chapter:Part:Exercise (e.g., 1:1:1 is Chapter 1, Part 1, Exercise 1).",
-        starMapBullet2: "Earn Stars: Follow the book’s instructions to complete the exercise and earn stars. Return to the Star Map, click Star 1:1:1 to claim your stars. If you over-click, keep clicking to reset.",
-        starMapBullet3: "Progress Gradually: Practice an exercise, then move to the next star on the map.",
-        starMapBullet4: "Daily Practice: Each day, revisit your active exercises, aiming for six stars in each.",
-        starMapBullet5: "Manage Active Exercises: Work on 4-6 exercises daily, but try to complete exercise 1:1:1 (six stars) before starting 1:1:2, finish 2:1:1 before starting 2:1:2. But, if you get stuck, move to the next exercise and return to the former after a while.",
+        starMapBullet1: "<strong>Start with Star 1:1:1:</strong> In North Star Piano School, navigate to the corresponding exercise. Star codes are formatted as Chapter:Part:Exercise (e.g., 1:1:1 is Chapter 1, Part 1, Exercise 1).",
+        starMapBullet2: "<strong>Earn Stars:</strong> Follow the book’s instructions to complete the exercise and earn stars. Return to the Star Map, click Star 1:1:1 to claim your stars. If you over-click, keep clicking to reset.",
+        starMapBullet3: "<strong>Progress Gradually:</strong> Practice an exercise, then move to the next star on the map.",
+        starMapBullet4: "<strong>Daily Practice:</strong> Each day, revisit your active exercises, aiming for six stars in each.",
+        starMapBullet5: "<strong>Manage Active Exercises:</strong> Work on 4-6 exercises daily, but try to complete exercise 1:1:1 (six stars) before starting 1:1:2, finish 2:1:1 before starting 2:1:2",
         loading: "Loading student data...",
         success: "Your stars are updated, welcome",
         error: "Invalid link. No student was added.",
@@ -252,11 +252,11 @@ const translations = {
         removeCurrentStudentNone: "Radera aktuell elev: ingen",
         starMapDescription: "Välkommen till stjärnkartan! Klicka på varje stjärna för att följa dina framsteg i Nordstjärnans pianoskola. Förtjäna upp till sex stjärnor per övning genom att öva i pianoskolan. Scrolla för att utforska alla kapitel och övningar.",
         starMapTitle: "Såhär använder du stjärnkartan",
-        starMapBullet1: "Börja med stjärna 1:1:1: navigera till övning 1:1:1 i Nordstjärnans pianoskola. Stjärnkoder anges som kapitel:del:övning (t.ex. 1:1:1 är kapitel 1, del 1, övning 1).",
-        starMapBullet2: "Förtjäna stjärnor: följ bokens instruktioner för att slutföra övningen och få stjärnor. Återvänd till stjärnkartan, klicka på stjärna 1:1:1 för att få fram dina stjärnor. Klickar du för många, fortsätt klicka för att nollställa.",
-        starMapBullet3: "Öva lagom: öva på en övning en stund, gå sedan vidare till nästa stjärna på kartan.",
-        starMapBullet4: "Daglig övning: återkom till dina aktiva övningar varje dag och sikta på sex stjärnor i varje.",
-        starMapBullet5: "Hur många aktiva övningar?: jobba på flera övningar dagligen, t.ex. 4–6 st, men försök slutföra övning 1:1:1 (med sex stjärnor) innan du påbörjar övning 1:1:2; slutför övning 2:1:1 innan du påbörjar övning 2:1:2 o.s.v. Men känner du att du kör fast, gå vidare till nästa övning och återkom till den förra efter ett tag igen.",
+        starMapBullet1: "<strong>Börja med stjärna 1:1:1:</strong> navigera till övning 1:1:1 i Nordstjärnans pianoskola. Stjärnkoder anges som kapitel:del:övning (t.ex. 1:1:1 är kapitel 1, del 1, övning 1).",
+        starMapBullet2: "<strong>Förtjäna stjärnor:</strong> följ bokens instruktioner för att slutföra övningen och få stjärnor. Återvänd till stjärnkartan, klicka på stjärna 1:1:1 för att få fram dina stjärnor. Klickar du för många, fortsätt klicka för att nollställa.",
+        starMapBullet3: "<strong>Öva lagom:</strong> öva på en övning en stund, gå sedan vidare till nästa stjärna på kartan.",
+        starMapBullet4: "<strong>Daglig övning:</strong> återkom till dina aktiva övningar varje dag och sikta på sex stjärnor i varje.",
+        starMapBullet5: "<strong>Hur många aktiva övningar?:</strong> jobba på flera övningar dagligen, t.ex. 4–6 st, men försök slutföra övning 1:1:1 (med sex stjärnor) innan du påbörjar övning 1:1:2; slutför övning 2:1:1 innan du påbörjar övning 2:1:2 o.s.v.",
         loading: "Laddar elevdata...",
         success: "Dina framgångar är uppdaterade, välkommen",
         error: "Ogiltig länk. Ingen elev lades till.",
@@ -1195,19 +1195,11 @@ function switchLanguage(lang) {
     }
 
     const starMapTitle = document.querySelector('h3[data-translate="starMapTitle"]');
-    if (starMapTitle) starMapTitle.textContent = translations[newLang].starMapTitle;
+    if (starMapTitle) starMapTitle.textContent = translations[newLang].starMapTitle;    
     document.querySelectorAll('.star-map-steps p[data-translate]').forEach(p => {
         const key = p.getAttribute('data-translate');
         if (translations[newLang][key]) {
-            const translatedText = translations[newLang][key];
-            const match = translatedText.match(/^(.*?)(?=\s[A-Z])/);
-            if (match) {
-                const semiTitle = match[0];
-                const restOfText = translatedText.substring(semiTitle.length).trim();
-                p.innerHTML = `<span class="semi-title"><strong>${semiTitle}</strong></span> ${restOfText}`;
-            } else {
-                p.textContent = translatedText;
-            }
+            p.innerHTML = translations[newLang][key]; // Render the translated text with <strong>
         }
     });
 

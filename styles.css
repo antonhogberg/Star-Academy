@@ -1696,11 +1696,6 @@ h2#popupWelcome {
     margin-bottom: 0;
 }
 
-.description-container .semi-title {
-    display: inline-block;
-    white-space: normal;
-}
-
 /* Responsive adjustments for Star Map */
 @media (max-width: 767px) and (orientation: portrait) {
     .star-map-container {
