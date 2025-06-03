@@ -522,6 +522,8 @@ body.popup-open .student-manager {
     font-size: 20px;
 }
 
+
+
 .content h1 {
     font-family: Cochin, Georgia, Arial, sans-serif;
     font-size: 30px;
@@ -1880,9 +1882,10 @@ h2#popupWelcome {
 }
 
 .faq-arrow {
-    display: inline-block; /* Ensure visibility */
-    font-size: 14px; /* Ensure consistent size */
-    transition: transform 0.5s ease-in-out; /* Smooth rotation */
+    display: inline-block !important; /* Override any potential hiding */
+    font-size: 14px;
+    transition: transform 0.5s ease-in-out;
+    visibility: visible !important; /* Ensure visibility */
 }
 
 .faq-item.active .faq-arrow {
@@ -2554,6 +2557,9 @@ h2#popupWelcome {
         width: 70vw;
         max-width: none;
     }
+    body.faq-page .content {
+        padding-top: 70px;
+    }
     #userNameDisplay {
         margin: 10px auto;
     }
@@ -2626,6 +2632,10 @@ h2#popupWelcome {
         overflow-y: auto !important;
         overscroll-behavior: auto !important;
     }
+    body.faq-page .content {
+    padding-top: 80px;
+    box-sizing: border-box;
+}
     body.chapters .stars-svg#stars-4x4 {
         display: block;
         max-width: 650px;
