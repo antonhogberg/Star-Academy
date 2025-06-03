@@ -108,7 +108,7 @@ const translations = {
         starMapBullet2: "<strong>Earn Stars:</strong> Follow the book’s instructions to complete the exercise and earn stars. Return to the Star Map, click Star 1:1:1 to claim your stars. If you over-click, keep clicking to reset.",
         starMapBullet3: "<strong>Progress Gradually:</strong> Practice an exercise, then move to the next star on the map.",
         starMapBullet4: "<strong>Daily Practice:</strong> Each day, revisit your active exercises, aiming for six stars in each.",
-        starMapBullet5: "<strong>Manage Active Exercises:</strong> Work on 4-6 exercises daily, but try to complete exercise 1:1:1 (six stars) before starting 1:1:2, finish 2:1:1 before starting 2:1:2",
+        starMapBullet5: "<strong>Manage Active Exercises:</strong> Work on 4-6 exercises daily, but try to complete exercise 1:1:1 (six stars) before starting 1:1:2, finish 2:1:1 before starting 2:1:2. But, if you get stuck, move to the next exercise and return to the former after a while.",
         loading: "Loading student data...",
         success: "Your stars are updated, welcome",
         error: "Invalid link. No student was added.",
@@ -256,7 +256,7 @@ const translations = {
         starMapBullet2: "<strong>Förtjäna stjärnor:</strong> följ bokens instruktioner för att slutföra övningen och få stjärnor. Återvänd till stjärnkartan, klicka på stjärna 1:1:1 för att få fram dina stjärnor. Klickar du för många, fortsätt klicka för att nollställa.",
         starMapBullet3: "<strong>Öva lagom:</strong> öva på en övning en stund, gå sedan vidare till nästa stjärna på kartan.",
         starMapBullet4: "<strong>Daglig övning:</strong> återkom till dina aktiva övningar varje dag och sikta på sex stjärnor i varje.",
-        starMapBullet5: "<strong>Hur många aktiva övningar?:</strong> jobba på flera övningar dagligen, t.ex. 4–6 st, men försök slutföra övning 1:1:1 (med sex stjärnor) innan du påbörjar övning 1:1:2; slutför övning 2:1:1 innan du påbörjar övning 2:1:2 o.s.v.",
+        starMapBullet5: "<strong>Hur många aktiva övningar?:</strong> jobba på flera övningar dagligen, t.ex. 4–6 st, men försök slutföra övning 1:1:1 (med sex stjärnor) innan du påbörjar övning 1:1:2; slutför övning 2:1:1 innan du påbörjar övning 2:1:2 o.s.v. Men känner du att du kör fast, gå vidare till nästa övning och återkom till den förra efter ett tag igen.",
         loading: "Laddar elevdata...",
         success: "Dina framgångar är uppdaterade, välkommen",
         error: "Ogiltig länk. Ingen elev lades till.",
@@ -1481,41 +1481,16 @@ function waitForDOM() {
 function initializeFAQ() {
     const faqQuestions = document.querySelectorAll('.faq-question');
     faqQuestions.forEach(question => {
-        question.addEventListener('click', () => {
-            const faqItem = question.parentElement;
-            const faqAnswer = faqItem.querySelector('.faq-answer');
-            const isActive = faqItem.classList.contains('active');
-
-            if (isActive) {
-                faqAnswer.style.maxHeight = faqAnswer.scrollHeight + 'px';
-                requestAnimationFrame(() => {
-                    faqAnswer.style.maxHeight = '0';
-                    faqItem.classList.remove('active');
-                });
-            } else {
-                faqAnswer.style.display = 'block';
-                const fullHeight = faqAnswer.scrollHeight + 20;
-                faqItem.classList.add('active');
-                faqAnswer.style.maxHeight = fullHeight + 'px';
-                faqAnswer.addEventListener('transitionend', function resetHeight() {
-                    faqAnswer.style.maxHeight = '200px';
-                    faqAnswer.removeEventListener('transitionend', resetHeight);
-                }, { once: true });
-            }
-        });
-    });
-}function initializeFAQ() {
-    const faqQuestions = document.querySelectorAll('.faq-question');
-    faqQuestions.forEach(question => {
-        // Ensure faq-answer is initially hidden
-        const faqItem = question.parentElement;
-        const faqAnswer = faqItem.querySelector('.faq-answer');
-        if (!faqItem.classList.contains('active')) {
-            faqAnswer.style.display = 'none'; // Hide answers initially to prevent flash
+        const faqArrow = question.querySelector('.faq-arrow');
+        if (faqArrow) {
+            faqArrow.style.display = 'inline-block';
+            faqArrow.style.visibility = 'visible';
         }
 
+        const faqItem = question.parentElement;
+        const faqAnswer = faqItem.querySelector('.faq-answer');
+
         question.addEventListener('click', () => {
-            const faqArrow = question.querySelector('.faq-arrow');
             const isActive = faqItem.classList.contains('active');
 
             console.log('FAQ item toggled:', { question: question.textContent, isActive: isActive });
@@ -1524,25 +1499,26 @@ function initializeFAQ() {
                 faqAnswer.style.maxHeight = faqAnswer.scrollHeight + 'px';
                 requestAnimationFrame(() => {
                     faqAnswer.style.maxHeight = '0';
-                    faqAnswer.style.padding = '0 10px';
+                    faqAnswer.style.opacity = '0';
                     faqItem.classList.remove('active');
-                    setTimeout(() => {
-                        faqAnswer.style.display = 'none'; // Hide after animation
-                    }, 500); // Match transition duration
                 });
             } else {
-                faqAnswer.style.display = 'block';
                 const fullHeight = faqAnswer.scrollHeight + 20;
                 faqAnswer.style.maxHeight = fullHeight + 'px';
-                faqAnswer.style.padding = '10px';
+                faqAnswer.style.opacity = '1';
                 faqItem.classList.add('active');
                 faqAnswer.addEventListener('transitionend', function resetHeight() {
-                    faqAnswer.style.maxHeight = 'none'; // Allow dynamic height
+                    faqAnswer.style.maxHeight = 'none';
                     faqAnswer.removeEventListener('transitionend', resetHeight);
                 }, { once: true });
             }
         });
     });
+
+    const faqContainer = document.querySelector('.faq-container');
+    if (faqContainer) {
+        faqContainer.classList.add('loaded');
+    }
 }
 
 function initializeRemovePage() {
