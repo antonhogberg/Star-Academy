@@ -108,7 +108,7 @@ const translations = {
         starMapBullet2: "Earn Stars: Follow the book’s instructions to complete the exercise and earn stars. Return to the Star Map, click Star 1:1:1 to claim your stars. If you over-click, keep clicking to reset.",
         starMapBullet3: "Progress Gradually: Practice an exercise, then move to the next star on the map.",
         starMapBullet4: "Daily Practice: Each day, revisit your active exercises, aiming for six stars in each.",
-        starMapBullet5: "Manage Active Exercises: Work on 4-6 exercises daily, but try to complete exercise 1:1:1 (six stars) before starting 1:1:2, finish 2:1:1 before starting 2:1:2",
+        starMapBullet5: "Manage Active Exercises: Work on 4-6 exercises daily, but try to complete exercise 1:1:1 (six stars) before starting 1:1:2, finish 2:1:1 before starting 2:1:2. But, if you get stuck, move to the next exercise and return to the former after a while.",
         loading: "Loading student data...",
         success: "Your stars are updated, welcome",
         error: "Invalid link. No student was added.",
@@ -116,7 +116,7 @@ const translations = {
         noConsentTitle: "Welcome Back Later",
         noConsentMessage: "We’re sorry you couldn’t accept our privacy policy at this time. North Star Piano School uses local storage on your device to track progress in 112 piano exercises, which is essential for the platform to work. Without agreeing, your progress can’t be saved locally, but we’d love to welcome you back when you’re ready! Visit our <a href='faq.html'>FAQ</a> or view our Privacy Policy to learn more, or return to the <a href='index.html'>home page</a> to try again.",
         consentMessage: "Welcome to North Star Piano School! This website uses local storage to save names, progress, and notes in your browser. This means teachers storing their students’ names and other data must agree to our Privacy Policy to comply with GDPR or other similar laws regarding data storage. <br><strong style=\"color: #ff0000;\">If you’re a student using the platform only for yourself, you’re not directly affected by the Privacy Policy and can simply click I Accept!</strong><br> Teachers: Obtain students’ consent (or parental consent for children under 13) before adding names, or use an anonymous ID (e.g., ‘Student123’) if you cannot obtain consent. No data is stored online. No data is collected by North Star Piano School. Agree to start your piano journey!",
-        consentAccept: "I Accept!",
+        consentAccept: "I Agree!",
         consentReject: "I Don’t Agree",
         consentPolicyLink: "Privacy Policy",
         privacyPolicyTitle: "Privacy Policy",
@@ -256,7 +256,7 @@ const translations = {
         starMapBullet2: "Förtjäna stjärnor: följ bokens instruktioner för att slutföra övningen och få stjärnor. Återvänd till stjärnkartan, klicka på stjärna 1:1:1 för att få fram dina stjärnor. Klickar du för många, fortsätt klicka för att nollställa.",
         starMapBullet3: "Öva lagom: öva på en övning en stund, gå sedan vidare till nästa stjärna på kartan.",
         starMapBullet4: "Daglig övning: återkom till dina aktiva övningar varje dag och sikta på sex stjärnor i varje.",
-        starMapBullet5: "Hur många aktiva övningar?: jobba på flera övningar dagligen, t.ex. 4–6 st, men försök slutföra övning 1:1:1 (med sex stjärnor) innan du påbörjar övning 1:1:2; slutför övning 2:1:1 innan du påbörjar övning 2:1:2 o.s.v.",
+        starMapBullet5: "Hur många aktiva övningar?: jobba på flera övningar dagligen, t.ex. 4–6 st, men försök slutföra övning 1:1:1 (med sex stjärnor) innan du påbörjar övning 1:1:2; slutför övning 2:1:1 innan du påbörjar övning 2:1:2 o.s.v. Men känner du att du kör fast, gå vidare till nästa övning och återkom till den förra efter ett tag igen.",
         loading: "Laddar elevdata...",
         success: "Dina framgångar är uppdaterade, välkommen",
         error: "Ogiltig länk. Ingen elev lades till.",
@@ -1492,21 +1492,32 @@ function initializeFAQ() {
         question.addEventListener('click', () => {
             const faqItem = question.parentElement;
             const faqAnswer = faqItem.querySelector('.faq-answer');
+            const faqArrow = question.querySelector('.faq-arrow');
             const isActive = faqItem.classList.contains('active');
+
+            console.log('FAQ item toggled:', { question: question.textContent, isActive: isActive });
 
             if (isActive) {
                 faqAnswer.style.maxHeight = faqAnswer.scrollHeight + 'px';
                 requestAnimationFrame(() => {
                     faqAnswer.style.maxHeight = '0';
+                    faqAnswer.style.padding = '0 10px';
                     faqItem.classList.remove('active');
+                    if (faqArrow) {
+                        faqArrow.style.transform = 'rotate(0deg)';
+                    }
                 });
             } else {
                 faqAnswer.style.display = 'block';
                 const fullHeight = faqAnswer.scrollHeight + 20;
-                faqItem.classList.add('active');
                 faqAnswer.style.maxHeight = fullHeight + 'px';
+                faqAnswer.style.padding = '10px';
+                faqItem.classList.add('active');
+                if (faqArrow) {
+                    faqArrow.style.transform = 'rotate(180deg)';
+                }
                 faqAnswer.addEventListener('transitionend', function resetHeight() {
-                    faqAnswer.style.maxHeight = '200px';
+                    faqAnswer.style.maxHeight = 'none'; // Allow dynamic height after animation
                     faqAnswer.removeEventListener('transitionend', resetHeight);
                 }, { once: true });
             }
