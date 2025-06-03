@@ -1481,44 +1481,29 @@ function waitForDOM() {
 function initializeFAQ() {
     const faqQuestions = document.querySelectorAll('.faq-question');
     faqQuestions.forEach(question => {
-        const faqArrow = question.querySelector('.faq-arrow');
-        if (faqArrow) {
-            faqArrow.style.display = 'inline-block';
-            faqArrow.style.visibility = 'visible';
-        }
-
-        const faqItem = question.parentElement;
-        const faqAnswer = faqItem.querySelector('.faq-answer');
-
         question.addEventListener('click', () => {
+            const faqItem = question.parentElement;
+            const faqAnswer = faqItem.querySelector('.faq-answer');
             const isActive = faqItem.classList.contains('active');
-
-            console.log('FAQ item toggled:', { question: question.textContent, isActive: isActive });
 
             if (isActive) {
                 faqAnswer.style.maxHeight = faqAnswer.scrollHeight + 'px';
                 requestAnimationFrame(() => {
                     faqAnswer.style.maxHeight = '0';
-                    faqAnswer.style.opacity = '0';
                     faqItem.classList.remove('active');
                 });
             } else {
+                faqAnswer.style.display = 'block';
                 const fullHeight = faqAnswer.scrollHeight + 20;
-                faqAnswer.style.maxHeight = fullHeight + 'px';
-                faqAnswer.style.opacity = '1';
                 faqItem.classList.add('active');
+                faqAnswer.style.maxHeight = fullHeight + 'px';
                 faqAnswer.addEventListener('transitionend', function resetHeight() {
-                    faqAnswer.style.maxHeight = 'none';
+                    faqAnswer.style.maxHeight = '200px';
                     faqAnswer.removeEventListener('transitionend', resetHeight);
                 }, { once: true });
             }
         });
     });
-
-    const faqContainer = document.querySelector('.faq-container');
-    if (faqContainer) {
-        faqContainer.classList.add('loaded');
-    }
 }
 
 function initializeRemovePage() {

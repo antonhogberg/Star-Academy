@@ -34,10 +34,6 @@ body.faq-page {
     height: auto;
     overflow-y: auto !important;
 }
-body.faq-page .content {
-    padding-top: 20px; /* Reduced since title is outside */
-    box-sizing: border-box;
-}
 
 body.chapters {
     overflow: hidden;
@@ -1867,21 +1863,6 @@ h2#popupWelcome {
     max-width: 800px;
     margin: 0 auto;
     padding: 0 10px;
-    opacity: 0; /* Start invisible to prevent blip */
-    transition: opacity 0.3s ease; /* Fade in after load */
-}
-
-.faq-container.loaded {
-    opacity: 1; /* Fade in once loaded */
-}
-
-.faq-title {
-    font-family: Cochin, Georgia, Arial, sans-serif;
-    font-size: 30px;
-    color: #ffffff;
-    text-align: center;
-    margin: 20px 0 40px 0; /* Keep original margins */
-    padding-top: 20px; /* Minimal offset below fixed header */
 }
 
 .faq-item {
@@ -1898,33 +1879,32 @@ h2#popupWelcome {
     justify-content: space-between;
     align-items: center;
     font-weight: bold;
-    font-size: 16px; /* Explicit font-size to prevent inheritance issues */
 }
 
 .faq-arrow {
-    display: inline-block !important;
-    font-size: 14px !important; /* Ensure consistent size */
+    display: inline-block !important; /* Override any potential hiding */
+    font-size: 14px;
     transition: transform 0.5s ease-in-out;
-    visibility: visible !important;
+    visibility: visible !important; /* Ensure visibility */
 }
 
 .faq-item.active .faq-arrow {
     transform: rotate(180deg);
 }
 
-faq-answer {
+.faq-answer {
     max-height: 0;
     overflow: hidden;
-    opacity: 0;
-    padding: 10px; /* Start with padding already applied */
-    transition: max-height 0.5s ease-in-out, opacity 0.5s ease-in-out; /* Remove padding transition */
+    transition: max-height 0.5s ease-in-out, padding 0.5s ease-in-out; /* Slower and smoother */
     border-top: 1px solid #ccc;
     background-color: #fff;
+    padding: 0 10px;
 }
 
 .faq-item.active .faq-answer {
     max-height: 1000px !important;
-    opacity: 1;
+    padding: 10px;
+    display: block;
 }
 
 .user-name-box {
@@ -2578,7 +2558,7 @@ faq-answer {
         max-width: none;
     }
     body.faq-page .content {
-        padding-top: 10px;
+        padding-top: 70px;
     }
     #userNameDisplay {
         margin: 10px auto;
