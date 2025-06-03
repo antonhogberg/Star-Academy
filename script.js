@@ -1492,32 +1492,21 @@ function initializeFAQ() {
         question.addEventListener('click', () => {
             const faqItem = question.parentElement;
             const faqAnswer = faqItem.querySelector('.faq-answer');
-            const faqArrow = question.querySelector('.faq-arrow');
             const isActive = faqItem.classList.contains('active');
-
-            console.log('FAQ item toggled:', { question: question.textContent, isActive: isActive });
 
             if (isActive) {
                 faqAnswer.style.maxHeight = faqAnswer.scrollHeight + 'px';
                 requestAnimationFrame(() => {
                     faqAnswer.style.maxHeight = '0';
-                    faqAnswer.style.padding = '0 10px';
                     faqItem.classList.remove('active');
-                    if (faqArrow) {
-                        faqArrow.style.transform = 'rotate(0deg)';
-                    }
                 });
             } else {
                 faqAnswer.style.display = 'block';
                 const fullHeight = faqAnswer.scrollHeight + 20;
-                faqAnswer.style.maxHeight = fullHeight + 'px';
-                faqAnswer.style.padding = '10px';
                 faqItem.classList.add('active');
-                if (faqArrow) {
-                    faqArrow.style.transform = 'rotate(180deg)';
-                }
+                faqAnswer.style.maxHeight = fullHeight + 'px';
                 faqAnswer.addEventListener('transitionend', function resetHeight() {
-                    faqAnswer.style.maxHeight = 'none'; // Allow dynamic height after animation
+                    faqAnswer.style.maxHeight = '200px';
                     faqAnswer.removeEventListener('transitionend', resetHeight);
                 }, { once: true });
             }
