@@ -1,18 +1,10 @@
-// Step 4: Updated starImages for normal and student modes (28 images)
 const starImages = [
-    // Gold 0: 0-6 silver stars
     ['gold0_silver0.png', 'gold0_silver1.png', 'gold0_silver2.png', 'gold0_silver3.png', 'gold0_silver4.png', 'gold0_silver5.png', 'gold0_silver6.png'],
-    // Gold 1: 0-5 silver stars
     ['gold1_silver0.png', 'gold1_silver1.png', 'gold1_silver2.png', 'gold1_silver3.png', 'gold1_silver4.png', 'gold1_silver5.png'],
-    // Gold 2: 0-4 silver stars
     ['gold2_silver0.png', 'gold2_silver1.png', 'gold2_silver2.png', 'gold2_silver3.png', 'gold2_silver4.png'],
-    // Gold 3: 0-3 silver stars
     ['gold3_silver0.png', 'gold3_silver1.png', 'gold3_silver2.png', 'gold3_silver3.png'],
-    // Gold 4: 0-2 silver stars
     ['gold4_silver0.png', 'gold4_silver1.png', 'gold4_silver2.png'],
-    // Gold 5: 0-1 silver stars
     ['gold5_silver0.png', 'gold5_silver1.png'],
-    // Gold 6: 0 silver stars
     ['gold6_silver0.png']
 ];
 
@@ -49,7 +41,6 @@ const progressionPath = [
     { star: '2:1:4', nextStar: null, lines: [] }
 ];
 
-// Step 4: Preload images with Promise-based approach for performance
 function preloadImages() {
     console.log('Preloading star images');
     const preloadPromises = [];
@@ -71,7 +62,6 @@ function preloadImages() {
             );
         });
     });
-    // Log completion but don't block rendering
     Promise.all(preloadPromises).then(() => console.log('All images preloaded')).catch(err => console.error('Some images failed to preload', err));
 }
 
@@ -83,14 +73,10 @@ function initializeStarMap() {
         return;
     }
 
-    // Step 4: Start preloading images (async, non-blocking)
     preloadImages();
-
-    // Since the SVG is inline, we can directly pass the document context
     initializeSvg(document);
 }
 
-// Step 4: Modified to accept gold and silver levels for image selection
 function createStarElement(doc, starId, goldLevel, silverLevel, x, y, width, height, initialOpacity = 1) {
     const starElement = doc.createElementNS('http://www.w3.org/2000/svg', 'image');
     starElement.setAttribute('id', `star-${starId.replace(/:/g, '-')}`);
@@ -98,7 +84,6 @@ function createStarElement(doc, starId, goldLevel, silverLevel, x, y, width, hei
     starElement.setAttribute('y', y);
     starElement.setAttribute('width', width);
     starElement.setAttribute('height', height);
-    // Select image based on gold and silver levels
     const image = starImages[goldLevel][silverLevel] || starImages[0][0];
     starElement.setAttributeNS('http://www.w3.org/1999/xlink', 'href', image);
     starElement.onerror = () => {
@@ -110,55 +95,94 @@ function createStarElement(doc, starId, goldLevel, silverLevel, x, y, width, hei
     return starElement;
 }
 
-// Step 4: Click handler function to ensure reattachment
+// Helper function to update practiceLog on star clicks (same as in chapter.js)
+function updatePracticeLog(studentsData, currentStudent) {
+    if (!studentsData.students[currentStudent]) {
+        console.warn(`Student ${currentStudent} not found in studentsData`);
+        return studentsData;
+    }
+
+    if (!studentsData.students[currentStudent].practiceLog) {
+        studentsData.students[currentStudent].practiceLog = {
+            dates: [],
+            streak: 0,
+            totalGoldStars: 0
+        };
+    }
+
+    const practiceLog = studentsData.students[currentStudent].practiceLog;
+    const today = new Date().toISOString().split('T')[0];
+    
+    if (!practiceLog.dates.includes(today)) {
+        practiceLog.dates.push(today);
+        
+        practiceLog.dates.sort();
+        let streak = 0;
+        let currentDate = new Date(today);
+        for (let i = practiceLog.dates.length - 1; i >= 0; i--) {
+            const logDate = new Date(practiceLog.dates[i]);
+            const diffDays = (currentDate - logDate) / (1000 * 60 * 60 * 24);
+            if (diffDays === 0) {
+                streak++;
+                currentDate = logDate;
+            } else if (diffDays === 1) {
+                streak++;
+                currentDate = logDate;
+            } else {
+                break;
+            }
+        }
+        practiceLog.streak = streak;
+
+        const progress = studentsData.students[currentStudent].progress || {};
+        practiceLog.totalGoldStars = Object.values(progress).reduce((sum, stars) => sum + (parseInt(stars) || 0), 0);
+    }
+
+    return studentsData;
+}
+
 function handleStarClick(event, star, exerciseKey, lineElements, doc, parent, x, y, width, height) {
     const starElement = event.currentTarget;
     const studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
-    const progress = studentsData.students[studentsData.currentStudent]?.progress || {};
-    const silverProgress = studentsData.students[studentsData.currentStudent]?.silverProgress || {};
-    const studentMode = studentsData.students[studentsData.currentStudent]?.studentMode || false;
-    console.log(`Star ${star} clicked, studentMode=${studentMode}`); // Step 4: Fixed scoping issue
+    const currentStudent = studentsData.currentStudent;
+    const progress = studentsData.students[currentStudent]?.progress || {};
+    const silverProgress = studentsData.students[currentStudent]?.silverProgress || {};
+    const studentMode = studentsData.students[currentStudent]?.studentMode || false;
+    console.log(`Star ${star} clicked, studentMode=${studentMode}`);
     console.log(`Click handler attached for star-${star}`);
 
     let goldLevel = progress[exerciseKey] ? parseInt(progress[exerciseKey]) : 0;
     let silverLevel = silverProgress[exerciseKey] ? parseInt(silverProgress[exerciseKey]) : 0;
 
-    // Calculate new levels
     let newGoldLevel = goldLevel;
     let newSilverLevel = silverLevel;
     let isException = false;
     if (studentMode && goldLevel === 6) {
-        // Exception 1: Gold level 6 in student mode (fade-out/fade-in)
         console.log(`Student mode: Fade effect for goldLevel=6, no state change for ${exerciseKey}`);
         isException = true;
     } else if (studentMode) {
-        // Student mode: Increment silver stars, lock gold stars
         const maxSilver = 6 - goldLevel;
         newSilverLevel = (silverLevel + 1) % (maxSilver + 1);
-        // Exception 2: Transition to goldX_silver0 in student mode
         if (newSilverLevel === 0 && silverLevel === maxSilver) {
             isException = true;
         }
         silverProgress[exerciseKey] = newSilverLevel.toString();
-        studentsData.students[studentsData.currentStudent].silverProgress = silverProgress;
+        studentsData.students[currentStudent].silverProgress = silverProgress;
         console.log(`Student mode: Updated silverLevel=${newSilverLevel} for ${exerciseKey}`);
     } else {
-        // Normal mode: Increment gold stars, reset silver stars
         newGoldLevel = (goldLevel + 1) % 7;
         newSilverLevel = 0;
-        // Exception 2: Transition from gold6_silver0 to gold0_silver0
         if (goldLevel === 6 && newGoldLevel === 0) {
             isException = true;
         }
         progress[exerciseKey] = newGoldLevel.toString();
         silverProgress[exerciseKey] = '0';
-        studentsData.students[studentsData.currentStudent].progress = progress;
-        studentsData.students[studentsData.currentStudent].silverProgress = silverProgress;
+        studentsData.students[currentStudent].progress = progress;
+        studentsData.students[currentStudent].silverProgress = silverProgress;
         console.log(`Normal mode: Updated goldLevel=${newGoldLevel}, silverLevel=0 for ${exerciseKey}`);
     }
 
     if (isException) {
-        // Fade-out/fade-in for exceptions
         starElement.style.opacity = '0';
         setTimeout(() => {
             starElement.setAttributeNS('http://www.w3.org/1999/xlink', 'href', starImages[newGoldLevel][newSilverLevel]);
@@ -167,25 +191,24 @@ function handleStarClick(event, star, exerciseKey, lineElements, doc, parent, x,
                 starElement.setAttributeNS('http://www.w3.org/1999/xlink', 'href', starImages[0][0]);
             };
             starElement.style.opacity = '1';
-        }, 400); // Step 4: Update href after 400ms fade-out
+        }, 400);
     } else {
-        // Fade-in overlay for general case
         const overlayStarElement = createStarElement(doc, `${star}-overlay`, newGoldLevel, newSilverLevel, x, y, width, height, 0);
         parent.appendChild(overlayStarElement);
         setTimeout(() => {
             overlayStarElement.style.opacity = '1';
-        }, 10); // Small delay to ensure rendering
+        }, 10);
         setTimeout(() => {
             parent.removeChild(starElement);
             overlayStarElement.setAttribute('id', `star-${star.replace(/:/g, '-')}`);
-            // Reattach click listener to new element
             overlayStarElement.addEventListener('click', (e) => handleStarClick(e, star, exerciseKey, lineElements, doc, parent, x, y, width, height));
             console.log(`Reattached click handler for star-${star}`);
-        }, 400); // Step 4: Remove old image and reattach listener after 400ms fade-in
+        }, 400);
     }
 
-    // Update localStorage only if state changed
     if (!(studentMode && goldLevel === 6)) {
+        // Update practiceLog for star click
+        studentsData = updatePracticeLog(studentsData, currentStudent);
         localStorage.setItem('starAcademyStudents', JSON.stringify(studentsData));
     }
 
@@ -206,6 +229,12 @@ function handleStarClick(event, star, exerciseKey, lineElements, doc, parent, x,
     } else {
         console.error('updateStarStates not defined');
     }
+
+    // Update streak display in menu if the function exists
+    if (typeof window.updateStreakDisplay === 'function') {
+        console.log('Calling updateStreakDisplay after star click');
+        window.updateStreakDisplay();
+    }
 }
 
 function initializeSvg(doc) {
@@ -216,19 +245,13 @@ function initializeSvg(doc) {
         return;
     }
 
-    // Add styles directly to the SVG with tap highlight fix
     const styleElement = doc.createElementNS('http://www.w3.org/2000/svg', 'style');
     styleElement.textContent = `
-        image {
-            pointer-events: all;
-            transition: opacity 0.4s ease-in-out;
-            -webkit-tap-highlight-color: transparent; /* Remove iOS greying effect on click */
-        }
+        image { pointer-events: all; transition: opacity 0.4s ease-in-out; }
         image.non-clickable { pointer-events: auto; }
         path { transition: stroke 0.3s ease-in-out !important; }
     `;
     const starMapSvg = doc.getElementById('starMap');
-    // Remove existing style elements to avoid duplicates
     const existingStyles = starMapSvg.querySelectorAll('style');
     existingStyles.forEach(style => style.remove());
     starMapSvg.appendChild(styleElement);
@@ -318,6 +341,11 @@ function initializeSvg(doc) {
                     console.log('Storage event: Updating userNameDisplay');
                     userNameDisplay.textContent = updatedStudentsData.currentStudent || '';
                 }
+                // Update streak display on storage change
+                if (typeof window.updateStreakDisplay === 'function') {
+                    console.log('Storage event: Updating streak display');
+                    window.updateStreakDisplay();
+                }
             }
         };
         window.addEventListener('storage', window.storageListener);
@@ -341,5 +369,4 @@ function checkCompletion(studentsData) {
     }
 }
 
-// Expose initializeStarMap globally
 window.initializeStarMap = initializeStarMap;

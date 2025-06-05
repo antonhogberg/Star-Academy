@@ -150,7 +150,10 @@ const translations = {
         contactUs: "Contact Us",
         contactUsText: "For questions about our platform, email <a href='mailto:northstarpianoacademy@gmail.com'>northstarpianoacademy@gmail.com</a>. For data concerns, contact your piano teacher, as they control the data.",
         noConsentError: "Sorry, you need to agree to the privacy policy before creating a user.",
-        noConsentOptOut: "This platform requires local storage to track your progress, which is essential for its functionality. If you do not consent, you cannot use the platform. Please accept the Privacy Policy to continue or choose not to use the site."
+        noConsentOptOut: "This platform requires local storage to track your progress, which is essential for its functionality. If you do not consent, you cannot use the platform. Please accept the Privacy Policy to continue or choose not to use the site.",
+        practiceStreak: "Practice Streak:",
+        daysInRow: "days in a row.",
+        totalGoldStars: "Total gold stars earned:"
     },
     sv: {
         menuFrontPage: "Stjärnöversikt",
@@ -298,7 +301,10 @@ const translations = {
         contactUs: "Kontakta oss",
         contactUsText: "För frågor om vår plattform, maila <a href='mailto:nordstjarnanspianoskola@gmail.com'>nordstjarnanspianoskola@gmail.com</a>. För databehov, kontakta din pianolärare, eftersom de kontrollerar datan.",
         noConsentError: "Du måste godkänna integritetspolicyn innan du kan skapa en användare.",
-        noConsentOptOut: "Denna plattform kräver lokal lagring för att spåra dina framsteg, vilket är nödvändigt för dess funktionalitet. Om du inte samtycker kan du inte använda plattformen. Vänligen acceptera integritetspolicyn för att fortsätta eller välj att inte använda webbplatsen"
+        noConsentOptOut: "Denna plattform kräver lokal lagring för att spåra dina framsteg, vilket är nödvändigt för dess funktionalitet. Om du inte samtycker kan du inte använda plattformen. Vänligen acceptera integritetspolicyn för att fortsätta eller välj att inte använda webbplatsen",
+        practiceStreak: "Övningsstreak:",
+        daysInRow: "dagar i rad.",
+        totalGoldStars: "Totala guldstjärnor intjänade:"
     }
 };
 
@@ -331,6 +337,13 @@ const menuHtml = `
                     <span class="flag" onclick="switchLanguage('en')">🇬🇧</span>
                     <span class="flag" onclick="switchLanguage('sv')">🇸🇪</span>
                 </div>
+                <div class="practice-stats">
+                    <p data-translate="practiceStreak" style="text-align: center; margin: 10px 0 5px 0;"></p>
+                    <p id="streakNumber" style="text-align: center; font-size: 32px; margin: 5px 0; color: #ffd700;">0</p>
+                    <p data-translate="daysInRow" style="text-align: center; margin: 5px 0 10px 0;"></p>
+                    <p data-translate="totalGoldStars" style="text-align: center; margin: 10px 0 5px 0;"></p>
+                    <p id="goldStarsNumber" style="text-align: center; font-size: 24px; margin: 5px 0; color: #ffd700;">0<span style="color: #ffd700;"> ★</span></p>
+                </div>
             </div>
         </div>
     </nav>
@@ -357,7 +370,6 @@ function injectMenu() {
 
     console.log('Menu initialized with left: -250px via CSS');
 
-    // Remove existing listeners to prevent duplicates
     const newHamburger = hamburger.cloneNode(true);
     hamburger.parentNode.replaceChild(newHamburger, hamburger);
 
@@ -370,7 +382,6 @@ function injectMenu() {
             menu.classList.add('active');
             menu.animate([{ left: '-250px' }, { left: '0' }], { duration: 300, easing: 'ease-in-out', fill: 'forwards' });
             console.log('Menu opened');
-            // Refresh the dropdown when opening the menu
             if (typeof updateDropdown === 'function') {
                 console.log('Calling updateDropdown when menu opens');
                 updateDropdown();
@@ -419,7 +430,7 @@ function injectMenu() {
                 console.log('Submenu closed');
             } else {
                 submenu.style.display = 'block';
-                submenu.offsetHeight; // Force reflow
+                submenu.offsetHeight;
                 submenu.classList.add('open');
                 console.log('Submenu opened');
             }
@@ -432,6 +443,31 @@ function injectMenu() {
     const lang = localStorage.getItem('language') || 'sv';
     switchLanguage(lang);
     setActivePage();
+    updateStreakDisplay(); // Initial streak display update
+}
+
+function updateStreakDisplay() {
+    console.log('updateStreakDisplay called');
+    const streakNumber = document.getElementById('streakNumber');
+    const goldStarsNumber = document.getElementById('goldStarsNumber');
+    if (!streakNumber || !goldStarsNumber) {
+        console.warn('Streak display elements not found:', { streakNumber: !!streakNumber, goldStarsNumber: !!goldStarsNumber });
+        return;
+    }
+
+    const studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
+    const currentStudent = studentsData.currentStudent;
+    if (!currentStudent || !studentsData.students[currentStudent]) {
+        console.log('No current student, setting streak to 0');
+        streakNumber.textContent = '0';
+        goldStarsNumber.innerHTML = '0<span style="color: #ffd700;"> ★</span>';
+        return;
+    }
+
+    const practiceLog = studentsData.students[currentStudent].practiceLog || { streak: 0, totalGoldStars: 0 };
+    streakNumber.textContent = practiceLog.streak || '0';
+    goldStarsNumber.innerHTML = `${practiceLog.totalGoldStars || 0}<span style="color: #ffd700;"> ★</span>`;
+    console.log(`Updated streak display: streak=${practiceLog.streak}, totalGoldStars=${practiceLog.totalGoldStars}`);
 }
 
 function initializeConsentPopup() {
@@ -1199,7 +1235,7 @@ function switchLanguage(lang) {
     document.querySelectorAll('.star-map-steps p[data-translate]').forEach(p => {
         const key = p.getAttribute('data-translate');
         if (translations[newLang][key]) {
-            p.innerHTML = translations[newLang][key]; // Render the translated text with <strong>
+            p.innerHTML = translations[newLang][key];
         }
     });
 
@@ -1250,7 +1286,6 @@ function switchLanguage(lang) {
         userNameDisplay.textContent = window.studentsData?.currentStudent || '';
     }
 
-    // Update consent popup text if visible
     if (localStorage.getItem('consentGiven') !== 'true' && window.cookieconsent && window.cookieconsent.element) {
         console.log('Updating consent popup text for language:', newLang);
         const popup = window.cookieconsent.element;
@@ -1263,7 +1298,11 @@ function switchLanguage(lang) {
         if (deny) deny.textContent = translations[newLang].consentReject;
         if (link) link.textContent = translations[newLang].consentPolicyLink;
     }
+
+    // Update streak display after language change
+    updateStreakDisplay();
 }
+
 
 function setInitialLanguage() {
     const hash = window.location.hash.replace('#', '').toLowerCase();

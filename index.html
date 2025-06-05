@@ -213,7 +213,6 @@
 <script src="script.js"></script>
 <script src="students.js"></script>
 <script type="module">
-    // Inline translations for import popups
     const inlineTranslations = {
         sv: {
             loading: "Laddar elevdata...",
@@ -227,8 +226,7 @@
         }
     };
 
-    // Handle import from QR code or URL
-    async function handleImportFromLink(code) {
+    async function importStudentData(code) {
         try {
             const mainContent = document.getElementById('mainContent');
             const importLoaderOverlay = document.getElementById('importLoaderOverlay');
@@ -251,7 +249,6 @@
             loaderText.textContent = inlineTranslations[lang].loading;
             console.log('Loading popup displayed:', { display: importLoaderOverlay.style.display, zIndex: importLoaderOverlay.style.zIndex });
 
-            // Decompress data
             if (!window.LZString) {
                 console.error('LZString not loaded');
                 throw new Error('Compression library missing');
@@ -264,13 +261,11 @@
             const dataToImport = JSON.parse(decompressed);
             console.log('Imported JSON:', dataToImport);
 
-            // Validate data
             if (!dataToImport.name || !dataToImport.progress || !dataToImport.rank || dataToImport.progress.length !== 112) {
                 console.error('Invalid data format:', dataToImport);
                 throw new Error('Invalid data format');
             }
 
-            // Reconstruct progress object
             const progress = {};
             const digits = dataToImport.progress.split('');
             let index = 0;
@@ -285,7 +280,6 @@
                 }
             }
 
-            // Step 3: Initialize silverProgress for all imports
             const silverProgress = {};
             for (let chapter = 1; chapter <= 7; chapter++) {
                 for (let part = 1; part <= 4; part++) {
@@ -296,25 +290,64 @@
                 }
             }
 
-            // Update localStorage
             const studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
+            const existingStudent = studentsData.students[dataToImport.name];
+            const existingPracticeLog = existingStudent?.practiceLog || { dates: [], streak: 0, totalGoldStars: 0 };
+
+            const isNormalToStudentImport = !dataToImport.practiceLog && dataToImport.studentMode === true;
+            let updatedPracticeLog;
+            if (isNormalToStudentImport) {
+                const today = new Date().toISOString().split('T')[0];
+                const updatedDates = existingPracticeLog.dates.includes(today)
+                    ? existingPracticeLog.dates
+                    : [...existingPracticeLog.dates, today];
+
+                updatedDates.sort();
+                let streak = 0;
+                let currentDate = new Date(today);
+                for (let i = updatedDates.length - 1; i >= 0; i--) {
+                    const logDate = new Date(updatedDates[i]);
+                    const diffDays = (currentDate - logDate) / (1000 * 60 * 60 * 24);
+                    if (diffDays === 0) {
+                        streak++;
+                        currentDate = logDate;
+                    } else if (diffDays === 1) {
+                        streak++;
+                        currentDate = logDate;
+                    } else {
+                        break;
+                    }
+                }
+
+                updatedPracticeLog = {
+                    dates: updatedDates,
+                    streak: streak,
+                    totalGoldStars: 0
+                };
+            } else {
+                updatedPracticeLog = dataToImport.practiceLog || { dates: [], streak: 0, totalGoldStars: 0 };
+            }
+
             const isNew = !studentsData.students[dataToImport.name];
             studentsData.students[dataToImport.name] = {
                 name: dataToImport.name,
                 progress: progress,
                 rank: dataToImport.rank,
                 notes: dataToImport.notes || '',
-                studentMode: dataToImport.studentMode || false, // Step 3: Parse studentMode, default to false
-                silverProgress: silverProgress // Step 3: Include silverProgress
+                studentMode: dataToImport.studentMode || false,
+                silverProgress: silverProgress,
+                practiceLog: updatedPracticeLog
             };
             studentsData.currentStudent = dataToImport.name;
+
+            const totalGoldStars = Object.values(progress).reduce((sum, stars) => sum + (parseInt(stars) || 0), 0);
+            studentsData.students[dataToImport.name].practiceLog.totalGoldStars = totalGoldStars;
+
             localStorage.setItem('starAcademyStudents', JSON.stringify(studentsData));
             console.log('localStorage updated, currentStudent:', dataToImport.name, 'students:', Object.keys(studentsData.students), 'notes:', dataToImport.notes, 'studentMode:', dataToImport.studentMode);
 
-            // Ensure loading popup is visible for at least 500ms
             await new Promise(resolve => setTimeout(resolve, 500));
 
-            // Hide loading popup and show success popup
             importLoaderOverlay.style.display = 'none';
             console.log('Loading popup hidden');
 
@@ -322,7 +355,6 @@
             console.log('Showing student popup');
             showStudentPopup(isNew, dataToImport.name, `${starSVG} ${inlineTranslations[lang].success} ${dataToImport.name}! ${starSVG}`);
 
-            // Initialize UI after popup
             if (typeof window.initializeAppContent === 'function') {
                 window.initializeAppContent();
                 console.log('initializeAppContent called');
@@ -332,9 +364,14 @@
             mainContent.style.display = 'block';
             window.isImporting = false;
 
-            // Clean URL
             const cleanUrl = window.location.origin + window.location.pathname;
             window.history.replaceState({}, document.title, cleanUrl);
+
+            // Update streak display after import
+            if (typeof window.updateStreakDisplay === 'function') {
+                console.log('Calling updateStreakDisplay after import');
+                window.updateStreakDisplay();
+            }
         } catch (error) {
             console.error('Import failed:', error);
             importLoaderOverlay.style.display = 'none';
@@ -347,11 +384,9 @@
         }
     }
 
-    // Popup for import feedback
     function showStudentPopup(isNew, name, errorMessage) {
         console.log('showStudentPopup called:', { isNew, name, errorMessage });
         const lang = localStorage.getItem('language') || 'sv';
-        // Remove existing popup if present
         const existingPopup = document.getElementById('namePopup');
         if (existingPopup) {
             console.log('Removing existing namePopup');
@@ -360,7 +395,6 @@
         const popup = document.createElement('div');
         popup.id = 'namePopup';
         popup.className = 'student-popup show';
-        // Force visibility
         popup.style.display = 'flex';
         popup.style.opacity = '1';
         popup.style.zIndex = '1000';
@@ -372,7 +406,6 @@
                 <p>${message}</p>
             </div>
         `;
-        // Store popup state for language switching
         popup.dataset.name = name || '';
         popup.dataset.isError = errorMessage ? 'true' : 'false';
         document.body.appendChild(popup);
@@ -396,14 +429,13 @@
         }, 4000);
     }
 
-    // Trigger import if code exists
     document.addEventListener('DOMContentLoaded', () => {
         console.log('DOMContentLoaded for import');
         const urlParams = new URLSearchParams(window.location.search);
         const code = urlParams.get('code');
         if (code) {
             console.log('Import code detected:', code);
-            handleImportFromLink(code);
+            importStudentData(code);
         } else {
             document.getElementById('importLoaderOverlay').style.display = 'none';
             const mainContent = document.getElementById('mainContent');

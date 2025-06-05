@@ -23,7 +23,8 @@ if (window.studentsData.currentStudent && !window.studentsData.students[window.s
         rank: "Explorer",
         notes: "",
         studentMode: false,
-        silverProgress: initializeSilverProgress()
+        silverProgress: initializeSilverProgress(),
+        practiceLog: { dates: [], streak: 0, totalGoldStars: 0 } // Initialize practiceLog for new students
     };
     for (let chapter = 1; chapter <= 7; chapter++) {
         for (let part = 1; part <= 4; part++) {
@@ -73,7 +74,8 @@ function addStudent(e) {
         rank: "Explorer",
         notes: "",
         studentMode: false,
-        silverProgress: initializeSilverProgress()
+        silverProgress: initializeSilverProgress(),
+        practiceLog: { dates: [], streak: 0, totalGoldStars: 0 } // Initialize practiceLog for new students
     };
 
     for (let chapter = 1; chapter <= 7; chapter++) {
@@ -106,6 +108,12 @@ function addStudent(e) {
         loadNotes(false);
     } else {
         console.log('loadNotes function not found');
+    }
+
+    // Update streak display after adding a student
+    if (typeof window.updateStreakDisplay === 'function') {
+        console.log('Calling updateStreakDisplay after adding student');
+        window.updateStreakDisplay();
     }
 }
 
@@ -176,6 +184,12 @@ function switchStudent(selectedValue) {
     if (userNameDisplay) {
         userNameDisplay.textContent = selectedValue || '';
     }
+
+    // Update streak display after switching student
+    if (typeof window.updateStreakDisplay === 'function') {
+        console.log('Calling updateStreakDisplay after switching student');
+        window.updateStreakDisplay();
+    }
 }
 
 function updateDropdown() {
@@ -216,6 +230,32 @@ function updateDropdown() {
             console.log('No students available, dropdown cleared');
         }
     });
+
+    // Update streak display after updating dropdown
+    if (typeof window.updateStreakDisplay === 'function') {
+        console.log('Calling updateStreakDisplay after updating dropdown');
+        window.updateStreakDisplay();
+    }
+}
+
+// Export student data with conditional practiceLog handling
+function exportStudentData(studentName) {
+    console.log(`Exporting student data for ${studentName}`);
+    const studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
+    const student = { ...studentsData.students[studentName] };
+    
+    // Determine the mode of the exporting user (currentStudent on this device)
+    const exportingUserMode = studentsData.students[studentsData.currentStudent]?.studentMode || false;
+    
+    // Exclude practiceLog only if exporting from normal mode to student mode (N to S)
+    if (!exportingUserMode && student.studentMode === true) {
+        console.log(`Normal mode user exporting student mode user ${studentName}, excluding practiceLog`);
+        delete student.practiceLog;
+    } else {
+        console.log(`Including practiceLog in export for ${studentName}`);
+    }
+    
+    return JSON.stringify(student);
 }
 
 document.addEventListener('DOMContentLoaded', () => {
