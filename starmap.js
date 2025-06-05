@@ -117,7 +117,7 @@ function handleStarClick(event, star, exerciseKey, lineElements, doc, parent, x,
     const progress = studentsData.students[studentsData.currentStudent]?.progress || {};
     const silverProgress = studentsData.students[studentsData.currentStudent]?.silverProgress || {};
     const studentMode = studentsData.students[studentsData.currentStudent]?.studentMode || false;
-    console.log(`Star ${star} clicked, studentMode=${studentMode}`); // Step 4: Fixed scoping issue
+    console.log(`Star ${star} clicked, studentMode=${studentMode}`);
     console.log(`Click handler attached for star-${star}`);
 
     let goldLevel = progress[exerciseKey] ? parseInt(progress[exerciseKey]) : 0;
@@ -128,14 +128,11 @@ function handleStarClick(event, star, exerciseKey, lineElements, doc, parent, x,
     let newSilverLevel = silverLevel;
     let isException = false;
     if (studentMode && goldLevel === 6) {
-        // Exception 1: Gold level 6 in student mode (fade-out/fade-in)
         console.log(`Student mode: Fade effect for goldLevel=6, no state change for ${exerciseKey}`);
         isException = true;
     } else if (studentMode) {
-        // Student mode: Increment silver stars, lock gold stars
         const maxSilver = 6 - goldLevel;
         newSilverLevel = (silverLevel + 1) % (maxSilver + 1);
-        // Exception 2: Transition to goldX_silver0 in student mode
         if (newSilverLevel === 0 && silverLevel === maxSilver) {
             isException = true;
         }
@@ -143,10 +140,8 @@ function handleStarClick(event, star, exerciseKey, lineElements, doc, parent, x,
         studentsData.students[studentsData.currentStudent].silverProgress = silverProgress;
         console.log(`Student mode: Updated silverLevel=${newSilverLevel} for ${exerciseKey}`);
     } else {
-        // Normal mode: Increment gold stars, reset silver stars
         newGoldLevel = (goldLevel + 1) % 7;
         newSilverLevel = 0;
-        // Exception 2: Transition from gold6_silver0 to gold0_silver0
         if (goldLevel === 6 && newGoldLevel === 0) {
             isException = true;
         }
@@ -158,7 +153,6 @@ function handleStarClick(event, star, exerciseKey, lineElements, doc, parent, x,
     }
 
     if (isException) {
-        // Fade-out/fade-in for exceptions
         starElement.style.opacity = '0';
         setTimeout(() => {
             starElement.setAttributeNS('http://www.w3.org/1999/xlink', 'href', starImages[newGoldLevel][newSilverLevel]);
@@ -167,34 +161,32 @@ function handleStarClick(event, star, exerciseKey, lineElements, doc, parent, x,
                 starElement.setAttributeNS('http://www.w3.org/1999/xlink', 'href', starImages[0][0]);
             };
             starElement.style.opacity = '1';
-        }, 400); // Step 4: Update href after 400ms fade-out
+        }, 400);
     } else {
-        // Fade-in overlay for general case
         const overlayStarElement = createStarElement(doc, `${star}-overlay`, newGoldLevel, newSilverLevel, x, y, width, height, 0);
         parent.appendChild(overlayStarElement);
         setTimeout(() => {
             overlayStarElement.style.opacity = '1';
-        }, 10); // Small delay to ensure rendering
+        }, 10);
         setTimeout(() => {
             parent.removeChild(starElement);
             overlayStarElement.setAttribute('id', `star-${star.replace(/:/g, '-')}`);
-            // Reattach click listener to new element
             overlayStarElement.addEventListener('click', (e) => handleStarClick(e, star, exerciseKey, lineElements, doc, parent, x, y, width, height));
             console.log(`Reattached click handler for star-${star}`);
-        }, 400); // Step 4: Remove old image and reattach listener after 400ms fade-in
+        }, 400);
     }
 
-    // Update localStorage only if state changed
     if (!(studentMode && goldLevel === 6)) {
         localStorage.setItem('starAcademyStudents', JSON.stringify(studentsData));
     }
 
+    // Update line glow with class-based animation
     lineElements.forEach(lineElement => {
         if (newGoldLevel === 6) {
-            lineElement.setAttribute('filter', 'url(#golden-glow)');
+            lineElement.classList.add('glow-active'); // Trigger glow fade-in
             lineElement.style.stroke = '#FFD700';
         } else {
-            lineElement.removeAttribute('filter');
+            lineElement.classList.remove('glow-active'); // Remove glow
             lineElement.style.stroke = '#FFFFFF';
         }
     });
@@ -216,12 +208,20 @@ function initializeSvg(doc) {
         return;
     }
 
-    // Add styles directly to the SVG
+    // Add styles directly to the SVG with glow animation
     const styleElement = doc.createElementNS('http://www.w3.org/2000/svg', 'style');
     styleElement.textContent = `
-        image { pointer-events: all; transition: opacity 0.4s ease-in-out; } /* Step 4: 400ms fade */
-        image.non-clickable { pointer-events: auto; } /* Step 4: Allow clicks for fade effect */
+        image { pointer-events: all; transition: opacity 0.4s ease-in-out; }
+        image.non-clickable { pointer-events: auto; }
         path { transition: stroke 0.3s ease-in-out !important; }
+        path.glow-active {
+            filter: url(#golden-glow);
+            animation: glowFadeIn 0.5s ease-in-out forwards;
+        }
+        @keyframes glowFadeIn {
+            0% { filter: url(#golden-glow); opacity: 0; }
+            100% { filter: url(#golden-glow); opacity: 1; }
+        }
     `;
     const starMapSvg = doc.getElementById('starMap');
     // Remove existing style elements to avoid duplicates
@@ -246,38 +246,34 @@ function initializeSvg(doc) {
         const silverLevel = silverProgress[exerciseKey] ? parseInt(silverProgress[exerciseKey]) : 0;
         console.log(`Star-${star}: goldLevel=${goldLevel}, silverLevel=${silverLevel}, studentMode=${studentMode}, image=${starImages[goldLevel][silverLevel]}`);
 
-        // Store original attributes to recreate the element
         const x = starElement.getAttribute('x');
         const y = starElement.getAttribute('y');
         const width = starElement.getAttribute('width');
         const height = starElement.getAttribute('height');
 
-        // Remove the existing star element and create a new one
         const parent = starElement.parentNode;
         const newStarElement = createStarElement(doc, star, goldLevel, silverLevel, x, y, width, height);
-        // Step 4: Mark goldLevel 6 stars as non-clickable in student mode (for state changes)
         if (studentMode && goldLevel === 6) {
             newStarElement.classList.add('non-clickable');
         }
         parent.replaceChild(newStarElement, starElement);
 
+        // Apply glow with class-based animation
         lineElements.forEach(lineElement => {
             const currentStyle = lineElement.getAttribute('style') || '';
             const newStyle = currentStyle.replace(/stroke\s*:\s*[^;]+;?/, '').trim();
             lineElement.setAttribute('style', newStyle);
             lineElement.style.stroke = goldLevel === 6 ? '#FFD700' : '#FFFFFF';
             if (goldLevel === 6) {
-                lineElement.setAttribute('filter', 'url(#golden-glow)');
+                lineElement.classList.add('glow-active');
             } else {
-                lineElement.removeAttribute('filter');
+                lineElement.classList.remove('glow-active');
             }
         });
 
-        // Step 4: Attach click handler
         newStarElement.addEventListener('click', (e) => handleStarClick(e, star, exerciseKey, lineElements, doc, parent, x, y, width, height));
         console.log(`Attached click handler for star-${star} during initialization`);
 
-        // Remove existing storage listeners to prevent duplicates
         window.removeEventListener('storage', window.storageListener);
         window.storageListener = (event) => {
             if (event.key === 'starAcademyStudents') {
@@ -288,31 +284,27 @@ function initializeSvg(doc) {
                 const updatedGoldLevel = updatedProgress[exerciseKey] ? parseInt(updatedProgress[exerciseKey]) : 0;
                 const updatedSilverLevel = updatedSilverProgress[exerciseKey] ? parseInt(updatedSilverProgress[exerciseKey]) : 0;
 
-                // Remove and recreate the star element to force re-render
                 const newStarElementUpdate = createStarElement(doc, star, updatedGoldLevel, updatedSilverLevel, x, y, width, height);
-                // Step 4: Mark goldLevel 6 stars as non-clickable in student mode
                 if (updatedStudentMode && updatedGoldLevel === 6) {
                     newStarElementUpdate.classList.add('non-clickable');
                 }
                 parent.replaceChild(newStarElementUpdate, newStarElement);
 
-                // Reattach click listener to updated element
                 newStarElementUpdate.addEventListener('click', (e) => handleStarClick(e, star, exerciseKey, lineElements, doc, parent, x, y, width, height));
                 console.log(`Reattached click handler for star-${star} in storage listener`);
 
                 lineElements.forEach(lineElement => {
                     if (updatedGoldLevel === 6) {
-                        lineElement.setAttribute('filter', 'url(#golden-glow)');
+                        lineElement.classList.add('glow-active');
                         lineElement.style.stroke = '#FFD700';
                     } else {
-                        lineElement.removeAttribute('filter');
+                        lineElement.classList.remove('glow-active');
                         lineElement.style.stroke = '#FFFFFF';
                     }
                 });
 
                 checkCompletion(updatedStudentsData);
 
-                // Update dropdown and userNameDisplay after storage change
                 const globalSelect = document.getElementById('globalStudentSelect');
                 const userNameDisplay = document.getElementById('userNameDisplay');
                 if (globalSelect && typeof updateDropdown === 'function') {
