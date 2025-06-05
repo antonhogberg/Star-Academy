@@ -216,11 +216,15 @@ function initializeSvg(doc) {
         return;
     }
 
-    // Add styles directly to the SVG
+    // Add styles directly to the SVG with tap highlight fix
     const styleElement = doc.createElementNS('http://www.w3.org/2000/svg', 'style');
     styleElement.textContent = `
-        image { pointer-events: all; transition: opacity 0.4s ease-in-out; } /* Step 4: 400ms fade */
-        image.non-clickable { pointer-events: auto; } /* Step 4: Allow clicks for fade effect */
+        image {
+            pointer-events: all;
+            transition: opacity 0.4s ease-in-out;
+            -webkit-tap-highlight-color: transparent; /* Remove iOS greying effect on click */
+        }
+        image.non-clickable { pointer-events: auto; }
         path { transition: stroke 0.3s ease-in-out !important; }
     `;
     const starMapSvg = doc.getElementById('starMap');
@@ -246,16 +250,13 @@ function initializeSvg(doc) {
         const silverLevel = silverProgress[exerciseKey] ? parseInt(silverProgress[exerciseKey]) : 0;
         console.log(`Star-${star}: goldLevel=${goldLevel}, silverLevel=${silverLevel}, studentMode=${studentMode}, image=${starImages[goldLevel][silverLevel]}`);
 
-        // Store original attributes to recreate the element
         const x = starElement.getAttribute('x');
         const y = starElement.getAttribute('y');
         const width = starElement.getAttribute('width');
         const height = starElement.getAttribute('height');
 
-        // Remove the existing star element and create a new one
         const parent = starElement.parentNode;
         const newStarElement = createStarElement(doc, star, goldLevel, silverLevel, x, y, width, height);
-        // Step 4: Mark goldLevel 6 stars as non-clickable in student mode (for state changes)
         if (studentMode && goldLevel === 6) {
             newStarElement.classList.add('non-clickable');
         }
@@ -273,11 +274,9 @@ function initializeSvg(doc) {
             }
         });
 
-        // Step 4: Attach click handler
         newStarElement.addEventListener('click', (e) => handleStarClick(e, star, exerciseKey, lineElements, doc, parent, x, y, width, height));
         console.log(`Attached click handler for star-${star} during initialization`);
 
-        // Remove existing storage listeners to prevent duplicates
         window.removeEventListener('storage', window.storageListener);
         window.storageListener = (event) => {
             if (event.key === 'starAcademyStudents') {
@@ -288,15 +287,12 @@ function initializeSvg(doc) {
                 const updatedGoldLevel = updatedProgress[exerciseKey] ? parseInt(updatedProgress[exerciseKey]) : 0;
                 const updatedSilverLevel = updatedSilverProgress[exerciseKey] ? parseInt(updatedSilverProgress[exerciseKey]) : 0;
 
-                // Remove and recreate the star element to force re-render
                 const newStarElementUpdate = createStarElement(doc, star, updatedGoldLevel, updatedSilverLevel, x, y, width, height);
-                // Step 4: Mark goldLevel 6 stars as non-clickable in student mode
                 if (updatedStudentMode && updatedGoldLevel === 6) {
                     newStarElementUpdate.classList.add('non-clickable');
                 }
                 parent.replaceChild(newStarElementUpdate, newStarElement);
 
-                // Reattach click listener to updated element
                 newStarElementUpdate.addEventListener('click', (e) => handleStarClick(e, star, exerciseKey, lineElements, doc, parent, x, y, width, height));
                 console.log(`Reattached click handler for star-${star} in storage listener`);
 
@@ -312,7 +308,6 @@ function initializeSvg(doc) {
 
                 checkCompletion(updatedStudentsData);
 
-                // Update dropdown and userNameDisplay after storage change
                 const globalSelect = document.getElementById('globalStudentSelect');
                 const userNameDisplay = document.getElementById('userNameDisplay');
                 if (globalSelect && typeof updateDropdown === 'function') {
