@@ -278,9 +278,21 @@ function initializeSvg(doc) {
 
     const styleElement = doc.createElementNS('http://www.w3.org/2000/svg', 'style');
     styleElement.textContent = `
-        image { pointer-events: all; transition: opacity 0.4s ease-in-out; }
-        image.non-clickable { pointer-events: auto; }
-        path { transition: stroke 0.3s ease-in-out !important; }
+        image { 
+            pointer-events: all; 
+            transition: opacity 0.4s ease-in-out; 
+            -webkit-tap-highlight-color: transparent; 
+            -webkit-user-select: none; 
+            user-select: none; 
+            touch-action: manipulation; 
+            outline: none; 
+        }
+        image.non-clickable { 
+            pointer-events: auto; 
+        }
+        path { 
+            transition: stroke 0.3s ease-in-out !important; 
+        }
     `;
     const starMapSvg = doc.getElementById('starMap');
     const existingStyles = starMapSvg.querySelectorAll('style');
@@ -372,7 +384,6 @@ function initializeSvg(doc) {
                     console.log('Storage event: Updating userNameDisplay');
                     userNameDisplay.textContent = updatedStudentsData.currentStudent || '';
                 }
-                // Update streak display on storage change
                 if (typeof window.updateStreakDisplay === 'function') {
                     console.log('Storage event: Updating streak display');
                     window.updateStreakDisplay();
