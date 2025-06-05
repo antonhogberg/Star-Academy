@@ -121,50 +121,23 @@
        empspacing="5"
        enabled="true"
        visible="true" /></sodipodi:namedview><defs
-     id="defs1"><filter
-       id="golden-glow"
-       x="-50%"
-       y="-50%"
-       width="200%"
-       height="200%"><feGaussianBlur
-         stdDeviation="5"
-         result="blur1"
-         id="feGaussianBlur1"
-         in="SourceAlpha" /><feColorMatrix
-         id="feColorMatrix96"
-         type="matrix"
-         values="0 0 0 0 1 0 0 0 0 0.9 0 0 0 0 0 0 0 0 1 0"
-         result="glow1"
-         in="blur1" /><feComponentTransfer
-         id="feComponentTransfer3"
-         in="glow1"
-         result="glow1Enhanced"><feFuncA
-           id="feFuncA3"
-           type="linear"
-           slope="3"
-           intercept="0" /></feComponentTransfer><feGaussianBlur
-         stdDeviation="15"
-         result="blur2"
-         id="feGaussianBlur2"
-         in="SourceAlpha" /><feColorMatrix
-         id="feColorMatrix97"
-         type="matrix"
-         values="0 0 0 0 1 0 0 0 0 0.9 0 0 0 0 0 0 0 0 0.5 0"
-         result="glow2" /><feComponentTransfer
-         id="feComponentTransfer4"
-         in="glow2"
-         result="glow2Enhanced"><feFuncA
-           id="feFuncA4"
-           type="linear"
-           slope="2"
-           intercept="0" /></feComponentTransfer><feMerge
-         id="feMerge96"><feMergeNode
-           id="feMergeNode98"
-           in="glow2Enhanced" /><feMergeNode
-           id="feMergeNode96"
-           in="glow1Enhanced" /><feMergeNode
-           id="feMergeNode97"
-           in="SourceGraphic" /></feMerge></filter></defs><g
+     id="defs1"><filter id="golden-glow" x="-150%" y="-150%" width="400%" height="400%" filterUnits="objectBoundingBox">
+    <feGaussianBlur stdDeviation="5" result="blur1" in="SourceAlpha" />
+    <feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 0.9 0 0 0 0 0 0 0 0 1 0" result="glow1" in="blur1" />
+    <feComponentTransfer in="glow1" result="glow1Enhanced">
+        <feFuncA type="linear" slope="3" intercept="0" />
+    </feComponentTransfer>
+    <feGaussianBlur stdDeviation="15" result="blur2" in="SourceAlpha" />
+    <feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 0.9 0 0 0 0 0 0 0 0 0.5 0" result="glow2" />
+    <feComponentTransfer in="glow2" result="glow2Enhanced">
+        <feFuncA type="linear" slope="2" intercept="0" />
+    </feComponentTransfer>
+    <feMerge>
+        <feMergeNode in="glow2Enhanced" />
+        <feMergeNode in="glow1Enhanced" />
+        <feMergeNode in="SourceGraphic" />
+    </feMerge>
+</filter></defs><g
      inkscape:groupmode="layer"
      id="layer2"
      inkscape:label="BG"
