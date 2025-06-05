@@ -143,6 +143,58 @@ function handleStarClick(event, star, exerciseKey, doc, parent, x, y, width, hei
     }
 }
 
+function updatePracticeLog(studentsData, currentStudent) {
+    if (!studentsData.students[currentStudent]) {
+        console.warn(`Student ${currentStudent} not found in studentsData`);
+        return studentsData;
+    }
+
+    if (!studentsData.students[currentStudent].practiceLog) {
+        studentsData.students[currentStudent].practiceLog = {
+            dates: [],
+            streak: 0,
+            totalGoldStars: 0
+        };
+    }
+
+    const practiceLog = studentsData.students[currentStudent].practiceLog;
+    const today = new Date().toISOString().split('T')[0];
+    
+    // Always recalculate totalGoldStars to ensure it reflects the latest progress
+    const progress = studentsData.students[currentStudent].progress || {};
+    const totalGoldStars = Object.values(progress).reduce((sum, stars) => sum + (parseInt(stars) || 0), 0);
+    practiceLog.totalGoldStars = totalGoldStars;
+    console.log(`Recalculated totalGoldStars: ${totalGoldStars}`);
+
+    if (!practiceLog.dates.includes(today)) {
+        practiceLog.dates.push(today);
+        
+        practiceLog.dates.sort();
+        let streak = 0;
+        let currentDate = new Date(today);
+        for (let i = practiceLog.dates.length - 1; i >= 0; i--) {
+            const logDate = new Date(practiceLog.dates[i]);
+            const diffDays = Math.round((currentDate - logDate) / (1000 * 60 * 60 * 24));
+            console.log(`Comparing dates: ${currentDate.toISOString().split('T')[0]} - ${logDate.toISOString().split('T')[0]} = ${diffDays} days`);
+            if (diffDays === 0) {
+                streak++;
+                currentDate = logDate;
+            } else if (diffDays === 1) {
+                streak++;
+                currentDate = logDate;
+            } else {
+                break;
+            }
+        }
+        practiceLog.streak = streak;
+        console.log(`Updated streak to ${streak}`);
+    } else {
+        console.log(`Today (${today}) already in practiceLog.dates, streak unchanged: ${practiceLog.streak}`);
+    }
+
+    return studentsData;
+}
+
 function initializeChapter() {
     console.log('initializeChapter called');
     const chapterContainer = document.querySelector('.chapter-container');

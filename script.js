@@ -455,6 +455,7 @@ function updateStreakDisplay() {
         return;
     }
 
+    // Re-fetch studentsData to ensure we have the latest state
     const studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
     const currentStudent = studentsData.currentStudent;
     if (!currentStudent || !studentsData.students[currentStudent]) {
@@ -465,8 +466,8 @@ function updateStreakDisplay() {
     }
 
     const practiceLog = studentsData.students[currentStudent].practiceLog || { streak: 0, totalGoldStars: 0 };
-    streakNumber.textContent = practiceLog.streak || '0';
-    goldStarsNumber.innerHTML = `${practiceLog.totalGoldStars || 0}<span style="color: #ffd700;"> ★</span>`;
+    streakNumber.textContent = practiceLog.streak.toString();
+    goldStarsNumber.innerHTML = `${practiceLog.totalGoldStars.toString()}<span style="color: #ffd700;"> ★</span>`;
     console.log(`Updated streak display: streak=${practiceLog.streak}, totalGoldStars=${practiceLog.totalGoldStars}`);
 }
 

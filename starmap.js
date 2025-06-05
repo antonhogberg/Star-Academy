@@ -113,6 +113,12 @@ function updatePracticeLog(studentsData, currentStudent) {
     const practiceLog = studentsData.students[currentStudent].practiceLog;
     const today = new Date().toISOString().split('T')[0];
     
+    // Always recalculate totalGoldStars to ensure it reflects the latest progress
+    const progress = studentsData.students[currentStudent].progress || {};
+    const totalGoldStars = Object.values(progress).reduce((sum, stars) => sum + (parseInt(stars) || 0), 0);
+    practiceLog.totalGoldStars = totalGoldStars;
+    console.log(`Recalculated totalGoldStars: ${totalGoldStars}`);
+
     if (!practiceLog.dates.includes(today)) {
         practiceLog.dates.push(today);
         
@@ -121,7 +127,8 @@ function updatePracticeLog(studentsData, currentStudent) {
         let currentDate = new Date(today);
         for (let i = practiceLog.dates.length - 1; i >= 0; i--) {
             const logDate = new Date(practiceLog.dates[i]);
-            const diffDays = (currentDate - logDate) / (1000 * 60 * 60 * 24);
+            const diffDays = Math.round((currentDate - logDate) / (1000 * 60 * 60 * 24));
+            console.log(`Comparing dates: ${currentDate.toISOString().split('T')[0]} - ${logDate.toISOString().split('T')[0]} = ${diffDays} days`);
             if (diffDays === 0) {
                 streak++;
                 currentDate = logDate;
@@ -133,9 +140,9 @@ function updatePracticeLog(studentsData, currentStudent) {
             }
         }
         practiceLog.streak = streak;
-
-        const progress = studentsData.students[currentStudent].progress || {};
-        practiceLog.totalGoldStars = Object.values(progress).reduce((sum, stars) => sum + (parseInt(stars) || 0), 0);
+        console.log(`Updated streak to ${streak}`);
+    } else {
+        console.log(`Today (${today}) already in practiceLog.dates, streak unchanged: ${practiceLog.streak}`);
     }
 
     return studentsData;
@@ -143,13 +150,16 @@ function updatePracticeLog(studentsData, currentStudent) {
 
 function handleStarClick(event, star, exerciseKey, lineElements, doc, parent, x, y, width, height) {
     const starElement = event.currentTarget;
-    const studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
+    let studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
     const currentStudent = studentsData.currentStudent;
+    if (!currentStudent || !studentsData.students[currentStudent]) {
+        console.warn(`No current student set or student data missing, ignoring click for ${exerciseKey}`);
+        return;
+    }
     const progress = studentsData.students[currentStudent]?.progress || {};
     const silverProgress = studentsData.students[currentStudent]?.silverProgress || {};
     const studentMode = studentsData.students[currentStudent]?.studentMode || false;
-    console.log(`Star ${star} clicked, studentMode=${studentMode}`);
-    console.log(`Click handler attached for star-${star}`);
+    console.log(`Star ${star} clicked, studentMode=${studentMode}, currentStudent=${currentStudent}`);
 
     let goldLevel = progress[exerciseKey] ? parseInt(progress[exerciseKey]) : 0;
     let silverLevel = silverProgress[exerciseKey] ? parseInt(silverProgress[exerciseKey]) : 0;
@@ -183,6 +193,7 @@ function handleStarClick(event, star, exerciseKey, lineElements, doc, parent, x,
     }
 
     if (isException) {
+        starElement.style.transition = 'opacity 0.4s ease-in-out';
         starElement.style.opacity = '0';
         setTimeout(() => {
             starElement.setAttributeNS('http://www.w3.org/1999/xlink', 'href', starImages[newGoldLevel][newSilverLevel]);
@@ -191,25 +202,42 @@ function handleStarClick(event, star, exerciseKey, lineElements, doc, parent, x,
                 starElement.setAttributeNS('http://www.w3.org/1999/xlink', 'href', starImages[0][0]);
             };
             starElement.style.opacity = '1';
+            starElement.style.transition = '';
         }, 400);
     } else {
         const overlayStarElement = createStarElement(doc, `${star}-overlay`, newGoldLevel, newSilverLevel, x, y, width, height, 0);
+        overlayStarElement.style.transition = 'opacity 0.4s ease-in-out';
         parent.appendChild(overlayStarElement);
+        starElement.removeEventListener('click', starElement.clickHandler);
         setTimeout(() => {
             overlayStarElement.style.opacity = '1';
+            setTimeout(() => {
+                parent.removeChild(starElement);
+                overlayStarElement.setAttribute('id', `star-${star.replace(/:/g, '-')}`);
+                overlayStarElement.style.transition = '';
+                const clickHandler = (e) => handleStarClick(e, star, exerciseKey, lineElements, doc, parent, x, y, width, height);
+                overlayStarElement.removeEventListener('click', overlayStarElement.clickHandler);
+                overlayStarElement.addEventListener('click', clickHandler);
+                overlayStarElement.clickHandler = clickHandler;
+                console.log(`Reattached click handler for star-${star}`);
+            }, 400);
         }, 10);
-        setTimeout(() => {
-            parent.removeChild(starElement);
-            overlayStarElement.setAttribute('id', `star-${star.replace(/:/g, '-')}`);
-            overlayStarElement.addEventListener('click', (e) => handleStarClick(e, star, exerciseKey, lineElements, doc, parent, x, y, width, height));
-            console.log(`Reattached click handler for star-${star}`);
-        }, 400);
     }
 
     if (!(studentMode && goldLevel === 6)) {
-        // Update practiceLog for star click
-        studentsData = updatePracticeLog(studentsData, currentStudent);
-        localStorage.setItem('starAcademyStudents', JSON.stringify(studentsData));
+        try {
+            studentsData = updatePracticeLog(studentsData, currentStudent);
+            console.log(`Before saving to localStorage: ${JSON.stringify(studentsData.students[currentStudent])}`);
+            localStorage.setItem('starAcademyStudents', JSON.stringify(studentsData));
+            console.log(`Successfully saved starAcademyStudents after star click for ${exerciseKey}`);
+            const savedData = JSON.parse(localStorage.getItem('starAcademyStudents'));
+            console.log(`After saving, localStorage contains: ${JSON.stringify(savedData.students[currentStudent])}`);
+        } catch (e) {
+            console.error(`Failed to save starAcademyStudents in starmap.js: ${e.message}`);
+            console.error(`Error stack: ${e.stack}`);
+            console.error(`Attempted to save: ${JSON.stringify(studentsData)}`);
+            return;
+        }
     }
 
     lineElements.forEach(lineElement => {
@@ -230,10 +258,13 @@ function handleStarClick(event, star, exerciseKey, lineElements, doc, parent, x,
         console.error('updateStarStates not defined');
     }
 
-    // Update streak display in menu if the function exists
     if (typeof window.updateStreakDisplay === 'function') {
         console.log('Calling updateStreakDisplay after star click');
-        window.updateStreakDisplay();
+        setTimeout(() => {
+            window.updateStreakDisplay();
+        }, 50); // Delay to ensure localStorage is updated
+    } else {
+        console.error('updateStreakDisplay not defined');
     }
 }
 
