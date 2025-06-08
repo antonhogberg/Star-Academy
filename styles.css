@@ -2199,26 +2199,6 @@ h2#popupWelcome {
 .privacy-popup-content ul {
     margin: 10px 0 10px 20px;
 }
-.close-bottom {
-    position: relative; /* Override .close-button's absolute positioning */
-    margin: 10px auto 0; /* Center horizontally, add top margin */
-    padding: 8px 16px;
-    background: var(--semi-dark);
-    border: 1px solid var(--gold);
-    border-radius: 5px;
-    color: var(--gold);
-    font-family: Cochin, Georgia, Arial, sans-serif;
-    font-size: 16px;
-    cursor: pointer;
-    transition: transform 0.3s ease;
-    display: block; /* Ensure centering works */
-}
-
-.close-bottom:hover {
-    transform: scale(1.05);
-}
-
-/* MODIFIED: Transparent overlay for Rank Badge SVG */
 .rank-badge-overlay {
     position: absolute;
     top: 0;
@@ -2229,6 +2209,32 @@ h2#popupWelcome {
     background: transparent;
     z-index: 10;
     cursor: pointer;
+}
+
+/* MODIFIED: Bottom close button styling */
+.popup-content .close-bottom {
+    position: relative; /* Override .close-button's absolute positioning */
+    top: auto; /* Reset top positioning */
+    right: auto; /* Reset right positioning */
+    margin: 10px auto 0; /* Center horizontally, add top margin */
+    padding: 8px 16px;
+    background: var(--semi-dark);
+    border: 1px solid var(--gold);
+    border-radius: 5px;
+    color: var(--gold);
+    font-family: Cochin, Georgia, Arial, sans-serif;
+    font-size: 16px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    display: block; /* Ensure centering */
+    width: auto;
+    height: auto;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Match other buttons */
+    line-height: normal;
+}
+
+.popup-content .close-bottom:hover {
+    transform: scale(1.05);
 }
 
 /* Responsive widths for remove.html */
