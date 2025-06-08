@@ -2200,14 +2200,13 @@ h2#popupWelcome {
     margin: 10px 0 10px 20px;
 }
 .rank-badge-overlay {
-    position: absolute;
+    position: fixed;
     top: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 85%; /* Matches .progress-svg width */
-    height: 100%; /* Matches .progress-svg height */
+    left: 0;
+    width: 100vw;
+    height: 100vh;
     background: transparent;
-    z-index: 10;
+    z-index: 1000; /* Below .piano-menu (1202), above content */
     cursor: pointer;
 }
 
