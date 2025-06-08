@@ -2199,6 +2199,26 @@ h2#popupWelcome {
 .privacy-popup-content ul {
     margin: 10px 0 10px 20px;
 }
+.close-bottom {
+    position: relative; /* Override .close-button's absolute positioning */
+    margin: 10px auto 0; /* Center horizontally, add top margin */
+    padding: 8px 16px;
+    background: var(--semi-dark);
+    border: 1px solid var(--gold);
+    border-radius: 5px;
+    color: var(--gold);
+    font-family: Cochin, Georgia, Arial, sans-serif;
+    font-size: 16px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    display: block; /* Ensure centering works */
+}
+
+.close-bottom:hover {
+    transform: scale(1.05);
+}
+
+/* MODIFIED: Transparent overlay for Rank Badge SVG */
 .rank-badge-overlay {
     position: absolute;
     top: 0;
@@ -2209,24 +2229,6 @@ h2#popupWelcome {
     background: transparent;
     z-index: 10;
     cursor: pointer;
-}
-
-/* NEW: Bottom close button styling */
-.close-bottom {
-    margin-top: 10px;
-    padding: 8px 16px;
-    background: var(--semi-dark);
-    border: 1px solid var(--gold);
-    border-radius: 5px;
-    color: var(--gold);
-    font-family: Cochin, Georgia, Arial, sans-serif;
-    font-size: 16px;
-    cursor: pointer;
-    transition: transform 0.3s ease;
-}
-
-.close-bottom:hover {
-    transform: scale(1.05);
 }
 
 /* Responsive widths for remove.html */
