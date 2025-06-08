@@ -153,7 +153,10 @@ const translations = {
         noConsentOptOut: "This platform requires local storage to track your progress, which is essential for its functionality. If you do not consent, you cannot use the platform. Please accept the Privacy Policy to continue or choose not to use the site.",
         practiceStreak: "Practice Streak:",
         daysInRow: "days in a row.",
-        totalGoldStars: "Total gold stars earned:"
+        totalGoldStars: "Total gold stars earned:",
+        rankBadgePopupTitle: "How the Rank Badge Works",
+        rankBadgePopupText: "The Rank Badge tracks your piano journey! The bottom field has 16 small stars that light up one by one as you complete exercises by earning six stars each. Finish 16 exercises to become a <strong>Star Cadet</strong>! Your next goal is the first chevron, with seven large gold stars. These light up as you complete all four exercises in Part 1 of each chapter (seven chapters total). Master them all to earn the rank of <strong>Star Officer</strong>!",
+        closeButton: "Close"
     },
     sv: {
         menuFrontPage: "Stjärnöversikt",
@@ -304,7 +307,10 @@ const translations = {
         noConsentOptOut: "Denna plattform kräver lokal lagring för att spåra dina framsteg, vilket är nödvändigt för dess funktionalitet. Om du inte samtycker kan du inte använda plattformen. Vänligen acceptera integritetspolicyn för att fortsätta eller välj att inte använda webbplatsen",
         practiceStreak: "Övningsstreak:",
         daysInRow: "dagar i rad.",
-        totalGoldStars: "Totala guldstjärnor intjänade:"
+        totalGoldStars: "Totala guldstjärnor intjänade:",
+        rankBadgePopupTitle: "Så fungerar rangmärket",
+        rankBadgePopupText: "Rangmärket visar dina framgångar! Det nedre fältet har 16 små stjärnor som tänds en efter en när du slutför övningar genom att få sex stjärnor per övning. Slutför 16 övningar för att bli <strong>Stjärnkadett</strong>! Ditt nästa mål är första chevronen, med sju stora guldstjärnor. Dessa tänds när du slutför alla fyra övningar i Del 1 i varje Kapitel (totalt sju kapitel). Bemästra dem alla för att uppnå rangen <strong>Stjärnofficer</strong>!",
+        closeButton: "Stäng"
     }
 };
 
@@ -566,6 +572,69 @@ function initializeConsentPopup() {
             showPrivacyPolicyPopup();
         } else {
             console.error('showPrivacyPolicyPopup is not defined');
+        }
+    });
+}
+
+function initializeRankBadgePopup() {
+    console.log('initializeRankBadgePopup called');
+    const overlay = document.getElementById('rankBadgeOverlay');
+    const popup = document.getElementById('rankBadgePopup');
+    const title = document.getElementById('rankBadgePopupTitle');
+    const text = document.getElementById('rankBadgePopupText');
+    const closeTop = document.getElementById('closeRankBadgePopupTop');
+    const closeBottom = document.getElementById('closeRankBadgePopupBottom');
+
+    if (!overlay || !popup || !title || !text || !closeTop || !closeBottom) {
+        console.error('Rank badge popup elements not found:', {
+            overlay: !!overlay,
+            popup: !!popup,
+            title: !!title,
+            text: !!text,
+            closeTop: !!closeTop,
+            closeBottom: !!closeBottom
+        });
+        return;
+    }
+
+    const lang = localStorage.getItem('language') || 'sv';
+    title.textContent = translations[lang].rankBadgePopupTitle;
+    text.innerHTML = translations[lang].rankBadgePopupText;
+    closeBottom.textContent = translations[lang].closeButton;
+
+    overlay.addEventListener('click', () => {
+        console.log('Rank badge overlay clicked');
+        popup.style.display = 'flex';
+        popup.style.opacity = '0';
+        setTimeout(() => {
+            popup.style.opacity = '1';
+            popup.style.transition = 'opacity 0.3s ease-in';
+        }, 10);
+    });
+
+    closeTop.addEventListener('click', () => {
+        popup.style.opacity = '0';
+        setTimeout(() => {
+            popup.style.display = 'none';
+            popup.style.transition = '';
+        }, 300);
+    });
+
+    closeBottom.addEventListener('click', () => {
+        popup.style.opacity = '0';
+        setTimeout(() => {
+            popup.style.display = 'none';
+            popup.style.transition = '';
+        }, 300);
+    });
+
+    popup.addEventListener('click', (e) => {
+        if (e.target === popup) {
+            popup.style.opacity = '0';
+            setTimeout(() => {
+                popup.style.display = 'none';
+                popup.style.transition = '';
+            }, 300);
         }
     });
 }
@@ -1802,6 +1871,11 @@ waitForDOM().then(() => {
     }
 
     if (!window.isImporting) window.initializeAppContent();
+
+    if (path.includes('index.html') || path === '/') {
+        initializeRankBadgePopup(); // NEW: Initialize rank badge popup
+        if (typeof initializeFrontPage === 'function') initializeFrontPage();
+    }
 
     if (path.includes('starmap.html')) {
         const urlParams = new URLSearchParams(window.location.search);
