@@ -51,6 +51,16 @@ function addStudent(e) {
     console.log('Name input value:', name);
     const lang = localStorage.getItem('language') || 'sv';
 
+    // NEW: Check for consent
+    if (localStorage.getItem('consentGiven') !== 'true') {
+        console.log('Consent not given, storing pendingName and showing consent popup');
+        localStorage.setItem('pendingName', name);
+        if (typeof initializeConsentPopup === 'function') {
+            initializeConsentPopup();
+        }
+        return;
+    }
+
     window.studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || {
         students: {},
         currentStudent: ''
@@ -75,7 +85,7 @@ function addStudent(e) {
         notes: "",
         studentMode: false,
         silverProgress: initializeSilverProgress(),
-        practiceLog: { dates: [], streak: 0, totalGoldStars: 0 } // Initialize practiceLog for new students
+        practiceLog: { dates: [], streak: 0, totalGoldStars: 0 }
     };
 
     for (let chapter = 1; chapter <= 7; chapter++) {
@@ -110,7 +120,6 @@ function addStudent(e) {
         console.log('loadNotes function not found');
     }
 
-    // Update streak display after adding a student
     if (typeof window.updateStreakDisplay === 'function') {
         console.log('Calling updateStreakDisplay after adding student');
         window.updateStreakDisplay();

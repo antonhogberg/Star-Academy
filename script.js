@@ -480,6 +480,13 @@ function initializeConsentPopup() {
 
     localStorage.removeItem('cookieconsent_status');
 
+    const currentPath = window.location.pathname.toLowerCase();
+    const isRelevantPage = currentPath.includes('chapter') || currentPath.includes('starmap.html') || currentPath.includes('students.html'); // NEW: Added starmap and students
+    if (!isRelevantPage) {
+        console.log('Not a relevant page for consent popup:', currentPath);
+        return;
+    }
+
     const consentGiven = localStorage.getItem('consentGiven') === 'true';
     if (consentGiven) {
         console.log('Consent already given, initializing name popup');
@@ -512,7 +519,7 @@ function initializeConsentPopup() {
         policyLink: translations[lang].consentPolicyLink
     });
 
-    consentMessage.innerHTML = translations[lang].consentMessage; // Use innerHTML to render HTML tags
+    consentMessage.innerHTML = translations[lang].consentMessage;
     consentAcceptButton.textContent = translations[lang].consentAccept;
     consentRejectButton.textContent = translations[lang].consentReject;
     consentPolicyLink.textContent = translations[lang].consentPolicyLink;
@@ -527,12 +534,25 @@ function initializeConsentPopup() {
         consentPopup.style.display = 'none';
         document.body.classList.remove('popup-open');
         window.consentInitialized = false;
-        if (typeof handleUserNamePopup === 'function') handleUserNamePopup();
+        // NEW: Handle pendingName for students.html
+        const pendingName = localStorage.getItem('pendingName');
+        if (pendingName && currentPath.includes('students.html')) {
+            localStorage.removeItem('pendingName');
+            const nameInput = document.getElementById('newStudentName');
+            if (nameInput) {
+                nameInput.value = pendingName;
+                if (typeof addStudent === 'function') {
+                    addStudent(null);
+                }
+            }
+        } else if (typeof handleUserNamePopup === 'function') {
+            handleUserNamePopup();
+        }
     });
 
     consentRejectButton.addEventListener('click', () => {
         console.log('User rejected consent');
-        alert(translations[lang].noConsentOptOut);
+        alert(translations[lang].noConsentOptOut || 'You must accept the privacy policy to use this platform.');
         localStorage.removeItem('consentGiven');
         localStorage.removeItem('cookieconsentPolicy');
         consentPopup.style.display = 'flex';
