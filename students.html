@@ -84,7 +84,7 @@
         }
         const compressed = LZString.compressToEncodedURIComponent(jsonString);
         console.log('Compressed code size:', compressed.length, 'chars');
-        const importUrl = `${window.location.origin}/Star-Academy/index.html?code=${compressed}`;
+        const importUrl = `${window.location.origin}/index.html?code=${compressed}`;
   
         // Generate QR code
         if (!window.QRCode) {
