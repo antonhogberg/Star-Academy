@@ -404,6 +404,9 @@ body.popup-open .student-manager {
     -webkit-tap-highlight-color: transparent;
     -webkit-touch-callout: none;
     user-select: none;
+    /* NEW: Ensure clickability */
+    pointer-events: auto;
+    will-change: transform, top, left;
 }
 
 .white-key,
