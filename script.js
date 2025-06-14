@@ -1510,66 +1510,6 @@ function handleUserNamePopup() {
                 if (userNameDisplay) userNameDisplay.textContent = name;
                 namePopup.style.display = 'none';
 
-                // NEW: Force viewport recalculation and re-run setStarMapHeight
-                setTimeout(() => {
-                    window.dispatchEvent(new Event('resize'));
-                    console.log('Forced resize event after namePopup dismissal');
-                    // Re-run setStarMapHeight
-                    const setStarMapHeight = () => {
-                        const starMapContainer = document.querySelector('.star-map-container');
-                        const titleContainer = document.querySelector('.title-container');
-                        const body = document.querySelector('body');
-                        if (starMapContainer && titleContainer && body) {
-                            if (!window.initialTitleHeight) {
-                                window.initialTitleHeight = titleContainer.getBoundingClientRect().height;
-                            }
-                            const titleHeight = window.initialTitleHeight;
-                            const marginTop = 10;
-                            const borderWidth = parseFloat(getComputedStyle(starMapContainer).borderWidth) || 0;
-                            const bodyBorderWidth = parseFloat(getComputedStyle(body).borderWidth) || 0;
-                            const totalBorderHeight = borderWidth * 2;
-                            const totalBodyBorderHeight = bodyBorderWidth * 2;
-                            const viewportHeight = window.innerHeight;
-                            const topPosition = titleHeight + marginTop;
-                            const availableHeight = viewportHeight - topPosition - totalBorderHeight - totalBodyBorderHeight - 10;
-                            const maxHeight = Math.min(600, availableHeight);
-                            const isMobile = window.matchMedia("(max-width: 767px) and (orientation: portrait)").matches;
-                            const isIPad = window.matchMedia("(min-width: 768px) and (max-width: 1400px) and (orientation: landscape)").matches;
-                            if (isIPad) {
-                                const gap = 20;
-                                const adjustedTop = titleHeight + gap;
-                                const adjustedHeight = viewportHeight - adjustedTop - gap - totalBodyBorderHeight;
-                                starMapContainer.style.height = `${adjustedHeight}px`;
-                                starMapContainer.style.top = `${adjustedTop}px`;
-                                starMapContainer.style.bottom = `${gap + bodyBorderWidth}px`;
-                            } else if (isMobile) {
-                                starMapContainer.style.height = `${maxHeight}px`;
-                                starMapContainer.style.top = `${topPosition}px`;
-                                starMapContainer.style.bottom = 'auto';
-                            } else {
-                                starMapContainer.style.height = `${maxHeight}px`;
-                                starMapContainer.style.top = `${topPosition}px`;
-                                starMapContainer.style.bottom = 'auto';
-                            }
-                            starMapContainer.style.position = 'fixed';
-                            starMapContainer.style.transform = 'none';
-
-                            const starMapSvg = starMapContainer.querySelector('svg');
-                            if (starMapSvg) {
-                                if (isMobile) {
-                                    starMapSvg.style.height = '100%';
-                                    starMapSvg.style.width = 'auto';
-                                } else {
-                                    starMapSvg.style.height = `${starMapContainer.clientHeight - totalBorderHeight}px`;
-                                    starMapSvg.style.width = '2780px';
-                                }
-                            }
-                        }
-                    };
-                    setStarMapHeight();
-                    console.log('Re-ran setStarMapHeight after namePopup dismissal');
-                }, 100);
-
                 setTimeout(() => {
                     document.body.classList.remove('popup-open');
                     const isMobilePortrait = window.matchMedia('(max-width: 767px) and (orientation: portrait)').matches;
@@ -1609,9 +1549,6 @@ function handleUserNamePopup() {
                         document.body.classList.remove('popup-open');
                         document.body.removeChild(successPopup);
                         updateMenuHeight();
-                        // NEW: Ensure final viewport recalculation
-                        window.dispatchEvent(new Event('resize'));
-                        console.log('Forced final resize after successPopup dismissal');
                     }, 1000);
                 }, 2000);
 
