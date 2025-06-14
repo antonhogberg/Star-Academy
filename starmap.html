@@ -11,22 +11,14 @@
     <link rel="stylesheet" href="cookieconsent.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.1/cookieconsent.min.js"></script>
     <script>
-function setViewportHeight() {
-    let vh = window.innerHeight * 0.01;
-    document.documentElement.style.setProperty('--vh', `${vh}px`);
-    console.log('Viewport height updated:', vh); // Debug log
-}
-window.addEventListener('resize', setViewportHeight);
-window.addEventListener('orientationchange', setViewportHeight);
-// NEW: Handle keyboard show/hide
-document.addEventListener('focusin', (e) => {
-    if (e.target.id === 'nameInput') {
-        setViewportHeight(); // Immediate update for keyboard show
-        console.log('Keyboard shown for nameInput');
-    }
-});
-setViewportHeight();
-</script>
+        function setViewportHeight() {
+            let vh = window.innerHeight * 0.01;
+            document.documentElement.style.setProperty('--vh', `${vh}px`);
+        }
+        window.addEventListener('resize', setViewportHeight);
+        window.addEventListener('orientationchange', setViewportHeight);
+        setViewportHeight();
+    </script>
     <script>
     document.addEventListener('DOMContentLoaded', () => {
         if (typeof initializeConsentPopup === 'function') {
