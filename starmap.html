@@ -25,12 +25,6 @@ document.addEventListener('focusin', (e) => {
         console.log('Keyboard shown for nameInput');
     }
 });
-document.addEventListener('focusout', (e) => {
-    if (e.target.id === 'nameInput') {
-        setTimeout(setViewportHeight, 100); // Delay for keyboard hide
-        console.log('Keyboard hidden for nameInput');
-    }
-});
 setViewportHeight();
 </script>
     <script>
