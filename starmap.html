@@ -909,5 +909,66 @@
         </div>
     </div>
 </div>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    document.body.style.touchAction = 'manipulation';
+    const nameInput = document.getElementById('nameInput');
+    if (nameInput) {
+        let originalScrollY = 0;
+        let isKeyboardOpen = false;
+
+        const lockViewport = () => {
+            if (!isKeyboardOpen) {
+                originalScrollY = window.scrollY;
+                document.body.style.position = 'fixed';
+                document.body.style.top = `-${originalScrollY}px`;
+                document.body.style.width = '100%';
+                document.body.style.overflow = 'hidden';
+                isKeyboardOpen = true;
+            }
+        };
+
+        const unlockViewport = () => {
+            if (isKeyboardOpen) {
+                document.body.style.position = '';
+                document.body.style.top = '';
+                document.body.style.width = '';
+                document.body.style.overflow = '';
+                window.scrollTo(0, originalScrollY);
+                isKeyboardOpen = false;
+                // Force re-run of setStarMapHeight to correct layout
+                setTimeout(() => {
+                    if (typeof setStarMapHeight === 'function') {
+                        setStarMapHeight();
+                    }
+                    if (typeof setViewportHeight === 'function') {
+                        setViewportHeight();
+                    }
+                }, 100);
+            }
+        };
+
+        nameInput.addEventListener('focus', () => {
+            document.body.classList.add('keyboard-open');
+            lockViewport();
+        });
+
+        nameInput.addEventListener('blur', () => {
+            document.body.classList.remove('keyboard-open');
+            unlockViewport();
+        });
+
+        window.addEventListener('resize', () => {
+            const viewportHeight = window.innerHeight;
+            const isKeyboardLikelyOpen = viewportHeight < 500; // Adjust threshold for iPads
+            if (isKeyboardLikelyOpen && !isKeyboardOpen) {
+                lockViewport();
+            } else if (!isKeyboardLikelyOpen && isKeyboardOpen) {
+                unlockViewport();
+            }
+        });
+    }
+});
+</script>
 </body>
 </html>
