@@ -156,7 +156,8 @@ const translations = {
         totalGoldStars: "Total gold stars earned:",
         rankBadgePopupTitle: "How the Rank Badge Works",
         rankBadgePopupText: "The Rank Badge tracks your piano journey! The bottom field has 16 small stars that light up one by one as you complete exercises by earning six stars each. Go to Star Map or Chapter 1-7 in the menu to gain stars. Finish 16 exercises to become a <strong>Star Cadet</strong>! Your next goal is the first chevron, with seven large gold stars. These light up as you complete all four exercises in Part 1 of each chapter (seven chapters total). Master them all to earn the rank of <strong>Star Officer</strong>!",
-        closeButton: "Close"
+        closeButton: "Close",
+        removeButton: "Delete"
     },
     sv: {
         menuFrontPage: "Stjärnöversikt",
@@ -310,7 +311,8 @@ const translations = {
         totalGoldStars: "Totala guldstjärnor intjänade:",
         rankBadgePopupTitle: "Så fungerar rangmärket",
         rankBadgePopupText: "Rangmärket visar dina framgångar! Det nedre fältet har 16 små stjärnor som tänds en efter en när du slutför övningar genom att få sex stjärnor per övning. Gå till Stjärnkartan eller Kapitel 1-7 i menyn för att klicka fram dina stjärnor. Slutför 16 övningar för att bli <strong>Stjärnkadett</strong>! Ditt nästa mål är första chevronen, med sju stora guldstjärnor. Dessa tänds när du slutför alla fyra övningar i Del 1 i varje Kapitel (totalt sju kapitel). Bemästra dem alla för att uppnå rangen <strong>Stjärnofficer</strong>!",
-        closeButton: "Stäng"
+        closeButton: "Stäng",
+        removeButton: "Radera"
     }
 };
 
@@ -1267,6 +1269,7 @@ function switchLanguage(lang) {
     const studentsLabel = document.getElementById('studentsLabel');
     const newStudentInput = document.getElementById('newStudentName');
     const addButton = document.getElementById('addStudentButton');
+    const removeButton = document.getElementById('removeStudentButton'); // New
     const addStudentLabel = document.getElementById('addStudentLabel');
     const notesLabel = document.getElementById('notesLabel');
     const studentNotes = document.getElementById('studentNotes');
@@ -1277,6 +1280,7 @@ function switchLanguage(lang) {
         studentsLabel.textContent = translations[newLang].studentsLabel;
         newStudentInput.placeholder = translations[newLang].studentNamePlaceholder;
         addButton.textContent = translations[newLang].addButton;
+        if (removeButton) removeButton.textContent = translations[newLang].removeButton; // New
         addStudentLabel.textContent = translations[newLang].addNewStudent;
         notesLabel.textContent = translations[newLang].notesLabel;
         studentNotes.placeholder = translations[newLang].notesPlaceholder;

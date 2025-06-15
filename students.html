@@ -175,8 +175,11 @@
 
     <div id="studentsLabel" class="field-label" data-translate="studentsLabel"></div>
     <div class="dropdown-container">
-      <select id="studentSelect" style="padding: 10px; font-size: 16px;"></select>
+    <div class="input-group">
+        <select id="studentSelect"></select>
+        <button id="removeStudentButton" type="button" data-translate="removeButton"></button>
     </div>
+</div>
 
     <div class="notes-wrapper">
       <div class="notes-container">
@@ -225,7 +228,13 @@
       <p id="studentPopupMessage"></p>
     </div>
   </div>
-
+  <div id="confirmRemovePopup" class="student-popup">
+    <div class="student-popup-content">
+        <button id="closeConfirmRemovePopup">×</button>
+        <p id="confirmRemoveMessage" data-translate="confirmRemoveMessage"></p>
+        <button id="confirmRemoveButton"></button>
+    </div>
+  </div>
   <script src="script.js"></script>
   <script src="students.js"></script>
 

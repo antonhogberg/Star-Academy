@@ -247,6 +247,167 @@ function updateDropdown() {
     }
 }
 
+function initializeRemoveButton() {
+    console.log('initializeRemoveButton called');
+
+    // Prevent re-initialization
+    if (window.removeButtonInitialized) {
+        console.log('Remove button already initialized, skipping');
+        return;
+    }
+    window.removeButtonInitialized = true;
+
+    // Ensure window.studentsData is initialized
+    window.studentsData = window.studentsData || JSON.parse(localStorage.getItem('starAcademyStudents')) || {
+        students: {},
+        currentStudent: ''
+    };
+    console.log('window.studentsData in initializeRemoveButton:', window.studentsData);
+
+    // Initialize elements
+    const removeButton = document.getElementById('removeStudentButton');
+    const confirmRemovePopup = document.getElementById('confirmRemovePopup');
+    const confirmRemoveMessage = document.getElementById('confirmRemoveMessage');
+    let confirmRemoveButton = document.getElementById('confirmRemoveButton');
+    const closeConfirmRemovePopup = document.getElementById('closeConfirmRemovePopup');
+    let lang = localStorage.getItem('language') || 'sv';
+
+    if (!removeButton || !confirmRemovePopup || !confirmRemoveMessage || !confirmRemoveButton || !closeConfirmRemovePopup) {
+        console.error('One or more required elements not found for remove button');
+        return;
+    }
+
+    // Store popup state
+    let popupOpen = false;
+    let currentPopupStudent = null;
+
+    // Function to update the popup text
+    const updatePopupText = () => {
+        if (popupOpen && currentPopupStudent) {
+            confirmRemoveMessage.textContent = `${translations[lang].confirmRemoveMessage}${currentPopupStudent}.`;
+            confirmRemoveButton.textContent = `${translations[lang].confirmRemoveButton}${currentPopupStudent}`;
+        }
+    };
+
+    // Disable button if no consent
+    if (localStorage.getItem('consentGiven') !== 'true') {
+        removeButton.disabled = true;
+    }
+
+    // Listen for language changes
+    window.addEventListener('storage', (event) => {
+        if (event.key === 'language') {
+            lang = localStorage.getItem('language') || 'sv';
+            updatePopupText();
+        } else if (event.key === 'starAcademyStudents') {
+            window.studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || {
+                students: {},
+                currentStudent: ''
+            };
+            updatePopupText();
+        }
+    });
+
+    removeButton.addEventListener('click', () => {
+        // Prevent action if no consent
+        if (localStorage.getItem('consentGiven') !== 'true') {
+            console.log('Cannot remove student: consent not given');
+            return;
+        }
+
+        const selectedStudent = window.studentsData.currentStudent;
+        if (!selectedStudent) {
+            alert(lang === 'en' ? "No current student selected to remove." : "Ingen aktuell elev vald att radera.");
+            return;
+        }
+
+        // Update popup state
+        popupOpen = true;
+        currentPopupStudent = selectedStudent;
+
+        // Update the confirmation message with the selected student's name
+        const baseMessage = translations[lang].confirmRemoveMessage;
+        confirmRemoveMessage.textContent = `${baseMessage}${selectedStudent}.`;
+
+        // Update the button text with the selected student's name
+        const buttonBaseText = translations[lang].confirmRemoveButton;
+        confirmRemoveButton.textContent = `${buttonBaseText}${selectedStudent}`;
+
+        // Clone confirmRemoveButton to remove existing listeners
+        const newConfirmButton = confirmRemoveButton.cloneNode(true);
+        confirmRemoveButton.parentNode.replaceChild(newConfirmButton, confirmRemoveButton);
+        confirmRemoveButton = newConfirmButton;
+
+        // Show the confirmation popup
+        confirmRemovePopup.style.display = 'flex';
+        confirmRemovePopup.classList.add('show');
+
+        // Handle the Confirm Remove button click
+        confirmRemoveButton.addEventListener('click', () => {
+            let data = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
+
+            console.log('Before deletion:', JSON.stringify(data.students));
+            console.log('Deleting student:', selectedStudent);
+
+            if (data.students[selectedStudent]) {
+                delete data.students[selectedStudent];
+
+                console.log('After deletion:', JSON.stringify(data.students));
+
+                // Set currentStudent to the first remaining student
+                const remainingStudents = Object.keys(data.students).sort((a, b) => a.localeCompare(b));
+                data.currentStudent = remainingStudents.length > 0 ? remainingStudents[0] : '';
+
+                // Save updated data
+                localStorage.setItem('starAcademyStudents', JSON.stringify(data));
+                window.studentsData = data;
+
+                // Update dropdown and notes
+                updateDropdown();
+                if (typeof loadNotes === 'function') {
+                    loadNotes(false);
+                }
+
+                // Reset popup state
+                popupOpen = false;
+                currentPopupStudent = null;
+
+                // Hide the popup
+                confirmRemovePopup.style.display = 'none';
+                confirmRemovePopup.classList.remove('show');
+            }
+        });
+    });
+
+    // Handle closing the popup by clicking outside
+    confirmRemovePopup.addEventListener('click', (e) => {
+        if (!confirmRemovePopup.querySelector('.student-popup-content').contains(e.target)) {
+            confirmRemovePopup.style.display = 'none';
+            confirmRemovePopup.classList.remove('show');
+            popupOpen = false;
+            currentPopupStudent = null;
+
+            // Clone confirmRemoveButton to remove existing listeners
+            const newConfirmButton = confirmRemoveButton.cloneNode(true);
+            confirmRemoveButton.parentNode.replaceChild(newConfirmButton, confirmRemoveButton);
+            confirmRemoveButton = newConfirmButton;
+        }
+    });
+
+    // Handle closing the popup with the X button
+    closeConfirmRemovePopup.addEventListener('click', () => {
+        confirmRemovePopup.style.display = 'none';
+        confirmRemovePopup.classList.remove('show');
+        popupOpen = false;
+        currentPopupStudent = null;
+
+        // Clone confirmRemoveButton to remove existing listeners
+        const newConfirmButton = confirmRemoveButton.cloneNode(true);
+        confirmRemoveButton.parentNode.replaceChild(newConfirmButton, confirmRemoveButton);
+        confirmRemoveButton = newConfirmButton;
+    });
+}
+
 // Export student data with conditional practiceLog handling
 function exportStudentData(studentName) {
     console.log(`Exporting student data for ${studentName}`);
@@ -295,4 +456,6 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
         console.error('newStudentName input not found');
     }
+
+    initializeRemoveButton(); // New
 });
