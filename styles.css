@@ -824,7 +824,7 @@ body.popup-open .student-manager {
 .student-manager input#newStudentName,
 .student-manager select#studentSelect {
     flex: 1;
-    padding: 8px 10px; /* For newStudentName */
+    padding: 8px 10px;
     margin: 0;
     font-size: 16px;
     line-height: 24px;
@@ -874,7 +874,7 @@ body.popup-open .student-manager {
 }
 
 .student-manager select#studentSelect {
-    padding: 8px 30px 8px 10px; /* Adjusted for arrow */
+    padding: 8px 30px 8px 10px;
     appearance: none;
     -webkit-appearance: none;
     -moz-appearance: none;
@@ -917,7 +917,7 @@ body.popup-open .student-manager {
 }
 
 .student-manager button#addStudentButton {
-    width: 75.25px; /* Fixed width to match "Lägg till" */
+    width: 75.25px;
     padding: 0 10px;
     background: none;
     border: none;
@@ -932,8 +932,8 @@ body.popup-open .student-manager {
     height: 40px;
     position: relative;
     font-family: Cochin, Georgia, Arial, sans-serif;
-    overflow: hidden; /* Prevent text overflow */
-    text-overflow: ellipsis; /* Handle long text gracefully */
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .student-manager button#addStudentButton:hover {
@@ -944,10 +944,11 @@ body.popup-open .student-manager {
     content: '';
     position: absolute;
     left: 0;
-    top: 0;
-    bottom: 0;
+    top: -1px; /* Extend slightly beyond button to cover border */
+    bottom: -1px; /* Extend slightly beyond button to cover border */
     width: 2px;
     background-color: var(--orange);
+    z-index: 1; /* Ensure line is above button content */
 }
 
 .student-manager select#studentSelect {
@@ -975,7 +976,7 @@ body.popup-open .student-manager {
 }
 
 .student-manager button#removeStudentButton {
-    width: 75.25px; /* Fixed width to match addStudentButton */
+    width: 75.25px;
     padding: 0 10px;
     background: none;
     border: none;
@@ -990,21 +991,22 @@ body.popup-open .student-manager {
     height: 40px;
     position: relative;
     font-family: Cochin, Georgia, Arial, sans-serif;
-    overflow: hidden; /* Prevent text overflow */
-    text-overflow: ellipsis; /* Handle long text gracefully */
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .student-manager button#removeStudentButton::before {
     content: '';
     position: absolute;
     left: 0;
-    top: 0;
-    bottom: 0;
+    top: -1px; /* Extend slightly beyond button to cover border */
+    bottom: -1px; /* Extend slightly beyond button to cover border */
     width: 2px;
     background-color: var(--orange);
+    z-index: 1; /* Ensure line is above button content */
 }
 
-/* Adjust input-group to accommodate fixed button widths */
+/* Ensure input-group has no padding and correct height */
 .student-manager .input-group {
     display: flex;
     align-items: center;
@@ -1015,6 +1017,8 @@ body.popup-open .student-manager {
     background: var(--semi-dark);
     box-sizing: border-box;
     padding: 0;
+    height: 40px; /* Match button and input height */
+    overflow: visible; /* Prevent clipping of ::before */
 }
 
 .student-manager button#shareButton,
@@ -2559,7 +2563,7 @@ h2#popupWelcome {
         margin: 0px auto;
     }
     .input-group {
-        width: 72vw;
+        width: 72vw !important;
     }
     .dropdown-container {
         display: inline-flex;
