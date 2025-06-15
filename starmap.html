@@ -20,23 +20,6 @@
         setViewportHeight();
     </script>
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const consentPopup = document.getElementById('consentPopup');
-            const consentAcceptButton = document.getElementById('consentAcceptButton');
-            const consentRejectButton = document.getElementById('consentRejectButton');
-            if (consentPopup && (consentAcceptButton || consentRejectButton)) {
-                const handler = () => {
-                    setTimeout(() => {
-                        window.dispatchEvent(new Event('resize'));
-                        console.log('Forced resize after consent popup dismissal');
-                    }, 200); // Delay for iPad Safari viewport stabilization
-                };
-                if (consentAcceptButton) consentAcceptButton.addEventListener('click', handler);
-                if (consentRejectButton) consentRejectButton.addEventListener('click', handler);
-            }
-        });
-    </script>
-    <script>
     document.addEventListener('DOMContentLoaded', () => {
         if (typeof initializeConsentPopup === 'function') {
             initializeConsentPopup();
