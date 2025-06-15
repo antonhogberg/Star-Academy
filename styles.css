@@ -820,9 +820,11 @@ body.popup-open .student-manager {
     box-sizing: border-box;
 }
 
-.student-manager input#newStudentName {
+/* Ensure input and select adjust to remaining space */
+.student-manager input#newStudentName,
+.student-manager select#studentSelect {
     flex: 1;
-    padding: 8px 10px;
+    padding: 8px 10px; /* For newStudentName */
     margin: 0;
     font-size: 16px;
     line-height: 24px;
@@ -872,16 +874,7 @@ body.popup-open .student-manager {
 }
 
 .student-manager select#studentSelect {
-    width: auto; /* Match newStudentName */
-    flex: 1; /* Allow it to take available space within input-group */
-    padding: 8px 40px 8px 10px;
-    font-size: 16px;
-    margin: 0;
-    border: none; /* Remove border to match input-group */
-    border-radius: 5px 0 0 5px; /* Match newStudentName */
-    background: var(--semi-dark);
-    color: #ffffff;
-    font-family: Cochin, Georgia, Arial, sans-serif;
+    padding: 8px 30px 8px 10px; /* Adjusted for arrow */
     appearance: none;
     -webkit-appearance: none;
     -moz-appearance: none;
@@ -891,8 +884,6 @@ body.popup-open .student-manager {
     background-size: 24px;
     cursor: pointer;
     transition: border-color 0.3s ease;
-    line-height: 24px;
-    height: 40px; /* Match newStudentName */
 }
 
 .student-manager select#studentSelect:hover {
@@ -926,6 +917,7 @@ body.popup-open .student-manager {
 }
 
 .student-manager button#addStudentButton {
+    width: 75.25px; /* Fixed width to match "Lägg till" */
     padding: 0 10px;
     background: none;
     border: none;
@@ -940,6 +932,8 @@ body.popup-open .student-manager {
     height: 40px;
     position: relative;
     font-family: Cochin, Georgia, Arial, sans-serif;
+    overflow: hidden; /* Prevent text overflow */
+    text-overflow: ellipsis; /* Handle long text gracefully */
 }
 
 .student-manager button#addStudentButton:hover {
@@ -981,6 +975,7 @@ body.popup-open .student-manager {
 }
 
 .student-manager button#removeStudentButton {
+    width: 75.25px; /* Fixed width to match addStudentButton */
     padding: 0 10px;
     background: none;
     border: none;
@@ -995,7 +990,8 @@ body.popup-open .student-manager {
     height: 40px;
     position: relative;
     font-family: Cochin, Georgia, Arial, sans-serif;
-    width: auto; /* Ensure it matches addStudentButton */
+    overflow: hidden; /* Prevent text overflow */
+    text-overflow: ellipsis; /* Handle long text gracefully */
 }
 
 .student-manager button#removeStudentButton::before {
@@ -1008,7 +1004,7 @@ body.popup-open .student-manager {
     background-color: var(--orange);
 }
 
-/* Ensure consistent input-group sizing */
+/* Adjust input-group to accommodate fixed button widths */
 .student-manager .input-group {
     display: flex;
     align-items: center;
@@ -1018,7 +1014,7 @@ body.popup-open .student-manager {
     border-radius: 5px;
     background: var(--semi-dark);
     box-sizing: border-box;
-    padding: 0; /* Remove padding to align with newStudentName */
+    padding: 0;
 }
 
 .student-manager button#shareButton,
