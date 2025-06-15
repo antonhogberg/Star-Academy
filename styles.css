@@ -820,7 +820,6 @@ body.popup-open .student-manager {
     box-sizing: border-box;
 }
 
-/* Ensure input and select adjust to remaining space */
 .student-manager input#newStudentName,
 .student-manager select#studentSelect {
     flex: 1;
@@ -930,7 +929,6 @@ body.popup-open .student-manager {
     align-items: center;
     justify-content: center;
     height: 40px;
-    position: relative;
     font-family: Cochin, Georgia, Arial, sans-serif;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -989,7 +987,6 @@ body.popup-open .student-manager {
     align-items: center;
     justify-content: center;
     height: 40px;
-    position: relative;
     font-family: Cochin, Georgia, Arial, sans-serif;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -1006,10 +1003,9 @@ body.popup-open .student-manager {
     z-index: 1; /* Ensure line is above button content */
 }
 
-/* Ensure input-group has no padding and correct height */
 .student-manager .input-group {
     display: flex;
-    align-items: center;
+    align-items: stretch; /* Ensure children stretch to full height */
     margin-bottom: 10px;
     width: 320px;
     border: 1px solid var(--orange);
@@ -1017,8 +1013,13 @@ body.popup-open .student-manager {
     background: var(--semi-dark);
     box-sizing: border-box;
     padding: 0;
-    height: 40px; /* Match button and input height */
-    overflow: visible; /* Prevent clipping of ::before */
+    overflow: visible;
+}
+
+.student-manager .input-group .separator {
+    width: 2px;
+    background-color: var(--orange);
+    margin: 0;
 }
 
 .student-manager button#shareButton,
