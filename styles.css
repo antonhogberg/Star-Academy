@@ -873,6 +873,30 @@ body.popup-open .student-manager {
     box-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
 }
 
+.student-manager select#studentSelect {
+    flex: 1 1 auto;
+    padding: 8px 30px 8px 10px;
+    margin: 0;
+    font-size: 16px;
+    line-height: 24px;
+    border: none;
+    border-radius: 5px 0 0 5px;
+    background: var(--semi-dark);
+    color: #ffffff;
+    font-family: Cochin, Georgia, Arial, sans-serif;
+    box-sizing: border-box;
+    height: 40px;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url('data:image/svg+xml;utf8,<svg fill="%23ffffff" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 24px;
+    cursor: pointer;
+    transition: border-color 0.3s ease;
+}
+
 .student-manager select#studentSelect:hover {
     border-color: var(--orange);
 }
@@ -952,12 +976,13 @@ body.popup-open .student-manager {
     background: var(--semi-dark);
     box-sizing: border-box;
     padding: 0;
-    overflow: hidden;
+    overflow: visible;
     position: relative;
 }
 
 .student-manager .input-group .separator {
     flex: 0 0 2px;
+    min-width: 2px;
     background-color: var(--orange);
     margin: 0;
     height: 100%;
@@ -2263,8 +2288,8 @@ h2#popupWelcome {
     }
 }
 
-/* General max-width: 767px */
-@media (max-width: 767px) {
+/* Mobile portrait (max-width: 767px) */
+@media (max-width: 767px) and (orientation: portrait) {
     .faq-answer {
         font-size: 14px;
     }
@@ -2277,17 +2302,9 @@ h2#popupWelcome {
     .title-star {
         width: 40px;
     }
-}
-
-/* General max-width: 744px and portrait */
-@media (max-width: 744px) and (orientation: portrait) {
     #userNameDisplay {
         margin: 10px auto;
     }
-}
-
-/* iPhone portrait */
-@media (max-width: 767px) and (orientation: portrait) and (max-device-width: 767px) {
     body {
         height: auto;
         min-height: 100vh;
@@ -2306,7 +2323,7 @@ h2#popupWelcome {
         display: none !important;
     }
     body.chapters .stars-svg#stars-2x2x4 {
-        display: block !important; /* Override inline style */
+        display: block !important;
         width: calc(85vw);
         max-width: 310px;
         height: auto;
@@ -2327,8 +2344,8 @@ h2#popupWelcome {
         text-overflow: clip;
     }
     .privacy-popup-content {
-        width: 90vw; /* Responsive width */
-        max-height: 85vh; /* Slightly less to account for margins */
+        width: 90vw;
+        max-height: 85vh;
         margin: 10px;
         padding: 15px;
     }
@@ -2339,7 +2356,7 @@ h2#popupWelcome {
     }
     .consent-buttons {
         flex-wrap: wrap;
-        gap: 6皮肤px;
+        gap: 6px;
         justify-content: center;
     }
     #consentMessage {
@@ -2463,14 +2480,10 @@ h2#popupWelcome {
     }
     .student-manager .input-group {
         width: 72vw !important;
-        padding: 0 !important; /* Override any padding */
+        padding: 0 !important;
     }
-    .export-section {
-        margin-top: 1rem;
-        margin-bottom: 20px;
-    }
-    .export-button-container {
-        margin-bottom: 10px;
+    .notes-button-container {
+        width: 72vw;
     }
     .student-manager .checkbox-group {
         width: 72vw;
@@ -2494,9 +2507,6 @@ h2#popupWelcome {
         border: none;
         background: none;
         margin: 0px auto;
-    }
-    .input-group {
-        width: 72vw !important;
     }
     .dropdown-container {
         display: inline-flex;
@@ -2528,10 +2538,9 @@ h2#popupWelcome {
         padding: 8px 10px;
         line-height: 24px;
     }
-
     .student-manager select#studentSelect {
         font-size: 18px !important;
-        padding: 8px 30px 8px 10px; /* Adjusted for arrow */
+        padding: 8px 30px 8px 10px;
         line-height: 24px;
     }
     .popup-content {
@@ -2575,19 +2584,9 @@ h2#popupWelcome {
     .student-popup-content p {
         font-size: 18px;
     }
-    .title-container h1 {
-        font-size: 24px;
-    }
-    .title-star {
-        width: 40px;
-    }
     .content h1 {
         font-size: 30px;
         margin: 20px 0 40px 0;
-    }
-    .faq-container {
-        width: 70vw;
-        max-width: none;
     }
     #userNameDisplay {
         margin: 10px auto;
@@ -2623,9 +2622,8 @@ h2#popupWelcome {
     }
 }
 
-/* iPhone landscape */
-@media (orientation: landscape) and (max-width: 767px),
-       (orientation: landscape) and (hover: none) and (pointer: coarse) {
+/* Mobile landscape */
+@media (orientation: landscape) and (max-width: 767px), (orientation: landscape) and (hover: none) and (pointer: coarse) {
     body.is-mobile,
     body {
         display: block;
@@ -2664,7 +2662,7 @@ h2#popupWelcome {
     body.chapters .stars-svg#stars-4x4 {
         display: block;
         max-width: 650px;
-        max-height: calc(90% - 60px); /* 90% of .chapter-container, accounting for margin-top */
+        max-height: calc(90% - 60px);
         width: 100%;
         height: auto;
         position: absolute;
@@ -2702,7 +2700,7 @@ h2#popupWelcome {
         height: 119.26923px;
     }
     .exercise-code {
-        margin-top: 139.20798px; /* Adjusted for 140px star height */
+        margin-top: 139.20798px;
         margin-right: 0;
         font-size: 16px;
     }
@@ -2730,12 +2728,10 @@ h2#popupWelcome {
         flex-grow: 0;
         justify-content: space-between;
     }
-
     #stars-4x4 {
         display: block !important;
         width: 100%;
     }
-
     #stars-2x2x4 {
         display: none !important;
     }
@@ -2872,10 +2868,19 @@ h2#popupWelcome {
     }
 }
 
+/* iPad Mini landscape adjustments */
+@media (min-width: 1000px) and (max-width: 1100px) and (orientation: landscape) {
+    .description-container {
+        width: 430px;
+        margin-right: 90px;
+    }
+    .info-overlay {
+        left: 540px;
+    }
+}
+
 /* iPad 1, 2, Mini, Air portrait (768x1024, pixel ratio 1) */
 @media only screen and (min-width: 768px) and (max-width: 1024px) and (orientation: portrait) and (-webkit-min-device-pixel-ratio: 1) {
-    
-    
     .exercise-code {
         margin-top: 105px;
         margin-right: 2px;
@@ -2885,8 +2890,6 @@ h2#popupWelcome {
 
 /* iPad 1, 2, Mini, Air landscape (768x1024, pixel ratio 1) */
 @media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 1) {
-    
-    
     .exercise-code {
         margin-top: 105px;
         margin-right: 2px;
@@ -2903,18 +2906,15 @@ h2#popupWelcome {
 
 /* iPad 3, 4, Pro 9.7" portrait (768x1024, pixel ratio 2) */
 @media only screen and (min-width: 768px) and (max-width: 1024px) and (orientation: portrait) and (-webkit-min-device-pixel-ratio: 2) {
-    
     .exercise-code {
-        margin-top: 85px; /* Adjusted for smaller star size */
+        margin-top: 85px;
         margin-right: 2px;
-        font-size: 12px; /* Slightly smaller text */
+        font-size: 12px;
     }
 }
 
 /* iPad 3, 4, Pro 9.7" landscape (768x1024, pixel ratio 2) */
 @media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
-    
-    
     .exercise-code {
         margin-top: 105px;
         margin-right: 2px;
@@ -2924,7 +2924,6 @@ h2#popupWelcome {
 
 /* iPad 11" and Similar Tablets (834px–1193px, Pixel Ratio 2) */
 @media only screen and (min-device-width: 834px) and (max-device-width: 1193px) and (-webkit-min-device-pixel-ratio: 2) {
-    
     .exercise-code {
         margin-top: 125px;
         margin-right: 4px;
@@ -2938,8 +2937,6 @@ h2#popupWelcome {
 
 /* iPad Pro 12.9" (1194px–1366px, Pixel Ratio 2) */
 @media only screen and (min-device-width: 1194px) and (max-device-width: 1366px) and (-webkit-min-device-pixel-ratio: 2) {
-    
-    
     .exercise-code {
         margin-top: 155px;
         margin-right: 4px;
@@ -2962,7 +2959,7 @@ h2#popupWelcome {
     body.chapters .stars-svg#stars-4x4 {
         display: block;
         max-width: 650px;
-        max-height: calc(90% - 60px); /* 90% of .chapter-container, accounting for margin-top */
+        max-height: calc(90% - 60px);
         width: 100%;
         height: auto !important;
         position: absolute;
