@@ -985,7 +985,6 @@ body.popup-open .student-manager {
     min-width: 2px;
     background-color: var(--orange);
     margin: 0;
-    height: 100%;
 }
 
 .student-manager button#shareButton,
