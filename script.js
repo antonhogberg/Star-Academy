@@ -323,6 +323,7 @@ const menuHtml = `
                 <select id="globalStudentSelect"></select>
             </div>
             <div class="menu-content">
+                <a href="https://books.apple.com/se/book/stj%C3%A4rnakademiens-pianoskola/id1586033171" class="menu-link" data-translate="menuFrontPage"></a
                 <a href="index.html" class="menu-link" data-translate="menuFrontPage"></a>
                 <a href="starmap.html#svg-start" class="menu-link" data-translate="menuStarMap"></a>
                 <div class="menu-item">
