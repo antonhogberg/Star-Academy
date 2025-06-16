@@ -27,10 +27,10 @@
     <div class="black-key bottom"></div>
   </div>
   <nav id="menu-placeholder"></nav>
-  <div class="layout-container">
-    <h1 data-translate="homeWelcome">Välkommen till Nordstjärnans Pianoskola!</h1>
-    <p data-translate="homeIntro">Börja din pianoresa med vår interaktiva plattform och boken tillgänglig på Apple Books.</p>
-    <a id="appleBooksLink" href="#" class="menu-link" data-translate="appleBooksText">Köp boken på Apple Books</a>
+  <div class="layout-container" style="color: white;">
+    <h1 data-translate="homeWelcome" style="color: white;">Välkommen till Nordstjärnans Pianoskola!</h1>
+    <p data-translate="homeIntro" style="color: white;">Börja din pianoresa med vår interaktiva plattform och boken tillgänglig på Apple Books.</p>
+    <a id="appleBooksLink" href="#" class="menu-link" data-translate="appleBooksText" style="color: #f0f0f0;">Köp boken på Apple Books</a>
   </div>
   <div id="consentPopup" style="display: none;">
     <div class="consent-popup-content">
@@ -57,7 +57,7 @@
             sv: 'https://books.apple.com/se/book/nordstjarnans-pianoskola/id123456789',
             en: 'https://books.apple.com/us/book/north-star-piano-school/id987654321'
           };
-          appleBooksLink.href = urls[lang] || urls.sv; // Fallback till svenska
+          appleBooksLink.href = urls[lang] || urls.sv;
         }
       }
 

@@ -159,7 +159,7 @@ function shareExport() {
 
     <div class="notes-wrapper">
       <div class="notes-container">
-        <div id="notesLabel" class="field-label" data-translate="notes"></div>
+        <h2 id="notesLabel" class="field-label"></h2>
         <div class="notes-button-container">
           <textarea id="studentNotes" rows="5"></textarea>
         </div>
@@ -298,21 +298,27 @@ function shareExport() {
     });
   
     function loadNotes() {
-      const select = document.getElementById('studentSelect');
-      const notes = document.getElementById('studentNotes');
-      const data = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
-  
-      updateDropdown();
-  
-      const current = data.currentStudent;
-      if (current && data.students[current] && data.students[current].notes) {
-        notes.value = data.students[current].notes;
-      } else {
-        notes.value = '';
-      }
-  
-      if (select && current) select.value = current;
-    }
+  const select = document.getElementById('studentSelect');
+  const notes = document.getElementById('studentNotes');
+  const notesLabel = document.getElementById('notesLabel');
+  const data = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
+  const lang = localStorage.getItem('language') || 'sv';
+
+  updateDropdown();
+
+  const current = data.currentStudent;
+  if (current && data.students[current] && data.students[current].notes) {
+    notes.value = data.students[current].notes;
+  } else {
+    notes.value = '';
+  }
+
+  if (notesLabel) {
+    notesLabel.textContent = current ? `${translations[lang].notesTitle}${current}` : translations[lang].notesTitle;
+  }
+
+  if (select && current) select.value = current;
+}
   </script>
 <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'93afb610cfc4bf91',t:'MTc0NjQ0MjU4NS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
 <div id="consentPopup" style="display: none;">
