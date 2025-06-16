@@ -224,80 +224,31 @@ function shareExport() {
   <script src="students.js"></script>
 
   <script>
-    function debounce(func, wait) {
-      let timeout;
-      return function (...args) {
-        clearTimeout(timeout);
-        timeout = setTimeout(() => func.apply(this, args), wait);
-      };
-    }
-  
-    function saveNotes(silent = false) {
-      const studentNotes = document.getElementById('studentNotes');
-      const currentStudent = window.studentsData.currentStudent;
-  
-      if (!currentStudent || !window.studentsData.students[currentStudent]) {
-        if (!silent) alert('Välj en elev först');
-        return;
-      }
-  
-      window.studentsData.students[currentStudent].notes = studentNotes.value;
-      localStorage.setItem('starAcademyStudents', JSON.stringify(window.studentsData));
-      if (!silent) alert('Sparat!');
-    }
-  
-    const debouncedSaveNotes = debounce(() => saveNotes(true), 500);
-  
-    document.addEventListener('DOMContentLoaded', () => {
-      const lang = localStorage.getItem('language') || 'sv';
-      switchLanguage(lang);
-  
-      const newStudentInput = document.getElementById('newStudentName');
-      if (newStudentInput) {
-        newStudentInput.addEventListener('keydown', (e) => {
-          if (e.key === 'Enter') {
-            console.log('Enter key pressed on newStudentName');
-            addStudent(e);
-          }
-        });
-      }
-  
-      loadNotes();
-  
-      const notes = document.getElementById('studentNotes');
-      if (notes) {
-        notes.addEventListener('input', () => debouncedSaveNotes());
-        notes.addEventListener('blur', () => saveNotes(true));
-      }
-  
-      const studentSelect = document.getElementById('studentSelect');
-      if (studentSelect) {
-        studentSelect.addEventListener('change', (event) => {
-          const selectedValue = event.target.value;
-          switchStudent(selectedValue);
-        });
-      }
-  
-      const infoButton = document.getElementById('studentModeInfoButton');
-      const infoPopup = document.getElementById('studentModeInfoPopup');
-      const closeInfoPopup = document.getElementById('closeStudentModeInfoPopup');
-      if (infoButton && infoPopup && closeInfoPopup) {
-        infoButton.addEventListener('click', () => {
-          infoPopup.style.display = 'flex';
-          infoPopup.classList.add('show');
-        });
-        closeInfoPopup.addEventListener('click', () => {
-          infoPopup.style.display = 'none';
-          infoPopup.classList.remove('show');
-        });
-        infoPopup.addEventListener('click', () => {
-          infoPopup.style.display = 'none';
-          infoPopup.classList.remove('show');
-        });
-      }
-    });
-  
-    function loadNotes() {
+function debounce(func, wait) {
+  let timeout;
+  return function (...args) {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => func.apply(this, args), wait);
+  };
+}
+
+function saveNotes(silent = false) {
+  const studentNotes = document.getElementById('studentNotes');
+  const currentStudent = window.studentsData.currentStudent;
+
+  if (!currentStudent || !window.studentsData.students[currentStudent]) {
+    if (!silent) alert('Välj en elev först');
+    return;
+  }
+
+  window.studentsData.students[currentStudent].notes = studentNotes.value;
+  localStorage.setItem('starAcademyStudents', JSON.stringify(window.studentsData));
+  if (!silent) alert('Sparat!');
+}
+
+const debouncedSaveNotes = debounce(() => saveNotes(true), 500);
+
+function loadNotes() {
   const select = document.getElementById('studentSelect');
   const notes = document.getElementById('studentNotes');
   const notesLabel = document.getElementById('notesLabel');
@@ -314,12 +265,188 @@ function shareExport() {
   }
 
   if (notesLabel) {
-    notesLabel.textContent = current ? `${translations[lang].notesTitle}${current}` : translations[lang].notesTitle;
+    const titlePrefix = window.translations && window.translations[lang] && window.translations[lang].notesTitle
+      ? window.translations[lang].notesTitle
+      : (lang === 'sv' ? 'Anteckningar: ' : 'Notes: ');
+    notesLabel.textContent = current ? `${titlePrefix}${current}` : titlePrefix;
   }
 
   if (select && current) select.value = current;
 }
-  </script>
+
+// Export function
+function shareExport() {
+  try {
+    const exportStatus = document.getElementById('exportStatus');
+    const qrPopup = document.getElementById('qrPopup');
+    const qrCodeContainer = document.getElementById('qrCodeContainer');
+    const shareButton = document.getElementById('shareButtonInQR');
+    const closeQrPopup = document.getElementById('closeQrPopup');
+    const studentModeCheckbox = document.getElementById('studentModeCheckbox');
+    const lang = localStorage.getItem('language') || 'sv';
+
+    if (!exportStatus || !qrPopup || !qrCodeContainer || !shareButton || !closeQrPopup || !studentModeCheckbox) {
+      console.error('Missing elements:', {
+        exportStatus: !!exportStatus,
+        qrPopup: !!qrPopup,
+        qrCodeContainer: !!qrCodeContainer,
+        shareButton: !!shareButton,
+        closeQrPopup: !!closeQrPopup,
+        studentModeCheckbox: !!studentModeCheckbox
+      });
+      alert('Error: Page elements not found.');
+      return;
+    }
+
+    exportStatus.style.display = 'block';
+    exportStatus.textContent = window.translations?.[lang]?.creatingLink || 'Generating link, please wait…';
+
+    const studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
+    const current = studentsData.currentStudent;
+    if (!current || !studentsData.students[current]) {
+      console.warn('No current student selected');
+      exportStatus.style.display = 'none';
+      alert(window.translations?.[lang]?.exportError || 'Could not export student data.');
+      return;
+    }
+
+    const progressDigits = [];
+    for (let chapter = 1; chapter <= 7; chapter++) {
+      for (let part = 1; part <= 4; part++) {
+        for (let exercise = 1; exercise <= 4; exercise++) {
+          const key = `exercise${chapter}:${part}:${exercise}`;
+          progressDigits.push(studentsData.students[current].progress[key] || '0');
+        }
+      }
+    }
+    const dataToExport = {
+      name: current,
+      progress: progressDigits.join(''),
+      rank: studentsData.students[current].rank,
+      notes: studentsData.students[current].notes || '',
+      studentMode: studentModeCheckbox.checked
+    };
+
+    const jsonString = JSON.stringify(dataToExport);
+    console.log('Export JSON size:', jsonString.length, 'chars');
+    console.log('Export JSON:', jsonString);
+
+    if (!window.LZString) {
+      console.error('LZString not loaded');
+      alert('Error: Compression library missing.');
+      return;
+    }
+    const compressed = LZString.compressToEncodedURIComponent(jsonString);
+    console.log('Compressed code size:', compressed.length, 'chars');
+    const importUrl = `${window.location.origin}/ranks.html?code=${compressed}`;
+
+    if (!window.QRCode) {
+      console.error('QRCode not loaded');
+      alert('Error: QR code library missing.');
+      return;
+    }
+    qrCodeContainer.innerHTML = '';
+    new QRCode(qrCodeContainer, {
+      text: importUrl,
+      width: 270,
+      height: 270,
+      correctLevel: QRCode.CorrectLevel.M
+    });
+
+    qrPopup.style.display = 'flex';
+    qrPopup.classList.add('show');
+    exportStatus.style.display = 'none';
+
+    shareButton.onclick = async () => {
+      try {
+        if (navigator.share && navigator.canShare({ url: importUrl })) {
+          await navigator.share({ title: 'Elevdata', url: importUrl });
+        } else {
+          await navigator.clipboard.writeText(importUrl);
+          alert(window.translations?.[lang]?.copyLinkSuccess || 'Link copied to clipboard!');
+        }
+      } catch (err) {
+        console.error('Error sharing:', err);
+        await navigator.clipboard.writeText(importUrl);
+        alert(window.translations?.[lang]?.copyLinkSuccess || 'Link copied to clipboard!');
+      }
+    };
+
+    closeQrPopup.onclick = () => {
+      qrPopup.style.display = 'none';
+      qrPopup.classList.remove('show');
+    };
+  } catch (error) {
+    console.error('Export failed:', error);
+    exportStatus.style.display = 'none';
+    alert(window.translations?.[lang]?.exportError || 'Could not export student data.');
+  }
+}
+
+// Initialize
+document.addEventListener('DOMContentLoaded', () => {
+  const shareExportButton = document.getElementById('shareExportButton');
+  if (shareExportButton) {
+    shareExportButton.addEventListener('click', shareExport);
+  } else {
+    console.error('shareExportButton not found');
+  }
+
+  const lang = localStorage.getItem('language') || 'sv';
+  switchLanguage(lang);
+
+  const waitForTranslations = () => {
+    if (window.translations) {
+      loadNotes();
+    } else {
+      setTimeout(waitForTranslations, 100);
+    }
+  };
+  waitForTranslations();
+
+  const newStudentInput = document.getElementById('newStudentName');
+  if (newStudentInput) {
+    newStudentInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        console.log('Enter key pressed on newStudentName');
+        addStudent(e);
+      }
+    });
+  }
+
+  const notes = document.getElementById('studentNotes');
+  if (notes) {
+    notes.addEventListener('input', () => debouncedSaveNotes());
+    notes.addEventListener('blur', () => saveNotes(true));
+  }
+
+  const studentSelect = document.getElementById('studentSelect');
+  if (studentSelect) {
+    studentSelect.addEventListener('change', (event) => {
+      const selectedValue = event.target.value;
+      switchStudent(selectedValue);
+    });
+  }
+
+  const infoButton = document.getElementById('studentModeInfoButton');
+  const infoPopup = document.getElementById('studentModeInfoPopup');
+  const closeInfoPopup = document.getElementById('closeStudentModeInfoPopup');
+  if (infoButton && infoPopup && closeInfoPopup) {
+    infoButton.addEventListener('click', () => {
+      infoPopup.style.display = 'flex';
+      infoPopup.classList.add('show');
+    });
+    closeInfoPopup.addEventListener('click', () => {
+      infoPopup.style.display = 'none';
+      infoPopup.classList.remove('show');
+    });
+    infoPopup.addEventListener('click', () => {
+      infoPopup.style.display = 'none';
+      infoPopup.classList.remove('show');
+    });
+  }
+});
+</script>
 <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'93afb610cfc4bf91',t:'MTc0NjQ0MjU4NS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
 <div id="consentPopup" style="display: none;">
     <div class="consent-popup-content">

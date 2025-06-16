@@ -27,10 +27,10 @@
     <div class="black-key bottom"></div>
   </div>
   <nav id="menu-placeholder"></nav>
-  <div class="layout-container" style="color: white;">
-    <h1 data-translate="homeWelcome" style="color: white;">Välkommen till Nordstjärnans Pianoskola!</h1>
-    <p data-translate="homeIntro" style="color: white;">Börja din pianoresa med vår interaktiva plattform och boken tillgänglig på Apple Books.</p>
-    <a id="appleBooksLink" href="#" class="menu-link" data-translate="appleBooksText" style="color: #f0f0f0;">Köp boken på Apple Books</a>
+  <div class="layout-container" style="background-color: black; color: white; text-align: center; display: flex; flex-direction: column; align-items: center; padding: 20px;">
+    <h1 data-translate="homeWelcome" style="color: white; margin-bottom: 20px;">Välkommen till Nordstjärnans Pianoskola!</h1>
+    <p data-translate="homeIntro" style="color: white; margin-bottom: 20px; max-width: 600px;">Börja din pianoresa med vår interaktiva plattform och boken tillgänglig på Apple Books.</p>
+    <a id="appleBooksLink" href="#" class="menu-link" data-translate="appleBooksText" style="color: #f0f0f0; text-decoration: underline;">Köp boken på Apple Books</a>
   </div>
   <div id="consentPopup" style="display: none;">
     <div class="consent-popup-content">
@@ -54,8 +54,8 @@
         const appleBooksLink = document.getElementById('appleBooksLink');
         if (appleBooksLink) {
           const urls = {
-            sv: 'https://books.apple.com/se/book/nordstjarnans-pianoskola/id123456789',
-            en: 'https://books.apple.com/us/book/north-star-piano-school/id987654321'
+            sv: 'https://books.apple.com/se/book/stj%C3%A4rnakademiens-pianoskola/id1586033171',
+            en: 'https://books.apple.com/se/book/star-academy-piano-school/id1587056173'
           };
           appleBooksLink.href = urls[lang] || urls.sv;
         }
