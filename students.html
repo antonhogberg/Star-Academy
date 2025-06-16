@@ -26,132 +26,115 @@
     setViewportHeight();
   </script>
   <script>
-    // Export function
-    function shareExport() {
-      try {
-        const exportStatus = document.getElementById('exportStatus');
-        const qrPopup = document.getElementById('qrPopup');
-        const qrCodeContainer = document.getElementById('qrCodeContainer');
-        const shareButton = document.getElementById('shareButtonInQR');
-        const closeQrPopup = document.getElementById('closeQrPopup');
-        const studentModeCheckbox = document.getElementById('studentModeCheckbox'); // Step 2: Get checkbox
-        const lang = localStorage.getItem('language') || 'sv';
-  
-        if (!exportStatus || !qrPopup || !qrCodeContainer || !shareButton || !closeQrPopup || !studentModeCheckbox) {
-          console.error('Missing elements:', {
-            exportStatus: !!exportStatus,
-            qrPopup: !!qrPopup,
-            qrCodeContainer: !!qrCodeContainer,
-            shareButton: !!shareButton,
-            closeQrPopup: !!closeQrPopup,
-            studentModeCheckbox: !!studentModeCheckbox
-          });
-          alert('Error: Page elements not found.');
-          return;
+// Export function
+function shareExport() {
+  try {
+    const exportStatus = document.getElementById('exportStatus');
+    const qrPopup = document.getElementById('qrPopup');
+    const qrCodeContainer = document.getElementById('qrCodeContainer');
+    const shareButton = document.getElementById('shareButtonInQR');
+    const closeQrPopup = document.getElementById('closeQrPopup');
+    const studentModeCheckbox = document.getElementById('studentModeCheckbox');
+    const lang = localStorage.getItem('language') || 'sv';
+
+    if (!exportStatus || !qrPopup || !qrCodeContainer || !shareButton || !closeQrPopup || !studentModeCheckbox) {
+      console.error('Missing elements:', {
+        exportStatus: !!exportStatus,
+        qrPopup: !!qrPopup,
+        qrCodeContainer: !!qrCodeContainer,
+        shareButton: !!shareButton,
+        closeQrPopup: !!closeQrPopup,
+        studentModeCheckbox: !!studentModeCheckbox
+      });
+      alert('Error: Page elements not found.');
+      return;
+    }
+
+    exportStatus.style.display = 'block';
+    exportStatus.textContent = window.translations?.[lang]?.creatingLink || 'Generating link, please wait…';
+
+    const studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
+    const current = studentsData.currentStudent;
+    if (!current || !studentsData.students[current]) {
+      console.warn('No current student selected');
+      exportStatus.style.display = 'none';
+      alert(window.translations?.[lang]?.exportError || 'Could not export student data.');
+      return;
+    }
+
+    const progressDigits = [];
+    for (let chapter = 1; chapter <= 7; chapter++) {
+      for (let part = 1; part <= 4; part++) {
+        for (let exercise = 1; exercise <= 4; exercise++) {
+          const key = `exercise${chapter}:${part}:${exercise}`;
+          progressDigits.push(studentsData.students[current].progress[key] || '0');
         }
-  
-        exportStatus.style.display = 'block';
-        exportStatus.textContent = window.translations?.[lang]?.creatingLink || 'Generating link, please wait…';
-  
-        const studentsData = JSON.parse(localStorage.getItem('starAcademyStudents')) || { students: {}, currentStudent: '' };
-        const current = studentsData.currentStudent;
-        if (!current || !studentsData.students[current]) {
-          console.warn('No current student selected');
-          exportStatus.style.display = 'none';
-          alert(window.translations?.[lang]?.exportError || 'Could not export student data.');
-          return;
-        }
-  
-        // Create export data with progress as 112-digit string in correct order
-        const progressDigits = [];
-        for (let chapter = 1; chapter <= 7; chapter++) {
-          for (let part = 1; part <= 4; part++) {
-            for (let exercise = 1; exercise <= 4; exercise++) {
-              const key = `exercise${chapter}:${part}:${exercise}`;
-              progressDigits.push(studentsData.students[current].progress[key] || '0');
-            }
-          }
-        }
-        const dataToExport = {
-          name: current,
-          progress: progressDigits.join(''),
-          rank: studentsData.students[current].rank,
-          notes: studentsData.students[current].notes || '',
-          studentMode: studentModeCheckbox.checked // Step 2: Include studentMode from checkbox
-        };
-  
-        // Debug: Log JSON size
-        const jsonString = JSON.stringify(dataToExport);
-        console.log('Export JSON size:', jsonString.length, 'chars');
-        console.log('Export JSON:', jsonString);
-  
-        // Compress data
-        if (!window.LZString) {
-          console.error('LZString not loaded');
-          alert('Error: Compression library missing.');
-          return;
-        }
-        const compressed = LZString.compressToEncodedURIComponent(jsonString);
-        console.log('Compressed code size:', compressed.length, 'chars');
-        const importUrl = `${window.location.origin}/index.html?code=${compressed}`;
-  
-        // Generate QR code
-        if (!window.QRCode) {
-          console.error('QRCode not loaded');
-          alert('Error: QR code library missing.');
-          return;
-        }
-        qrCodeContainer.innerHTML = '';
-        new QRCode(qrCodeContainer, {
-          text: importUrl,
-          width: 270,
-          height: 270,
-          correctLevel: QRCode.CorrectLevel.M
-        });
-  
-        // Show popup
-        qrPopup.style.display = 'flex';
-        qrPopup.classList.add('show');
-        exportStatus.style.display = 'none';
-  
-        // Handle sharing
-        shareButton.onclick = async () => {
-          try {
-            if (navigator.share && navigator.canShare({ url: importUrl })) {
-              await navigator.share({ title: 'Elevdata', url: importUrl });
-            } else {
-              await navigator.clipboard.writeText(importUrl);
-              alert(window.translations?.[lang]?.copyLinkSuccess || 'Link copied to clipboard!');
-            }
-          } catch (err) {
-            console.error('Error sharing:', err);
-            await navigator.clipboard.writeText(importUrl);
-            alert(window.translations?.[lang]?.copyLinkSuccess || 'Link copied to clipboard!');
-          }
-        };
-  
-        // Close popup
-        closeQrPopup.onclick = () => {
-          qrPopup.style.display = 'none';
-          qrPopup.classList.remove('show');
-        };
-      } catch (error) {
-        console.error('Export failed:', error);
-        exportStatus.style.display = 'none';
-        alert(window.translations?.[lang]?.exportError || 'Could not export student data.');
       }
     }
-  
-    // Initialize
-    document.addEventListener('DOMContentLoaded', () => {
-      const shareExportButton = document.getElementById('shareExportButton');
-      if (shareExportButton) {
-        shareExportButton.addEventListener('click', shareExport);
-      } else {
-        console.error('shareExportButton not found');
-      }
+    const dataToExport = {
+      name: current,
+      progress: progressDigits.join(''),
+      rank: studentsData.students[current].rank,
+      notes: studentsData.students[current].notes || '',
+      studentMode: studentModeCheckbox.checked
+    };
+
+    const jsonString = JSON.stringify(dataToExport);
+    console.log('Export JSON size:', jsonString.length, 'chars');
+    console.log('Export JSON:', jsonString);
+
+    if (!window.LZString) {
+      console.error('LZString not loaded');
+      alert('Error: Compression library missing.');
+      return;
+    }
+    const compressed = LZString.compressToEncodedURIComponent(jsonString);
+    console.log('Compressed code size:', compressed.length, 'chars');
+    const importUrl = `${window.location.origin}/ranks.html?code=${compressed}`;
+
+    if (!window.QRCode) {
+      console.error('QRCode not loaded');
+      alert('Error: QR code library missing.');
+      return;
+    }
+    qrCodeContainer.innerHTML = '';
+    new QRCode(qrCodeContainer, {
+      text: importUrl,
+      width: 270,
+      height: 270,
+      correctLevel: QRCode.CorrectLevel.M
     });
-  </script>
+
+    qrPopup.style.display = 'flex';
+    qrPopup.classList.add('show');
+    exportStatus.style.display = 'none';
+
+    shareButton.onclick = async () => {
+      try {
+        if (navigator.share && navigator.canShare({ url: importUrl })) {
+          await navigator.share({ title: 'Elevdata', url: importUrl });
+        } else {
+          await navigator.clipboard.writeText(importUrl);
+          alert(window.translations?.[lang]?.copyLinkSuccess || 'Link copied to clipboard!');
+        }
+      } catch (err) {
+        console.error('Error sharing:', err);
+        await navigator.clipboard.writeText(importUrl);
+        alert(window.translations?.[lang]?.copyLinkSuccess || 'Link copied to clipboard!');
+      }
+    };
+
+    closeQrPopup.onclick = () => {
+      qrPopup.style.display = 'none';
+      qrPopup.classList.remove('show');
+    };
+  } catch (error) {
+    console.error('Export failed:', error);
+    exportStatus.style.display = 'none';
+    alert(window.translations?.[lang]?.exportError || 'Could not export student data.');
+  }
+}
+</script>
 </head>
 <body class="student-manager-page">
     <div class="piano-menu" id="menuButton" aria-expanded="false" aria-controls="main-menu">

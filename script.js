@@ -114,7 +114,7 @@ const translations = {
         error: "Invalid link. No student was added.",
         studentModeLabel: "Fixed gold stars",
         noConsentTitle: "Welcome Back Later",
-        noConsentMessage: "We’re sorry you couldn’t accept our privacy policy at this time. North Star Piano School uses local storage on your device to track progress in 112 piano exercises, which is essential for the platform to work. Without agreeing, your progress can’t be saved locally, but we’d love to welcome you back when you’re ready! Visit our <a href='faq.html'>FAQ</a> or view our Privacy Policy to learn more, or return to the <a href='index.html'>home page</a> to try again.",
+        noConsentMessage: "We’re sorry you couldn’t accept our privacy policy at this time. North Star Piano School uses local storage on your device to track progress in 112 piano exercises, which is essential for the platform to work. Without agreeing, your progress can’t be saved locally, but we’d love to welcome you back when you’re ready! Visit our <a href='faq.html'>FAQ</a> or view our Privacy Policy to learn more.",
         consentMessage: "Welcome to North Star Piano School! This website uses local storage to save names, progress, and notes in your browser. This means teachers storing their students’ names and other data must agree to our Privacy Policy to comply with GDPR or other similar laws regarding data storage. <br><strong style=\"color: #ff0000;\">If you’re a student using the platform only for yourself, you’re not directly affected by the Privacy Policy and can simply click I Accept!</strong><br> Teachers: Obtain students’ consent (or parental consent for children under 13) before adding names, or use an anonymous ID (e.g., ‘Student123’) if you cannot obtain consent. No data is stored online. No data is collected by North Star Piano School. Agree to start your piano journey!",
         consentAccept: "I Agree!",
         consentReject: "I Don’t Agree",
@@ -157,7 +157,12 @@ const translations = {
         rankBadgePopupTitle: "How the Rank Badge Works",
         rankBadgePopupText: "The Rank Badge tracks your piano journey! The bottom field has 16 small stars that light up one by one as you complete exercises by earning six stars each. Go to Star Map or Chapter 1-7 in the menu to gain stars. Finish 16 exercises to become a <strong>Star Cadet</strong>! Your next goal is the first chevron, with seven large gold stars. These light up as you complete all four exercises in Part 1 of each chapter (seven chapters total). Master them all to earn the rank of <strong>Star Officer</strong>!",
         closeButton: "Close",
-        removeButton: "Delete"
+        removeButton: "Delete",
+        menuHome: "Home",
+        homeTitle: "Home",
+        homeWelcome: "Welcome to North Star Piano School!",
+        homeIntro: "Start your piano journey with our interactive platform and the book available on Apple Books.",
+        appleBooksText: "Buy the book on Apple Books"
     },
     sv: {
         menuFrontPage: "Stjärnöversikt",
@@ -269,7 +274,7 @@ const translations = {
         error: "Ogiltig länk. Ingen elev lades till.",
         studentModeLabel: "Låsta guldstjärnor",
         noConsentTitle: "Välkommen tillbaka senare",
-        noConsentMessage: "Vi är ledsna att du inte kunde godkänna vår integritetspolicy just nu. Nordstjärnans pianoskola använder lokal lagring på din enhet för att spåra framsteg i 112 pianövningar, vilket är nödvändigt för att plattformen ska fungera. Utan att godkänna detta kan dina framsteg inte sparas lokalt, men vi välkomnar dig gärna tillbaka när du är redo! Besök vår <a href='faq.html'>FAQ</a> eller visa vår integritetspolicy för att läsa mer, eller återvänd till <a href='index.html'>startsidan</a> för att försöka igen.",
+        noConsentMessage: "Vi är ledsna att du inte kunde godkänna vår integritetspolicy just nu. Nordstjärnans pianoskola använder lokal lagring på din enhet för att spåra framsteg i 112 pianövningar, vilket är nödvändigt för att plattformen ska fungera. Utan att godkänna detta kan dina framsteg inte sparas lokalt, men vi välkomnar dig gärna tillbaka när du är redo! Besök vår <a href='faq.html'>FAQ</a> eller visa vår integritetspolicy för att läsa mer.",
         consentMessage: "Välkommen till Nordstjärnans pianoskola! Hemsidan använder lokal lagring för att spara namn, framsteg och anteckningar i webbläsaren. Detta innebär att lärare som lagrar sina elevers namn och andra data behöver godkänna vår integritetspolicy för att följa GDPR eller andra liknande lagar om datalagring. <br><strong style=\"color: #ff0000;\">Är du en elev som bara har dig själv som användare så berörs du inte direkt av integritetspolicyn och kan bara trycka Jag godkänner!</strong><br> Lärare: Skaffa elevers samtycke (eller förälders samtycke för barn under 13 år) innan du lägger till namn, eller använd ett anonymt ID (t.ex. ‘elev123’) om du inte kan få samtycke. Ingen data lagras online. Ingen data samlas in av Nordstjärnans Pianoskola. Godkänn för att börja din pianoresa!",
         consentAccept: "Jag godkänner!",
         consentReject: "Jag godkänner inte",
@@ -312,7 +317,12 @@ const translations = {
         rankBadgePopupTitle: "Så fungerar rangmärket",
         rankBadgePopupText: "Rangmärket visar dina framgångar! Det nedre fältet har 16 små stjärnor som tänds en efter en när du slutför övningar genom att få sex stjärnor per övning. Gå till Stjärnkartan eller Kapitel 1-7 i menyn för att klicka fram dina stjärnor. Slutför 16 övningar för att bli <strong>Stjärnkadett</strong>! Ditt nästa mål är första chevronen, med sju stora guldstjärnor. Dessa tänds när du slutför alla fyra övningar i Del 1 i varje Kapitel (totalt sju kapitel). Bemästra dem alla för att uppnå rangen <strong>Stjärnofficer</strong>!",
         closeButton: "Stäng",
-        removeButton: "Radera"
+        removeButton: "Radera",
+        menuHome: "Startsida",
+        homeTitle: "Startsida",
+        homeWelcome: "Välkommen till Nordstjärnans Pianoskola!",
+        homeIntro: "Använd länkarna i menyn för att logga dina framgångar i pianoskolan.",
+        appleBooksText: "Skaffa Nordstjärnans Pianoskola här"
     }
 };
 
@@ -323,8 +333,7 @@ const menuHtml = `
                 <select id="globalStudentSelect"></select>
             </div>
             <div class="menu-content">
-                <a href="https://books.apple.com/se/book/stj%C3%A4rnakademiens-pianoskola/id1586033171" class="menu-link" data-translate="menuFrontPage"></a
-                <a href="index.html" class="menu-link" data-translate="menuFrontPage"></a>
+                <a href="index.html" class="menu-link" data-translate="menuHome"></a>
                 <a href="starmap.html#svg-start" class="menu-link" data-translate="menuStarMap"></a>
                 <div class="menu-item">
                     <span class="chapters-toggle" data-translate="menuChapters"></span>
@@ -339,6 +348,7 @@ const menuHtml = `
                     </ul>
                 </div>
                 <a href="students.html" class="menu-link" data-translate="menuStudents"></a>
+                <a href="ranks.html" class="menu-link" data-translate="menuFrontPage"></a>
                 <a href="faq.html" class="menu-link" data-translate="menuFAQ"></a>
                 <a href="privacy-policy.html" class="menu-link" data-translate="menuPrivacyPolicy"></a>
                 <div class="language-switcher">
@@ -1210,6 +1220,8 @@ function switchLanguage(lang) {
     document.querySelectorAll('.menu-link').forEach(link => {
         const href = link.getAttribute('href')?.toLowerCase();
         if (href === 'index.html') {
+            link.textContent = translations[newLang].menuHome;
+        } else if (href === 'ranks.html') {
             link.textContent = translations[newLang].menuFrontPage;
         } else if (href === 'students.html') {
             link.textContent = translations[newLang].menuStudents;
@@ -1269,7 +1281,7 @@ function switchLanguage(lang) {
     const studentsLabel = document.getElementById('studentsLabel');
     const newStudentInput = document.getElementById('newStudentName');
     const addButton = document.getElementById('addStudentButton');
-    const removeButton = document.getElementById('removeStudentButton'); // New
+    const removeButton = document.getElementById('removeStudentButton');
     const addStudentLabel = document.getElementById('addStudentLabel');
     const notesLabel = document.getElementById('notesLabel');
     const studentNotes = document.getElementById('studentNotes');
@@ -1280,7 +1292,7 @@ function switchLanguage(lang) {
         studentsLabel.textContent = translations[newLang].studentsLabel;
         newStudentInput.placeholder = translations[newLang].studentNamePlaceholder;
         addButton.textContent = translations[newLang].addButton;
-        if (removeButton) removeButton.textContent = translations[newLang].removeButton; // New
+        if (removeButton) removeButton.textContent = translations[newLang].removeButton;
         addStudentLabel.textContent = translations[newLang].addNewStudent;
         notesLabel.textContent = translations[newLang].notesLabel;
         studentNotes.placeholder = translations[newLang].notesPlaceholder;
@@ -1330,7 +1342,7 @@ function switchLanguage(lang) {
     }
 
     const starMapTitle = document.querySelector('h3[data-translate="starMapTitle"]');
-    if (starMapTitle) starMapTitle.textContent = translations[newLang].starMapTitle;    
+    if (starMapTitle) starMapTitle.textContent = translations[newLang].starMapTitle;
     document.querySelectorAll('.star-map-steps p[data-translate]').forEach(p => {
         const key = p.getAttribute('data-translate');
         if (translations[newLang][key]) {
@@ -1398,7 +1410,6 @@ function switchLanguage(lang) {
         if (link) link.textContent = translations[newLang].consentPolicyLink;
     }
 
-    // Update streak display after language change
     updateStreakDisplay();
 }
 
@@ -1700,10 +1711,10 @@ waitForDOM().then(() => {
 
     if (!window.isImporting) window.initializeAppContent();
 
-    if (path.includes('index.html') || path === '/') {
-        initializeRankBadgePopup(); // NEW: Initialize rank badge popup
-        if (typeof initializeFrontPage === 'function') initializeFrontPage();
-    }
+    if (path.includes('ranks.html')) {
+    initializeRankBadgePopup();
+    if (typeof initializeFrontPage === 'function') initializeFrontPage();
+}
 
     if (path.includes('starmap.html')) {
         const urlParams = new URLSearchParams(window.location.search);
