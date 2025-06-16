@@ -873,19 +873,6 @@ body.popup-open .student-manager {
     box-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
 }
 
-.student-manager select#studentSelect {
-    padding: 8px 30px 8px 10px;
-    appearance: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    background-image: url('data:image/svg+xml;utf8,<svg fill="%23ffffff" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
-    background-repeat: no-repeat;
-    background-position: right 10px center;
-    background-size: 24px;
-    cursor: pointer;
-    transition: border-color 0.3s ease;
-}
-
 .student-manager select#studentSelect:hover {
     border-color: var(--orange);
 }
@@ -943,18 +930,7 @@ body.popup-open .student-manager {
 
 
 .student-manager select#studentSelect {
-    flex: 1;
-    padding: 8px 30px 8px 10px; /* Adjusted padding-right for arrow */
-    margin: 0;
-    font-size: 16px;
-    line-height: 24px;
-    border: none;
-    border-radius: 5px 0 0 5px;
-    background: var(--semi-dark);
-    color: #ffffff;
-    font-family: Cochin, Georgia, Arial, sans-serif;
-    box-sizing: border-box;
-    height: 40px;
+    padding: 8px 30px 8px 10px;
     appearance: none;
     -webkit-appearance: none;
     -moz-appearance: none;
@@ -1095,19 +1071,6 @@ body.popup-open .student-manager {
     font-family: Cochin, Georgia, Arial, sans-serif;
     font-size: 16px;
     cursor: pointer;
-}
-
-.input-group {
-    display: flex;
-    align-items: center;
-    margin-bottom: 10px;
-    width: 320px;
-    border: 1px solid var(--orange);
-    border-radius: 5px;
-    background: var(--semi-dark);
-    box-sizing: border-box;
-    padding-top: 10px;
-    padding-bottom: 30px;
 }
 
 .input-button-container {
@@ -2498,6 +2461,10 @@ h2#popupWelcome {
     .student-manager {
         padding: 0px 10px;
     }
+    .student-manager .input-group {
+        width: 72vw !important;
+        padding: 0 !important; /* Override any padding */
+    }
     .export-section {
         margin-top: 1rem;
         margin-bottom: 20px;
@@ -2557,18 +2524,15 @@ h2#popupWelcome {
         font-size: 18px !important;
     }
     .student-manager input#newStudentName {
-        width: auto;
         font-size: 18px !important;
         padding: 8px 10px;
         line-height: 24px;
     }
+
     .student-manager select#studentSelect {
-        width: 72vw;
         font-size: 18px !important;
-        padding: 8px 40px 8px 10px;
+        padding: 8px 30px 8px 10px; /* Adjusted for arrow */
         line-height: 24px;
-        background-position: right 10px center;
-        background-size: 24px;
     }
     .popup-content {
         width: 90vw !important;
