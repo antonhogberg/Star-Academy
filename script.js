@@ -215,7 +215,7 @@ const translations = {
         addStudentNoName: "Vänligen ange ett namn!",
         addStudentConsentPrompt: "Du lägger till ‘{name}’ för att spåra deras pianoprogress lokalt på din enhet. I regioner som EU behöver du deras samtycke (eller förälders samtycke för barn under 13). Alternativt, använd ett anonymt ID (t.ex. ‘elev123’) om samtycke saknas. Fortsätta?",
         addStudentCancelled: "Elevtillägg avbrutet.",
-        notesLable: "Anteckningar: ",
+        notesLabel: "Anteckningar: ",
         notesTitle: "Anteckningar: ",
         notesPlaceholder: "Skriv dina anteckningar om elevens läxor m.m. här. Anteckningarna sparas automatiskt och vid export kan eleven se dina anteckningar.",        
         saveNotesButton: "Spara anteckningar",
@@ -1285,7 +1285,6 @@ function switchLanguage(lang) {
     const addButton = document.getElementById('addStudentButton');
     const removeButton = document.getElementById('removeStudentButton');
     const addStudentLabel = document.getElementById('addStudentLabel');
-    const notesLabel = document.getElementById('notesLabel');
     const studentNotes = document.getElementById('studentNotes');
     const saveNotesButton = document.getElementById('saveNotesButton');
     const studentModeLabel = document.getElementById('studentModeLabel');
@@ -1296,7 +1295,6 @@ function switchLanguage(lang) {
         addButton.textContent = translations[newLang].addButton;
         if (removeButton) removeButton.textContent = translations[newLang].removeButton;
         addStudentLabel.textContent = translations[newLang].addNewStudent;
-        notesLabel.textContent = translations[newLang].notesLabel;
         studentNotes.placeholder = translations[newLang].notesPlaceholder;
         if (saveNotesButton) saveNotesButton.textContent = translations[newLang].saveNotesButton;
         if (studentModeLabel) studentModeLabel.textContent = translations[newLang].studentModeLabel;
@@ -1410,6 +1408,10 @@ function switchLanguage(lang) {
         if (dismiss) dismiss.textContent = translations[newLang].consentAccept;
         if (deny) deny.textContent = translations[newLang].consentReject;
         if (link) link.textContent = translations[newLang].consentPolicyLink;
+    }
+
+    if (typeof loadNotes === 'function' && window.location.pathname.toLowerCase().includes('students.html')) {
+        loadNotes();
     }
 
     updateStreakDisplay();

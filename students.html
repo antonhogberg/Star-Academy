@@ -222,8 +222,7 @@ function shareExport() {
   </div>
   <script src="script.js"></script>
   <script src="students.js"></script>
-
-  <script>
+<script>
 function debounce(func, wait) {
   let timeout;
   return function (...args) {
@@ -264,11 +263,8 @@ function loadNotes() {
     notes.value = '';
   }
 
-  if (notesLabel) {
-    const titlePrefix = window.translations && window.translations[lang] && window.translations[lang].notesTitle
-      ? window.translations[lang].notesTitle
-      : (lang === 'sv' ? 'Anteckningar: ' : 'Notes: ');
-    notesLabel.textContent = current ? `${titlePrefix}${current}` : titlePrefix;
+  if (notesLabel && translations[lang]) {
+    notesLabel.textContent = current ? `${translations[lang].notesTitle}${current}` : translations[lang].notesTitle;
   }
 
   if (select && current) select.value = current;
@@ -394,15 +390,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const lang = localStorage.getItem('language') || 'sv';
   switchLanguage(lang);
-
-  const waitForTranslations = () => {
-    if (window.translations) {
-      loadNotes();
-    } else {
-      setTimeout(waitForTranslations, 100);
-    }
-  };
-  waitForTranslations();
+  loadNotes();
 
   const newStudentInput = document.getElementById('newStudentName');
   if (newStudentInput) {
