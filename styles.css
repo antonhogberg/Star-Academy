@@ -786,6 +786,7 @@ body.popup-open .student-manager {
     height: auto;
     overflow-y: visible;
     box-sizing: border-box;
+    position: relative; /* Ensure no spillover affects page */
 }
 
 .student-manager h1 {
@@ -1005,7 +1006,7 @@ body.popup-open .student-manager {
 
 .student-manager .input-group {
     display: flex;
-    align-items: stretch; /* Ensure children stretch to full height */
+    align-items: stretch;
     margin-bottom: 10px;
     width: 320px;
     border: 1px solid var(--orange);
@@ -1013,13 +1014,15 @@ body.popup-open .student-manager {
     background: var(--semi-dark);
     box-sizing: border-box;
     padding: 0;
-    overflow: visible;
+    overflow: hidden; /* Prevent border spillover */
+    position: relative; /* Contain children */
 }
 
 .student-manager .input-group .separator {
     width: 2px;
     background-color: var(--orange);
     margin: 0;
+    height: 100%; /* Ensure full height */
 }
 
 .student-manager button#shareButton,
