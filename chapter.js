@@ -50,6 +50,58 @@ function createStarElement(doc, starId, goldLevel, silverLevel, x, y, width, hei
     return starElement;
 }
 
+function updatePracticeLog(studentsData, currentStudent) {
+    if (!studentsData.students[currentStudent]) {
+        console.warn(`Student ${currentStudent} not found in studentsData`);
+        return studentsData;
+    }
+
+    if (!studentsData.students[currentStudent].practiceLog) {
+        studentsData.students[currentStudent].practiceLog = {
+            dates: [],
+            streak: 0,
+            totalGoldStars: 0
+        };
+    }
+
+    const practiceLog = studentsData.students[currentStudent].practiceLog;
+    const today = new Date().toISOString().split('T')[0];
+    
+    // Always recalculate totalGoldStars to ensure it reflects the latest progress
+    const progress = studentsData.students[currentStudent].progress || {};
+    const totalGoldStars = Object.values(progress).reduce((sum, stars) => sum + (parseInt(stars) || 0), 0);
+    practiceLog.totalGoldStars = totalGoldStars;
+    console.log(`Recalculated totalGoldStars: ${totalGoldStars}`);
+
+    if (!practiceLog.dates.includes(today)) {
+        practiceLog.dates.push(today);
+        
+        practiceLog.dates.sort();
+        let streak = 0;
+        let currentDate = new Date(today);
+        for (let i = practiceLog.dates.length - 1; i >= 0; i--) {
+            const logDate = new Date(practiceLog.dates[i]);
+            const diffDays = Math.round((currentDate - logDate) / (1000 * 60 * 60 * 24));
+            console.log(`Comparing dates: ${currentDate.toISOString().split('T')[0]} - ${logDate.toISOString().split('T')[0]} = ${diffDays} days`);
+            if (diffDays === 0) {
+                streak++;
+                currentDate = logDate;
+            } else if (diffDays === 1) {
+                streak++;
+                currentDate = logDate;
+            } else {
+                break;
+            }
+        }
+        practiceLog.streak = streak;
+        console.log(`Updated streak to ${streak}`);
+    } else {
+        console.log(`Today (${today}) already in practiceLog.dates, streak unchanged: ${practiceLog.streak}`);
+    }
+
+    return studentsData;
+}
+
 function handleStarClick(event, star, exerciseKey, doc, parent, x, y, width, height) {
     const starElement = event.currentTarget;
     let studentsData;
@@ -129,7 +181,9 @@ function handleStarClick(event, star, exerciseKey, doc, parent, x, y, width, hei
 
     if (!(studentMode && goldLevel === 6)) {
         try {
+            studentsData = updatePracticeLog(studentsData, studentsData.currentStudent);
             localStorage.setItem('starAcademyStudents', JSON.stringify(studentsData));
+            console.log(`Successfully saved starAcademyStudents after star click for ${exerciseKey}`);
         } catch (e) {
             console.error(`Failed to save starAcademyStudents: ${e}`);
         }
@@ -141,58 +195,15 @@ function handleStarClick(event, star, exerciseKey, doc, parent, x, y, width, hei
     } else {
         console.error('updateStarStates not defined');
     }
-}
 
-function updatePracticeLog(studentsData, currentStudent) {
-    if (!studentsData.students[currentStudent]) {
-        console.warn(`Student ${currentStudent} not found in studentsData`);
-        return studentsData;
-    }
-
-    if (!studentsData.students[currentStudent].practiceLog) {
-        studentsData.students[currentStudent].practiceLog = {
-            dates: [],
-            streak: 0,
-            totalGoldStars: 0
-        };
-    }
-
-    const practiceLog = studentsData.students[currentStudent].practiceLog;
-    const today = new Date().toISOString().split('T')[0];
-    
-    // Always recalculate totalGoldStars to ensure it reflects the latest progress
-    const progress = studentsData.students[currentStudent].progress || {};
-    const totalGoldStars = Object.values(progress).reduce((sum, stars) => sum + (parseInt(stars) || 0), 0);
-    practiceLog.totalGoldStars = totalGoldStars;
-    console.log(`Recalculated totalGoldStars: ${totalGoldStars}`);
-
-    if (!practiceLog.dates.includes(today)) {
-        practiceLog.dates.push(today);
-        
-        practiceLog.dates.sort();
-        let streak = 0;
-        let currentDate = new Date(today);
-        for (let i = practiceLog.dates.length - 1; i >= 0; i--) {
-            const logDate = new Date(practiceLog.dates[i]);
-            const diffDays = Math.round((currentDate - logDate) / (1000 * 60 * 60 * 24));
-            console.log(`Comparing dates: ${currentDate.toISOString().split('T')[0]} - ${logDate.toISOString().split('T')[0]} = ${diffDays} days`);
-            if (diffDays === 0) {
-                streak++;
-                currentDate = logDate;
-            } else if (diffDays === 1) {
-                streak++;
-                currentDate = logDate;
-            } else {
-                break;
-            }
-        }
-        practiceLog.streak = streak;
-        console.log(`Updated streak to ${streak}`);
+    if (typeof window.updateStreakDisplay === 'function') {
+        console.log('Calling updateStreakDisplay after star click');
+        setTimeout(() => {
+            window.updateStreakDisplay();
+        }, 50); // Delay to ensure localStorage is updated
     } else {
-        console.log(`Today (${today}) already in practiceLog.dates, streak unchanged: ${practiceLog.streak}`);
+        console.error('updateStreakDisplay not defined');
     }
-
-    return studentsData;
 }
 
 function initializeChapter() {
