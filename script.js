@@ -91,7 +91,11 @@ const translations = {
         exportTitle: "Export Student Data",
         exportInfo: "Tap the button below to share the current student to another device. The recipient just needs to scan the QR code or open the link to add the student automatically!",
         exportInfoText: "(Exports: Name, Notes & Stars)",
-        studentModeInfoText: "When you enable 'Fixed gold stars', a student-mode version of the export is created when clicking the Share-button. When the student imports the user to their iPad/device, their earned gold stars are locked and cannot be modified. Instead, new progress is marked with silver stars when the student clicks on stars. This allows the student to practice at home, mark levels they believe they’ve mastered with silver stars, and display their progress at the next lesson. As a teacher, you can review the silver stars to assess which exercises the student has practiced and confirm their progress with gold stars. The export does not affect your device, where you can continue adding gold stars. At the next lesson, you can export again with fixed gold stars to update the student’s data.",
+        studentModeInfoText: "If you click the Share-button when 'Fixed gold stars' is checked, a student-mode version of the export is created.<br><br>" +
+          "When the student imports the student-mode version on their iPad/device, their earned gold stars are locked and cannot be modified. Instead, silver stars appear when the student clicks on stars. This allows the student to practice at home, mark levels they believe they’ve mastered with silver stars, and display their progress at the next lesson.<br><br>" +
+          "As a teacher, you can review the silver stars to assess which levels the student has actually mastered and confirm their progress with gold stars. The export does not affect your device, where you can continue adding gold stars.<br><br>" +
+          "At the next lesson, you can export again with fixed gold stars to update the student’s data.<br><br>" +
+          "If you want to export a copy of your user to another device and continue adding gold stars, uncheck the 'Fixed gold stars' box before clicking the Share-button.",
         creatingLink: "Generating link, please wait…",
         copyLinkSuccess: "Link copied to clipboard! Paste to share.",
         scanOrShare: "Scan the QR code or...",
@@ -252,7 +256,11 @@ const translations = {
         exportTitle: "Exportera elevdata",
         exportInfo: "Genom att trycka på knappen nedan kan du dela den aktuella eleven till en annan enhet. Mottagaren behöver bara öppna länken – eleven läggs automatiskt till!",
         exportInfoText: "(exporterar: namn, anteckningar & stjärnor)",
-        studentModeInfoText: "När du klickar i 'låsta guldstjärnor' och sedan klickar på dela-knappen skapas en elevversion av exporten. När eleven importerar på sin iPad/enhet så är intjänade guldstjärnor låsta och kan inte ändras. Istället framträder silverstjärnor när eleven klickar på stjärnorna. Detta gör det möjligt för eleven att öva hemma, markera nivåer de anser sig ha klarat med silverstjärnor, och visa sina framsteg vid nästa lektion. Som lärare kan du granska silverstjärnorna för att bedöma vilka nivåer eleven faktiskt har klarat och bekräfta deras framsteg med guldstjärnor. Exporten påverkar inte din enhet, där du fortsatt kan lägga till guldstjärnor. Vid nästa lektion kan du exportera igen med låsta guldstjärnor för att uppdatera elevens data.",
+        studentModeInfoText: "Om du klickar på Dela-knappen när 'Låsta guldstjärnor' är markerat så skapas en elevversion av exporten.<br><br>" +
+          "När eleven importerar elevversionen på sin iPad/enhet så är intjänade guldstjärnor låsta och kan inte ändras. Istället framträder silverstjärnor när eleven klickar på stjärnorna. Detta gör det möjligt för eleven att öva hemma, markera nivåer de anser sig ha klarat med silverstjärnor, och visa sina framsteg vid nästa lektion.<br><br>" +
+          "Som lärare kan du granska silverstjärnorna för att bedöma vilka nivåer eleven faktiskt har klarat och bekräfta deras framsteg med guldstjärnor. Exporten påverkar inte din enhet, där du fortsatt kan lägga till guldstjärnor.<br><br>" +
+          "Vid nästa lektion kan du exportera igen med låsta guldstjärnor för att uppdatera elevens data.<br><br>" +
+          "Om du vill exportera en kopia av din användare till en annan enhet och fortsätta klicka fram guldstjärnor, så klicka ur 'låsta stjärnor'-boxen innan du klickar på Dela-knappen.",
         creatingLink: "Skapar länk, vänta…",
         copyLinkSuccess: "Länk kopierad till urklipp! Klistra in för att dela.",
         scanOrShare: "Skanna QR-koden eller...",
