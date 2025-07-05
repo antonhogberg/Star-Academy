@@ -1219,6 +1219,36 @@ body.popup-open .student-manager {
 
 /* Popup Styles */
 /* Popup Styles */
+#studentModeInfoPopup .student-popup-content {
+    max-height: 80vh;
+    overflow-y: auto;
+    padding: 20px; /* Increased padding for better spacing */
+    position: relative; /* Ensure the close button is positioned relative to this */
+}
+
+#studentModeInfoPopup .student-popup-content #closeStudentModeInfoPopup {
+    position: absolute;
+    top: 10px; /* Adjusted for better spacing */
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 24px;
+    color: var(--gold);
+    cursor: pointer;
+    font-weight: bold;
+    line-height: 1;
+    z-index: 10; /* Ensure it’s above content */
+}
+
+#studentModeInfoPopup .student-popup-content p#studentModeInfoText {
+    display: block; /* Override flex from .student-popup-content p */
+    margin-bottom: 15px; /* Space between sections for <br><br> */
+    line-height: 1.6; /* Improve readability */
+    font-size: 18px;
+    color: #ffffff;
+    font-family: Cochin, Georgia, Arial, sans-serif;
+}
+
 #importLoaderOverlay {
     position: fixed;
     top: 50%;
