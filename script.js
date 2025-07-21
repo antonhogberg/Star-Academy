@@ -91,11 +91,12 @@ const translations = {
         exportTitle: "Export Student Data",
         exportInfo: "Tap the button below to share the current student to another device. The recipient just needs to scan the QR code or open the link to add the student automatically!",
         exportInfoText: "(Exports: Name, Notes & Stars)",
-        studentModeInfoText: "If you click the Share-button when 'Fixed gold stars' is checked, a student-mode version of the export is created.<br><br>" +
-          "When the student imports the student-mode version on their iPad/device, their earned gold stars are locked and cannot be modified. Instead, silver stars appear when the student clicks on stars. This allows the student to practice at home, mark levels they believe they’ve mastered with silver stars, and display their progress at the next lesson.<br><br>" +
-          "As a teacher, you can review the silver stars to assess which levels the student has actually mastered and confirm their progress with gold stars. The export does not affect your device, where you can continue adding gold stars.<br><br>" +
-          "At the next lesson, you can export again with fixed gold stars to update the student’s data.<br><br>" +
-          "If you want to export a copy of your user to another device and continue adding gold stars, uncheck the 'Fixed gold stars' box before clicking the Share-button.",
+        studentModeInfoText: "If you check <b>Locked Gold Stars</b> and click <b>Share</b>, a student version will be created.<br><br>" +
+"On the student’s iPad, existing gold stars will appear as locked. The student can instead tap to add <b>silver stars</b> for levels they’re working on at home.<br><br>" +
+"At the next lesson, you can review the silver stars to see which levels the student feels ready with—and confirm progress by tapping gold stars again.<br><br>" +
+"This export does not affect your own device, where you can continue managing gold stars freely.<br><br>" +
+"To update the student's version, simply export again with Locked Gold Stars checked.<br><br>" +
+"If you want to transfer your full progress to another device and keep tapping gold stars there, uncheck <b>Locked Gold Stars</b> before sharing.",
         creatingLink: "Generating link, please wait…",
         copyLinkSuccess: "Link copied to clipboard! Paste to share.",
         scanOrShare: "Scan the QR code or...",
