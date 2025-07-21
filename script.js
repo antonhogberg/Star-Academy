@@ -256,11 +256,11 @@ const translations = {
         exportTitle: "Exportera elevdata",
         exportInfo: "Genom att trycka på knappen nedan kan du dela den aktuella eleven till en annan enhet. Mottagaren behöver bara öppna länken – eleven läggs automatiskt till!",
         exportInfoText: "(exporterar: namn, anteckningar & stjärnor)",
-        studentModeInfoText: "Om du klickar på Dela-knappen när 'Låsta guldstjärnor' är markerat så skapas en elevversion av exporten.<br><br>" +
-          "När eleven importerar elevversionen på sin iPad/enhet så är intjänade guldstjärnor låsta och kan inte ändras. Istället framträder silverstjärnor när eleven klickar på stjärnorna. Detta gör det möjligt för eleven att öva hemma, markera nivåer de anser sig ha klarat med silverstjärnor, och visa sina framsteg vid nästa lektion.<br><br>" +
-          "Som lärare kan du granska silverstjärnorna för att bedöma vilka nivåer eleven faktiskt har klarat och bekräfta deras framsteg med guldstjärnor. Exporten påverkar inte din enhet, där du fortsatt kan lägga till guldstjärnor.<br><br>" +
-          "Vid nästa lektion kan du exportera igen med låsta guldstjärnor för att uppdatera elevens data.<br><br>" +
-          "Om du vill exportera en kopia av din användare till en annan enhet och fortsätta klicka fram guldstjärnor, så klicka ur 'låsta stjärnor'-boxen innan du klickar på Dela-knappen.",
+        studentModeInfoText: "Om du markerar <b>”Låsta guldstjärnor”</b> och klickar på <b>Dela</b> skapas en elevversion.<br><br>" +
+"På elevens iPad visas befintliga guldstjärnor som låsta. Eleven kan istället klicka fram <b>silverstjärnor</b> för nya nivåer de övar på hemma.<br><br>" +
+"Vid nästa lektion kan du granska silverstjärnorna, bekräfta elevens framsteg och byta ut dem mot guldstjärnor på din enhet.<br><br>" +
+"Exportera sedan igen med <b>”Låsta guldstjärnor”</b> för att uppdatera elevens version.<br><br>" +
+"Vill du bara flytta din egen användare till en annan enhet och fortsätta lägga till guldstjärnor? Avmarkera då <b>”Låsta guldstjärnor”</b> innan du klickar på <b>Dela</b>.",
         creatingLink: "Skapar länk, vänta…",
         copyLinkSuccess: "Länk kopierad till urklipp! Klistra in för att dela.",
         scanOrShare: "Skanna QR-koden eller...",
