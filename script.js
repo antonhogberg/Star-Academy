@@ -91,11 +91,11 @@ const translations = {
         exportTitle: "Export Student Data",
         exportInfo: "Tap the button below to share the current student to another device. The recipient just needs to scan the QR code or open the link to add the student automatically!",
         exportInfoText: "(Exports: Name, Notes & Stars)",
-        studentModeInfoText: "If you check <b>Locked Gold Stars</b> and click <b>Share</b>, a student version will be created.<br><br>" +
+        studentModeInfoText: "If you check <b>Fixed Gold Stars</b> and click <b>Share</b>, you will get a QR-code that the student can scan with their iPad's camera so they can see their progress at home.<br><br>" +
 "On the student’s iPad, existing gold stars will appear as locked. The student can instead tap to add <b>silver stars</b> for levels they’re working on at home.<br><br>" +
-"At the next lesson, you can review the silver stars to see which levels the student feels ready with—and confirm progress by tapping gold stars again.<br><br>" +
-"This export does not affect your own device, where you can continue managing gold stars freely.<br><br>" +
-"To update the student's version, simply export again with Locked Gold Stars checked.<br><br>" +
+"At the next lesson, you can review the silver stars to see which levels the student has completed—and confirm progress by tapping gold stars on your device.<br><br>" +
+"To update the student's version with their newly earned gold stars, simply export again with Locked Gold Stars checked.<br><br>" +
+"These exports does not affect your own device, where you can continue managing gold stars freely.<br><br>" +
 "If you want to transfer your full progress to another device and keep tapping gold stars there, uncheck <b>Locked Gold Stars</b> before sharing.",
         creatingLink: "Generating link, please wait…",
         copyLinkSuccess: "Link copied to clipboard! Paste to share.",
@@ -257,10 +257,10 @@ const translations = {
         exportTitle: "Exportera elevdata",
         exportInfo: "Genom att trycka på knappen nedan kan du dela den aktuella eleven till en annan enhet. Mottagaren behöver bara öppna länken – eleven läggs automatiskt till!",
         exportInfoText: "(exporterar: namn, anteckningar & stjärnor)",
-        studentModeInfoText: "Om du markerar <b>”Låsta guldstjärnor”</b> och klickar på <b>Dela</b> skapas en elevversion.<br><br>" +
-"På elevens iPad visas befintliga guldstjärnor som låsta. Eleven kan istället klicka fram <b>silverstjärnor</b> för nya nivåer de övar på hemma.<br><br>" +
-"Vid nästa lektion kan du granska silverstjärnorna, bekräfta elevens framsteg och byta ut dem mot guldstjärnor på din enhet.<br><br>" +
-"Exportera sedan igen med <b>”Låsta guldstjärnor”</b> för att uppdatera elevens version.<br><br>" +
+        studentModeInfoText: "Om du markerar <b>”Låsta guldstjärnor”</b> och klickar på <b>Dela</b> så skapas en QR-kod som eleven kan scanna med sin iPads kamera.<br><br>" +
+"På elevens iPad visas då befintliga guldstjärnor som låsta. Eleven kan istället klicka fram <b>silverstjärnor</b> för nya nivåer de övar på hemma.<br><br>" +
+"Vid nästa lektion kan du granska silverstjärnorna, bekräfta elevens framsteg och klicka fram nya guldstjärnor på din enhet.<br><br>" +
+"Exportera sedan igen med <b>”Låsta guldstjärnor”</b> för att uppdatera elevens version med de nya guldstjärnorna.<br><br>" +
 "Vill du bara flytta din egen användare till en annan enhet och fortsätta lägga till guldstjärnor? Avmarkera då <b>”Låsta guldstjärnor”</b> innan du klickar på <b>Dela</b>.",
         creatingLink: "Skapar länk, vänta…",
         copyLinkSuccess: "Länk kopierad till urklipp! Klistra in för att dela.",
