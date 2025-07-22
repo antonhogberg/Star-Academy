@@ -96,7 +96,7 @@ const translations = {
 "At the next lesson, you can review the silver stars to see which levels the student has completed—and confirm progress by tapping gold stars on your device.<br><br>" +
 "To update the student's version with their newly earned gold stars, simply export again with Locked Gold Stars checked.<br><br>" +
 "These exports does not affect your own device, where you can continue managing gold stars freely.<br><br>" +
-"If you want to transfer your full progress to another device and keep tapping gold stars there, uncheck <b>Locked Gold Stars</b> before sharing.",
+"If you want to transfer a user to another device and keep tapping gold stars there, uncheck <b>Locked Gold Stars</b> before sharing.",
         creatingLink: "Generating link, please wait…",
         copyLinkSuccess: "Link copied to clipboard! Paste to share.",
         scanOrShare: "Scan the QR code or...",
@@ -261,7 +261,7 @@ const translations = {
 "På elevens iPad visas då befintliga guldstjärnor som låsta. Eleven kan istället klicka fram <b>silverstjärnor</b> för nya nivåer de övar på hemma.<br><br>" +
 "Vid nästa lektion kan du granska silverstjärnorna, bekräfta elevens framsteg och klicka fram nya guldstjärnor på din enhet.<br><br>" +
 "Exportera sedan igen med <b>”Låsta guldstjärnor”</b> för att uppdatera elevens version med de nya guldstjärnorna.<br><br>" +
-"Vill du bara flytta din egen användare till en annan enhet och fortsätta lägga till guldstjärnor? Avmarkera då <b>”Låsta guldstjärnor”</b> innan du klickar på <b>Dela</b>.",
+"Vill du bara flytta en användare till en annan enhet och fortsätta lägga till guldstjärnor där? Avmarkera då <b>”Låsta guldstjärnor”</b> innan du klickar på <b>Dela</b>.",
         creatingLink: "Skapar länk, vänta…",
         copyLinkSuccess: "Länk kopierad till urklipp! Klistra in för att dela.",
         scanOrShare: "Skanna QR-koden eller...",
