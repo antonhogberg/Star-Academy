@@ -1428,24 +1428,28 @@ function switchLanguage(lang) {
 
   updateStreakDisplay();
 
- // Uppdatera startsidans videor om de finns på sidan
-const indexVideo = document.getElementById('index-video');
+const indexVideoPortrait = document.getElementById('index-video-portrait');
+const indexVideoLandscape = document.getElementById('index-video-landscape');
 const guideVideo = document.getElementById('guide-video');
 
-if (indexVideo || guideVideo) {
+if (indexVideoPortrait || indexVideoLandscape || guideVideo) {
   const videoSources = {
     sv: {
-      main: 'https://player.vimeo.com/video/1106485252?autoplay=1&muted=1&loop=1&controls=1', // samma för båda språk
-      guide: 'https://player.vimeo.com/video/1106485499?autoplay=1&muted=1&loop=1&controls=1' // svensk guide
+      mainPortrait: 'https://player.vimeo.com/video/1106485252?autoplay=1&muted=1&loop=1&controls=1',
+      mainLandscape: 'https://player.vimeo.com/video/1106485618?autoplay=1&muted=1&loop=1&controls=1',
+      guide: 'https://player.vimeo.com/video/1106485499?autoplay=1&muted=1&loop=1&controls=1'
     },
     en: {
-      main: 'https://player.vimeo.com/video/1106485252?autoplay=1&muted=1&loop=1&controls=1', // samma som svenska
-      guide: 'https://player.vimeo.com/video/1106485544?autoplay=1&muted=1&loop=1&controls=1' // ✅ korrekt engelsk guide
+      mainPortrait: 'https://player.vimeo.com/video/1106485252?autoplay=1&muted=1&loop=1&controls=1', // samma
+      mainLandscape: 'https://player.vimeo.com/video/1106485618?autoplay=1&muted=1&loop=1&controls=1', // samma
+      guide: 'https://player.vimeo.com/video/1106485544?autoplay=1&muted=1&loop=1&controls=1' // engelsk guide
     }
   };
 
   const selected = videoSources[newLang] || videoSources.sv;
-  if (indexVideo) indexVideo.src = selected.main;
+
+  if (indexVideoPortrait) indexVideoPortrait.src = selected.mainPortrait;
+  if (indexVideoLandscape) indexVideoLandscape.src = selected.mainLandscape;
   if (guideVideo) guideVideo.src = selected.guide;
 }
 }

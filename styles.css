@@ -3071,6 +3071,7 @@ h2#popupWelcome {
     width: 80vw;
     max-width: 80vw;
     aspect-ratio: 16 / 9;
+    margin: 0 auto;
   }
   #index-video-portrait {
     display: none;
@@ -3094,5 +3095,11 @@ h2#popupWelcome {
   #index-video-landscape {
     display: none;
     
+  }
+  #guide-video {
+    width: 90vw;
+    max-width: 90vw;
+    aspect-ratio: 16 / 9;
+    margin: 0 auto;
   }
 }
