@@ -3103,14 +3103,6 @@ h2#popupWelcome {
   z-index: 0;
 }
 
-.video-container iframe.portrait {
-  width: 95vw;
-  aspect-ratio: 9 / 16;
-  max-width: 95vw;
-  height: auto;
-  display: block;
-  margin: 0 auto;
-}
 
 /* Portrait video on mobile */
 @media (max-width: 767px) and (orientation: portrait) {
