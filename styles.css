@@ -3075,8 +3075,8 @@ h2#popupWelcome {
   }
 
   #guide-video {
-    width: 70vw;
-    max-width: 70vw;
+    width: 80vw;
+    max-width: 80vw;
     aspect-ratio: 16 / 9;
   }
 }
