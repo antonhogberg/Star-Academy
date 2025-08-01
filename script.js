@@ -1428,19 +1428,19 @@ function switchLanguage(lang) {
 
   updateStreakDisplay();
 
-  // Uppdatera startsidans videor om de finns på sidan
+ // Uppdatera startsidans videor om de finns på sidan
 const indexVideo = document.getElementById('index-video');
 const guideVideo = document.getElementById('guide-video');
 
 if (indexVideo || guideVideo) {
   const videoSources = {
     sv: {
-      main: 'https://player.vimeo.com/video/1106485252?autoplay=1&muted=1&loop=1&controls=1',
-      guide: 'https://player.vimeo.com/video/1106485499?autoplay=1&muted=1&loop=1&controls=1'
+      main: 'https://player.vimeo.com/video/1106485252?autoplay=1&muted=1&loop=1&controls=1', // samma för båda språk
+      guide: 'https://player.vimeo.com/video/1106485499?autoplay=1&muted=1&loop=1&controls=1' // svensk guide
     },
     en: {
-      main: 'https://player.vimeo.com/video/1106485253?autoplay=1&muted=1&loop=1&controls=1',
-      guide: 'https://player.vimeo.com/video/1106485500?autoplay=1&muted=1&loop=1&controls=1'
+      main: 'https://player.vimeo.com/video/1106485252?autoplay=1&muted=1&loop=1&controls=1', // samma som svenska
+      guide: 'https://player.vimeo.com/video/1106485544?autoplay=1&muted=1&loop=1&controls=1' // ✅ korrekt engelsk guide
     }
   };
 
