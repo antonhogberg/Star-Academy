@@ -3066,7 +3066,7 @@ h2#popupWelcome {
   height: auto;
 }
 
-@media (min-width: 768px), (orientation: landscape) {
+@media (orientation: landscape) {
   #guide-video {
     width: 80vw;
     max-width: 80vw;
