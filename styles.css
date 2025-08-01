@@ -3072,6 +3072,7 @@ h2#popupWelcome {
     max-width: 80vw;
     aspect-ratio: 16 / 9;
     margin: 0 auto;
+    display: block;
   }
   #index-video-portrait {
     display: none;
