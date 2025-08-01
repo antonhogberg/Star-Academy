@@ -3061,6 +3061,7 @@ h2#popupWelcome {
   height: auto;
   border: none;
   background: black;
+  overflow: hidden;
 }
 
 .video-section {
