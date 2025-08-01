@@ -3103,6 +3103,15 @@ h2#popupWelcome {
   z-index: 0;
 }
 
+.video-container iframe.portrait {
+  width: 95vw;
+  aspect-ratio: 9 / 16;
+  max-width: 95vw;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+
 /* Portrait video on mobile */
 @media (max-width: 767px) and (orientation: portrait) {
   .video-container#video1-container .landscape {
@@ -3116,8 +3125,25 @@ h2#popupWelcome {
     position: relative;
     left: calc(-1 * (95vw - 100%) / 2);
   }
-  .video-container#video1-container {
-    padding-bottom: 228.57%; /* 7:16 ratio */
+   .video-container#video1-container {
+    width: 95vw;
+    max-width: 95vw;
+    height: auto;
+    padding: 0;
+    aspect-ratio: 9 / 16;
+  }
+
+  .video-container#video1-container iframe.portrait {
+    display: block;
+    width: 100%;
+    height: 100%;
+    aspect-ratio: 9 / 16;
+    position: relative;
+    margin: 0 auto;
+  }
+
+  .video-container#video1-container iframe.landscape {
+    display: none;
   }
 }
 
