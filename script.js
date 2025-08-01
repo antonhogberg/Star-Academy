@@ -1428,33 +1428,26 @@ function switchLanguage(lang) {
 
   updateStreakDisplay();
 
-  // Switch video sources based on language
-  const videoUrls = {
+  // Uppdatera startsidans videor om de finns på sidan
+const indexVideo = document.getElementById('index-video');
+const guideVideo = document.getElementById('guide-video');
+
+if (indexVideo || guideVideo) {
+  const videoSources = {
     sv: {
-      portrait: '1106485252',
-      landscape: '1106485687',
-      landscape2: '1106485499'
+      main: 'https://player.vimeo.com/video/1106485252?autoplay=1&muted=1&loop=1&controls=1',
+      guide: 'https://player.vimeo.com/video/1106485499?autoplay=1&muted=1&loop=1&controls=1'
     },
     en: {
-      portrait: '1106485252',
-      landscape: '1106485618',
-      landscape2: '1106485544'
+      main: 'https://player.vimeo.com/video/1106485253?autoplay=1&muted=1&loop=1&controls=1',
+      guide: 'https://player.vimeo.com/video/1106485500?autoplay=1&muted=1&loop=1&controls=1'
     }
   };
-  const currentUrls = videoUrls[newLang] || videoUrls.sv;
-  const portraitVideo = document.querySelector('.video.portrait');
-  const landscapeVideo = document.querySelector('.video.landscape');
-  const landscapeVideo2 = document.querySelector('#video2-container .video.landscape');
-  if (portraitVideo) {
-    portraitVideo.src = `https://player.vimeo.com/video/${currentUrls.portrait}?autoplay=0&loop=1&controls=1`;
-  }
-  if (landscapeVideo) {
-    landscapeVideo.src = `https://player.vimeo.com/video/${currentUrls.landscape}?autoplay=0&loop=1&controls=1`;
-  }
-  if (landscapeVideo2) {
-    landscapeVideo2.src = `https://player.vimeo.com/video/${currentUrls.landscape2}?autoplay=0&loop=1&controls=1`;
-  }
-  console.log(`Switched videos to ${newLang}`);
+
+  const selected = videoSources[newLang] || videoSources.sv;
+  if (indexVideo) indexVideo.src = selected.main;
+  if (guideVideo) guideVideo.src = selected.guide;
+}
 }
 
 

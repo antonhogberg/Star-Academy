@@ -3085,7 +3085,7 @@ h2#popupWelcome {
   height: 0;
   overflow: hidden;
   border-radius: 10px;
-  border: 2px solid var(--gold, #ffd700);
+  border: 2px solid #000;
 }
 
 #video2-container {
@@ -3102,7 +3102,16 @@ h2#popupWelcome {
   object-fit: contain; /* Prevent cropping, show full video */
   z-index: 0;
 }
-
+#index-video, #guide-video {
+  display: block;
+  margin: 0 auto;
+  border-radius: 12px;
+  width: 95vw;
+  aspect-ratio: 9 / 16;
+  height: auto;
+  border: none;
+  background: black;
+}
 
 /* Portrait video on mobile */
 @media (max-width: 767px) and (orientation: portrait) {
@@ -3123,6 +3132,7 @@ h2#popupWelcome {
     height: auto;
     padding: 0;
     aspect-ratio: 9 / 16;
+    margin: 0 auto;
   }
 
   .video-container#video1-container iframe.portrait {
@@ -3146,5 +3156,12 @@ h2#popupWelcome {
   }
   .video-container#video1-container .landscape {
     display: block;
+  }
+  #index-video {
+    aspect-ratio: 16 / 9;
+  }
+  #guide-video {
+    width: 70vw;
+    aspect-ratio: 16 / 9;
   }
 }
