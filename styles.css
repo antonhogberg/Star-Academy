@@ -3051,42 +3051,22 @@ h2#popupWelcome {
     }
 }
 
-#index-video, #guide-video {
-  display: block;
-  margin: 0 auto;
-  border-radius: 12px;
-  width: 90vw;
-  max-width: 90vw;
-  aspect-ratio: 9 / 16;
-  height: auto;
-  border: none;
-  background: black;
-  overflow: hidden;
-}
-
 .video-section {
   padding: 0 10px;
 }
 
-#index-video-portrait, #index-video-landscape {
-  display: block;
+#index-video-portrait,
+#index-video-landscape {
+  display: none; /* Default: inget visas */
   margin: 0 auto;
   border-radius: 12px;
-  width: 90vw;
-  max-width: 90vw;
-  height: auto;
   border: none;
   background: black;
   overflow: hidden;
+  height: auto;
 }
 
 @media (min-width: 768px), (orientation: landscape) {
-  #index-video {
-    aspect-ratio: 16 / 9;
-    width: 80vw;
-    max-width: 80vw;
-  }
-
   #guide-video {
     width: 80vw;
     max-width: 80vw;
@@ -3107,9 +3087,12 @@ h2#popupWelcome {
 @media (max-width: 767px) and (orientation: portrait) {
   #index-video-portrait {
     display: block;
+    width: 90vw;
+    max-width: 90vw;
     aspect-ratio: 9 / 16;
   }
   #index-video-landscape {
     display: none;
+    
   }
 }
