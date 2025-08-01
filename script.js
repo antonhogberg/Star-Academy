@@ -1428,7 +1428,7 @@ function switchLanguage(lang) {
 
   updateStreakDisplay();
 
-  // NEW: Switch video sources based on language
+  // Switch video sources based on language
   const videoUrls = {
     sv: {
       portrait: '1106485252',
@@ -1446,13 +1446,13 @@ function switchLanguage(lang) {
   const landscapeVideo = document.querySelector('.video.landscape');
   const landscapeVideo2 = document.querySelector('#video2-container .video.landscape');
   if (portraitVideo) {
-    portraitVideo.src = `https://player.vimeo.com/video/${currentUrls.portrait}?background=1&autoplay=0&loop=1&muted=1`;
+    portraitVideo.src = `https://player.vimeo.com/video/${currentUrls.portrait}?autoplay=0&loop=1&controls=1`;
   }
   if (landscapeVideo) {
-    landscapeVideo.src = `https://player.vimeo.com/video/${currentUrls.landscape}?background=1&autoplay=0&loop=1&muted=1`;
+    landscapeVideo.src = `https://player.vimeo.com/video/${currentUrls.landscape}?autoplay=0&loop=1&controls=1`;
   }
   if (landscapeVideo2) {
-    landscapeVideo2.src = `https://player.vimeo.com/video/${currentUrls.landscape2}?background=1&autoplay=0&loop=1&muted=1`;
+    landscapeVideo2.src = `https://player.vimeo.com/video/${currentUrls.landscape2}?autoplay=0&loop=1&controls=1`;
   }
   console.log(`Switched videos to ${newLang}`);
 }

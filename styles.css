@@ -3112,12 +3112,12 @@ h2#popupWelcome {
     display: block;
     width: 95vw; /* 95% vw as requested */
     height: auto;
-    aspect-ratio: 9/16; /* Correct ratio */
+    aspect-ratio: 7/16; /* Corrected ratio */
     position: relative;
     left: calc(-1 * (95vw - 100%) / 2);
   }
   .video-container#video1-container {
-    padding-bottom: 177.78%; /* 9:16 ratio */
+    padding-bottom: 228.57%; /* 7:16 ratio */
   }
 }
 
