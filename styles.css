@@ -3055,9 +3055,13 @@ h2#popupWelcome {
   padding: 0 10px;
 }
 
-#index-video-portrait,
-#index-video-landscape {
-  display: none; /* Default: inget visas */
+/* Default styles: landscape-video och guide-video visas */
+#index-video-landscape,
+#guide-video {
+  display: block;
+  width: 80vw;
+  max-width: 80vw;
+  aspect-ratio: 16 / 9;
   margin: 0 auto;
   border-radius: 12px;
   border: none;
@@ -3066,41 +3070,28 @@ h2#popupWelcome {
   height: auto;
 }
 
-@media (min-width: 768px), (orientation: landscape) {
-  #guide-video {
-    width: 80vw;
-    max-width: 80vw;
-    aspect-ratio: 16 / 9;
-    margin: 0 auto;
-    display: block;
-  }
-  #index-video-portrait {
-    display: none;
-  }
-  #index-video-landscape {
-    display: block;
-    width: 80vw;
-    max-width: 80vw;
-    aspect-ratio: 16 / 9;
-  }
+/* Portrait-video döljs som standard */
+#index-video-portrait {
+  display: none;
 }
 
-/* Portrait: visas endast på mobil i stående läge */
+/* PORTRAIT (mobil i stående läge) */
 @media (max-width: 767px) and (orientation: portrait) {
   #index-video-portrait {
     display: block;
     width: 90vw;
     max-width: 90vw;
     aspect-ratio: 9 / 16;
-  }
-  #index-video-landscape {
-    display: none;
-    
-  }
-  #guide-video {
-    width: 90vw;
-    max-width: 90vw;
-    aspect-ratio: 16 / 9;
     margin: 0 auto;
+    border-radius: 12px;
+    border: none;
+    background: black;
+    overflow: hidden;
+    height: auto;
+  }
+
+  #index-video-landscape,
+  #guide-video {
+    display: none;
   }
 }
