@@ -3068,6 +3068,18 @@ h2#popupWelcome {
   padding: 0 10px;
 }
 
+#index-video-portrait, #index-video-landscape {
+  display: block;
+  margin: 0 auto;
+  border-radius: 12px;
+  width: 90vw;
+  max-width: 90vw;
+  height: auto;
+  border: none;
+  background: black;
+  overflow: hidden;
+}
+
 @media (min-width: 768px), (orientation: landscape) {
   #index-video {
     aspect-ratio: 16 / 9;
@@ -3079,5 +3091,25 @@ h2#popupWelcome {
     width: 80vw;
     max-width: 80vw;
     aspect-ratio: 16 / 9;
+  }
+  #index-video-portrait {
+    display: none;
+  }
+  #index-video-landscape {
+    display: block;
+    width: 80vw;
+    max-width: 80vw;
+    aspect-ratio: 16 / 9;
+  }
+}
+
+/* Portrait: visas endast på mobil i stående läge */
+@media (max-width: 767px) and (orientation: portrait) {
+  #index-video-portrait {
+    display: block;
+    aspect-ratio: 9 / 16;
+  }
+  #index-video-landscape {
+    display: none;
   }
 }
