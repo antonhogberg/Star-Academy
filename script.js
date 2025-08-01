@@ -1428,29 +1428,15 @@ function switchLanguage(lang) {
 
   updateStreakDisplay();
 
-const indexVideoPortrait = document.getElementById('index-video-portrait');
-const indexVideoLandscape = document.getElementById('index-video-landscape');
 const guideVideo = document.getElementById('guide-video');
 
-if (indexVideoPortrait || indexVideoLandscape || guideVideo) {
+if (guideVideo) {
   const videoSources = {
-    sv: {
-      mainPortrait: 'https://player.vimeo.com/video/1106485252?autoplay=1&muted=1&loop=1&controls=1',
-      mainLandscape: 'https://player.vimeo.com/video/1106485618?autoplay=1&muted=1&loop=1&controls=1',
-      guide: 'https://player.vimeo.com/video/1106485499?autoplay=1&muted=1&loop=1&controls=1'
-    },
-    en: {
-      mainPortrait: 'https://player.vimeo.com/video/1106485252?autoplay=1&muted=1&loop=1&controls=1', // samma
-      mainLandscape: 'https://player.vimeo.com/video/1106485618?autoplay=1&muted=1&loop=1&controls=1', // samma
-      guide: 'https://player.vimeo.com/video/1106485544?autoplay=1&muted=1&loop=1&controls=1' // engelsk guide
-    }
+    sv: 'https://player.vimeo.com/video/1106485499?autoplay=1&muted=1&loop=1&controls=1', // svensk guide
+    en: 'https://player.vimeo.com/video/1106485544?autoplay=1&muted=1&loop=1&controls=1'  // engelsk guide
   };
 
-  const selected = videoSources[newLang] || videoSources.sv;
-
-  if (indexVideoPortrait) indexVideoPortrait.src = selected.mainPortrait;
-  if (indexVideoLandscape) indexVideoLandscape.src = selected.mainLandscape;
-  if (guideVideo) guideVideo.src = selected.guide;
+  guideVideo.src = videoSources[newLang] || videoSources.sv;
 }
 }
 
