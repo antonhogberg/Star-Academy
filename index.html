@@ -32,6 +32,19 @@
     <p data-translate="homeIntro" style="color: white; margin-bottom: 20px; max-width: 600px;">Börja din pianoresa med vår interaktiva plattform och boken tillgänglig på Apple Books.</p>
     <a id="appleBooksLink" href="#" class="menu-link" data-translate="appleBooksText" style="color: #f0f0f0; text-decoration: underline;">Köp boken på Apple Books</a>
   </div>
+  <div class="video-section">
+    <div class="video-gap"></div>
+    <hr class="separator">
+    <div class="video-container" id="video1-container">
+      <iframe class="video portrait" data-vimeo-id="1106485252" src="https://player.vimeo.com/video/1106485252?background=1&autoplay=0&loop=1&muted=1" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" allowfullscreen></iframe>
+      <iframe class="video landscape" data-vimeo-id="1106485687" src="https://player.vimeo.com/video/1106485687?background=1&autoplay=0&loop=1&muted=1" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" allowfullscreen></iframe>
+    </div>
+    <div class="video-gap"></div>
+    <h2 class="video-header" data-translate="howToNavigate"></h2>
+    <div class="video-container" id="video2-container">
+      <iframe class="video landscape" data-vimeo-id="1106485499" src="https://player.vimeo.com/video/1106485499?background=1&autoplay=0&loop=1&muted=1" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" allowfullscreen></iframe>
+    </div>
+  </div>
   <div id="consentPopup" style="display: none;">
     <div class="consent-popup-content">
       <p id="consentMessage"></p>
@@ -68,7 +81,49 @@
       window.switchLanguage = function(newLang) {
         originalSwitchLanguage(newLang);
         updateAppleBooksLink(newLang);
+        // NEW: Switch video sources
+        const videoUrls = {
+          sv: {
+            portrait: '1106485252',
+            landscape: '1106485687',
+            landscape2: '1106485499'
+          },
+          en: {
+            portrait: '1106485252',
+            landscape: '1106485618',
+            landscape2: '1106485544'
+          }
+        };
+        const currentUrls = videoUrls[newLang] || videoUrls.sv;
+        document.querySelector('.video.portrait').src = `https://player.vimeo.com/video/${currentUrls.portrait}?background=1&autoplay=0&loop=1&muted=1`;
+        document.querySelector('.video.landscape').src = `https://player.vimeo.com/video/${currentUrls.landscape}?background=1&autoplay=0&loop=1&muted=1`;
+        document.querySelector('#video2-container .video.landscape').src = `https://player.vimeo.com/video/${currentUrls.landscape2}?background=1&autoplay=0&loop=1&muted=1`;
+        console.log(`Switched videos to ${newLang}`);
       };
+
+      // NEW: Video autoplay on scroll
+      const videoContainers = document.querySelectorAll('.video-container');
+      const observerOptions = {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.5
+      };
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          const iframe = entry.target.querySelector('iframe');
+          if (iframe) {
+            const src = iframe.getAttribute('src');
+            if (entry.isIntersecting) {
+              iframe.src = src.replace('autoplay=0', 'autoplay=1');
+              console.log(`Autoplay started for video`);
+            } else {
+              iframe.src = src.replace('autoplay=1', 'autoplay=0');
+              console.log(`Autoplay paused for video`);
+            }
+          }
+        });
+      }, observerOptions);
+      videoContainers.forEach(container => observer.observe(container));
     });
   </script>
 </body>
