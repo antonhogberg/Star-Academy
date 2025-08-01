@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
   <title data-translate="homeTitle">Nordstjärnans Pianoskola - Startsida</title>
   <link rel="stylesheet" href="styles.css" />
+  <script src="https://player.vimeo.com/api/player.js"></script> <!-- NEW: Vimeo Player API for control -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/lz-string/1.5.0/lz-string.min.js"></script>
   <link rel="stylesheet" href="cookieconsent.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.1/cookieconsent.min.js"></script>
@@ -36,13 +37,13 @@
     <div class="video-gap"></div>
     <hr class="separator">
     <div class="video-container" id="video1-container">
-      <iframe class="video portrait" data-vimeo-id="1106485252" src="https://player.vimeo.com/video/1106485252?background=1&autoplay=0&loop=1&muted=1" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" allowfullscreen></iframe>
-      <iframe class="video landscape" data-vimeo-id="1106485687" src="https://player.vimeo.com/video/1106485687?background=1&autoplay=0&loop=1&muted=1" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" allowfullscreen></iframe>
+      <iframe class="video portrait" data-vimeo-id="1106485252" src="https://player.vimeo.com/video/1106485252?autoplay=0&loop=1&muted=1&controls=1" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" allowfullscreen></iframe>
+      <iframe class="video landscape" data-vimeo-id="1106485687" src="https://player.vimeo.com/video/1106485687?autoplay=0&loop=1&muted=1&controls=1" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" allowfullscreen></iframe>
     </div>
     <div class="video-gap"></div>
-    <h2 class="video-header" data-translate="howToNavigate"></h2>
+    <h2 class="video-header" data-translate="howToNavigate">Hur du navigerar i Nordstjärnans Pianoskola</h2>
     <div class="video-container" id="video2-container">
-      <iframe class="video landscape" data-vimeo-id="1106485499" src="https://player.vimeo.com/video/1106485499?background=1&autoplay=0&loop=1&muted=1" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" allowfullscreen></iframe>
+      <iframe class="video landscape" data-vimeo-id="1106485499" src="https://player.vimeo.com/video/1106485499?autoplay=0&loop=1&muted=1&controls=1" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" allowfullscreen></iframe>
     </div>
   </div>
   <div id="consentPopup" style="display: none;">
@@ -77,11 +78,76 @@
       const lang = localStorage.getItem('language') || 'sv';
       updateAppleBooksLink(lang);
 
+      // NEW: Video control and autoplay on scroll
+      const videoContainers = document.querySelectorAll('.video-container');
+      const videoPlayers = []; // Store Vimeo Player instances
+      const observerOptions = {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.5
+      };
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          const iframe = entry.target.querySelector('iframe:not([style*="display: none"])');
+          if (iframe) {
+            const playerIndex = Array.from(videoContainers).indexOf(entry.target);
+            const player = videoPlayers[playerIndex];
+            if (player) {
+              if (entry.isIntersecting) {
+                player.play();
+                console.log(`Autoplay started for video`);
+              } else {
+                player.pause();
+                console.log(`Autoplay paused for video`);
+              }
+            }
+          }
+        });
+      }, observerOptions);
+
+      videoContainers.forEach((container, index) => {
+        const iframe = container.querySelector('iframe:not([style*="display: none"])');
+        if (iframe) {
+          const player = new Vimeo.Player(iframe);
+          videoPlayers[index] = player;
+          observer.observe(container);
+
+          // Click to toggle play/pause and unmute
+          iframe.addEventListener('click', () => {
+            player.getPaused().then(paused => {
+              if (paused) {
+                player.play();
+                player.setVolume(1); // Unmute
+              } else {
+                player.pause();
+              }
+            });
+          });
+        }
+      });
+
+      // Disable autoplay for Video 2
+      const video2Iframe = document.querySelector('#video2-container iframe');
+      if (video2Iframe) {
+        const video2Player = new Vimeo.Player(video2Iframe);
+        video2Player.pause(); // Ensure initial pause
+        video2Iframe.addEventListener('click', () => {
+          video2Player.getPaused().then(paused => {
+            if (paused) {
+              video2Player.play();
+              video2Player.setVolume(1); // Unmute
+            } else {
+              video2Player.pause();
+            }
+          });
+        });
+      }
+
       const originalSwitchLanguage = window.switchLanguage;
       window.switchLanguage = function(newLang) {
         originalSwitchLanguage(newLang);
         updateAppleBooksLink(newLang);
-        // NEW: Switch video sources
+        // NEW: Switch video sources and recreate players
         const videoUrls = {
           sv: {
             portrait: '1106485252',
@@ -95,35 +161,44 @@
           }
         };
         const currentUrls = videoUrls[newLang] || videoUrls.sv;
-        document.querySelector('.video.portrait').src = `https://player.vimeo.com/video/${currentUrls.portrait}?background=1&autoplay=0&loop=1&muted=1`;
-        document.querySelector('.video.landscape').src = `https://player.vimeo.com/video/${currentUrls.landscape}?background=1&autoplay=0&loop=1&muted=1`;
-        document.querySelector('#video2-container .video.landscape').src = `https://player.vimeo.com/video/${currentUrls.landscape2}?background=1&autoplay=0&loop=1&muted=1`;
+        const portraitVideo = document.querySelector('.video.portrait');
+        const landscapeVideo = document.querySelector('.video.landscape');
+        const landscapeVideo2 = document.querySelector('#video2-container .video.landscape');
+        if (portraitVideo) {
+          portraitVideo.src = `https://player.vimeo.com/video/${currentUrls.portrait}?autoplay=0&loop=1&muted=1&controls=1`;
+        }
+        if (landscapeVideo) {
+          landscapeVideo.src = `https://player.vimeo.com/video/${currentUrls.landscape}?autoplay=0&loop=1&muted=1&controls=1`;
+        }
+        if (landscapeVideo2) {
+          landscapeVideo2.src = `https://player.vimeo.com/video/${currentUrls.landscape2}?autoplay=0&loop=1&muted=1&controls=1`;
+        }
         console.log(`Switched videos to ${newLang}`);
-      };
 
-      // NEW: Video autoplay on scroll
-      const videoContainers = document.querySelectorAll('.video-container');
-      const observerOptions = {
-        root: null,
-        rootMargin: '0px',
-        threshold: 0.5
-      };
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          const iframe = entry.target.querySelector('iframe');
+        // Recreate Vimeo Players after src update
+        videoPlayers.forEach(player => player.destroy());
+        videoPlayers = [];
+        videoContainers.forEach((container, index) => {
+          const iframe = container.querySelector('iframe:not([style*="display: none"])');
           if (iframe) {
-            const src = iframe.getAttribute('src');
-            if (entry.isIntersecting) {
-              iframe.src = src.replace('autoplay=0', 'autoplay=1');
-              console.log(`Autoplay started for video`);
-            } else {
-              iframe.src = src.replace('autoplay=1', 'autoplay=0');
-              console.log(`Autoplay paused for video`);
+            const player = new Vimeo.Player(iframe);
+            videoPlayers[index] = player;
+            if (container.id === 'video2-container') {
+              player.pause();
+              iframe.addEventListener('click', () => {
+                player.getPaused().then(paused => {
+                  if (paused) {
+                    player.play();
+                    player.setVolume(1);
+                  } else {
+                    player.pause();
+                  }
+                });
+              });
             }
           }
         });
-      }, observerOptions);
-      videoContainers.forEach(container => observer.observe(container));
+      };
     });
   </script>
 </body>
