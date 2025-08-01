@@ -3063,6 +3063,10 @@ h2#popupWelcome {
   background: black;
 }
 
+.video-section {
+  padding: 0 10px;
+}
+
 @media (min-width: 768px), (orientation: landscape) {
   #index-video {
     aspect-ratio: 16 / 9;

@@ -36,20 +36,28 @@
   <div class="video-section">
   <div class="video-gap"></div>
   <hr class="separator">
-  <iframe id="index-video" class="video portrait" 
-    src="https://player.vimeo.com/video/1106485252?autoplay=1&muted=1&loop=1&controls=1" 
-    frameborder="0"
-    allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
-    allowfullscreen>
-  </iframe>
+  <iframe
+  id="index-video"
+  class="video portrait"
+  data-vimeo-id="1106485252"
+  src="https://player.vimeo.com/video/1106485252?autoplay=1&muted=1&loop=1&controls=1"
+  frameborder="0"
+  allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+  allowfullscreen
+  title="Introduktionsvideo på svenska">
+</iframe>
   <div class="video-gap"></div>
   <h2 class="video-header" data-translate="howToNavigate">Hur du navigerar i Nordstjärnans Pianoskola</h2>
-  <iframe id="guide-video" class="video landscape"
-    src="https://player.vimeo.com/video/1106485499?autoplay=1&muted=1&loop=1&controls=1"
-    frameborder="0"
-    allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
-    allowfullscreen>
-  </iframe>
+  <iframe
+  id="guide-video"
+  class="video landscape"
+  data-vimeo-id="1106485499"
+  src="https://player.vimeo.com/video/1106485499?autoplay=1&muted=1&loop=1&controls=1"
+  frameborder="0"
+  allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+  allowfullscreen
+  title="Navigationsguide på svenska">
+</iframe>
 </div>
   <script src="script.js"></script>
   <script src="students.js"></script>
@@ -74,7 +82,7 @@
       updateAppleBooksLink(lang);
 
       // Video control and autoplay on scroll
-      const videoContainers = document.querySelectorAll('.video-container');
+      const videoContainers = document.querySelectorAll('iframe.video');
       const videoPlayers = [];
       const observerOptions = {
         root: null,
