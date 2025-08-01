@@ -3055,8 +3055,8 @@ h2#popupWelcome {
   display: block;
   margin: 0 auto;
   border-radius: 12px;
-  width: 95vw;
-  max-width: 95vw;
+  width: 90vw;
+  max-width: 90vw;
   aspect-ratio: 9 / 16;
   height: auto;
   border: none;
