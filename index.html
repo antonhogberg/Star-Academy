@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
   <title data-translate="homeTitle">Nordstjärnans Pianoskola - Startsida</title>
   <link rel="stylesheet" href="styles.css" />
-  <script src="https://player.vimeo.com/api/player.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/lz-string/1.5.0/lz-string.min.js"></script>
   <link rel="stylesheet" href="cookieconsent.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.1/cookieconsent.min.js"></script>
@@ -33,24 +32,16 @@
     <p data-translate="homeIntro" style="color: white; margin-bottom: 20px; max-width: 600px;">Börja din pianoresa med vår interaktiva plattform och boken tillgänglig på Apple Books.</p>
     <a id="appleBooksLink" href="#" class="menu-link" data-translate="appleBooksText" style="color: #f0f0f0; text-decoration: underline;">Köp boken på Apple Books</a>
   </div>
-  <div class="video-section">
-  <div class="video-gap"></div>
-  <hr class="separator">
-  <iframe id="index-video" class="video portrait" 
-    src="https://player.vimeo.com/video/1106485252?autoplay=1&muted=1&loop=1&controls=1" 
-    frameborder="0"
-    allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
-    allowfullscreen>
-  </iframe>
-  <div class="video-gap"></div>
-  <h2 class="video-header" data-translate="howToNavigate">Hur du navigerar i Nordstjärnans Pianoskola</h2>
-  <iframe id="guide-video" class="video landscape"
-    src="https://player.vimeo.com/video/1106485499?autoplay=1&muted=1&loop=1&controls=1"
-    frameborder="0"
-    allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
-    allowfullscreen>
-  </iframe>
-</div>
+  <div id="consentPopup" style="display: none;">
+    <div class="consent-popup-content">
+      <p id="consentMessage"></p>
+      <div class="consent-buttons">
+        <button id="consentAcceptButton"></button>
+        <button id="consentRejectButton"></button>
+        <button id="consentPolicyLink" data-translate="consentPolicyLink"></button>
+      </div>
+    </div>
+  </div>
   <script src="script.js"></script>
   <script src="students.js"></script>
   <script>
@@ -73,65 +64,11 @@
       const lang = localStorage.getItem('language') || 'sv';
       updateAppleBooksLink(lang);
 
-      // Video control and autoplay on scroll
-      const videoContainers = document.querySelectorAll('.video-container');
-      const videoPlayers = [];
-      const observerOptions = {
-        root: null,
-        rootMargin: '0px',
-        threshold: 0.5
+      const originalSwitchLanguage = window.switchLanguage;
+      window.switchLanguage = function(newLang) {
+        originalSwitchLanguage(newLang);
+        updateAppleBooksLink(newLang);
       };
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          const iframe = entry.target.querySelector('iframe:not([style*="display: none"])');
-          if (iframe) {
-            const playerIndex = Array.from(videoContainers).indexOf(entry.target);
-            const player = videoPlayers[playerIndex];
-            if (player) {
-              player.getPaused().then(paused => {
-                if (entry.isIntersecting && entry.target.id !== 'video2-container' && paused) {
-                  player.play().then(() => {
-                    player.setVolume(1);
-                    console.log(`Autoplay started for video ${iframe.dataset.vimeoId}`);
-                  }).catch(err => console.error(`Autoplay error for video ${iframe.dataset.vimeoId}:`, err));
-                } else if (!entry.isIntersecting && !paused) {
-                  player.pause();
-                  console.log(`Autoplay paused for video ${iframe.dataset.vimeoId}`);
-                }
-              });
-            }
-          }
-        });
-      }, observerOptions);
-
-      videoContainers.forEach((container, index) => {
-        const iframe = container.querySelector('iframe:not([style*="display: none"])');
-        if (iframe) {
-          const player = new Vimeo.Player(iframe);
-          player.on('loaded', () => {
-            console.log(`Vimeo player loaded for video ${iframe.dataset.vimeoId}`);
-            videoPlayers[index] = player;
-            if (container.id === 'video2-container') {
-              player.pause();
-            } else {
-              observer.observe(container);
-            }
-            iframe.addEventListener('click', () => {
-              player.getPaused().then(paused => {
-                if (paused) {
-                  player.play().then(() => {
-                    player.setVolume(1);
-                    console.log(`Manual play for video ${iframe.dataset.vimeoId}`);
-                  }).catch(err => console.error(`Play error for video ${iframe.dataset.vimeoId}:`, err));
-                } else {
-                  player.pause();
-                  console.log(`Manual pause for video ${iframe.dataset.vimeoId}`);
-                }
-              });
-            });
-          });
-        }
-      });
     });
   </script>
 </body>
