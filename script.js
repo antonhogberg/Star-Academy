@@ -1426,6 +1426,24 @@ function switchLanguage(lang) {
     loadNotes();
   }
 
+  updateStreakDisplay(); 
+
+  const indexVideoPortrait = document.getElementById('index-video-portrait');
+  const indexVideoLandscape = document.getElementById('index-video-landscape');
+
+  const videoSources = {
+    sv: {
+      main: 'https://player.vimeo.com/video/1106485252?autoplay=1&muted=1&loop=1&controls=1'
+    },
+    en: {
+      main: 'https://player.vimeo.com/video/1106485252?autoplay=1&muted=1&loop=1&controls=1'
+    }
+  };
+
+  const selected = videoSources[newLang] || videoSources.sv;
+
+  if (indexVideoPortrait) indexVideoPortrait.src = selected.main;
+  if (indexVideoLandscape) indexVideoLandscape.src = selected.main;
 
 }
 
