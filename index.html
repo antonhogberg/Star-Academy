@@ -33,18 +33,21 @@
     <a id="appleBooksLink" href="#" class="menu-link" data-translate="appleBooksText" style="color: #f0f0f0; text-decoration: underline;">Köp boken på Apple Books</a>
   </div>
   <div class="video-wrapper">
-    <picture>
-      <source
-        src="https://player.vimeo.com/video/1106485252?autoplay=0&muted=1&loop=1&autopause=0&playsinline=1"
-        type="text/html"
-        media="(min-device-width: 768px)"
-      >
-      <a href="https://vimeo.com/1106485252" class="video-fallback-link" title="Watch North Star Piano School on Vimeo">
-        <img src="videoimg.png" alt="North Star Piano School Video" class="responsive-video-img">
-        <div class="play-button"></div>
-      </a>
-    </picture>
-  </div>
+  <iframe
+    id="index-video"
+    class="responsive-video"
+    src="https://player.vimeo.com/video/1106485252?autoplay=1&muted=1&loop=1&autopause=0&playsinline=1"
+    data-vimeo-id="1106485252"
+    frameborder="0"
+    allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+    allowfullscreen
+    style="display: block;"
+  ></iframe>
+  <a href="https://vimeo.com/1106485252" class="video-fallback-link" title="Watch North Star Piano School on Vimeo" style="display: none;">
+    <img src="videoimg.png" alt="North Star Piano School Video" class="responsive-video-img">
+    <div class="play-button"></div>
+  </a>
+</div>
   <div id="consentPopup" style="display: none;">
     <div class="consent-popup-content">
       <p id="consentMessage"></p>
