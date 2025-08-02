@@ -3073,14 +3073,14 @@ h2#popupWelcome {
 /* Visa 16:9-video på alla skärmar utom mobila porträtt */
 @media (min-width: 768px), (orientation: landscape) {
   #video-16x9 {
-    display: block;
+    display: block !important; 
   }
 }
 
 /* Visa 9:16-video på mobiler i porträttläge */
 @media (max-width: 767px) and (orientation: portrait) {
   #video-9x16 {
-    display: block;
+    display: block !important;
     aspect-ratio: 9 / 16;
     width: 90vw;
   }
