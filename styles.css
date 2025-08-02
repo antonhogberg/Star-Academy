@@ -3051,41 +3051,47 @@ h2#popupWelcome {
     }
 }
 
-#video-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 30px;
-  width: 100%;
-  height: auto;
+.video-section {
+  padding: 0 10px;
 }
 
-#video-container iframe {
+/* Default styles: landscape-video och guide-video visas */
+#index-video-landscape,
+#guide-video {
+  display: block;
+  width: 80vw;
+  max-width: 80vw;
+  aspect-ratio: 16 / 9;
+  margin: 0 auto;
   border-radius: 12px;
   border: none;
-  aspect-ratio: 16 / 9;
-  width: 70vw;
-  max-width: 100%;
+  background: black;
+  overflow: hidden;
   height: auto;
-  display: none; /* Default: båda dolda */
 }
 
-/* Visa 16:9-video på alla enheter utom mobil porträtt */
-@media (min-width: 768px), (orientation: landscape) {
-  #video-16x9 {
-    display: block !important;
-    aspect-ratio: 16 / 9;
-    width: 70vw;
-    border-radius: 12px;
-  }
+/* Portrait-video döljs som standard */
+#index-video-portrait {
+  display: none;
 }
 
-/* Visa 9:16-video endast på mobiler i porträttläge */
+/* PORTRAIT (mobil i stående läge) */
 @media (max-width: 767px) and (orientation: portrait) {
-  #video-9x16 {
-    display: block !important;
-    aspect-ratio: 9 / 16;
+  #index-video-portrait {
+    display: block;
     width: 90vw;
+    max-width: 90vw;
+    aspect-ratio: 9 / 16;
+    margin: 0 auto;
     border-radius: 12px;
+    border: none;
+    background: black;
+    overflow: hidden;
+    height: auto;
+  }
+
+  #index-video-landscape,
+  #guide-video {
+    display: none;
   }
 }
