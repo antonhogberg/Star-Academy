@@ -1896,3 +1896,10 @@ waitForDOM().then(() => {
         window.addEventListener('orientationchange', setStarMapHeight);
     }, 200);
 });
+
+document.addEventListener('DOMContentLoaded', () => {
+  const iframes = document.querySelectorAll('.responsive-video');
+  iframes.forEach((iframe, index) => {
+    console.log(`Video ${index + 1} laddad:`, iframe.src);
+  });
+});

@@ -32,6 +32,27 @@
     <p data-translate="homeIntro" style="color: white; margin-bottom: 20px; max-width: 600px;">Börja din pianoresa med vår interaktiva plattform och boken tillgänglig på Apple Books.</p>
     <a id="appleBooksLink" href="#" class="menu-link" data-translate="appleBooksText" style="color: #f0f0f0; text-decoration: underline;">Köp boken på Apple Books</a>
   </div>
+  <!-- EXEMPEL 1: Autoplay, Muted, Kontroller -->
+<div class="video-wrapper">
+  <iframe
+    src="https://player.vimeo.com/video/1106485618?autoplay=1&muted=1&controls=1"
+    allow="autoplay; fullscreen"
+    allowfullscreen
+    class="responsive-video autoplay-muted"
+    title="Vimeo-video: autoplay + muted + controls"
+  ></iframe>
+</div>
+
+<!-- EXEMPEL 2: Ingen autoplay, bara kontroller -->
+<div class="video-wrapper">
+  <iframe
+    src="https://player.vimeo.com/video/1106485618?autoplay=0&controls=1"
+    allow="fullscreen"
+    allowfullscreen
+    class="responsive-video no-autoplay"
+    title="Vimeo-video: manuellt startad"
+  ></iframe>
+</div>
   <div id="consentPopup" style="display: none;">
     <div class="consent-popup-content">
       <p id="consentMessage"></p>
