@@ -3051,16 +3051,36 @@ h2#popupWelcome {
     }
 }
 /* Vimeo-video responsive and styled */
-.video-wrapper {
-  width: 70vh; /* Default for non-mobile-portrait devices */
-  max-width: 90vw; /* Prevent overflow */
-  aspect-ratio: 16 / 9; /* Landscape orientation as default */
-  margin: 40px auto;
-  border-radius: 12px;
-  overflow: hidden; /* Prevent clipping */
-  position: relative;
-  z-index: 10; /* Ensure above most elements but below piano-menu (z-index: 1202) */
+/* Undantag för index.html */
+body.allow-scroll {
+    height: auto; /* Tillåt dynamisk höjd */
+    overflow-y: auto; /* Tillåt vertikal scrollning */
+    overflow-x: hidden; /* Behåll horisontell begränsning om önskat */
 }
+
+/* Ta bort eller modifiera no-scroll för undantaget */
+body.allow-scroll.no-scroll {
+    height: auto; /* Ignorera 100vh */
+    overflow-y: auto; /* Tillåt scroll även med no-scroll */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Video-wrapper positionering (obehandlad) */
+.video-wrapper {
+    width: 70vh;
+    max-width: 90vw;
+    aspect-ratio: 16 / 9;
+    margin: 40px auto;
+    border-radius: 12px;
+    overflow: hidden;
+    position: relative;
+    z-index: 10;
+    min-height: 0;
+}
+
 
 .responsive-video {
   width: 100%;

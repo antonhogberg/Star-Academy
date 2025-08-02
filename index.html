@@ -18,7 +18,7 @@
     setViewportHeight();
   </script>
 </head>
-<body>
+<body class="allow-scroll">
   <div class="piano-menu" id="menuButton" aria-expanded="false" aria-controls="main-menu">
     <div class="white-key"></div>
     <div class="white-key"></div>
@@ -62,30 +62,58 @@
   <script src="students.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      if (typeof initializeConsentPopup === 'function') {
-        initializeConsentPopup();
-      }
-
-      function updateAppleBooksLink(lang) {
-        const appleBooksLink = document.getElementById('appleBooksLink');
-        if (appleBooksLink) {
-          const urls = {
-            sv: 'https://books.apple.com/se/book/stj%C3%A4rnakademiens-pianoskola/id1586033171',
-            en: 'https://books.apple.com/se/book/star-academy-piano-school/id1587056173'
-          };
-          appleBooksLink.href = urls[lang] || urls.sv;
+        if (typeof initializeConsentPopup === 'function') {
+            initializeConsentPopup();
         }
-      }
 
-      const lang = localStorage.getItem('language') || 'sv';
-      updateAppleBooksLink(lang);
+        function updateAppleBooksLink(lang) {
+            const appleBooksLink = document.getElementById('appleBooksLink');
+            if (appleBooksLink) {
+                const urls = {
+                    sv: 'https://books.apple.com/se/book/stj%C3%A4rnakademiens-pianoskola/id1586033171',
+                    en: 'https://books.apple.com/se/book/star-academy-piano-school/id1587056173'
+                };
+                appleBooksLink.href = urls[lang] || urls.sv;
+            }
+        }
 
-      const originalSwitchLanguage = window.switchLanguage;
-      window.switchLanguage = function(newLang) {
-        originalSwitchLanguage(newLang);
-        updateAppleBooksLink(newLang);
-      };
+        const lang = localStorage.getItem('language') || 'sv';
+        updateAppleBooksLink(lang);
+
+        const originalSwitchLanguage = window.switchLanguage;
+        window.switchLanguage = function(newLang) {
+            originalSwitchLanguage(newLang);
+            updateAppleBooksLink(newLang);
+        };
+
+        // Video and fallback handling
+        const videoIframe = document.getElementById('index-video');
+        const fallbackLink = document.querySelector('.video-fallback-link');
+        if (videoIframe && fallbackLink) {
+            const videoPlayer = new Vimeo.Player(videoIframe);
+
+            videoPlayer.on('error', (error) => {
+                console.error('Vimeo player error:', error);
+                videoIframe.style.display = 'none';
+                fallbackLink.style.display = 'block';
+            });
+
+            videoPlayer.getPaused().then(paused => {
+                if (paused) {
+                    videoPlayer.play().catch(err => {
+                        console.error('Autoplay failed:', err);
+                        videoIframe.style.display = 'none';
+                        fallbackLink.style.display = 'block';
+                    });
+                }
+            });
+
+            // Optional: Check if video is loaded and visible
+            videoPlayer.on('loaded', () => {
+                console.log('Vimeo player loaded for video:', videoIframe.dataset.vimeoId);
+            });
+        }
     });
-  </script>
+</script>
 </body>
 </html>
