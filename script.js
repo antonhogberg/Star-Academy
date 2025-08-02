@@ -1428,23 +1428,43 @@ function switchLanguage(lang) {
 
   updateStreakDisplay(); 
 
-  const indexVideoPortrait = document.getElementById('index-video-portrait');
-  const indexVideoLandscape = document.getElementById('index-video-landscape');
+  const portraitVideo = document.getElementById('index-video-portrait');
+const landscapeVideo = document.getElementById('index-video-landscape');
 
-  const videoSources = {
-    sv: {
-      main: 'https://player.vimeo.com/video/1106485252?autoplay=1&muted=1&loop=1&controls=1'
-    },
-    en: {
-      main: 'https://player.vimeo.com/video/1106485252?autoplay=1&muted=1&loop=1&controls=1'
+// Initiera Vimeo-spelare
+const portraitPlayer = portraitVideo ? new Vimeo.Player(portraitVideo) : null;
+const landscapePlayer = landscapeVideo ? new Vimeo.Player(landscapeVideo) : null;
+
+// Observera synlighet
+const observerOptions = {
+  root: null,
+  rootMargin: '0px',
+  threshold: 0.6
+};
+
+const handleVideoAutoplay = (entry, player) => {
+  if (!player) return;
+  player.getPaused().then(paused => {
+    if (entry.isIntersecting && paused) {
+      player.play().catch(() => {});
+    } else if (!entry.isIntersecting && !paused) {
+      player.pause();
     }
-  };
+  });
+};
 
-  const selected = videoSources[newLang] || videoSources.sv;
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.target.id === 'index-video-portrait') {
+      handleVideoAutoplay(entry, portraitPlayer);
+    } else if (entry.target.id === 'index-video-landscape') {
+      handleVideoAutoplay(entry, landscapePlayer);
+    }
+  });
+});
 
-  if (indexVideoPortrait) indexVideoPortrait.src = selected.main;
-  if (indexVideoLandscape) indexVideoLandscape.src = selected.main;
-
+if (portraitVideo) observer.observe(portraitVideo);
+if (landscapeVideo) observer.observe(landscapeVideo);
 }
 
 

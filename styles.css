@@ -3050,16 +3050,10 @@ h2#popupWelcome {
         overflow: visible !important;
     }
 }
-
-/* Video layout */
-.video-section {
-  padding: 0 10px;
-}
-
-/* Grundstil för båda videorna */
+/* Basstil: båda videorna är dolda */
 #index-video-portrait,
 #index-video-landscape {
-  display: none; /* default: göm båda */
+  display: none;
   margin: 0 auto;
   border-radius: 12px;
   border: none;
@@ -3067,32 +3061,24 @@ h2#popupWelcome {
   overflow: hidden;
   height: auto;
   margin-bottom: 20px;
+  max-width: 90vw;
 }
 
-/* Visa landscape-video på iPad och desktop */
-@media (orientation: landscape) {
+/* Portrait-video: visas bara på mobil stående */
+@media (max-width: 767px) and (orientation: portrait) {
+  #index-video-portrait {
+    display: block;
+    width: 90vw;
+    aspect-ratio: 9 / 16;
+  }
+}
+
+/* Landscape-video: visas på iPad, desktop, mobil liggande */
+@media (min-width: 768px), (orientation: landscape) {
   #index-video-landscape {
     display: block;
     width: 80vw;
     max-width: 80vw;
     aspect-ratio: 16 / 9;
-  }
-
-  #index-video-portrait {
-    display: none;
-  }
-}
-
-/* Visa portrait-video på mobil i stående läge */
-@media (max-width: 767px) and (orientation: portrait) {
-  #index-video-portrait {
-    display: block;
-    width: 90vw;
-    max-width: 90vw;
-    aspect-ratio: 9 / 16;
-  }
-
-  #index-video-landscape {
-    display: none;
   }
 }
