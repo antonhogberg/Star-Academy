@@ -3055,9 +3055,10 @@ h2#popupWelcome {
   padding: 0 10px;
 }
 
+/* Grundinställningar för båda videor: visa inget som default */
 #index-video-portrait,
 #index-video-landscape {
-  display: none; /* Döljs som standard */
+  display: none;
   margin: 0 auto;
   border-radius: 12px;
   border: none;
@@ -3067,18 +3068,26 @@ h2#popupWelcome {
   margin-bottom: 20px;
 }
 
-/* 📱 Mobil portrait: endast portrait-video */
-@media (max-width: 1024px) and (orientation: portrait) {
+/* PORTRAIT: visas endast på mobil i stående läge */
+@media (orientation: portrait) and (max-width: 767px) {
   #index-video-portrait {
     display: block;
     width: 90vw;
     max-width: 90vw;
     aspect-ratio: 9 / 16;
   }
+
+  #index-video-landscape {
+    display: none;
+  }
 }
 
-/* 💻 iPad landscape + desktop: endast landscape-video */
-@media (min-width: 768px), (orientation: landscape) {
+/* LANDSCAPE: iPad och desktop i liggande läge */
+@media (orientation: landscape) and (min-width: 768px) {
+  #index-video-portrait {
+    display: none;
+  }
+
   #index-video-landscape {
     display: block;
     width: 80vw;
