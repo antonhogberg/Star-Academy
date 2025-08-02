@@ -3050,3 +3050,38 @@ h2#popupWelcome {
         overflow: visible !important;
     }
 }
+
+#video-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 30px;
+  width: 100%;
+  height: auto;
+}
+
+#video-container iframe {
+  border-radius: 12px;
+  border: none;
+  aspect-ratio: 16 / 9;
+  width: 70vw;
+  max-width: 100%;
+  height: auto;
+  display: none; /* Default: båda dolda */
+}
+
+/* Visa 16:9-video på alla skärmar utom mobila porträtt */
+@media (min-width: 768px), (orientation: landscape) {
+  #video-16x9 {
+    display: block;
+  }
+}
+
+/* Visa 9:16-video på mobiler i porträttläge */
+@media (max-width: 767px) and (orientation: portrait) {
+  #video-9x16 {
+    display: block;
+    aspect-ratio: 9 / 16;
+    width: 90vw;
+  }
+}
