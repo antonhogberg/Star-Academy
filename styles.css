@@ -3051,9 +3051,8 @@ h2#popupWelcome {
     }
 }
 
-/* Basstil: båda videor dolda som standard */
-#index-video-portrait,
-#index-video-landscape {
+/* Basstil: visa landskapsvideo som standard */
+#index-video-portrait {
   display: none;
   margin: 0 auto;
   border-radius: 12px;
@@ -3065,7 +3064,21 @@ h2#popupWelcome {
   max-width: 90vw;
 }
 
-/* Mobile portrait (max-width: 767px, orientation: portrait) */
+#index-video-landscape {
+  display: block;
+  width: 80vw;
+  max-width: 80vw;
+  aspect-ratio: 16 / 9;
+  margin: 0 auto;
+  border-radius: 12px;
+  border: none;
+  background: black;
+  overflow: hidden;
+  height: auto;
+  margin-bottom: 20px;
+}
+
+/* PORTRAIT-VERSION — visa porträttvideo för mobila enheter i stående läge */
 @media screen and (max-width: 767px) and (orientation: portrait) {
   #index-video-portrait {
     display: block;
@@ -3073,82 +3086,6 @@ h2#popupWelcome {
     aspect-ratio: 9 / 16;
   }
   #index-video-landscape {
-    display: none !important;
-  }
-}
-
-/* Mobile landscape (max-width: 767px, orientation: landscape) */
-@media screen and (max-width: 767px) and (orientation: landscape) {
-  #index-video-landscape {
-    display: block;
-    width: 80vw;
-    max-width: 80vw;
-    aspect-ratio: 16 / 9;
-  }
-  #index-video-portrait {
-    display: none !important;
-  }
-}
-
-/* iPad portrait (768px–1194px, pixel ratio 1 or 2) */
-@media only screen and (min-device-width: 768px) and (max-device-width: 1194px) and (orientation: portrait) {
-  #index-video-portrait {
-    display: block;
-    width: 90vw;
-    aspect-ratio: 9 / 16;
-  }
-  #index-video-landscape {
-    display: none !important;
-  }
-}
-
-/* iPad landscape (768px–1194px, pixel ratio 1 or 2) */
-@media only screen and (min-device-width: 768px) and (max-device-width: 1194px) and (orientation: landscape) {
-  #index-video-landscape {
-    display: block;
-    width: 80vw;
-    max-width: 80vw;
-    aspect-ratio: 16 / 9;
-  }
-  #index-video-portrait {
-    display: none !important;
-  }
-}
-
-/* iPad Pro 12.9" portrait (1194px–1366px, pixel ratio 2) */
-@media only screen and (min-device-width: 1194px) and (max-device-width: 1366px) and (orientation: portrait) {
-  #index-video-portrait {
-    display: block;
-    width: 90vw;
-    aspect-ratio: 9 / 16;
-  }
-  #index-video-landscape {
-    display: none !important;
-  }
-}
-
-/* iPad Pro 12.9" landscape (1194px–1366px, pixel ratio 2) */
-@media only screen and (min-device-width: 1194px) and (max-device-width: 1366px) and (orientation: landscape) {
-  #index-video-landscape {
-    display: block;
-    width: 80vw;
-    max-width: 80vw;
-    aspect-ratio: 16 / 9;
-  }
-  #index-video-portrait {
-    display: none !important;
-  }
-}
-
-/* Desktop (min-width: 1025px) - Always show landscape video */
-@media screen and (min-width: 1025px) {
-  #index-video-landscape {
-    display: block;
-    width: 80vw;
-    max-width: 80vw;
-    aspect-ratio: 16 / 9;
-  }
-  #index-video-portrait {
     display: none !important;
   }
 }
