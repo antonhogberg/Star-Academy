@@ -3051,13 +3051,15 @@ h2#popupWelcome {
     }
 }
 
-/* Vimeo-video responsiv och stylad */
 .video-wrapper {
   width: 90vw;
-  aspect-ratio: 9 / 16;
+  max-width: 800px; /* Cap width for larger iPads */
+  aspect-ratio: 16 / 9; /* Standard video aspect ratio, adjust if Vimeo video is different */
   margin: 40px auto;
   border-radius: 12px;
-  overflow: hidden; /* Gör hörnen rundade */
+  overflow: visible; /* Prevent clipping */
+  position: relative; /* Ensure proper stacking context */
+  z-index: 10; /* Ensure video is above other elements */
 }
 
 .responsive-video {
@@ -3066,9 +3068,24 @@ h2#popupWelcome {
   border: none;
   display: block;
   border-radius: 12px;
+  position: absolute; /* Ensure it fills the wrapper */
+  top: 0;
+  left: 0;
 }
 
-/* Anpassning för iOS fix (force fullscreen workaround ibland) */
-iframe::-webkit-media-controls {
-  display: block !important;
+/* Specific iPad adjustments */
+@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) {
+  .video-wrapper {
+    width: 80vw; /* Slightly smaller for iPads */
+    max-width: 700px;
+    aspect-ratio: 16 / 9;
+  }
+}
+
+@media only screen and (min-device-width: 1194px) and (max-device-width: 1366px) {
+  .video-wrapper {
+    width: 75vw; /* Adjust for iPad Pro */
+    max-width: 900px;
+    aspect-ratio: 16 / 9;
+  }
 }
