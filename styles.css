@@ -3070,18 +3070,22 @@ h2#popupWelcome {
   display: none; /* Default: båda dolda */
 }
 
-/* Visa 16:9-video på alla skärmar utom mobila porträtt */
+/* Visa 16:9-video på alla enheter utom mobil porträtt */
 @media (min-width: 768px), (orientation: landscape) {
   #video-16x9 {
-    display: block !important; 
+    display: block !important;
+    aspect-ratio: 16 / 9;
+    width: 70vw;
+    border-radius: 12px;
   }
 }
 
-/* Visa 9:16-video på mobiler i porträttläge */
+/* Visa 9:16-video endast på mobiler i porträttläge */
 @media (max-width: 767px) and (orientation: portrait) {
   #video-9x16 {
     display: block !important;
     aspect-ratio: 9 / 16;
     width: 90vw;
+    border-radius: 12px;
   }
 }

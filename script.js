@@ -1897,14 +1897,24 @@ waitForDOM().then(() => {
     }, 200);
 });
 
-// Se till att Vimeo iframes laddas korrekt när DOM är redo
 document.addEventListener('DOMContentLoaded', () => {
   const video16x9 = document.getElementById('video-16x9');
   const video9x16 = document.getElementById('video-9x16');
 
-  // Force reload if needed on orientation change (iOS fix)
-  window.addEventListener('orientationchange', () => {
-    if (video16x9) video16x9.src = video16x9.src;
-    if (video9x16) video9x16.src = video9x16.src;
-  });
+  function handleVideoVisibility() {
+    const isPortrait = window.matchMedia('(orientation: portrait)').matches;
+    const isMobile = window.innerWidth <= 767;
+
+    if (isPortrait && isMobile) {
+      video16x9.style.display = 'none';
+      video9x16.style.display = 'block';
+    } else {
+      video9x16.style.display = 'none';
+      video16x9.style.display = 'block';
+    }
+  }
+
+  handleVideoVisibility();
+  window.addEventListener('resize', handleVideoVisibility);
+  window.addEventListener('orientationchange', handleVideoVisibility);
 });
