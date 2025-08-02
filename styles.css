@@ -3053,8 +3053,8 @@ h2#popupWelcome {
 
 /* Vimeo-video responsiv och stylad */
 .video-wrapper {
-  width: 70vw;
-  aspect-ratio: 16 / 9;
+  width: 90vw;
+  aspect-ratio: 9 / 16;
   margin: 40px auto;
   border-radius: 12px;
   overflow: hidden; /* Gör hörnen rundade */
