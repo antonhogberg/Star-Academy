@@ -33,14 +33,17 @@
     <a id="appleBooksLink" href="#" class="menu-link" data-translate="appleBooksText" style="color: #f0f0f0; text-decoration: underline;">Köp boken på Apple Books</a>
   </div>
   <div class="video-wrapper">
-    <iframe
-      src="https://player.vimeo.com/video/1106764753?autoplay=0&muted=1&loop=1&autopause=0&playsinline=1"
-      allow="autoplay; fullscreen; picture-in-picture"
-      allowfullscreen
-      class="responsive-video"
-      title="North Star Piano School"
-      style="background: black;"
-    ></iframe>
+    <picture>
+      <source
+        src="https://player.vimeo.com/video/1106764753?autoplay=0&muted=1&loop=1&autopause=0&playsinline=1"
+        type="text/html"
+        media="(min-device-width: 768px)"
+      >
+      <a href="https://vimeo.com/1106764753" class="video-fallback-link" title="Watch North Star Piano School on Vimeo">
+        <img src="videoimg.png" alt="North Star Piano School Video" class="responsive-video-img">
+        <div class="play-button"></div>
+      </a>
+    </picture>
   </div>
   <div id="consentPopup" style="display: none;">
     <div class="consent-popup-content">
