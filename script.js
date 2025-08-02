@@ -168,8 +168,7 @@ const translations = {
         homeTitle: "Home",
         homeWelcome: "Welcome to North Star Piano School!",
         homeIntro: "Start your piano journey with our interactive platform and the book available on Apple Books.",
-        appleBooksText: "Buy the book on Apple Books",
-        howToNavigate: "How to navigate the North Star Piano School"
+        appleBooksText: "Buy the book on Apple Books"
     },
     sv: {
         menuFrontPage: "Stjärnöversikt",
@@ -334,8 +333,7 @@ const translations = {
         homeTitle: "Startsida",
         homeWelcome: "Välkommen till Nordstjärnans Pianoskola!",
         homeIntro: "Använd länkarna i menyn för att logga dina framgångar i pianoskolan.",
-        appleBooksText: "Skaffa Nordstjärnans Pianoskola här",
-        howToNavigate: "Hur du navigerar i Nordstjärnans Pianoskola"
+        appleBooksText: "Skaffa Nordstjärnans Pianoskola här"
     }
 };
 
@@ -729,59 +727,9 @@ function showPrivacyPolicyPopup() {
 
 // Initialize popup on DOM load
 document.addEventListener('DOMContentLoaded', () => {
-  if (!window.consentInitialized) {
-    initializeConsentPopup();
-  }
-
-  // === VIDEO AUTOPLAY & INTERSECTION HANDLING ===
-  const videoIframes = Array.from(document.querySelectorAll('iframe.video'));
-  const videoPlayers = new Map();
-
-  const observerOptions = {
-    root: null,
-    rootMargin: '0px',
-    threshold: 0.5
-  };
-
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      const iframe = entry.target;
-      const player = videoPlayers.get(iframe);
-      if (!player) return;
-
-      const isVisible = window.getComputedStyle(iframe).display !== 'none';
-      if (!isVisible) return;
-
-      player.getPaused().then(paused => {
-        if (entry.isIntersecting && paused) {
-          player.play().then(() => {
-            player.setVolume(1);
-          }).catch(() => {});
-        } else if (!entry.isIntersecting && !paused) {
-          player.pause();
-        }
-      });
-    });
-  }, observerOptions);
-
-  videoIframes.forEach(iframe => {
-    const player = new Vimeo.Player(iframe);
-    videoPlayers.set(iframe, player);
-
-    player.on('loaded', () => {
-      observer.observe(iframe);
-
-      iframe.addEventListener('click', () => {
-        player.getPaused().then(paused => {
-          if (paused) {
-            player.play().then(() => player.setVolume(1));
-          } else {
-            player.pause();
-          }
-        });
-      });
-    });
-  });
+    if (!window.consentInitialized) {
+        initializeConsentPopup();
+    }
 });
 
 function checkAndShowRankAchievementPopup(
@@ -1266,217 +1214,216 @@ function updateStarStates(studentsDataParam, fromStarClick = false) {
 }
 
 function switchLanguage(lang) {
-  const newLang = lang || (localStorage.getItem('language') === 'sv' ? 'en' : 'sv');
-  localStorage.setItem('language', newLang);
+    const newLang = lang || (localStorage.getItem('language') === 'sv' ? 'en' : 'sv');
+    localStorage.setItem('language', newLang);
 
-  document.querySelectorAll('[data-translate]').forEach(element => {
-    const key = element.getAttribute('data-translate');
-    if (translations[newLang][key]) {
-      if (element.tagName === 'TITLE') {
-        element.textContent = translations[newLang][key];
-      } else {
-        element.innerHTML = translations[newLang][key];
-      }
+    document.querySelectorAll('[data-translate]').forEach(element => {
+        const key = element.getAttribute('data-translate');
+        if (translations[newLang][key]) {
+            if (element.tagName === 'TITLE') {
+                element.textContent = translations[newLang][key];
+            } else {
+                element.innerHTML = translations[newLang][key];
+            }
+        }
+    });
+
+    document.querySelectorAll('.menu-link').forEach(link => {
+        const href = link.getAttribute('href')?.toLowerCase();
+        if (href === 'index.html') {
+            link.textContent = translations[newLang].menuHome;
+        } else if (href === 'ranks.html') {
+            link.textContent = translations[newLang].menuFrontPage;
+        } else if (href === 'students.html') {
+            link.textContent = translations[newLang].menuStudents;
+        } else if (href === 'starmap.html#svg-start') {
+            link.textContent = translations[newLang].menuStarMap;
+        } else if (href === 'faq.html') {
+            link.textContent = translations[newLang].menuFAQ;
+        } else if (href === 'remove.html') {
+            link.textContent = translations[newLang].menuRemove;
+        } else if (href === 'privacy-policy.html') {
+            link.textContent = translations[newLang].menuPrivacyPolicy;
+        } else {
+            const chapterNum = href?.match(/chapter(\d+)\.html/)?.[1];
+            if (chapterNum) {
+                const span = link.querySelector('span');
+                if (span) span.textContent = `${translations[newLang].menuChapter} ${chapterNum}`;
+                else link.textContent = `${translations[newLang].menuChapter} ${chapterNum}`;
+            }
+        }
+    });
+
+    const chaptersToggle = document.querySelector('.chapters-toggle');
+    if (chaptersToggle) chaptersToggle.textContent = translations[newLang].menuChapters;
+
+    const popupWelcome = document.getElementById('popupWelcome');
+    const popupIntro = document.getElementById('popupIntro');
+    const popupTeacherNote = document.getElementById('popupTeacherNote');
+    const popupEnterName = document.getElementById('popupEnterName');
+    const submitNameButton = document.getElementById('submitNameButton');
+    if (popupWelcome) popupWelcome.textContent = translations[newLang].popupWelcome;
+    if (popupIntro) popupIntro.textContent = translations[newLang].popupIntro;
+    if (popupTeacherNote) popupTeacherNote.textContent = translations[newLang].popupTeacherNote;
+    if (popupEnterName) popupEnterName.textContent = translations[newLang].popupEnterName;
+    if (submitNameButton) submitNameButton.textContent = translations[newLang].addButton;
+
+    const congratsMessage = document.getElementById('congratsMessage');
+    if (congratsMessage) congratsMessage.textContent = translations[newLang].congratsMessage;
+
+    const qrInstruction = document.getElementById('qrInstruction');
+    if (qrInstruction) qrInstruction.textContent = translations[newLang].scanOrShare;
+
+    const chapterNumber = document.querySelector('.chapter-number');
+    const chapterName = document.querySelector('.chapter-name');
+    if (chapterNumber && chapterName) {
+        const chapterNum = window.location.pathname.match(/chapter(\d+)\.html/)?.[1];
+        if (chapterNum) {
+            chapterNumber.textContent = translations[newLang][`chapter${chapterNum}`];
+            chapterName.textContent = translations[newLang][`chapterName${chapterNum}`];
+        }
     }
-  });
 
-  document.querySelectorAll('.menu-link').forEach(link => {
-    const href = link.getAttribute('href')?.toLowerCase();
-    if (href === 'index.html') {
-      link.textContent = translations[newLang].menuHome;
-    } else if (href === 'ranks.html') {
-      link.textContent = translations[newLang].menuFrontPage;
-    } else if (href === 'students.html') {
-      link.textContent = translations[newLang].menuStudents;
-    } else if (href === 'starmap.html#svg-start') {
-      link.textContent = translations[newLang].menuStarMap;
-    } else if (href === 'faq.html') {
-      link.textContent = translations[newLang].menuFAQ;
-    } else if (href === 'remove.html') {
-      link.textContent = translations[newLang].menuRemove;
-    } else if (href === 'privacy-policy.html') {
-      link.textContent = translations[newLang].menuPrivacyPolicy;
-    } else {
-      const chapterNum = href?.match(/chapter(\d+)\.html/)?.[1];
-      if (chapterNum) {
-        const span = link.querySelector('span');
-        if (span) span.textContent = `${translations[newLang].menuChapter} ${chapterNum}`;
-        else link.textContent = `${translations[newLang].menuChapter} ${chapterNum}`;
-      }
+    const rankTitle = document.getElementById('rankTitle');
+    const rankDescription = document.getElementById('rankDescription');
+    if (rankTitle && rankDescription) updateStarStates();
+
+    const studentsPageTitle = document.getElementById('studentsPageTitle');
+    const studentsLabel = document.getElementById('studentsLabel');
+    const newStudentInput = document.getElementById('newStudentName');
+    const addButton = document.getElementById('addStudentButton');
+    const removeButton = document.getElementById('removeStudentButton');
+    const addStudentLabel = document.getElementById('addStudentLabel');
+    const studentNotes = document.getElementById('studentNotes');
+    const saveNotesButton = document.getElementById('saveNotesButton');
+    const studentModeLabel = document.getElementById('studentModeLabel');
+    if (studentsPageTitle && studentsLabel) {
+        studentsPageTitle.textContent = translations[newLang].menuStudents;
+        studentsLabel.textContent = translations[newLang].studentsLabel;
+        newStudentInput.placeholder = translations[newLang].studentNamePlaceholder;
+        addButton.textContent = translations[newLang].addButton;
+        if (removeButton) removeButton.textContent = translations[newLang].removeButton;
+        addStudentLabel.textContent = translations[newLang].addNewStudent;
+        studentNotes.placeholder = translations[newLang].notesPlaceholder;
+        if (saveNotesButton) saveNotesButton.textContent = translations[newLang].saveNotesButton;
+        if (studentModeLabel) studentModeLabel.textContent = translations[newLang].studentModeLabel;
     }
-  });
 
-  const chaptersToggle = document.querySelector('.chapters-toggle');
-  if (chaptersToggle) chaptersToggle.textContent = translations[newLang].menuChapters;
+    const faqTitle = document.querySelector('h1[data-translate="faqTitle"]');
+    const faqQuestions = document.querySelectorAll('.faq-question[data-translate]');
+    const faqAnswers = document.querySelectorAll('.faq-answer[data-translate]');
+    if (faqTitle) faqTitle.textContent = translations[newLang].faqTitle;
+    faqQuestions.forEach(question => {
+        const key = question.getAttribute('data-translate');
+        if (translations[newLang][key]) question.childNodes[0].textContent = translations[newLang][key];
+    });
+    faqAnswers.forEach(answer => {
+        const key = answer.getAttribute('data-translate');
+        if (translations[newLang][key]) answer.innerHTML = translations[newLang][key];
+    });
 
-  const popupWelcome = document.getElementById('popupWelcome');
-  const popupIntro = document.getElementById('popupIntro');
-  const popupTeacherNote = document.getElementById('popupTeacherNote');
-  const popupEnterName = document.getElementById('popupEnterName');
-  const submitNameButton = document.getElementById('submitNameButton');
-  if (popupWelcome) popupWelcome.textContent = translations[newLang].popupWelcome;
-  if (popupIntro) popupIntro.textContent = translations[newLang].popupIntro;
-  if (popupTeacherNote) popupTeacherNote.textContent = translations[newLang].popupTeacherNote;
-  if (popupEnterName) popupEnterName.textContent = translations[newLang].popupEnterName;
-  if (submitNameButton) submitNameButton.textContent = translations[newLang].addButton;
-
-  const congratsMessage = document.getElementById('congratsMessage');
-  if (congratsMessage) congratsMessage.textContent = translations[newLang].congratsMessage;
-
-  const qrInstruction = document.getElementById('qrInstruction');
-  if (qrInstruction) qrInstruction.textContent = translations[newLang].scanOrShare;
-
-  const chapterNumber = document.querySelector('.chapter-number');
-  const chapterName = document.querySelector('.chapter-name');
-  if (chapterNumber && chapterName) {
-    const chapterNum = window.location.pathname.match(/chapter(\d+)\.html/)?.[1];
-    if (chapterNum) {
-      chapterNumber.textContent = translations[newLang][`chapter${chapterNum}`];
-      chapterName.textContent = translations[newLang][`chapterName${chapterNum}`];
+    const titleContainerH1 = document.querySelector('.title-container h1[data-translate]');
+    if (titleContainerH1) {
+        const key = titleContainerH1.getAttribute('data-translate');
+        if (translations[newLang][key]) titleContainerH1.textContent = translations[newLang][key];
     }
-  }
 
-  const rankTitle = document.getElementById('rankTitle');
-  const rankDescription = document.getElementById('rankDescription');
-  if (rankTitle && rankDescription) updateStarStates();
-
-  const studentsPageTitle = document.getElementById('studentsPageTitle');
-  const studentsLabel = document.getElementById('studentsLabel');
-  const newStudentInput = document.getElementById('newStudentName');
-  const addButton = document.getElementById('addStudentButton');
-  const removeButton = document.getElementById('removeStudentButton');
-  const addStudentLabel = document.getElementById('addStudentLabel');
-  const studentNotes = document.getElementById('studentNotes');
-  const saveNotesButton = document.getElementById('saveNotesButton');
-  const studentModeLabel = document.getElementById('studentModeLabel');
-  if (studentsPageTitle && studentsLabel) {
-    studentsPageTitle.textContent = translations[newLang].menuStudents;
-    studentsLabel.textContent = translations[newLang].studentsLabel;
-    newStudentInput.placeholder = translations[newLang].studentNamePlaceholder;
-    addButton.textContent = translations[newLang].addButton;
-    if (removeButton) removeButton.textContent = translations[newLang].removeButton;
-    addStudentLabel.textContent = translations[newLang].addNewStudent;
-    studentNotes.placeholder = translations[newLang].notesPlaceholder;
-    if (saveNotesButton) saveNotesButton.textContent = translations[newLang].saveNotesButton;
-    if (studentModeLabel) studentModeLabel.textContent = translations[newLang].studentModeLabel;
-  }
-
-  const faqTitle = document.querySelector('h1[data-translate="faqTitle"]');
-  const faqQuestions = document.querySelectorAll('.faq-question[data-translate]');
-  const faqAnswers = document.querySelectorAll('.faq-answer[data-translate]');
-  if (faqTitle) faqTitle.textContent = translations[newLang].faqTitle;
-  faqQuestions.forEach(question => {
-    const key = question.getAttribute('data-translate');
-    if (translations[newLang][key]) question.childNodes[0].textContent = translations[newLang][key];
-  });
-  faqAnswers.forEach(answer => {
-    const key = answer.getAttribute('data-translate');
-    if (translations[newLang][key]) answer.innerHTML = translations[newLang][key];
-  });
-
-  const titleContainerH1 = document.querySelector('.title-container h1[data-translate]');
-  if (titleContainerH1) {
-    const key = titleContainerH1.getAttribute('data-translate');
-    if (translations[newLang][key]) titleContainerH1.textContent = translations[newLang][key];
-  }
-
-  const removeStudentTitle = document.querySelector('h1[data-translate="removeStudentTitle"]');
-  const confirmRemoveMessage = document.querySelector('p[data-translate="confirmRemoveMessage"]');
-  if (removeStudentTitle) removeStudentTitle.textContent = translations[newLang].removeStudentTitle;
-  if (confirmRemoveMessage) {
-    const selectedStudent = window.studentsData.currentStudent || '';
-    confirmRemoveMessage.textContent = `${translations[newLang].confirmRemoveMessage}${selectedStudent ? ` ${selectedStudent}.` : '.'}`;
-  }
-
-  const removeStudentButton = document.getElementById('removeStudentButton');
-  const currentPath = window.location.pathname.toLowerCase();
-  if (removeStudentButton && window.studentsData) {
-    if (currentPath.includes('remove.html')) {
-      if (window.studentsData.currentStudent) {
-        removeStudentButton.textContent = `${translations[newLang].removeCurrentStudent}${window.studentsData.currentStudent}`;
-      } else {
-        removeStudentButton.textContent = translations[newLang].removeCurrentStudentNone;
-      }
-    } else if (currentPath.includes('students.html')) {
-      removeStudentButton.textContent = translations[newLang].removeButton;
+    const removeStudentTitle = document.querySelector('h1[data-translate="removeStudentTitle"]');
+    const confirmRemoveMessage = document.querySelector('p[data-translate="confirmRemoveMessage"]');
+    if (removeStudentTitle) removeStudentTitle.textContent = translations[newLang].removeStudentTitle;
+    if (confirmRemoveMessage) {
+        const selectedStudent = window.studentsData.currentStudent || '';
+        confirmRemoveMessage.textContent = `${translations[newLang].confirmRemoveMessage}${selectedStudent ? ` ${selectedStudent}.` : '.'}`;
     }
-  }
 
-  const starMapTitle = document.querySelector('h3[data-translate="starMapTitle"]');
-  if (starMapTitle) starMapTitle.textContent = translations[newLang].starMapTitle;
-
-  document.querySelectorAll('.star-map-steps p[data-translate]').forEach(p => {
-    const key = p.getAttribute('data-translate');
-    if (translations[newLang][key]) {
-      p.innerHTML = translations[newLang][key];
+    const removeStudentButton = document.getElementById('removeStudentButton');
+    const currentPath = window.location.pathname.toLowerCase();
+    if (removeStudentButton && window.studentsData) {
+        if (currentPath.includes('remove.html')) {
+            if (window.studentsData.currentStudent) {
+                removeStudentButton.textContent = `${translations[newLang].removeCurrentStudent}${window.studentsData.currentStudent}`;
+            } else {
+                removeStudentButton.textContent = translations[newLang].removeCurrentStudentNone;
+            }
+        } else if (currentPath.includes('students.html')) {
+            removeStudentButton.textContent = translations[newLang].removeButton;
+        }
     }
-  });
 
-  const exportTitle = document.getElementById('exportTitle');
-  const exportInfo = document.getElementById('exportInfo');
-  const exportInfoText = document.querySelector('p[data-translate="exportInfoText"]');
-  const shareExportButton = document.getElementById('shareExportButton');
-  const shareButtonInQR = document.getElementById('shareButtonInQR');
-  const exportStatus = document.getElementById('exportStatus');
-  if (exportTitle) exportTitle.textContent = translations[newLang].exportTitle;
-  if (exportInfo) exportInfo.textContent = translations[newLang].exportInfo;
-  if (exportInfoText) exportInfoText.textContent = translations[newLang].exportInfoText;
-  if (shareExportButton) shareExportButton.textContent = translations[newLang].shareButtonExport;
-  if (shareButtonInQR) shareButtonInQR.textContent = translations[newLang].shareButtonQR;
-  if (exportStatus) exportStatus.textContent = translations[newLang].creatingLink;
+    const starMapTitle = document.querySelector('h3[data-translate="starMapTitle"]');
+    if (starMapTitle) starMapTitle.textContent = translations[newLang].starMapTitle;
+    document.querySelectorAll('.star-map-steps p[data-translate]').forEach(p => {
+        const key = p.getAttribute('data-translate');
+        if (translations[newLang][key]) {
+            p.innerHTML = translations[newLang][key];
+        }
+    });
 
-  const rankPopup = document.getElementById('rankAchievementPopup');
-  const rankMessage = document.getElementById('rankAchievementMessage');
-  const rankSubtitle = document.getElementById('rankAchievementSubtitle');
-  const rankPopupDescription = document.getElementById('rankAchievementDescription');
-  const currentStudent = window.studentsData?.currentStudent || '';
-  if (rankPopup && rankMessage && rankSubtitle && rankPopupDescription && rankPopup.style.display === 'flex') {
-    rankMessage.textContent = translations[newLang].rankAchievementMessage.replace('[userName]', currentStudent);
-    rankSubtitle.textContent = translations[newLang].rankAchievementSubtitle;
-    rankPopupDescription.textContent = translations[newLang].textboxStarCadet;
-  }
+    const exportTitle = document.getElementById('exportTitle');
+    const exportInfo = document.getElementById('exportInfo');
+    const exportInfoText = document.querySelector('p[data-translate="exportInfoText"]');
+    const shareExportButton = document.getElementById('shareExportButton');
+    const shareButtonInQR = document.getElementById('shareButtonInQR');
+    const exportStatus = document.getElementById('exportStatus');
+    if (exportTitle) exportTitle.textContent = translations[newLang].exportTitle;
+    if (exportInfo) exportInfo.textContent = translations[newLang].exportInfo;
+    if (exportInfoText) exportInfoText.textContent = translations[newLang].exportInfoText;
+    if (shareExportButton) shareExportButton.textContent = translations[newLang].shareButtonExport;
+    if (shareButtonInQR) shareButtonInQR.textContent = translations[newLang].shareButtonQR;
+    if (exportStatus) exportStatus.textContent = translations[newLang].creatingLink;
 
-  const loaderText = document.getElementById('loaderText');
-  if (loaderText) {
-    loaderText.textContent = translations[newLang].loading;
-  }
-
-  const studentPopup = document.getElementById('studentPopup');
-  if (studentPopup && studentPopup.classList.contains('show')) {
-    const popupContent = studentPopup.querySelector('.student-popup-content p');
-    const name = studentPopup.dataset.name;
-    const isError = studentPopup.dataset.isError === 'true';
-    const starSVG = '<svg class="popup-star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>';
-    if (name) {
-      popupContent.innerHTML = `${starSVG} ${translations[newLang].success} ${name}! ${starSVG}`;
-    } else if (isError) {
-      popupContent.textContent = translations[newLang].error;
+    const rankPopup = document.getElementById('rankAchievementPopup');
+    const rankMessage = document.getElementById('rankAchievementMessage');
+    const rankSubtitle = document.getElementById('rankAchievementSubtitle');
+    const rankPopupDescription = document.getElementById('rankAchievementDescription');
+    const currentStudent = window.studentsData?.currentStudent || '';
+    if (rankPopup && rankMessage && rankSubtitle && rankPopupDescription && rankPopup.style.display === 'flex') {
+        rankMessage.textContent = translations[newLang].rankAchievementMessage.replace('[userName]', currentStudent);
+        rankSubtitle.textContent = translations[newLang].rankAchievementSubtitle;
+        rankPopupDescription.textContent = translations[newLang].textboxStarCadet;
     }
-  }
 
-  const userNameDisplay = document.getElementById('userNameDisplay');
-  if (userNameDisplay) {
-    userNameDisplay.textContent = window.studentsData?.currentStudent || '';
-  }
+    const loaderText = document.getElementById('loaderText');
+    if (loaderText) {
+        loaderText.textContent = translations[newLang].loading;
+    }
 
-  if (localStorage.getItem('consentGiven') !== 'true' && window.cookieconsent && window.cookieconsent.element) {
-    console.log('Updating consent popup text for language:', newLang);
-    const popup = window.cookieconsent.element;
-    const message = popup.querySelector('.cc-message');
-    const dismiss = popup.querySelector('.cc-dismiss');
-    const deny = popup.querySelector('.cc-deny');
-    const link = popup.querySelector('.cc-link');
-    if (message) message.innerHTML = translations[newLang].consentMessage;
-    if (dismiss) dismiss.textContent = translations[newLang].consentAccept;
-    if (deny) deny.textContent = translations[newLang].consentReject;
-    if (link) link.textContent = translations[newLang].consentPolicyLink;
-  }
+    const studentPopup = document.getElementById('studentPopup');
+    if (studentPopup && studentPopup.classList.contains('show')) {
+        const popupContent = studentPopup.querySelector('.student-popup-content p');
+        const name = studentPopup.dataset.name;
+        const isError = studentPopup.dataset.isError === 'true';
+        const starSVG = '<svg class="popup-star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>';
+        if (name) {
+            popupContent.innerHTML = `${starSVG} ${translations[newLang].success} ${name}! ${starSVG}`;
+        } else if (isError) {
+            popupContent.textContent = translations[newLang].error;
+        }
+    }
 
-  if (typeof loadNotes === 'function' && window.location.pathname.toLowerCase().includes('students.html')) {
-    loadNotes();
-  }
+    const userNameDisplay = document.getElementById('userNameDisplay');
+    if (userNameDisplay) {
+        userNameDisplay.textContent = window.studentsData?.currentStudent || '';
+    }
 
-  updateStreakDisplay(); 
+    if (localStorage.getItem('consentGiven') !== 'true' && window.cookieconsent && window.cookieconsent.element) {
+        console.log('Updating consent popup text for language:', newLang);
+        const popup = window.cookieconsent.element;
+        const message = popup.querySelector('.cc-message');
+        const dismiss = popup.querySelector('.cc-dismiss');
+        const deny = popup.querySelector('.cc-deny');
+        const link = popup.querySelector('.cc-link');
+        if (message) message.innerHTML = translations[newLang].consentMessage;
+        if (dismiss) dismiss.textContent = translations[newLang].consentAccept;
+        if (deny) deny.textContent = translations[newLang].consentReject;
+        if (link) link.textContent = translations[newLang].consentPolicyLink;
+    }
+
+    if (typeof loadNotes === 'function' && window.location.pathname.toLowerCase().includes('students.html')) {
+        loadNotes();
+    }
+
+    updateStreakDisplay();
 }
 
 
