@@ -1426,18 +1426,7 @@ function switchLanguage(lang) {
     loadNotes();
   }
 
-  updateStreakDisplay();
 
-const guideVideo = document.getElementById('guide-video');
-
-if (guideVideo) {
-  const videoSources = {
-    sv: 'https://player.vimeo.com/video/1106485499?autoplay=1&muted=1&loop=1&controls=1', // svensk guide
-    en: 'https://player.vimeo.com/video/1106485544?autoplay=1&muted=1&loop=1&controls=1'  // engelsk guide
-  };
-
-  guideVideo.src = videoSources[newLang] || videoSources.sv;
-}
 }
 
 
