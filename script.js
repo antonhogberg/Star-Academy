@@ -729,9 +729,59 @@ function showPrivacyPolicyPopup() {
 
 // Initialize popup on DOM load
 document.addEventListener('DOMContentLoaded', () => {
-    if (!window.consentInitialized) {
-        initializeConsentPopup();
-    }
+  if (!window.consentInitialized) {
+    initializeConsentPopup();
+  }
+
+  // === VIDEO AUTOPLAY & INTERSECTION HANDLING ===
+  const videoIframes = Array.from(document.querySelectorAll('iframe.video'));
+  const videoPlayers = new Map();
+
+  const observerOptions = {
+    root: null,
+    rootMargin: '0px',
+    threshold: 0.5
+  };
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      const iframe = entry.target;
+      const player = videoPlayers.get(iframe);
+      if (!player) return;
+
+      const isVisible = window.getComputedStyle(iframe).display !== 'none';
+      if (!isVisible) return;
+
+      player.getPaused().then(paused => {
+        if (entry.isIntersecting && paused) {
+          player.play().then(() => {
+            player.setVolume(1);
+          }).catch(() => {});
+        } else if (!entry.isIntersecting && !paused) {
+          player.pause();
+        }
+      });
+    });
+  }, observerOptions);
+
+  videoIframes.forEach(iframe => {
+    const player = new Vimeo.Player(iframe);
+    videoPlayers.set(iframe, player);
+
+    player.on('loaded', () => {
+      observer.observe(iframe);
+
+      iframe.addEventListener('click', () => {
+        player.getPaused().then(paused => {
+          if (paused) {
+            player.play().then(() => player.setVolume(1));
+          } else {
+            player.pause();
+          }
+        });
+      });
+    });
+  });
 });
 
 function checkAndShowRankAchievementPopup(
@@ -1427,44 +1477,6 @@ function switchLanguage(lang) {
   }
 
   updateStreakDisplay(); 
-
-  const portraitVideo = document.getElementById('index-video-portrait');
-const landscapeVideo = document.getElementById('index-video-landscape');
-
-// Initiera Vimeo-spelare
-const portraitPlayer = portraitVideo ? new Vimeo.Player(portraitVideo) : null;
-const landscapePlayer = landscapeVideo ? new Vimeo.Player(landscapeVideo) : null;
-
-// Observera synlighet
-const observerOptions = {
-  root: null,
-  rootMargin: '0px',
-  threshold: 0.6
-};
-
-const handleVideoAutoplay = (entry, player) => {
-  if (!player) return;
-  player.getPaused().then(paused => {
-    if (entry.isIntersecting && paused) {
-      player.play().catch(() => {});
-    } else if (!entry.isIntersecting && !paused) {
-      player.pause();
-    }
-  });
-};
-
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.target.id === 'index-video-portrait') {
-      handleVideoAutoplay(entry, portraitPlayer);
-    } else if (entry.target.id === 'index-video-landscape') {
-      handleVideoAutoplay(entry, landscapePlayer);
-    }
-  });
-});
-
-if (portraitVideo) observer.observe(portraitVideo);
-if (landscapeVideo) observer.observe(landscapeVideo);
 }
 
 
