@@ -3151,7 +3151,7 @@ body.allow-scroll.no-scroll {
 /* iPad and other devices */
 @media only screen and (min-device-width: 768px) and (max-device-width: 1366px) {
   .video-wrapper {
-    height: 70vh;
+    height: 55vh;
     max-width: 90vw;
     aspect-ratio: 9 / 16; /* Landscape for iPads */
   }
@@ -3160,7 +3160,7 @@ body.allow-scroll.no-scroll {
 /* Desktop and other non-mobile-portrait devices */
 @media (min-width: 1401px) {
   .video-wrapper {
-    height: 70vh;
+    height: 55vh;
     max-width: 90vw;
     aspect-ratio: 9 / 16; /* Landscape for desktops */
   }
