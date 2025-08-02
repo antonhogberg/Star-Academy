@@ -49,15 +49,15 @@ body.popup-open .student-manager {
 }
 
 /* Layout Components */
-
 .layout-container {
     position: relative;
     width: 100%;
-    height: auto;
-    overflow-y: visible;
+    height: auto; /* Ändra från tidigare dynamisk höjd */
+    overflow-y: visible; /* Tillåt scrollning */
     overflow-x: hidden;
     display: block;
     -webkit-overflow-scrolling: touch;
+    /* min-height: calc(var(--vh, 1vh) * 100); */ /* Ta bort denna rad */
 }
 
 .progress-container {
