@@ -166,7 +166,7 @@ const translations = {
         removeButton: "Delete",
         menuHome: "Home",
         homeTitle: "Home",
-        homeWelcome: "North Star Piano School!",
+        homeWelcome: "North Star Piano School",
         homeIntro: "Watch Johannes showcase the book to Franz in the video below.",
         appleBooksText: "Buy the Book"
     },
@@ -331,7 +331,7 @@ const translations = {
         removeButton: "Radera",
         menuHome: "Startsida",
         homeTitle: "Startsida",
-        homeWelcome: "Nordstjärnans Pianoskola!",
+        homeWelcome: "Nordstjärnans Pianoskola",
         homeIntro: "Titta på videon nedan för att se Johannes förklara boken för Franz.",
         appleBooksText: "Köp Pianoskolan"
     }
