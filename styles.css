@@ -3139,6 +3139,12 @@ body.allow-scroll.no-scroll {
   background: rgba(0, 0, 0, 0.7);
 }
 
+.player {
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+
 /* Mobile portrait (max-width: 767px) */
 @media (max-width: 767px) and (orientation: portrait) {
   .video-wrapper {
