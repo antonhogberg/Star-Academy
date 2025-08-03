@@ -3152,6 +3152,13 @@ body.allow-scroll.no-scroll {
     max-width: 90vw;
     aspect-ratio: 9 / 16; /* Portrait orientation */
   }
+    .layout-container h1,
+    .layout-container p,
+    .layout-container a {
+        max-width: 80vw; /* Begränsa textbredd till 80vw på mobil */
+        margin-left: auto;
+        margin-right: auto;
+    }
 }
 
 /* iPad and other devices */
@@ -3170,4 +3177,35 @@ body.allow-scroll.no-scroll {
     max-width: 90vw;
     aspect-ratio: 9 / 16; /* Landscape for desktops */
   }
+}
+
+/* Content Styles */
+.layout-container h1,
+.layout-container p,
+.layout-container a {
+    font-family: Cochin, Georgia, Arial, sans-serif; /* Matcha övrig sida */
+}
+
+
+
+/* Apple Books-knapp */
+.apple-books-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #4a4a4a; /* Matchar --semi-dark för subtil look */
+    color: #ffffff;
+    text-decoration: none;
+    font-family: Cochin, Georgia, Arial, sans-serif;
+    font-size: 16px;
+    border-radius: 5px; /* Rundade hörn */
+    border: 1px solid #666; /* Ljusare grå kant för subtil effekt */
+    text-align: center;
+    margin-top: 20px;
+    transition: background-color 0.3s ease, color 0.3s ease; /* Mjuk hover-effekt */
+}
+
+.apple-books-button:hover {
+    background-color: #5a5a5a; /* Lättare skiftning mot mörkare grå */
+    color: #e0e0e0; /* Lättare textfärg för subtil kontrast */
+    text-decoration: none; /* Ta bort understrykning vid hover */
 }
