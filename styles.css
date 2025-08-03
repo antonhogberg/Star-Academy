@@ -3111,72 +3111,10 @@ body.allow-scroll.no-scroll {
   display: block;
 }
 
-.play-button {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 60px;
-  height: 60px;
-  background: rgba(0, 0, 0, 0.5);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  pointer-events: none; /* Allow clicks to pass through to the link */
-}
-
-.play-button::before {
-  content: '';
-  width: 0;
-  height: 0;
-  border-left: 30px solid white;
-  border-top: 20px solid transparent;
-  border-bottom: 20px solid transparent;
-}
-
-.play-button:hover {
-  background: rgba(0, 0, 0, 0.7);
-}
 
 .player {
     border-radius: 12px;
     overflow: hidden;
-}
-
-
-/* Mobile portrait (max-width: 767px) */
-@media (max-width: 767px) and (orientation: portrait) {
-  .video-wrapper {
-    width: 90vw; /* Specific for mobile portrait */
-    max-width: 90vw;
-    aspect-ratio: 9 / 16; /* Portrait orientation */
-  }
-    .layout-container h1,
-    .layout-container p,
-    .layout-container a {
-        max-width: 80vw; /* Begränsa textbredd till 80vw på mobil */
-        margin-left: auto;
-        margin-right: auto;
-    }
-}
-
-/* iPad and other devices */
-@media only screen and (min-device-width: 768px) and (max-device-width: 1366px) {
-  .video-wrapper {
-    height: 70vh;
-    max-width: 90vw;
-    aspect-ratio: 9 / 16; /* Landscape for iPads */
-  }
-}
-
-/* Desktop and other non-mobile-portrait devices */
-@media (min-width: 1401px) {
-  .video-wrapper {
-    height: 75vh;
-    max-width: 90vw;
-    aspect-ratio: 9 / 16; /* Landscape for desktops */
-  }
 }
 
 /* Content Styles */
@@ -3202,10 +3140,54 @@ body.allow-scroll.no-scroll {
     text-align: center;
     margin-top: 20px;
     transition: background-color 0.3s ease, color 0.3s ease; /* Mjuk hover-effekt */
+    max-width: 80vw; /* Begränsa bredd till 80vw på mobil */
+    white-space: nowrap; /* Förhindra radbrytning */
+    overflow: hidden;
+    text-overflow: ellipsis; /* Klipp av om texten blir för lång */
 }
 
 .apple-books-button:hover {
     background-color: #5a5a5a; /* Lättare skiftning mot mörkare grå */
     color: #e0e0e0; /* Lättare textfärg för subtil kontrast */
     text-decoration: none; /* Ta bort understrykning vid hover */
+}
+
+/* Mobile portrait (max-width: 767px) */
+@media (max-width: 767px) and (orientation: portrait) {
+  .video-wrapper {
+    width: 90vw; /* Specific for mobile portrait */
+    max-width: 90vw;
+    aspect-ratio: 9 / 16; /* Portrait orientation */
+  }
+    .layout-container h1,
+    .layout-container p,
+    .layout-container a {
+        max-width: 80vw; /* Begränsa textbredd till 80vw på mobil */
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+
+/* iPad and other devices */
+@media only screen and (min-device-width: 768px) and (max-device-width: 1366px) {
+  .video-wrapper {
+    height: 70vh;
+    max-width: 90vw;
+    aspect-ratio: 9 / 16; /* Landscape for iPads */
+  }
+  .apple-books-button {
+        max-width: 300px; /* Begränsa bredd på iPad och desktop */
+    }
+}
+
+/* Desktop and other non-mobile-portrait devices */
+@media (min-width: 1401px) {
+  .video-wrapper {
+    height: 75vh;
+    max-width: 90vw;
+    aspect-ratio: 9 / 16; /* Landscape for desktops */
+  }
+  .apple-books-button {
+        max-width: 300px; /* Begränsa bredd på iPad och desktop */
+    }
 }
