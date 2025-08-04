@@ -3152,7 +3152,7 @@ body.allow-scroll.no-scroll {
     text-decoration: none; /* Ta bort understrykning vid hover */
 }
 
-.player.right-content-area-supported>.content-area-sibling-enabled {
+.player.right-content-area-supported {
     border-radius: 12px;
 }
 /* Mobile portrait (max-width: 767px) */
