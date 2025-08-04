@@ -3162,7 +3162,7 @@ body.allow-scroll.no-scroll {
     .layout-container h1,
     .layout-container p,
     .layout-container a {
-        max-width: 80vw; /* Begränsa textbredd till 80vw på mobil */
+        max-width: 90vw; /* Begränsa textbredd till 80vw på mobil */
         margin-left: auto;
         margin-right: auto;
     }
