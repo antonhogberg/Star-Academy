@@ -3171,7 +3171,7 @@ body.allow-scroll.no-scroll {
 /* iPad and other devices */
 @media only screen and (min-device-width: 768px) and (max-device-width: 1366px) {
   .video-wrapper {
-    height: 70vh;
+    height: 65vh;
     max-width: 90vw;
     aspect-ratio: 9 / 16; /* Landscape for iPads */
   }
