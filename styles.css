@@ -3156,6 +3156,7 @@ body.allow-scroll.no-scroll {
 
 .player.right-content-area-supported {
     border-radius: 12px !important;
+        overflow: hidden;
 }
 /* Mobile portrait (max-width: 767px) */
 @media (max-width: 767px) and (orientation: portrait) {
@@ -3168,12 +3169,11 @@ body.allow-scroll.no-scroll {
     }
     .responsive-video {
         border-radius: 12px !important; /* Försäkra på mobil */
-    }
-    .responsive-video-img {
-        border-radius: 12px !important; /* Försäkra på mobil */
+        overflow: hidden;
     }
     .player {
         border-radius: 12px !important; /* Försäkra på mobil */
+        overflow: hidden;
     }
     .layout-container a {
         max-width: 85vw; /* Begränsa textbredd till 80vw på mobil */
