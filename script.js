@@ -166,7 +166,7 @@ const translations = {
         removeButton: "Delete",
         menuHome: "Home",
         homeTitle: "Home",
-        homeWelcome: "North Star Piano School",
+        homeWelcome: "North Star<br>Piano School",
         homeIntro: "Watch Johannes showcase the book to Franz in the video below.",
         appleBooksText: "Buy the Book"
     },
