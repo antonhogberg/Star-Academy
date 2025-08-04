@@ -39,7 +39,7 @@ const translations = {
         chapter5: "Chapter 5",
         chapter6: "Chapter 6",
         chapter7: "Chapter 7",
-        chapterName1: "Piano Basics",
+        chapterName1: "Note Reading",
         chapterName2: "Piano Technique",
         chapterName3: "Major Scales",
         chapterName4: "Minor Scales",
