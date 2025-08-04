@@ -3074,7 +3074,7 @@ body.allow-scroll.no-scroll {
     max-width: 90vw;
     aspect-ratio: 16 / 9;
     margin: 40px auto;
-    border-radius: 12px;
+    border-radius: 12px !important;
     overflow: hidden;
     position: relative;
     z-index: 10;
@@ -3087,7 +3087,7 @@ body.allow-scroll.no-scroll {
   height: 100%;
   border: none;
   display: block;
-  border-radius: 12px;
+  border-radius: 12px !important;
   position: absolute;
   top: 0;
   left: 0;
@@ -3113,7 +3113,7 @@ body.allow-scroll.no-scroll {
 
 
 .player {
-    border-radius: 12px;
+    border-radius: 12px !important;
     overflow: hidden;
 }
 
@@ -3155,15 +3155,26 @@ body.allow-scroll.no-scroll {
 }
 
 .player.right-content-area-supported {
-    border-radius: 12px;
+    border-radius: 12px !important;
 }
 /* Mobile portrait (max-width: 767px) */
 @media (max-width: 767px) and (orientation: portrait) {
   .video-wrapper {
-    width: 90vw; /* Specific for mobile portrait */
-    max-width: 90vw;
-    aspect-ratio: 9 / 16; /* Portrait orientation */
-  }
+        width: 90vw;
+        max-width: 90vw;
+        aspect-ratio: 9 / 16;
+        border-radius: 12px; /* Lägg till explicitt för mobil */
+        overflow: hidden;
+    }
+    .responsive-video {
+        border-radius: 12px !important; /* Försäkra på mobil */
+    }
+    .responsive-video-img {
+        border-radius: 12px !important; /* Försäkra på mobil */
+    }
+    .player {
+        border-radius: 12px !important; /* Försäkra på mobil */
+    }
     .layout-container a {
         max-width: 85vw; /* Begränsa textbredd till 80vw på mobil */
         margin-left: auto;
