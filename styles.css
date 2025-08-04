@@ -3171,6 +3171,9 @@ body.allow-scroll.no-scroll {
     border-radius: 12px;
     overflow: hidden;
 }
+.player.right-content-area-supported>.content-area-sibling-enabled {
+    border-radius: 12px;
+}
 }
 
 /* iPad and other devices */
