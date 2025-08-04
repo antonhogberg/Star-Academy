@@ -3152,6 +3152,9 @@ body.allow-scroll.no-scroll {
     text-decoration: none; /* Ta bort understrykning vid hover */
 }
 
+.player.right-content-area-supported>.content-area-sibling-enabled {
+    border-radius: 12px;
+}
 /* Mobile portrait (max-width: 767px) */
 @media (max-width: 767px) and (orientation: portrait) {
   .video-wrapper {
@@ -3172,13 +3175,6 @@ body.allow-scroll.no-scroll {
         margin-right: auto;
         margin-top: 0;
     }
-    .player {
-    border-radius: 12px;
-    overflow: hidden;
-}
-.player.right-content-area-supported>.content-area-sibling-enabled {
-    border-radius: 12px;
-}
 }
 
 /* iPad and other devices */
